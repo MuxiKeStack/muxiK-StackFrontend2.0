@@ -26,7 +26,7 @@
 $ git clone https://github.com/MuxiKeStack/muxiK-StackFrontend2.0.git
 $ cd muxiK-StackFrontend2.0
 $ pnpm install
-$ pnpm dev
+$ pnpm run dev:weapp
 ```
 
 # :pencil: 授权
