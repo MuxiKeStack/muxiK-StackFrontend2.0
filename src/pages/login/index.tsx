@@ -1,12 +1,17 @@
 import { View, Text, Image, Input, Button, Checkbox } from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
+import { useState } from "react";
+
 import "./index.scss";
 import top_background from "@/img/login/top_background.png";
+import FloatingWindow from "@/components/FloatingWindow/FloatingWindow";
 
 export default function Login() {
   useLoad(() => {
     console.log("Page loaded.");
   });
+
+  const [floatingWindowOpenning, setFloatingWindowOpenning] = useState(false);
 
   return (
     <View className="login">
@@ -26,10 +31,12 @@ export default function Login() {
         <View className="login_terms">
           <Checkbox value="" className="login_checkbox"></Checkbox>
           <Text className="login_terms_text">
-            我已同意《木犀课栈隐私条例内的所有内容》
+            我已同意
           </Text>
+          <View className="floating_window_switch" onClick={()=>setFloatingWindowOpenning(true)}>《木犀课栈隐私条例内的所有内容》</View>
         </View>
       </View>
+      {floatingWindowOpenning && <FloatingWindow />}
     </View>
   );
 }
