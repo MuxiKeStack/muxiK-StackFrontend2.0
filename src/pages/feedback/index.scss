@@ -1,0 +1,35 @@
+@import "~taro-ui/dist/style/components/textarea.scss";
+
+.Feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  top: 5vh;
+}
+
+.feedback_input {
+  width: 80vw;
+  height: 20vh;
+  border-radius: 5vw;
+  background-color: #f9f9f2;
+  padding: 5vw;
+}
+
+.feedback_contact_us {
+  width: 90vw;
+  height: 5vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feedback_qq_team {
+  color: #656460;
+}
+
+.feedback_copy {
+  color: #F18900;
+  text-decoration: underline;
+  cursor: pointer;
+}

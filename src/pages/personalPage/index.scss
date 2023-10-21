@@ -1,0 +1,80 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+@import "~taro-ui/dist/style/components/list.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+
+.PersonalPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.personalPage_top_background {
+  width: 115vw;
+  height: 70vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  top: -35vh;
+}
+
+.personalPage_user_container {
+  width: 70vw;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: 12vh;
+  left: 10vw;
+}
+
+.personalPage_user_photo {
+  background-color: white;
+  width: 20vw;
+  height: 20vw;
+  border-radius: 50%;
+}
+
+.personalPage_user_details {
+  width: 40vw;
+  height: 20vw;
+  position: flex;
+  align-items: end;
+  position: relative;
+}
+
+.personalPage_username {
+  width: 100%;
+  font-size: 6vw;
+}
+
+.personalPage_exp_value {
+  width: 100%;
+  color: orange;
+  font-size: 3vw;
+  font-weight: bold;
+  position: absolute;
+  right: -38vw;
+  bottom: 6vw;
+}
+
+.personalPage_progress_line {
+  position: absolute;
+  bottom: 1vh;
+  display: flex;
+}
+
+.personalPage_exp_text {
+  font-size: 4vw;
+  color: orange;
+  font-weight: bold;
+}
+
+.personalPage_progress {
+  width: 37vw;
+}
+
+.personalPage_list{
+  width: 90vw;
+  position: relative;
+  bottom: 30vh;
+}

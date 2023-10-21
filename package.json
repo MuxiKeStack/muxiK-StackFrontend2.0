@@ -52,6 +52,7 @@
     "@tarojs/runtime": "3.6.16",
     "@tarojs/shared": "3.6.16",
     "@tarojs/taro": "3.6.16",
+    "@types/sass": "^1.45.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "taro-ui": "^3.1.1"
