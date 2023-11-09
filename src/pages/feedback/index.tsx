@@ -4,7 +4,9 @@ import { useLoad } from "@tarojs/taro";
 
 import "./index.scss";
 
-export default function Feedback() {
+type FeedbackProps = object;
+
+const Feedback: React.FC<FeedbackProps> = () => {
   useLoad(() => {
     console.log("Page loaded.");
   });
@@ -36,6 +38,7 @@ export default function Feedback() {
       <Textarea
         className="feedback_input"
         placeholder="欢迎为课栈提建议or私聊和我们说悄悄话呀~"
+        maxlength={500}
       />
       <View className="feedback_contact_us">
         <View className="feedback_qq_team">课栈交流群：799651462</View>
@@ -45,4 +48,6 @@ export default function Feedback() {
       </View>
     </View>
   );
-}
+};
+
+export default Feedback;

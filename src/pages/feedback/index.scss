@@ -8,7 +8,7 @@
   top: 5vh;
 }
 
-.feedback_input {
+.Feedback .feedback_input {
   width: 80vw;
   height: 20vh;
   border-radius: 5vw;
@@ -16,7 +16,7 @@
   padding: 5vw;
 }
 
-.feedback_contact_us {
+.Feedback .feedback_contact_us {
   width: 90vw;
   height: 5vh;
   display: flex;
@@ -24,11 +24,11 @@
   align-items: center;
 }
 
-.feedback_qq_team {
+.Feedback .feedback_qq_team {
   color: #656460;
 }
 
-.feedback_copy {
+.Feedback .feedback_copy {
   color: #F18900;
   text-decoration: underline;
   cursor: pointer;

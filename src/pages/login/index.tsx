@@ -4,9 +4,11 @@ import { useState } from "react";
 
 import "./index.scss";
 import top_background from "@/img/login/top_background.png";
-import FloatingWindow from "@/components/FloatingWindow/FloatingWindow";
+import { FloatingWindow } from "@/components";
 
-export default function Login() {
+type LoginProps = object;
+
+const Login: React.FC<LoginProps> = () => {
   useLoad(() => {
     console.log("Page loaded.");
   });
@@ -30,13 +32,18 @@ export default function Login() {
         </View>
         <View className="login_terms">
           <Checkbox value="" className="login_checkbox"></Checkbox>
-          <Text className="login_terms_text">
-            我已同意
-          </Text>
-          <View className="floating_window_switch" onClick={()=>setFloatingWindowOpenning(true)}>《木犀课栈隐私条例内的所有内容》</View>
+          <Text className="login_terms_text">我已同意</Text>
+          <View
+            className="floating_window_switch"
+            onClick={() => setFloatingWindowOpenning(true)}
+          >
+            《木犀课栈隐私条例内的所有内容》
+          </View>
         </View>
       </View>
       {floatingWindowOpenning && <FloatingWindow />}
     </View>
   );
-}
+};
+
+export default Login;

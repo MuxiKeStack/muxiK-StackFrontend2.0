@@ -8,7 +8,7 @@
   align-items: center;
 }
 
-.personalPage_top_background {
+.PersonalPage .personalPage_top_background {
   width: 115vw;
   height: 70vh;
   margin: 0;
@@ -18,7 +18,7 @@
   top: -35vh;
 }
 
-.personalPage_user_container {
+.PersonalPage .personalPage_user_container {
   width: 70vw;
   display: flex;
   justify-content: space-between;
@@ -27,14 +27,14 @@
   left: 10vw;
 }
 
-.personalPage_user_photo {
+.PersonalPage .personalPage_user_photo {
   background-color: white;
   width: 20vw;
   height: 20vw;
   border-radius: 50%;
 }
 
-.personalPage_user_details {
+.PersonalPage .personalPage_user_details {
   width: 40vw;
   height: 20vw;
   position: flex;
@@ -42,12 +42,12 @@
   position: relative;
 }
 
-.personalPage_username {
+.PersonalPage .personalPage_username {
   width: 100%;
   font-size: 6vw;
 }
 
-.personalPage_exp_value {
+.PersonalPage .personalPage_exp_value {
   width: 100%;
   color: orange;
   font-size: 3vw;
@@ -57,23 +57,23 @@
   bottom: 6vw;
 }
 
-.personalPage_progress_line {
+.PersonalPage .personalPage_progress_line {
   position: absolute;
   bottom: 1vh;
   display: flex;
 }
 
-.personalPage_exp_text {
+.PersonalPage .personalPage_exp_text {
   font-size: 4vw;
   color: orange;
   font-weight: bold;
 }
 
-.personalPage_progress {
+.PersonalPage .personalPage_progress {
   width: 37vw;
 }
 
-.personalPage_list{
+.PersonalPage .personalPage_list{
   width: 90vw;
   position: relative;
   bottom: 30vh;

@@ -3,10 +3,14 @@ import { useLoad } from "@tarojs/taro";
 
 import "./index.scss";
 
-export default function EvaluateCourseHistory() {
+type evaluateCourseHistoryProps = object;
+
+const evaluateCourseHistory: React.FC<evaluateCourseHistoryProps> = () => {
   useLoad(() => {
     console.log("Page loaded.");
   });
 
-  return <View className="EvaluateCourseHistory">EvaluateCourseHistory</View>;
-}
+  return <View className="evaluateCourseHistory">evaluateCourseHistory</View>;
+};
+
+export default evaluateCourseHistory;

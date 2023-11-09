@@ -4,7 +4,9 @@ import { AtIcon } from "taro-ui";
 
 import "./index.scss";
 
-export default function GuildLine() {
+type GuildLineProps = object;
+
+const GuildLine: React.FC<GuildLineProps> = () => {
   return (
     <View className="guild_line">
       <AtIcon
@@ -28,4 +30,6 @@ export default function GuildLine() {
       ></AtIcon>
     </View>
   );
-}
+};
+
+export default GuildLine;

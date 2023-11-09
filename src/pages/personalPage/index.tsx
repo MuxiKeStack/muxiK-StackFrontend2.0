@@ -4,15 +4,19 @@ import { AtList, AtListItem } from "taro-ui";
 import { useLoad } from "@tarojs/taro";
 
 import "./index.scss";
-import top_background from "@/img/personalPage/top_background.png";
-import book_icon from "@/img/personalPage/book_icon.png";
-import star_icon from "@/img/personalPage/star_icon.png";
-import clock_icon from "@/img/personalPage/clock_icon.png";
-import message_icon from "@/img/personalPage/message_icon.png";
-import mail_icon from "@/img/personalPage/mail_icon.png";
-import GuildLine from "@/components/GuildLine/GuildLine";
+import {
+  BookIcon,
+  ClockIcon,
+  MailIcon,
+  MessageIcon,
+  StarIcon,
+  TopBackground,
+} from "@/img/personalPage";
+import { GuildLine } from "@/components";
 
-export default function PersonalPage() {
+type PersonalPageProps = object;
+
+const PersonalPage: React.FC<PersonalPageProps> = () => {
   useLoad(() => {
     console.log("Page loaded.");
   });
@@ -24,13 +28,13 @@ export default function PersonalPage() {
       <GuildLine />
     </View>
   );
-}
+};
 
 const Head = () => {
   return (
     <>
       <Image
-        src={top_background}
+        src={TopBackground}
         className="personalPage_top_background"
       ></Image>
       <View className="personalPage_user_container">
@@ -63,7 +67,7 @@ const List = () => {
       <AtListItem
         title="我的课程"
         arrow="right"
-        thumb={book_icon}
+        thumb={BookIcon}
         onClick={() => {
           Taro.navigateTo({ url: "" });
         }}
@@ -71,7 +75,7 @@ const List = () => {
       <AtListItem
         title="我的收藏"
         arrow="right"
-        thumb={star_icon}
+        thumb={StarIcon}
         onClick={() => {
           Taro.navigateTo({ url: "/pages/myCollection/index" });
         }}
@@ -79,7 +83,7 @@ const List = () => {
       <AtListItem
         title="评课历史"
         arrow="right"
-        thumb={clock_icon}
+        thumb={ClockIcon}
         onClick={() => {
           Taro.navigateTo({ url: "/pages/evaluateCourseHistory/index" });
         }}
@@ -87,7 +91,7 @@ const List = () => {
       <AtListItem
         title="消息提醒"
         arrow="right"
-        thumb={message_icon}
+        thumb={MessageIcon}
         onClick={() => {
           Taro.navigateTo({ url: "/pages/messageNotification/index" });
         }}
@@ -95,7 +99,7 @@ const List = () => {
       <AtListItem
         title="意见反馈"
         arrow="right"
-        thumb={mail_icon}
+        thumb={MailIcon}
         onClick={() => {
           Taro.navigateTo({ url: "/pages/feedback/index" });
         }}
@@ -103,3 +107,5 @@ const List = () => {
     </AtList>
   );
 };
+
+export default PersonalPage;

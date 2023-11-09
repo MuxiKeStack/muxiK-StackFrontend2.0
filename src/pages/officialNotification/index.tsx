@@ -3,10 +3,14 @@ import { useLoad } from "@tarojs/taro";
 
 import "./index.scss";
 
-export default function OfficialNotification() {
+type OfficialNotificationProps = object;
+
+const OfficialNotification: React.FC<OfficialNotificationProps> = () => {
   useLoad(() => {
     console.log("Page loaded.");
   });
 
   return <View className="OfficialNotification">OfficialNotification</View>;
-}
+};
+
+export default OfficialNotification;

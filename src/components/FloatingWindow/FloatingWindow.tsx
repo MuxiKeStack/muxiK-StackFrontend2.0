@@ -2,7 +2,9 @@ import { View, Swiper, SwiperItem } from "@tarojs/components";
 
 import "./index.scss";
 
-export default function FloatingWindow() {
+type FloatingWindowProps = object;
+
+const FloatingWindow: React.FC<FloatingWindowProps> = () => {
   const pages = [<Page1 />, <Page2 />, <Page3 />, <Page4 />];
 
   return (
@@ -22,7 +24,7 @@ export default function FloatingWindow() {
       </Swiper>
     </View>
   );
-}
+};
 
 const Page1 = () => {
   return <View>1</View>;
@@ -39,3 +41,5 @@ const Page3 = () => {
 const Page4 = () => {
   return <View>4</View>;
 };
+
+export default FloatingWindow;
