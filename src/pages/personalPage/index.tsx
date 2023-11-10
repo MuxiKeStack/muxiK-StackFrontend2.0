@@ -97,6 +97,14 @@ const List = () => {
         }}
       />
       <AtListItem
+        title="官方消息"
+        arrow="right"
+        thumb={MessageIcon}
+        onClick={() => {
+          Taro.navigateTo({ url: "/pages/officialNotification/index" });
+        }}
+      />
+      <AtListItem
         title="意见反馈"
         arrow="right"
         thumb={MailIcon}

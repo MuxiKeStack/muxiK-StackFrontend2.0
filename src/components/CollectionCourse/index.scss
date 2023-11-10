@@ -12,7 +12,7 @@
   position: relative;
 }
 
-.collection_course_type {
+.collection_course .collection_course_type {
   width: 8vh;
   height: 8vh;
   border-radius: 50%;
@@ -27,7 +27,7 @@
   box-shadow: -0.5vw 0.5vh 4px rgba(0, 0, 0, 0.1);
 }
 
-.collection_course_detail {
+.collection_course .collection_course_detail {
   height: 9vh;
   display: flex;
   flex-direction: column;
@@ -36,28 +36,28 @@
   left: 23vw;
 }
 
-.collection_course_name{
+.collection_course .collection_course_name{
   font-size: 2.5vh;
   font-weight: bold;
 }
 
-.collection_course_description{
+.collection_course .collection_course_description{
   width: 40vw;
   position: relative;
 }
 
-.collection_course_teacher{
+.collection_course .collection_course_teacher{
   margin-right: 5vw;
   font-size: 2vh;
 }
 
-.collection_course_rate{
+.collection_course .collection_course_rate{
   position: absolute;
   bottom: 0.1vh;
   right: 0;
 }
 
-.collection_course_clollected{
+.collection_course .collection_course_clollected{
   width: 20vw;
   height: 4vh;
   background-color: white;
