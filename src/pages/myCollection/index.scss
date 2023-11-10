@@ -31,10 +31,21 @@
   font-size: 2.2vh;
 }
 
-.mycollection_text {
+.MyCollection .mycollection_text {
   position: absolute;
   top: 13vh;
   left: 5vw;
   font-size: 2vh;
   color: #565552;
+}
+
+.mycollection_collections {
+  width: 90vw;
+  height: 70vh;
+  position: absolute;
+  top: 20vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  overflow: scroll;
 }

@@ -4,6 +4,7 @@ import { useLoad } from "@tarojs/taro";
 import { AtIcon } from "taro-ui";
 
 import "./index.scss";
+import { CollectionCourse, GuildLine } from "@/components";
 
 type MyCollectionProps = object;
 
@@ -29,7 +30,16 @@ const MyCollection: React.FC<MyCollectionProps> = () => {
         ></AtIcon>
       </View>
       <View className="mycollection_text">我的收藏 ({collections})</View>
-      <View></View>
+      <View className="mycollection_collections">
+        <CollectionCourse />
+        <CollectionCourse />
+        <CollectionCourse />
+        <CollectionCourse />
+        <CollectionCourse />
+        <CollectionCourse />
+        <CollectionCourse />
+        <CollectionCourse />
+      </View>
     </View>
   );
 };

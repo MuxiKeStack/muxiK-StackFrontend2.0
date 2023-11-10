@@ -1,2 +1,72 @@
+@import "~taro-ui/dist/style/components/rate.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+
 .collection_course {
+  width: 100%;
+  height: 15vh;
+  min-height: 15vh;
+  border-radius: 2vh;
+  background-color: #f9f9f2;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.collection_course_type {
+  width: 8vh;
+  height: 8vh;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
+  left: 4vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3vh;
+  color: #f18900;
+  box-shadow: -0.5vw 0.5vh 4px rgba(0, 0, 0, 0.1);
+}
+
+.collection_course_detail {
+  height: 9vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  left: 23vw;
+}
+
+.collection_course_name{
+  font-size: 2.5vh;
+  font-weight: bold;
+}
+
+.collection_course_description{
+  width: 40vw;
+  position: relative;
+}
+
+.collection_course_teacher{
+  margin-right: 5vw;
+  font-size: 2vh;
+}
+
+.collection_course_rate{
+  position: absolute;
+  bottom: 0.1vh;
+  right: 0;
+}
+
+.collection_course_clollected{
+  width: 20vw;
+  height: 4vh;
+  background-color: white;
+  border-radius: 10vh;
+  position: absolute;
+  right: 3vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f18900;
+  box-shadow: -0.5vw 0.5vh 4px rgba(0, 0, 0, 0.1);
 }
