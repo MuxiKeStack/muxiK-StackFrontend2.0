@@ -6,8 +6,8 @@ import prodConfig from './prod'
 // https://taro-docs.jd.com/docs/next/config#defineconfig-辅助函数
 export default defineConfig(async (merge, { command, mode }) => {
   const baseConfig: UserConfigExport = {
-    projectName: 'muxiK-StackFrontend2.0',
-    date: '2023-9-14',
+    projectName: 'myapp',
+    date: '2023-8-25',
     designWidth: 750,
     deviceRatio: {
       640: 2.34 / 2,

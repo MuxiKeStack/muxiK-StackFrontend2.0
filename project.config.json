@@ -1,15 +1,32 @@
 {
-  "miniprogramRoot": "./dist",
-  "projectname": "muxiK-StackFrontend2.0",
-  "description": "",
-  "appid": "touristappid",
+  "miniprogramRoot": "dist/",
+  "projectname": "myapp",
+  "description": "木犀课栈",
+  "appid": "wx2c572d2d3773032b",
   "setting": {
     "urlCheck": true,
     "es6": false,
     "enhance": false,
     "compileHotReLoad": false,
     "postcss": false,
-    "minified": false
+    "minified": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "condition": false
   },
-  "compileType": "miniprogram"
+  "compileType": "miniprogram",
+  "libVersion": "3.0.1",
+  "srcMiniprogramRoot": "dist/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
 }
