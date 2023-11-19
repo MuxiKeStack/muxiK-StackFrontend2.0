@@ -1,0 +1,92 @@
+.selector1{
+    font-size: 33rpx;
+    font-family: Segoe UI-Bold, Segoe UI;
+    font-weight: bold;
+    color: #565552;
+    border-top: 2rpx solid #FFD777;
+    border-right: 2rpx solid #FFD777;
+    border-bottom: 2rpx solid #FFD777;
+    width:375rpx;
+    height: 72.46rpx;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.selector2{
+    font-size: 33rpx;
+    font-family: Segoe UI-Bold, Segoe UI;
+    font-weight: bold;
+    color: #565552;
+    border-top: 2rpx solid #FFD777;
+    border-bottom: 2rpx solid #FFD777;
+    width: 375rpx;
+    height: 72.46rpx;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.text{
+    left: 72.46rpx;
+    top: 11rpx;
+    position: absolute;
+}
+
+.select{
+    display: flex;
+}
+
+.sjx{
+    width: 0rpx;
+    height: 0rpx;
+    border-top: 21.74rpx solid #F18900;
+    border-left: 12.68rpx solid transparent;
+    border-right: 12.68rpx solid transparent;
+    border-bottom: 21.74rpx solid transparent;
+    position: relative;
+    left: 311.59rpx;
+    top: 25.36rpx;
+}
+
+.classes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.eachClass{
+    border-bottom: 1rpx solid  #FFD777;
+    height: 118rpx;
+    width: 659rpx;
+}
+
+.classname{
+    position: relative;
+    top: -17rpx;
+    left: 65rpx;
+}
+
+.eachClass View{
+    width: 27rpx;
+    height: 27rpx;
+    background-color:#FFD777;
+    border-radius: 100%;
+    position: relative;
+    top: 50rpx;
+    left: 9rpx;
+
+}
+
+.classstatus{
+    color: #F18900;
+    position: relative;
+    left: 180rpx;
+    top: -15rpx;
+}
+
+.jt{
+    color:#F18900;
+    font-size: 60rpx;
+    position: relative;
+    left: 200rpx;
+    top: -5rpx;
+}
