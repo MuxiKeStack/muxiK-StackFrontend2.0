@@ -4,14 +4,14 @@ export default defineAppConfig({
     // 'pages/personalPage/index',
     // 'pages/myCollection/index',
     // 'pages/evaluateCourseHistory/index',
-    'pages/messageNotification/index',
-    'pages/officialNotification/index',
-    'pages/feedback/index',
-    'pages/classInfo/index',
-    'pages/evaluate/evaluate',
-    'pages/myclass/myclass',
-    'pages/research/research',
-    'pages/index/index'
+    // 'pages/messageNotification/index',
+    // 'pages/officialNotification/index',
+    // 'pages/feedback/index',
+    // 'pages/classInfo/index',
+    // 'pages/evaluate/evaluate',
+    // 'pages/myclass/myclass',
+    // 'pages/research/research',
+    // 'pages/index/index'
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -19,7 +19,7 @@ export default defineAppConfig({
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black'
   },
-  usingComponents:{
-    'ec-canvas':'components/ec-canvas/ec-canvas'
-  }
+  // usingComponents:{
+  //   'ec-canvas':'components/ec-canvas/ec-canvas'
+  // }
 })
