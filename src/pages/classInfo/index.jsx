@@ -6,7 +6,6 @@ import Label3 from '@/components/label3/label3'
 import ShowStar from '@/components/showStar/showStar'
 import Comment from '@/components/comment/comment'
 //import Chart from '@/components/chart/chart'
-
 //@ts-ignore
 
 import * as echarts from '../../components/ec-canvas/echarts.js'; // 引入echarts

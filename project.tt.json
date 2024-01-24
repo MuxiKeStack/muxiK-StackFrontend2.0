@@ -1,6 +1,6 @@
 {
   "miniprogramRoot": "./",
-  "projectname": "muxiK-StackFrontend2.0",
+  "projectname": "myapp",
   "appid": "testAppId",
   "setting": {
     "es6": false,

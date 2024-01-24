@@ -58,6 +58,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "taro-react-echarts": "^1.2.2",
+    "taro-ui": "^3.2.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
