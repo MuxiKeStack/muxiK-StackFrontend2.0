@@ -37,7 +37,7 @@ const Login: React.FC<LoginProps> = () => {
             className="floating_window_switch"
             onClick={() => setFloatingWindowOpenning(true)}
           >
-            《木犀课栈隐私条例内的所有内容》
+            《木犀课栈隐私条例》内的所有内容
           </View>
         </View>
       </View>
