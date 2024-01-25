@@ -7,16 +7,16 @@ export default defineAppConfig({
     //'pages/messageNotification/index',
     //'pages/officialNotification/index',
     //'pages/feedback/index',
-    'pages/classInfo/index',
-    'pages/evaluate/evaluate',
-    'pages/myclass/myclass',
-    'pages/research/research',
-    'pages/index/index'
+    "pages/classInfo/index",
+    "pages/evaluate/evaluate",
+    "pages/myclass/myclass",
+    "pages/research/research",
+    "pages/index/index",
   ],
   window: {
-    backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black'
-  }
-})
+    backgroundTextStyle: "light",
+    navigationBarBackgroundColor: "#fff",
+    navigationBarTitleText: "WeChat",
+    navigationBarTextStyle: "black",
+  },
+});

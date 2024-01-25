@@ -1,9 +1,9 @@
-import { View,Navigator} from '@tarojs/components'
+import { View, Navigator } from "@tarojs/components";
 
 export default function Index() {
-    return(
+  return (
     <View>
-        <Navigator url='../research/research'>我要跳转到搜索页面</Navigator>
+      <Navigator url="../research/research">我要跳转到搜索页面</Navigator>
     </View>
-    )
+  );
 }

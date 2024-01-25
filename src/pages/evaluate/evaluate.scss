@@ -1,82 +1,84 @@
-.p{
-    display: flex;
-    flex-direction: row;
-    margin-top: 30rpx;
-    margin-left: 45rpx;
+.p {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30rpx;
+  margin-left: 45rpx;
 }
 
-.p Text{
-    padding-right: 10rpx;
-    font-size: 29rpx;
-    font-family: Segoe UI-Bold, Segoe UI;
-    font-weight: bold;
-    color: #565552;
-    letter-spacing: 2rpx;
+.p Text {
+  padding-right: 10rpx;
+  font-size: 29rpx;
+  font-family:
+    Segoe UI-Bold,
+    Segoe UI;
+  font-weight: bold;
+  color: #565552;
+  letter-spacing: 2rpx;
 }
 
-.view{
-    padding-top: 30rpx;
+.view {
+  padding-top: 30rpx;
 }
 
-.myradio{
-    font-size: 29rpx;
-    margin-right: 20rpx;
+.myradio {
+  font-size: 29rpx;
+  margin-right: 20rpx;
 }
 
-.myradio .wx-radio-input{
-    height: 13rpx;
-    width: 13rpx;
-    border: 5rpx solid #FFD777;
+.myradio .wx-radio-input {
+  height: 13rpx;
+  width: 13rpx;
+  border: 5rpx solid #ffd777;
 }
 
-.myradio .wx-radio-input.wx-radio-input-checked::before{
-    border-radius: 50%;
-    width: 18rpx;
-    height: 18rpx;
-    line-height: 18rpx;
-    text-align: center;
-    font-size: 0rpx;
-    background-color: #FFD777;
-    transform: translate(-50%,-50%);
+.myradio .wx-radio-input.wx-radio-input-checked::before {
+  border-radius: 50%;
+  width: 18rpx;
+  height: 18rpx;
+  line-height: 18rpx;
+  text-align: center;
+  font-size: 0rpx;
+  background-color: #ffd777;
+  transform: translate(-50%, -50%);
 }
 
-.ways{
-    width: 500rpx;
-    margin-top: -5rpx;
+.ways {
+  width: 500rpx;
+  margin-top: -5rpx;
 }
 
-.fea{
-    display: flex;
-    flex-wrap: wrap;
-    width: 500rpx;
+.fea {
+  display: flex;
+  flex-wrap: wrap;
+  width: 500rpx;
 }
 
-.view .myComment{
-    width:659.42rpx ;
-    height: 543.48rpx;
-    background-color: #F9F9F2;
-    border-radius: 43.48rpx 43.48rpx 43.48rpx 43.48rpx  ;
-    margin-left: 45.29rpx;
-    padding: 20rpx;
-    font-size: 25rpx;
-    margin-top: 47rpx;
+.view .myComment {
+  width: 659.42rpx;
+  height: 543.48rpx;
+  background-color: #f9f9f2;
+  border-radius: 43.48rpx 43.48rpx 43.48rpx 43.48rpx;
+  margin-left: 45.29rpx;
+  padding: 20rpx;
+  font-size: 25rpx;
+  margin-top: 47rpx;
 }
 
-.view Button{
-    width: 657.61rpx;
-    height: 141.3rpx;
-    line-height: 141.3rpx;
-    font-size: 43rpx;
-    color: white;
-    background-color: #FFD777;
-    border: 0rpx;
-    margin-top: 83rpx;
+.view Button {
+  width: 657.61rpx;
+  height: 141.3rpx;
+  line-height: 141.3rpx;
+  font-size: 43rpx;
+  color: white;
+  background-color: #ffd777;
+  border: 0rpx;
+  margin-top: 83rpx;
 }
 
-.view .zsxz{
-    font-size: 18rpx;
-    color: #9F9F9C;
-    position: relative;
-    left: 550rpx;
-    top: -80rpx;
+.view .zsxz {
+  font-size: 18rpx;
+  color: #9f9f9c;
+  position: relative;
+  left: 550rpx;
+  top: -80rpx;
 }

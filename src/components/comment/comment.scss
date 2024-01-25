@@ -2,111 +2,114 @@
 
 /* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
 @font-face {
-    font-family: 'iconfont';  /* Project id 4326563 */
-    src: url('//at.alicdn.com/t/c/font_4326563_5kfmphwtn65.woff2?t=1699759598184') format('woff2'),
-         url('//at.alicdn.com/t/c/font_4326563_5kfmphwtn65.woff?t=1699759598184') format('woff'),
-         url('//at.alicdn.com/t/c/font_4326563_5kfmphwtn65.ttf?t=1699759598184') format('truetype');
-  }
-  
-  .iconfont {
-    font-family: "iconfont" !important;
-    font-size: 30rpx;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #F18900;
-  }
-
-  
-.comment{
-    margin-left: 45rpx;
-    width: 600rpx;
-    height: 388rpx;
-    background: #F9F9F2;
-    border-radius: 43rpx 43rpx 43rpx 43rpx;
-    opacity: 1;
-    border: 2rpx solid #F9F9F2;
-    padding-top: 38rpx;
-    padding-left: 36rpx;
-    padding-right: 25rpx;
+  font-family: "iconfont"; /* Project id 4326563 */
+  src:
+    url("//at.alicdn.com/t/c/font_4326563_5kfmphwtn65.woff2?t=1699759598184")
+      format("woff2"),
+    url("//at.alicdn.com/t/c/font_4326563_5kfmphwtn65.woff?t=1699759598184")
+      format("woff"),
+    url("//at.alicdn.com/t/c/font_4326563_5kfmphwtn65.ttf?t=1699759598184")
+      format("truetype");
 }
 
-.comment .tx{
-    width: 92.39rpx;
-    height: 92.39rpx;
-    background-color: white;
-    border-radius: 50%;
-    border: #D2D5D8 solid 5rpx;
-    float: left;
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 30rpx;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #f18900;
 }
 
-.comment .userName{
-    float: left;
-    font-size: 22rpx;
-    font-weight: bold;
-    color: #565552;
+.comment {
+  margin-left: 45rpx;
+  width: 600rpx;
+  height: 388rpx;
+  background: #f9f9f2;
+  border-radius: 43rpx 43rpx 43rpx 43rpx;
+  opacity: 1;
+  border: 2rpx solid #f9f9f2;
+  padding-top: 38rpx;
+  padding-left: 36rpx;
+  padding-right: 25rpx;
 }
 
-.comment .stars{
-    float: left;
+.comment .tx {
+  width: 92.39rpx;
+  height: 92.39rpx;
+  background-color: white;
+  border-radius: 50%;
+  border: #d2d5d8 solid 5rpx;
+  float: left;
 }
 
-.comment .p{
-   position: relative;
-   left: 36rpx;
-}
-.bigcomment .comment .p .fire{
-    width: 38rpx;
-    height: 38rpx;
-    float: right;
-    margin-right: 45rpx;
+.comment .userName {
+  float: left;
+  font-size: 22rpx;
+  font-weight: bold;
+  color: #565552;
 }
 
-.comment .p .time{
-    float: right;
-    margin-right: 36rpx;
-    font-size: 22rpx;
-    font-family: Segoe UI-Regular, Segoe UI;
-    font-weight: 400;
-    color: #565552;
-
+.comment .stars {
+  float: left;
 }
 
-.comment .content{
-    clear: both;
-    font-size: 22rpx;
-    font-family: Segoe UI-Regular, Segoe UI;
-    font-weight: 400;
-    color: #565552;
-    margin-top: 130rpx;
+.comment .p {
+  position: relative;
+  left: 36rpx;
+}
+.bigcomment .comment .p .fire {
+  width: 38rpx;
+  height: 38rpx;
+  float: right;
+  margin-right: 45rpx;
 }
 
+.comment .p .time {
+  float: right;
+  margin-right: 36rpx;
+  font-size: 22rpx;
+  font-family:
+    Segoe UI-Regular,
+    Segoe UI;
+  font-weight: 400;
+  color: #565552;
+}
 
-.bigcomment .icon Image{
-    width: 100%;
-    height: 100%;
+.comment .content {
+  clear: both;
+  font-size: 22rpx;
+  font-family:
+    Segoe UI-Regular,
+    Segoe UI;
+  font-weight: 400;
+  color: #565552;
+  margin-top: 130rpx;
+}
+
+.bigcomment .icon Image {
+  width: 100%;
+  height: 100%;
 }
 
 .bigcomment .icon {
-    width: 40rpx;
-    height: 40rpx;
-    box-shadow: 0rpx 5rpx 11rpx 2rpx rgba(0,0,0,0.16);
-    opacity: 1;
-    border-radius: 50%;
-    display: inline-block;
-    text-align: center;
-    line-height: 40rpx;
-    margin-left: 15rpx;
+  width: 40rpx;
+  height: 40rpx;
+  box-shadow: 0rpx 5rpx 11rpx 2rpx rgba(0, 0, 0, 0.16);
+  opacity: 1;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  line-height: 40rpx;
+  margin-left: 15rpx;
 }
 
-.bigcomment .text1{
-    font-size: 22rpx;
-    font-weight: bold;
-    color: black;
-    
+.bigcomment .text1 {
+  font-size: 22rpx;
+  font-weight: bold;
+  color: black;
 }
-.bigcomment .likes{
-    margin-top:25rpx;
-    margin-left:45rpx ;
+.bigcomment .likes {
+  margin-top: 25rpx;
+  margin-left: 45rpx;
 }
-

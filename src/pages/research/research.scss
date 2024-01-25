@@ -1,57 +1,56 @@
-.searchInput{
-    left: 79.71rpx;
-    top: 80rpx;
-    position: relative;
-    background-color: black;
-    background-color: #F9F9F2;
-    width: 592.39rpx;
-    height:108.7rpx;
-    border-radius: 18.12rpx 18.12rpx 18.12rpx 18.12rpx;
-    padding-left:27.17rpx ;
+.searchInput {
+  left: 79.71rpx;
+  top: 80rpx;
+  position: relative;
+  background-color: black;
+  background-color: #f9f9f2;
+  width: 592.39rpx;
+  height: 108.7rpx;
+  border-radius: 18.12rpx 18.12rpx 18.12rpx 18.12rpx;
+  padding-left: 27.17rpx;
 }
-.search{
-    left:614.13rpx;
-    top: 11.67rpx;
-    position: relative;
+.search {
+  left: 614.13rpx;
+  top: 11.67rpx;
+  position: relative;
+}
+.lsss {
+  position: absolute;
+  top: 257rpx;
+  left: 79.71rpx;
+  width: auto;
+  height: 60rpx;
+  font-size: 45rpx;
+  font-family: Inter-Bold-, Inter-Bold;
+  font-weight: normal;
+  color: #565656;
+  line-height: 0rpx;
+}
+.historyResult {
+  position: absolute;
+  top: 320.45rpx;
+  left: 79.71rpx;
+  width: 603rpx;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.button {
+  position: absolute;
+  background-color: #f9f9f2;
+  height: 48.91rpx;
+  width: 48.91rpx;
+  top: 234rpx;
+  left: 621.38rpx;
+  border-radius: 100%;
+  box-shadow: 0rpx 5.43rpx 10.87rpx 1.81rpx rgba(0, 0, 0, 0.16);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-}
-.lsss{
-    position: absolute;
-    top:257rpx;
-    left: 79.71rpx;
-    width: auto;
-    height: 60rpx;
-    font-size: 45rpx;
-    font-family: Inter-Bold-, Inter-Bold;
-    font-weight: normal;
-    color: #565656;
-    line-height: 0rpx;
-}
-.historyResult{
-    position: absolute;
-    top:320.45rpx;
-    left: 79.71rpx;
-    width: 603rpx;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-.button{
-    position: absolute;
-    background-color: #F9F9F2;
-    height: 48.91rpx;
-    width: 48.91rpx;
-    top:234rpx;
-    left: 621.38rpx;
-    border-radius: 100%;
-    box-shadow: 0rpx 5.43rpx 10.87rpx 1.81rpx rgba(0, 0, 0, 0.16);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.tj{
-    position: absolute;
-    top: 248rpx;
-    left: 45rpx;
+.tj {
+  position: absolute;
+  top: 248rpx;
+  left: 45rpx;
 }

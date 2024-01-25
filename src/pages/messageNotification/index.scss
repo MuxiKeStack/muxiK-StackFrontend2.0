@@ -20,7 +20,7 @@
   width: 8vh;
   height: 8vh;
   border-radius: 50%;
-  background-color: #F9F9F2;
+  background-color: #f9f9f2;
 }
 
 .MessageNotification .messageNotification_detail {
@@ -29,45 +29,45 @@
   gap: 1vh;
 }
 
-.MessageNotification .messageNotification_username{
+.MessageNotification .messageNotification_username {
   font-size: 2.2vh;
   font-weight: bold;
 }
 
-.MessageNotification .messageNotification_event{
+.MessageNotification .messageNotification_event {
   display: flex;
 }
 
-.MessageNotification .messageNotification_event_type{
+.MessageNotification .messageNotification_event_type {
   font-size: 2.2vh;
-  color: #D2D5D8;
+  color: #d2d5d8;
 }
 
-.MessageNotification .messageNotification_description{
+.MessageNotification .messageNotification_description {
   font-size: 2.2vh;
   font-weight: lighter;
 }
 
-.MessageNotification .messageNotification_comment{
+.MessageNotification .messageNotification_comment {
   font-size: 2.2vh;
-  color: #D2D5D8;
-  border-left: 1vw solid #D2D5D8;
+  color: #d2d5d8;
+  border-left: 1vw solid #d2d5d8;
   padding-left: 1vw;
 }
 
-.MessageNotification .messageNotification_reply{
+.MessageNotification .messageNotification_reply {
   width: 65vw;
   height: 3vh;
   border-radius: 2vh;
-  background-color: #F9F9F2;
+  background-color: #f9f9f2;
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.MessageNotification .messageNotification_reply_text{
+.MessageNotification .messageNotification_reply_text {
   position: absolute;
   left: 3vw;
   font-size: 1.8vh;
-  color: #D2D5D8;
+  color: #d2d5d8;
 }

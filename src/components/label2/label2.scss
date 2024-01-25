@@ -1,53 +1,57 @@
-.label2{
-    width: 659rpx;
-    height: 188rpx;
-    background: #F9F9F2;
-    border-radius: 43rpx 43rpx 43rpx 43rpx;
-    opacity: 1;
-    border: 2rpx solid #F9F9F2;
-    margin-bottom: 47.1rpx;
+.label2 {
+  width: 659rpx;
+  height: 188rpx;
+  background: #f9f9f2;
+  border-radius: 43rpx 43rpx 43rpx 43rpx;
+  opacity: 1;
+  border: 2rpx solid #f9f9f2;
+  margin-bottom: 47.1rpx;
 }
 
-.labeltext1{
-    font-size: 33rpx;
-    font-family: Segoe UI-Bold, Segoe UI;
-    font-weight: bold;
-    color: #565552;
-    line-height: 0rpx;
-    position: relative;
-    top:35.36rpx;
-    left:34.42rpx;
+.labeltext1 {
+  font-size: 33rpx;
+  font-family:
+    Segoe UI-Bold,
+    Segoe UI;
+  font-weight: bold;
+  color: #565552;
+  line-height: 0rpx;
+  position: relative;
+  top: 35.36rpx;
+  left: 34.42rpx;
 }
 
-.labeltext2{
-    font-size: 29rpx;
-    font-family: Segoe UI-Bold, Segoe UI;
-    font-weight: bold;
-    color: #565552;
-    line-height: 0rpx;
-    position: relative;
-    top:89.71rpx;
-    left: 35.36rpx;
+.labeltext2 {
+  font-size: 29rpx;
+  font-family:
+    Segoe UI-Bold,
+    Segoe UI;
+  font-weight: bold;
+  color: #565552;
+  line-height: 0rpx;
+  position: relative;
+  top: 89.71rpx;
+  left: 35.36rpx;
 }
 
-.score{
-    position: relative;
-    top: 118.62rpx;
-    left: 34.42rpx;
+.score {
+  position: relative;
+  top: 118.62rpx;
+  left: 34.42rpx;
 }
 
-.star{
-    width: 25rpx;
-    height: 24rpx;
-    margin-right:9rpx;
+.star {
+  width: 25rpx;
+  height: 24rpx;
+  margin-right: 9rpx;
 }
 
-.comment{
-    left: 416rpx;
-    width: 250rpx;
-    top: 0rpx;
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    }
+.comment {
+  left: 416rpx;
+  width: 250rpx;
+  top: 0rpx;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

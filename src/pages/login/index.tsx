@@ -49,6 +49,7 @@ const Login: React.FC<LoginProps> = () => {
             <Input
               className="login_input"
               placeholder="密码"
+              /* @ts-ignore */
               type="password"
               value={password}
               onInput={(e) => setPassword(e.detail.value)}
@@ -74,8 +75,9 @@ const Login: React.FC<LoginProps> = () => {
             className="floating_window_switch"
             onClick={() => setFloatingWindowOpenning(true)}
           >
-            《木犀课栈隐私条例》内的所有内容
+            《木犀课栈隐私条例》
           </View>
+          <Text className="login_terms_text">内的所有内容</Text>
         </View>
       </View>
       {floatingWindowOpenning && <FloatingWindow />}
