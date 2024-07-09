@@ -1,6 +1,6 @@
 //import Taro from "@tarojs/taro";
 import { View, Text, Image, Input, Button, Checkbox } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
+import Taro, { useLoad } from "@tarojs/taro";
 import { useState } from "react";
 
 import "./index.scss";
@@ -20,7 +20,18 @@ const Login: React.FC<LoginProps> = () => {
   const [studentId, setStudentId] = useState("");
   const [password, setPassword] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const Login=()=>{
+    if(agreeTerms){
+      handleLogin({studentId:studentId,password:password})
+    }else {
+      Taro.showToast({
+        icon:"error",
+        title:"请确认隐私条例"
+      })
+      console.log("请先确认隐私条例");
+    }
 
+  }
 
 
   return (
@@ -46,7 +57,7 @@ const Login: React.FC<LoginProps> = () => {
             <Text className="login_link">Forget your password?</Text>
           </View>
           <View className="login_main_button">
-            <Button className="login_button" onClick={()=>handleLogin({studentId:studentId,password:password})}>
+            <Button className="login_button" onClick={Login}>
               学号登录
             </Button>
             <Button className="guest_button login_button">游客登录</Button>

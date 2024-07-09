@@ -10,8 +10,7 @@ const Feedback: React.FC<FeedbackProps> = () => {
   useLoad(() => {
     console.log("Page loaded.");
   });
-
-  const copyText = "要复制的字符串";
+  const copyText = "799651462";
 
   const handleCopy = () => {
     Taro.setClipboardData({
