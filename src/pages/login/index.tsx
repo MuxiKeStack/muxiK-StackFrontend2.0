@@ -1,4 +1,4 @@
-import Taro from "@tarojs/taro";
+//import Taro from "@tarojs/taro";
 import { View, Text, Image, Input, Button, Checkbox } from "@tarojs/components";
 import { useLoad } from "@tarojs/taro";
 import { useState } from "react";
@@ -6,7 +6,8 @@ import { useState } from "react";
 import "./index.scss";
 import top_background from "@/img/login/top_background.png";
 import { FloatingWindow } from "@/components";
-import { post } from "@/fetch";
+//import { post } from "@/fetch";
+import handleLogin from "@/api/handleLogin";
 
 type LoginProps = object;
 
@@ -20,19 +21,7 @@ const Login: React.FC<LoginProps> = () => {
   const [password, setPassword] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
 
-  const handleLogin = () => {
-    if (agreeTerms) {
-      post("/user/login", {
-        studentId: studentId,
-        password: password,
-      }).then((res) => {
-        Taro.setStorage({ key: "token", data: res.data.token });
-        console.log("登录成功");
-      });
-    } else {
-      console.log("请先确认隐私条例");
-    }
-  };
+
 
   return (
     <View className="login">
@@ -57,7 +46,7 @@ const Login: React.FC<LoginProps> = () => {
             <Text className="login_link">Forget your password?</Text>
           </View>
           <View className="login_main_button">
-            <Button className="login_button" onClick={handleLogin}>
+            <Button className="login_button" onClick={()=>handleLogin({studentId:studentId,password:password})}>
               学号登录
             </Button>
             <Button className="guest_button login_button">游客登录</Button>
