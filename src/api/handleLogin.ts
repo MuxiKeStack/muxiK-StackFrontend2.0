@@ -3,11 +3,9 @@ import Taro from "@tarojs/taro";
 const preUrl = "https://kstack.muxixyz.com";
 
 const handleLogin = async (data = {}) => {
-  //const systemInfo = Taro.getSystemInfoSync();
-  //后期看情况决定是不是加User-Agent
+
   const header = {
     "Content-Type": "application/json;charset=utf-8"
-    //"User-Agent":systemInfo.model
   };
 
   Taro.setStorage({
@@ -59,6 +57,11 @@ const handleLogin = async (data = {}) => {
 
     if (response.data.code !== 0) {
       console.log("登陆失败(code 不为 0)");
+      Taro.showToast({
+        icon:"error",
+        title:response.data.msg,
+        }
+      )
     }
 
     if (!response.statusCode.toString().startsWith("2")) {

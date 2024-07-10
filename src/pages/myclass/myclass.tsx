@@ -1,14 +1,19 @@
 import {
   View,
   Picker,
-  Text,
-  Input,
-  Image,
-  PickerView,
+  Text
 } from "@tarojs/components";
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import "./myclass.scss";
-
+interface CouresProps {
+  name:string,
+  teacher:string,
+  evaluated:boolean,
+  year:string,
+  term:string,
+  id:number
+}
+import {getUserCourses} from "@/api/getUserCourses";
 export default function Myclass() {
   const [yearSelector, setYearSelector] = useState([
     "2022-2023学年",
@@ -33,13 +38,19 @@ export default function Myclass() {
     setSem(detail.value);
   };
 
-  const [myclasses, setMyclasses] = useState([
-    { name: "人体解剖学 （成良）", status: false },
-    { name: "人体解剖学 （成良）", status: false },
-    { name: "人体解剖学 （成良）", status: false },
-    { name: "人体解剖学 （成良）", status: false },
-    { name: "人体解剖学 （成良）", status: false },
-  ]);
+  const [myclasses, setMyclasses] = useState<CouresProps[]>([]);
+
+  useEffect(() => {
+    async function fetchClasses() {
+      try {
+        const classes = await getUserCourses("2024", "1");
+        setMyclasses(classes);
+      } catch (error) {
+        console.error("Error fetching user courses:", error);
+      }
+    }
+    fetchClasses();
+  }, []); // 空数组作为依赖，确保仅在组件挂载时执行
 
   return (
     <View>
@@ -58,18 +69,16 @@ export default function Myclass() {
         </Picker>
       </View>
       <View className="classes">
-        {myclasses.map((each) => {
-          return (
-            <View className="eachClass">
-              <View></View>
-              <Text className="classname">{each.name}</Text>
-              <Text className="classstatus">
-                {each.status ? "已评课" : "未评课"}
-              </Text>
-              <Text className="jt">➜</Text>
-            </View>
-          );
-        })}
+        {myclasses.map((each, index) => (
+          <View key={index} className="eachClass">
+            <Text className="classname">{each.name}</Text>
+            <Text className="classname">{each.teacher}</Text>
+            <Text className="classstatus">
+              {each.evaluated ? "已评课" : "未评课"}
+            </Text>
+            <Text className="jt">➜</Text>
+          </View>
+        ))}
       </View>
     </View>
   );

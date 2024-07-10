@@ -22,7 +22,7 @@ const Login: React.FC<LoginProps> = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const Login=()=>{
     if(agreeTerms){
-      handleLogin({studentId:studentId,password:password})
+      handleLogin({student_id:studentId,password:password})
     }else {
       Taro.showToast({
         icon:"error",
