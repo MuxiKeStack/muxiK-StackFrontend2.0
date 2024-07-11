@@ -5,65 +5,72 @@ import {
 } from "@tarojs/components";
 import { useState, useEffect } from "react";
 import "./myclass.scss";
+import { getUserCourses } from "@/api/getUserCourses";
+
 interface CouresProps {
-  name:string,
-  teacher:string,
-  evaluated:boolean,
-  year:string,
-  term:string,
-  id:number
+  name: string,
+  teacher: string,
+  evaluated: boolean,
+  year: string,
+  term: string,
+  id: number
 }
-import {getUserCourses} from "@/api/getUserCourses";
+
 export default function Myclass() {
-  const [yearSelector, setYearSelector] = useState([
+  const [yearSelector] = useState([
     "2022-2023学年",
     "2023-2024学年",
     "2024-2025学年",
     "2025-2026学年",
   ]);
+  const [year, setYear] = useState("2024-2025学年");
+  const [semSelector] = useState([
+    "第一学期",
+    "第二学期",
+    "第三学期",
+    "全部学期"
+  ]);
+  const [sem, setSem] = useState("第一学期");
 
-  const [year, setYear] = useState("2022-2023学年");
+  const [myclasses, setMyclasses] = useState<CouresProps[]>([]);
 
   const onTimeChange = (e) => {
     const { detail } = e;
-    setYear(detail.value);
+    setYear(yearSelector[detail.value]);
   };
-
-  const semSelector = ["第一学期", "第二学期", "第三学期", "全部学期"];
-
-  const [sem, setSem] = useState("第一学期");
 
   const onSemChange = (e) => {
     const { detail } = e;
-    setSem(detail.value);
+    setSem(semSelector[detail.value]);
   };
-
-  const [myclasses, setMyclasses] = useState<CouresProps[]>([]);
 
   useEffect(() => {
     async function fetchClasses() {
       try {
-        const classes = await getUserCourses("2024", "1");
+        // 获取年份的前四位
+        const yearValue = year.split('-')[0];
+        const semValue = sem === "第一学期" ? "1" : sem === "第二学期" ? "2" : sem === "第三学期" ? "3" : "0";
+        const classes = await getUserCourses(yearValue, semValue);
         setMyclasses(classes);
       } catch (error) {
         console.error("Error fetching user courses:", error);
       }
     }
     fetchClasses();
-  }, []); // 空数组作为依赖，确保仅在组件挂载时执行
+  }, [year, sem]);
 
   return (
     <View>
       <View className="select">
         <Picker range={yearSelector} onChange={onTimeChange} mode="selector">
           <View className="selector1">
-            <Text className="text">选择学年</Text>
+            <Text className="text">{year}</Text>
             <View className="sjx"></View>
           </View>
         </Picker>
         <Picker range={semSelector} onChange={onSemChange} mode="selector">
           <View className="selector2">
-            <Text className="text">选择学期</Text>
+            <Text className="text">{sem}</Text>
             <View className="sjx"></View>
           </View>
         </Picker>
@@ -72,7 +79,7 @@ export default function Myclass() {
         {myclasses.map((each, index) => (
           <View key={index} className="eachClass">
             <Text className="classname">{each.name}</Text>
-            <Text className="classname">{each.teacher}</Text>
+            <Text className="classteacher">{each.teacher}</Text>
             <Text className="classstatus">
               {each.evaluated ? "已评课" : "未评课"}
             </Text>
