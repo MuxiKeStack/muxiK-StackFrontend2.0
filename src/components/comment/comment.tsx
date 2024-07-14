@@ -1,6 +1,8 @@
 import { Image, Navigator, Text, View } from '@tarojs/components';
-import ShowStar from '../showStar/showStar';
+
 import './comment.scss';
+
+import ShowStar from '../showStar/showStar';
 
 export default function comment(props) {
   return (

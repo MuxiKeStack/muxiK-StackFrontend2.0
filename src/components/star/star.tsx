@@ -1,5 +1,6 @@
 import { Image, View } from '@tarojs/components';
 import { useState } from 'react';
+
 import './star.scss';
 
 export default function Star(props) {
@@ -9,8 +10,8 @@ export default function Star(props) {
   const [stars, setStars] = useState([star0, star0, star0, star0, star0]);
 
   const starClick = (index: number) => {
-    let newStars = [star0, star0, star0, star0, star0];
-    for (var i = 0; i <= index; i++) {
+    const newStars = [star0, star0, star0, star0, star0];
+    for (let i = 0; i <= index; i++) {
       newStars[i] = star1;
     }
     setStars(newStars);

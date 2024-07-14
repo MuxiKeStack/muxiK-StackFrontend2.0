@@ -2,7 +2,10 @@ import { Image, Progress, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import { AtList, AtListItem } from 'taro-ui';
 
+import './index.scss';
+
 import { GuildLine } from '@/components';
+
 import {
   BookIcon,
   ClockIcon,
@@ -11,7 +14,6 @@ import {
   StarIcon,
   TopBackground,
 } from '@/img/personalPage';
-import './index.scss';
 
 type PersonalPageProps = object;
 

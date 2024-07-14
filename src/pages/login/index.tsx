@@ -2,10 +2,12 @@ import { Button, Checkbox, Image, Input, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import { useState } from 'react';
 
+import './index.scss';
+
 import { FloatingWindow } from '@/components';
+
 import { post } from '@/fetch';
 import top_background from '@/img/login/top_background.png';
-import './index.scss';
 
 type LoginProps = object;
 

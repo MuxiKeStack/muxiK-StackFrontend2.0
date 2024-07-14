@@ -3,8 +3,9 @@ import { useLoad } from '@tarojs/taro';
 import { useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
-import { CollectionCourse } from '@/components';
 import './index.scss';
+
+import { CollectionCourse } from '@/components';
 
 type MyCollectionProps = object;
 

@@ -1,5 +1,3 @@
-import Label3 from '@/components/label3/label3';
-import Star from '@/components/star/star';
 import {
   Button,
   Form,
@@ -10,7 +8,11 @@ import {
   View,
 } from '@tarojs/components';
 import { useState } from 'react';
+
 import './evaluate.scss';
+
+import Label3 from '@/components/label3/label3';
+import Star from '@/components/star/star';
 
 export default function evaluate() {
   function generateUniqueID() {
@@ -58,7 +60,7 @@ export default function evaluate() {
 
   const countContent = (e) => {
     const { value } = e.detail;
-    let length = value.length;
+    const length = value.length;
     setLength(length);
   };
 

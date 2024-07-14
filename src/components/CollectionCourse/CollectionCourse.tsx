@@ -1,7 +1,7 @@
 import { View } from '@tarojs/components';
+import { useState } from 'react';
 import { AtRate } from 'taro-ui';
 
-import { useState } from 'react';
 import './index.scss';
 
 type CollectionCourseProps = object;

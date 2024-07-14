@@ -1,9 +1,12 @@
-import Label2 from '@/components/label2/label2';
 import { Image, Input, Text, View } from '@tarojs/components';
 import { useLoad } from '@tarojs/taro';
 import { useState } from 'react';
-import Label1 from '../../components/label1/label1';
+
 import './research.scss';
+
+import Label2 from '@/components/label2/label2';
+
+import Label1 from '../../components/label1/label1';
 
 export default function Research() {
   const [hrs, sethrs] = useState([

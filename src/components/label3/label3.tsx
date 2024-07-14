@@ -1,4 +1,5 @@
 import { View } from '@tarojs/components';
+
 import './label3.scss';
 
 export default function Label3(props) {

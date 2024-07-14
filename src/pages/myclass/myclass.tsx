@@ -1,5 +1,6 @@
 import { Picker, Text, View } from '@tarojs/components';
 import { useState } from 'react';
+
 import './myclass.scss';
 
 export default function Myclass() {

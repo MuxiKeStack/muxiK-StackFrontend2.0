@@ -1,5 +1,6 @@
 import { Image, View } from '@tarojs/components';
 import { useEffect, useState } from 'react';
+
 import './showStar.scss';
 
 export default function showStar(props) {
@@ -10,8 +11,8 @@ export default function showStar(props) {
   const [starNum, setstarNum] = useState([star0, star0, star0, star0, star0]);
 
   const getStar = (num) => {
-    let newStar = starNum.map(() => {
-      let star = num >= 1 ? star2 : num > 0 ? star1 : star0;
+    const newStar = starNum.map(() => {
+      const star = num >= 1 ? star2 : num > 0 ? star1 : star0;
       --num;
       return star;
     });
