@@ -1,6 +1,5 @@
 {
   "plugins": ["prettier-plugin-organize-imports"],
-  "tailwindFunctions": ["classNames"],
   "trailingComma": "es5",
   "semi": true,
   "singleQuote": true,

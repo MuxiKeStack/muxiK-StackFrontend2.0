@@ -48172,14 +48172,12 @@
                       : 'rect';
                 }
               );
-              n._brushController
-                .setPanels(a)
-                .enableBrush(
-                  !(!o || !a.length) && {
-                    brushType: 'auto',
-                    brushStyle: t.getModel('brushStyle').getItemStyle(),
-                  }
-                );
+              n._brushController.setPanels(a).enableBrush(
+                !(!o || !a.length) && {
+                  brushType: 'auto',
+                  brushStyle: t.getModel('brushStyle').getItemStyle(),
+                }
+              );
             })(t, e, this, i, n),
             (function (t, e) {
               t.setIconStatus(
