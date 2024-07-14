@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { View, Input } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
-import { AtIcon } from "taro-ui";
+import { Input, View } from '@tarojs/components';
+import { useLoad } from '@tarojs/taro';
+import { useState } from 'react';
+import { AtIcon } from 'taro-ui';
 
-import "./index.scss";
-import { CollectionCourse, GuildLine } from "@/components";
+import { CollectionCourse } from '@/components';
+import './index.scss';
 
 type MyCollectionProps = object;
 
 const MyCollection: React.FC<MyCollectionProps> = () => {
   useLoad(() => {
-    console.log("Page loaded.");
+    console.log('Page loaded.');
   });
 
   const [collections, setCollections] = useState(5);
@@ -18,10 +18,7 @@ const MyCollection: React.FC<MyCollectionProps> = () => {
   return (
     <View className="MyCollection">
       <View className="mycollection_searchbar">
-        <Input
-          className="mycollection_search_input"
-          placeholder="搜索课程名/老师名"
-        />
+        <Input className="mycollection_search_input" placeholder="搜索课程名/老师名" />
         <AtIcon
           className="mycollection_search_button"
           value="search"

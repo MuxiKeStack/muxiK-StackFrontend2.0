@@ -1,7 +1,6 @@
-import React from "react";
-import { Text, View, Image, Navigator } from "@tarojs/components";
-import "./comment.scss";
-import ShowStar from "../showStar/showStar";
+import { Image, Navigator, Text, View } from '@tarojs/components';
+import ShowStar from '../showStar/showStar';
+import './comment.scss';
 
 export default function comment(props) {
   return (
@@ -19,7 +18,7 @@ export default function comment(props) {
             <ShowStar score={props.score}></ShowStar>
           </View>
           <Image
-            style={`display:${props.isHot ? "block" : "none"}`}
+            style={`display:${props.isHot ? 'block' : 'none'}`}
             className="fire"
             src="https://s2.loli.net/2023/11/12/2ITKRcDPMZaQCvk.png"
           ></Image>

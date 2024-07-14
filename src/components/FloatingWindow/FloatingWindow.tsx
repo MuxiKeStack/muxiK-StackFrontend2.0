@@ -1,6 +1,6 @@
-import { View, Swiper, SwiperItem } from "@tarojs/components";
+import { Swiper, SwiperItem, View } from '@tarojs/components';
 
-import "./index.scss";
+import './index.scss';
 
 type FloatingWindowProps = object;
 

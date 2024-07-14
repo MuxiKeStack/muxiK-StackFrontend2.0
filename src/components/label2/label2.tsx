@@ -1,14 +1,14 @@
-import { View, Image } from "@tarojs/components";
-import "./label2.scss";
-import { useLoad } from "@tarojs/taro";
-import { useState, useEffect } from "react";
-import Label3 from "../label3/label3";
-import ShowStar from "../showStar/showStar";
+import { View } from '@tarojs/components';
+import { useLoad } from '@tarojs/taro';
+import { useEffect, useState } from 'react';
+import Label3 from '../label3/label3';
+import ShowStar from '../showStar/showStar';
+import './label2.scss';
 
 export default function Label2(props) {
-  const star2 = "https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png";
-  const star1 = "https://s2.loli.net/2023/08/29/fB8wqj5mcQFiS7V.png";
-  const star0 = "https://s2.loli.net/2023/08/29/NRLD54kzG9nEOHW.png";
+  const star2 = 'https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png';
+  const star1 = 'https://s2.loli.net/2023/08/29/fB8wqj5mcQFiS7V.png';
+  const star0 = 'https://s2.loli.net/2023/08/29/NRLD54kzG9nEOHW.png';
 
   const [starNum, setstarNum] = useState([star0, star0, star0, star0, star0]);
 
@@ -28,7 +28,7 @@ export default function Label2(props) {
   });
 
   useLoad(() => {
-    console.log("Page loaded.");
+    console.log('Page loaded.');
   });
 
   return (

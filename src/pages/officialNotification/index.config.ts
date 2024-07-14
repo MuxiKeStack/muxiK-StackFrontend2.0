@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: "官方消息",
+  navigationBarTitleText: '官方消息',
 });

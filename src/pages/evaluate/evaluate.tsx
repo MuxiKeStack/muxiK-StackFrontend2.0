@@ -1,16 +1,16 @@
+import Label3 from '@/components/label3/label3';
+import Star from '@/components/star/star';
 import {
-  View,
-  Text,
+  Button,
   Form,
   Radio,
   RadioGroup,
+  Text,
   Textarea,
-  Button,
-} from "@tarojs/components";
-import Label3 from "@/components/label3/label3";
-import React, { useState, useEffect } from "react";
-import Star from "@/components/star/star";
-import "./evaluate.scss";
+  View,
+} from '@tarojs/components';
+import { useState } from 'react';
+import './evaluate.scss';
 
 export default function evaluate() {
   function generateUniqueID() {
@@ -25,27 +25,25 @@ export default function evaluate() {
   //const uniqueID = generateUniqueID();
 
   const [testways, setTestways] = useState([
-    { value: "开卷考试", text: "开卷考试", checked: false },
-    { value: "闭卷考试", text: "闭卷考试", checked: false },
-    { value: "论文考核", text: "论文考核", checked: false },
-    { value: "小组汇报", text: "小组汇报", checked: false },
-    { value: "无考核", text: "无考核", checked: false },
+    { value: '开卷考试', text: '开卷考试', checked: false },
+    { value: '闭卷考试', text: '闭卷考试', checked: false },
+    { value: '论文考核', text: '论文考核', checked: false },
+    { value: '小组汇报', text: '小组汇报', checked: false },
+    { value: '无考核', text: '无考核', checked: false },
   ]);
 
-  const [myclass, setMyclass] = useState([
-    { content: "只能评价自己学过的课程哦" },
-  ]);
+  const [myclass, setMyclass] = useState([{ content: '只能评价自己学过的课程哦' }]);
 
   const [features, setFeatures] = useState([
-    { id: generateUniqueID(), content: "老师风趣幽默", checked: false },
-    { id: generateUniqueID(), content: "课程干货满满", checked: false },
-    { id: generateUniqueID(), content: "老师严谨负责", checked: false },
-    { id: generateUniqueID(), content: "课程很有挑战", checked: false },
-    { id: generateUniqueID(), content: "课程简单易学", checked: false },
-    { id: generateUniqueID(), content: "老师温柔随和", checked: false },
-    { id: generateUniqueID(), content: "平时作业少", checked: false },
-    { id: generateUniqueID(), content: "期末划重点", checked: false },
-    { id: generateUniqueID(), content: "云课堂资料全", checked: false },
+    { id: generateUniqueID(), content: '老师风趣幽默', checked: false },
+    { id: generateUniqueID(), content: '课程干货满满', checked: false },
+    { id: generateUniqueID(), content: '老师严谨负责', checked: false },
+    { id: generateUniqueID(), content: '课程很有挑战', checked: false },
+    { id: generateUniqueID(), content: '课程简单易学', checked: false },
+    { id: generateUniqueID(), content: '老师温柔随和', checked: false },
+    { id: generateUniqueID(), content: '平时作业少', checked: false },
+    { id: generateUniqueID(), content: '期末划重点', checked: false },
+    { id: generateUniqueID(), content: '云课堂资料全', checked: false },
   ]);
 
   const [textLength, setLength] = useState(0);

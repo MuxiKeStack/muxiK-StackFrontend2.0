@@ -1,5 +1,5 @@
-import { View } from "@tarojs/components";
-import "./label3.scss";
+import { View } from '@tarojs/components';
+import './label3.scss';
 
 export default function Label3(props) {
   const { handleChecked } = props;
@@ -17,8 +17,8 @@ export default function Label3(props) {
       className="label3"
       style={
         props.checked
-          ? "background:#F18900;color:#F9F9F2;"
-          : "background: #F9F9F2;color: #F18900;"
+          ? 'background:#F18900;color:#F9F9F2;'
+          : 'background: #F9F9F2;color: #F18900;'
       }
     >
       {props.content}

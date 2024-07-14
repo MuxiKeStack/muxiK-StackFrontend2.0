@@ -1,32 +1,31 @@
-import Taro from "@tarojs/taro";
-import { View, Textarea } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
+import { Textarea, View } from '@tarojs/components';
+import Taro, { useLoad } from '@tarojs/taro';
 
-import "./index.scss";
+import './index.scss';
 
 type FeedbackProps = object;
 
 const Feedback: React.FC<FeedbackProps> = () => {
   useLoad(() => {
-    console.log("Page loaded.");
+    console.log('Page loaded.');
   });
 
-  const copyText = "要复制的字符串";
+  const copyText = '要复制的字符串';
 
   const handleCopy = () => {
     Taro.setClipboardData({
       data: copyText,
       success: () => {
         Taro.showToast({
-          title: "复制成功",
-          icon: "success",
+          title: '复制成功',
+          icon: 'success',
           duration: 2000,
         });
       },
       fail: () => {
         Taro.showToast({
-          title: "复制失败",
-          icon: "none",
+          title: '复制失败',
+          icon: 'none',
           duration: 2000,
         });
       },
