@@ -1,10 +1,11 @@
-import { PropsWithChildren } from "react";
-import { useLaunch } from "@tarojs/taro";
-import "./app.scss";
+import { useLaunch } from '@tarojs/taro';
+import { PropsWithChildren } from 'react';
+
+import './app.scss';
 
 function App({ children }: PropsWithChildren<any>) {
   useLaunch(() => {
-    console.log("App launched.");
+    console.log('App launched.');
   });
 
   // children 是将要会渲染的页面

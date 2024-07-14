@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { View } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
+import { View } from '@tarojs/components';
+import { useLoad } from '@tarojs/taro';
+import { useState } from 'react';
 
-import "./index.scss";
+import './index.scss';
 
 type MessageNotificationProps = object;
 type MessageProps = {
@@ -14,15 +14,14 @@ type MessageProps = {
 
 const MessageNotification: React.FC<MessageNotificationProps> = () => {
   useLoad(() => {
-    console.log("Page loaded.");
+    console.log('Page loaded.');
   });
 
   const [notificationEventType, setNotificationEventType] = useState(true);
-  const [notificationUsername, setNotificationUsername] = useState("昵称");
+  const [notificationUsername, setNotificationUsername] = useState('昵称');
   const [notificationDescription, setNotificationDescription] =
-    useState("我正在回复你的评论");
-  const [notificationComment, setNotificationComment] =
-    useState("这里是原评论内容");
+    useState('我正在回复你的评论');
+  const [notificationComment, setNotificationComment] = useState('这里是原评论内容');
 
   return (
     <View className="MessageNotification">
@@ -55,12 +54,10 @@ const Message: React.FC<MessageProps> = ({
         <View className="messageNotification_username">{username}</View>
         <View className="messageNotification_event">
           <View className="messageNotification_event_type">
-            {eventType ? "回复：" : "赞了我"}
+            {eventType ? '回复：' : '赞了我'}
           </View>
           {eventType && (
-            <View className="messageNotification_description">
-              {description}
-            </View>
+            <View className="messageNotification_description">{description}</View>
           )}
         </View>
         <View className="messageNotification_comment">{comment}</View>

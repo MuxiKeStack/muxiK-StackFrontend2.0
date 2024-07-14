@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { View } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
+import { View } from '@tarojs/components';
+import { useLoad } from '@tarojs/taro';
+import { useState } from 'react';
 
-import "./index.scss";
+import './index.scss';
 
 type OfficialNotificationProps = object;
 type ImageDetailProps = {
@@ -15,17 +15,15 @@ type AlertDetailProps = {
 
 const OfficialNotification: React.FC<OfficialNotificationProps> = () => {
   useLoad(() => {
-    console.log("Page loaded.");
+    console.log('Page loaded.');
   });
 
   const [isImageDetail, setIsImageDetail] = useState(true);
-  const [notificationTime, setNotificationTime] = useState("07:25");
-  const [notificationTitle, setNotificationTitle] =
-    useState("评课活动要开始了");
-  const [notificationDescription, setNotificationDescription] =
-    useState("摘要");
+  const [notificationTime, setNotificationTime] = useState('07:25');
+  const [notificationTitle, setNotificationTitle] = useState('评课活动要开始了');
+  const [notificationDescription, setNotificationDescription] = useState('摘要');
   const [notificationAlert, setNotificationAlert] = useState(
-    "您在高等数学下方的评论违规，请注意您的发言",
+    '您在高等数学下方的评论违规，请注意您的发言'
   );
 
   return (
@@ -33,10 +31,7 @@ const OfficialNotification: React.FC<OfficialNotificationProps> = () => {
       <View className="officialnotification_notification">
         <View className="officialnotification_time">{notificationTime}</View>
         {isImageDetail ? (
-          <ImageDetail
-            title={notificationTitle}
-            description={notificationDescription}
-          />
+          <ImageDetail title={notificationTitle} description={notificationDescription} />
         ) : (
           <AlertDetail alert={notificationAlert} />
         )}
@@ -56,9 +51,7 @@ const ImageDetail: React.FC<ImageDetailProps> = ({ title, description }) => {
         <View className="officialnotification_image"></View>
         <View className="officialnotification_text">
           <View className="officialnotification_title">{title}</View>
-          <View className="officialnotification_description">
-            {description}
-          </View>
+          <View className="officialnotification_description">{description}</View>
         </View>
       </View>
     </>

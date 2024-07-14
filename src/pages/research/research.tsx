@@ -1,37 +1,40 @@
-import { View, Text, Input, Image } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
-import "./research.scss";
-import React, { useEffect, useState } from "react";
-import Label1 from "../../components/label1/label1";
-import Label2 from "@/components/label2/label2";
+import { Image, Input, Text, View } from '@tarojs/components';
+import { useLoad } from '@tarojs/taro';
+import { useState } from 'react';
+
+import './research.scss';
+
+import Label2 from '@/components/label2/label2';
+
+import Label1 from '../../components/label1/label1';
 
 export default function Research() {
   const [hrs, sethrs] = useState([
-    { content: "高等数学A1" },
-    { content: "中国近现代史纲要" },
-    { content: "世界性民间文学经典赏析" },
-    { content: "英美文学名篇赏析" },
+    { content: '高等数学A1' },
+    { content: '中国近现代史纲要' },
+    { content: '世界性民间文学经典赏析' },
+    { content: '英美文学名篇赏析' },
   ]);
 
   const [isSpread, setSpread] = useState(true);
 
   const [classes, setclasses] = useState([
     {
-      name: "高等数学A1",
-      teacher: "周振荣",
+      name: '高等数学A1',
+      teacher: '周振荣',
       score: 3.5,
-      comments: ["老师幽默风趣", "评分高", "作业少"],
+      comments: ['老师幽默风趣', '评分高', '作业少'],
     },
     {
-      name: "世界性民间文学经典赏析",
-      teacher: "张静",
+      name: '世界性民间文学经典赏析',
+      teacher: '张静',
       score: 3.5,
-      comments: ["老师幽默风趣", "评分高", "作业少"],
+      comments: ['老师幽默风趣', '评分高', '作业少'],
     },
   ]);
 
   useLoad(() => {
-    console.log("Page loaded.");
+    console.log('Page loaded.');
   });
 
   const handleClick = () => {

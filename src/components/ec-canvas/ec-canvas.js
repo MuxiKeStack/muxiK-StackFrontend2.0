@@ -1,18 +1,18 @@
-import WxCanvas from "./wx-canvas";
-import * as echarts from "./echarts";
+import * as echarts from './echarts';
+import WxCanvas from './wx-canvas';
 
 let ctx;
 
 function compareVersion(v1, v2) {
-  v1 = v1.split(".");
-  v2 = v2.split(".");
+  v1 = v1.split('.');
+  v2 = v2.split('.');
   const len = Math.max(v1.length, v2.length);
 
   while (v1.length < len) {
-    v1.push("0");
+    v1.push('0');
   }
   while (v2.length < len) {
-    v2.push("0");
+    v2.push('0');
   }
 
   for (let i = 0; i < len; i++) {
@@ -32,7 +32,7 @@ Component({
   properties: {
     canvasId: {
       type: String,
-      value: "ec-canvas",
+      value: 'ec-canvas',
     },
 
     ec: {
@@ -58,7 +58,7 @@ Component({
           option.series.forEach((series) => {
             series.progressive = 0;
           });
-        } else if (typeof option.series === "object") {
+        } else if (typeof option.series === 'object') {
           option.series.progressive = 0;
         }
       }
@@ -67,7 +67,7 @@ Component({
     if (!this.data.ec) {
       console.warn(
         '组件需绑定 ec 变量，例：<ec-canvas id="mychart-dom-bar" ' +
-          'canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>',
+          'canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>'
       );
       return;
     }
@@ -81,13 +81,13 @@ Component({
     init: function (callback) {
       const version = wx.getSystemInfoSync().SDKVersion;
 
-      const canUseNewCanvas = compareVersion(version, "2.9.0") >= 0;
+      const canUseNewCanvas = compareVersion(version, '2.9.0') >= 0;
       const forceUseOldCanvas = this.data.forceUseOldCanvas;
       const isUseNewCanvas = canUseNewCanvas && !forceUseOldCanvas;
       this.setData({ isUseNewCanvas });
 
       if (forceUseOldCanvas && canUseNewCanvas) {
-        console.warn("开发者强制使用旧canvas,建议关闭");
+        console.warn('开发者强制使用旧canvas,建议关闭');
       }
 
       if (isUseNewCanvas) {
@@ -95,18 +95,16 @@ Component({
         // 2.9.0 可以使用 <canvas type="2d"></canvas>
         this.initByNewWay(callback);
       } else {
-        const isValid = compareVersion(version, "1.9.91") >= 0;
+        const isValid = compareVersion(version, '1.9.91') >= 0;
         if (!isValid) {
           console.error(
-            "微信基础库版本过低，需大于等于 1.9.91。" +
-              "参见：https://github.com/ecomfe/echarts-for-weixin" +
-              "#%E5%BE%AE%E4%BF%A1%E7%89%88%E6%9C%AC%E8%A6%81%E6%B1%82",
+            '微信基础库版本过低，需大于等于 1.9.91。' +
+              '参见：https://github.com/ecomfe/echarts-for-weixin' +
+              '#%E5%BE%AE%E4%BF%A1%E7%89%88%E6%9C%AC%E8%A6%81%E6%B1%82'
           );
           return;
         } else {
-          console.warn(
-            "建议将微信基础库调整大于等于2.9.0版本。升级后绘图将有更好性能",
-          );
+          console.warn('建议将微信基础库调整大于等于2.9.0版本。升级后绘图将有更好性能');
           this.initByOldWay(callback);
         }
       }
@@ -128,22 +126,14 @@ Component({
       const canvasDpr = 1;
       var query = wx.createSelectorQuery().in(this);
       query
-        .select(".ec-canvas")
+        .select('.ec-canvas')
         .boundingClientRect((res) => {
-          if (typeof callback === "function") {
+          if (typeof callback === 'function') {
             this.chart = callback(canvas, res.width, res.height, canvasDpr);
-          } else if (
-            this.data.ec &&
-            typeof this.data.ec.onInit === "function"
-          ) {
-            this.chart = this.data.ec.onInit(
-              canvas,
-              res.width,
-              res.height,
-              canvasDpr,
-            );
+          } else if (this.data.ec && typeof this.data.ec.onInit === 'function') {
+            this.chart = this.data.ec.onInit(canvas, res.width, res.height, canvasDpr);
           } else {
-            this.triggerEvent("init", {
+            this.triggerEvent('init', {
               canvas: canvas,
               width: res.width,
               height: res.height,
@@ -158,7 +148,7 @@ Component({
       // version >= 2.9.0：使用新的方式初始化
       const query = wx.createSelectorQuery().in(this);
       query
-        .select(".ec-canvas")
+        .select('.ec-canvas')
         .fields({ node: true, size: true })
         .exec((res) => {
           const canvasNode = res[0].node;
@@ -168,14 +158,9 @@ Component({
           const canvasWidth = res[0].width;
           const canvasHeight = res[0].height;
 
-          const ctx = canvasNode.getContext("2d");
+          const ctx = canvasNode.getContext('2d');
 
-          const canvas = new WxCanvas(
-            ctx,
-            this.data.canvasId,
-            true,
-            canvasNode,
-          );
+          const canvas = new WxCanvas(ctx, this.data.canvasId, true, canvasNode);
           if (echarts.setPlatformAPI) {
             echarts.setPlatformAPI({
               createCanvas: () => canvas,
@@ -188,7 +173,7 @@ Component({
                   return image;
                 }
                 console.error(
-                  "加载图片依赖 `Canvas.createImage()` API，要求小程序基础库版本在 2.7.0 及以上。",
+                  '加载图片依赖 `Canvas.createImage()` API，要求小程序基础库版本在 2.7.0 及以上。'
                 );
                 // PENDING fallback?
               },
@@ -197,20 +182,17 @@ Component({
             echarts.setCanvasCreator(() => canvas);
           }
 
-          if (typeof callback === "function") {
+          if (typeof callback === 'function') {
             this.chart = callback(canvas, canvasWidth, canvasHeight, canvasDpr);
-          } else if (
-            this.data.ec &&
-            typeof this.data.ec.onInit === "function"
-          ) {
+          } else if (this.data.ec && typeof this.data.ec.onInit === 'function') {
             this.chart = this.data.ec.onInit(
               canvas,
               canvasWidth,
               canvasHeight,
-              canvasDpr,
+              canvasDpr
             );
           } else {
-            this.triggerEvent("init", {
+            this.triggerEvent('init', {
               canvas: canvas,
               width: canvasWidth,
               height: canvasHeight,
@@ -224,7 +206,7 @@ Component({
         // 新版
         const query = wx.createSelectorQuery().in(this);
         query
-          .select(".ec-canvas")
+          .select('.ec-canvas')
           .fields({ node: true, size: true })
           .exec((res) => {
             const canvasNode = res[0].node;
@@ -246,21 +228,21 @@ Component({
       if (this.chart && e.touches.length > 0) {
         var touch = e.touches[0];
         var handler = this.chart.getZr().handler;
-        handler.dispatch("mousedown", {
+        handler.dispatch('mousedown', {
           zrX: touch.x,
           zrY: touch.y,
           preventDefault: () => {},
           stopImmediatePropagation: () => {},
           stopPropagation: () => {},
         });
-        handler.dispatch("mousemove", {
+        handler.dispatch('mousemove', {
           zrX: touch.x,
           zrY: touch.y,
           preventDefault: () => {},
           stopImmediatePropagation: () => {},
           stopPropagation: () => {},
         });
-        handler.processGesture(wrapTouch(e), "start");
+        handler.processGesture(wrapTouch(e), 'start');
       }
     },
 
@@ -268,14 +250,14 @@ Component({
       if (this.chart && e.touches.length > 0) {
         var touch = e.touches[0];
         var handler = this.chart.getZr().handler;
-        handler.dispatch("mousemove", {
+        handler.dispatch('mousemove', {
           zrX: touch.x,
           zrY: touch.y,
           preventDefault: () => {},
           stopImmediatePropagation: () => {},
           stopPropagation: () => {},
         });
-        handler.processGesture(wrapTouch(e), "change");
+        handler.processGesture(wrapTouch(e), 'change');
       }
     },
 
@@ -283,21 +265,21 @@ Component({
       if (this.chart) {
         const touch = e.changedTouches ? e.changedTouches[0] : {};
         var handler = this.chart.getZr().handler;
-        handler.dispatch("mouseup", {
+        handler.dispatch('mouseup', {
           zrX: touch.x,
           zrY: touch.y,
           preventDefault: () => {},
           stopImmediatePropagation: () => {},
           stopPropagation: () => {},
         });
-        handler.dispatch("click", {
+        handler.dispatch('click', {
           zrX: touch.x,
           zrY: touch.y,
           preventDefault: () => {},
           stopImmediatePropagation: () => {},
           stopPropagation: () => {},
         });
-        handler.processGesture(wrapTouch(e), "end");
+        handler.processGesture(wrapTouch(e), 'end');
       }
     },
   },

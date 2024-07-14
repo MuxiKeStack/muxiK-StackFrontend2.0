@@ -1,13 +1,13 @@
-import { View } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
+import { View } from '@tarojs/components';
+import { useLoad } from '@tarojs/taro';
 
-import "./index.scss";
+import './index.scss';
 
 type evaluateCourseHistoryProps = object;
 
 const evaluateCourseHistory: React.FC<evaluateCourseHistoryProps> = () => {
   useLoad(() => {
-    console.log("Page loaded.");
+    console.log('Page loaded.');
   });
 
   return <View className="evaluateCourseHistory">evaluateCourseHistory</View>;

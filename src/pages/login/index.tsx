@@ -1,36 +1,37 @@
-import Taro from "@tarojs/taro";
-import { View, Text, Image, Input, Button, Checkbox } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
-import { useState } from "react";
+import { Button, Checkbox, Image, Input, Text, View } from '@tarojs/components';
+import Taro, { useLoad } from '@tarojs/taro';
+import { useState } from 'react';
 
-import "./index.scss";
-import top_background from "@/img/login/top_background.png";
-import { FloatingWindow } from "@/components";
-import { post } from "@/fetch";
+import './index.scss';
+
+import { FloatingWindow } from '@/components';
+
+import { post } from '@/fetch';
+import top_background from '@/img/login/top_background.png';
 
 type LoginProps = object;
 
 const Login: React.FC<LoginProps> = () => {
   useLoad(() => {
-    console.log("Page loaded.");
+    console.log('Page loaded.');
   });
 
   const [floatingWindowOpenning, setFloatingWindowOpenning] = useState(false);
-  const [studentId, setStudentId] = useState("");
-  const [password, setPassword] = useState("");
+  const [studentId, setStudentId] = useState('');
+  const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
 
   const handleLogin = () => {
     if (agreeTerms) {
-      post("/user/login", {
+      post('/user/login', {
         studentId: studentId,
         password: password,
       }).then((res) => {
-        Taro.setStorage({ key: "token", data: res.data.token });
-        console.log("登录成功");
+        Taro.setStorage({ key: 'token', data: res.data.token });
+        console.log('登录成功');
       });
     } else {
-      console.log("请先确认隐私条例");
+      console.log('请先确认隐私条例');
     }
   };
 
