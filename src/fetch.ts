@@ -1,6 +1,4 @@
 import Taro from "@tarojs/taro";
-import { rejects } from "assert";
-import { resolve } from "path";
 
 const preUrl = "https://kstack.muxixyz.com";
 
