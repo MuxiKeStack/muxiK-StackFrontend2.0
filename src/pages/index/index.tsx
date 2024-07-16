@@ -1,4 +1,4 @@
-import { View, Navigator } from "@tarojs/components";
+import { Navigator, View } from '@tarojs/components';
 
 export default function Index() {
   return (

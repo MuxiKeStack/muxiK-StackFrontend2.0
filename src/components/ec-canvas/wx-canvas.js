@@ -16,7 +16,7 @@ export default class WxCanvas {
   }
 
   getContext(contextType) {
-    if (contextType === "2d") {
+    if (contextType === '2d') {
       return this.ctx;
     }
   }
@@ -49,8 +49,8 @@ export default class WxCanvas {
       return ctx;
     };
 
-    zrender.util.$override("measureText", function (text, font) {
-      ctx.font = font || "12px sans-serif";
+    zrender.util.$override('measureText', function (text, font) {
+      ctx.font = font || '12px sans-serif';
       return ctx.measureText(text);
     });
   }
@@ -65,28 +65,28 @@ export default class WxCanvas {
     this.event = {};
     const eventNames = [
       {
-        wxName: "touchStart",
-        ecName: "mousedown",
+        wxName: 'touchStart',
+        ecName: 'mousedown',
       },
       {
-        wxName: "touchMove",
-        ecName: "mousemove",
+        wxName: 'touchMove',
+        ecName: 'mousemove',
       },
       {
-        wxName: "touchEnd",
-        ecName: "mouseup",
+        wxName: 'touchEnd',
+        ecName: 'mouseup',
       },
       {
-        wxName: "touchEnd",
-        ecName: "click",
+        wxName: 'touchEnd',
+        ecName: 'click',
       },
     ];
     eventNames.forEach((name) => {
       this.event[name.wxName] = (e) => {
         const touch = e.touches[0];
         this.chart.getZr().handler.dispatch(name.ecName, {
-          zrX: name.wxName === "tap" ? touch.clientX : touch.x,
-          zrY: name.wxName === "tap" ? touch.clientY : touch.y,
+          zrX: name.wxName === 'tap' ? touch.clientX : touch.x,
+          zrY: name.wxName === 'tap' ? touch.clientY : touch.y,
           preventDefault: () => {},
           stopImmediatePropagation: () => {},
           stopPropagation: () => {},

@@ -29,7 +29,7 @@ export default function comment(props) {
             <ShowStar score={props.star_rating}></ShowStar>
           </View>
           <Image
-            style={`display:${props.isHot ? "block" : "none"}`}
+            style={`display:${props.isHot ? 'block' : 'none'}`}
             className="fire"
             src="https://s2.loli.net/2023/11/12/2ITKRcDPMZaQCvk.png"
           ></Image>

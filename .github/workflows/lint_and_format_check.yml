@@ -1,0 +1,42 @@
+name: Lint and Format Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Prettier
+        run: npx prettier --check .
+
+      - name: Run ESLint
+        run: npx eslint .
+
+      - name: Check for merge conflicts
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags --prune origin +refs/heads/*:refs/remotes/origin/*
+          git checkout -qf ${{ github.event.pull_request.head.sha }}
+          git merge-base --is-ancestor origin/main ${{ github.event.pull_request.head.sha }} || git merge --no-commit --no-ff origin/main
+          if [ $? -ne 0 ]; then
+            echo "Merge conflicts detected. Please resolve them before merging."
+            exit 1
+          fi

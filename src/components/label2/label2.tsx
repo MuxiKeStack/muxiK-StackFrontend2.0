@@ -5,15 +5,15 @@ import Label3 from "../label3/label3";
 import ShowStar from "../showStar/showStar";
 
 export default function Label2(props) {
-  const star2 = "https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png";
-  const star1 = "https://s2.loli.net/2023/08/29/fB8wqj5mcQFiS7V.png";
-  const star0 = "https://s2.loli.net/2023/08/29/NRLD54kzG9nEOHW.png";
+  const star2 = 'https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png';
+  const star1 = 'https://s2.loli.net/2023/08/29/fB8wqj5mcQFiS7V.png';
+  const star0 = 'https://s2.loli.net/2023/08/29/NRLD54kzG9nEOHW.png';
 
   const [starNum, setstarNum] = useState([star0, star0, star0, star0, star0]);
 
   const getStar = (num) => {
-    let newStar = starNum.map(() => {
-      let star = num >= 1 ? star2 : num > 0 ? star1 : star0;
+    const newStar = starNum.map(() => {
+      const star = num >= 1 ? star2 : num > 0 ? star1 : star0;
       --num;
       return star;
     });

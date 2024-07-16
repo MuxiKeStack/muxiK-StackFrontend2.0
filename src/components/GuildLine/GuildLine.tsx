@@ -1,8 +1,8 @@
-import Taro from "@tarojs/taro";
-import { View } from "@tarojs/components";
-import { AtIcon } from "taro-ui";
+import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { AtIcon } from 'taro-ui';
 
-import "./index.scss";
+import './index.scss';
 
 type GuildLineProps = object;
 
@@ -25,7 +25,7 @@ const GuildLine: React.FC<GuildLineProps> = () => {
         size="35"
         color="#FFD777"
         onClick={() => {
-          Taro.navigateTo({ url: "/pages/personalPage/index" });
+          Taro.navigateTo({ url: '/pages/personalPage/index' });
         }}
       ></AtIcon>
     </View>
