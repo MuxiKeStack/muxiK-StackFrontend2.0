@@ -115,7 +115,7 @@ export default function index() {
   const commentExample = {
     username: "昵称",
     score: 3.5,
-    isHot: true,
+    isHot: false,
     date: "2023.7.13",
     time: "16:30",
     content:
@@ -143,7 +143,7 @@ export default function index() {
         <Label3 content="课程内容干货多" />
       </View>
       <Chart></Chart>
-      <Comment {...commentExample} />
+      <Comment {...commentExample}/>
     </View>
   );
 }
