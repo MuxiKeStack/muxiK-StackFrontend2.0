@@ -1,7 +1,7 @@
 //import Taro from "@tarojs/taro";
 import { View, Text, Image, Input, Button, Checkbox } from "@tarojs/components";
 import Taro, { useLoad } from "@tarojs/taro";
-import { useState } from "react";
+import React, { useState } from "react";
 
 import "./index.scss";
 import top_background from "@/img/login/top_background.png";
@@ -60,6 +60,7 @@ const Login: React.FC<LoginProps> = () => {
             <Button className="login_button" onClick={Login}>
               学号登录
             </Button>
+            {/*这还差一个游客登陆*/}
             <Button className="guest_button login_button">游客登录</Button>
           </View>
         </View>
