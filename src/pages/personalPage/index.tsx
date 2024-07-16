@@ -1,9 +1,8 @@
-import Taro from "@tarojs/taro";
-import { View, Image, Progress } from "@tarojs/components";
-import { AtList, AtListItem } from "taro-ui";
-import { useLoad } from "@tarojs/taro";
+import { Image, Progress, View } from '@tarojs/components';
+import Taro, { useLoad } from '@tarojs/taro';
+import { AtList, AtListItem } from 'taro-ui';
 
-import "./index.scss";
+import { GuildLine } from '@/components';
 import {
   BookIcon,
   ClockIcon,
@@ -11,14 +10,14 @@ import {
   MessageIcon,
   StarIcon,
   TopBackground,
-} from "@/img/personalPage";
-import { GuildLine } from "@/components";
+} from '@/img/personalPage';
+import './index.scss';
 
 type PersonalPageProps = object;
 
 const PersonalPage: React.FC<PersonalPageProps> = () => {
   useLoad(() => {
-    console.log("Page loaded.");
+    console.log('Page loaded.');
   });
 
   return (
@@ -33,10 +32,7 @@ const PersonalPage: React.FC<PersonalPageProps> = () => {
 const Head = () => {
   return (
     <>
-      <Image
-        src={TopBackground}
-        className="personalPage_top_background"
-      ></Image>
+      <Image src={TopBackground} className="personalPage_top_background"></Image>
       <View className="personalPage_user_container">
         {/* 用户头像 */}
         <View className="personalPage_user_photo"></View>
@@ -69,7 +65,7 @@ const List = () => {
         arrow="right"
         thumb={BookIcon}
         onClick={() => {
-          Taro.navigateTo({ url: "/pages/myclass/myclass" });
+          Taro.navigateTo({ url: '/pages/myclass/myclass' });
         }}
       />
       <AtListItem
@@ -77,7 +73,7 @@ const List = () => {
         arrow="right"
         thumb={StarIcon}
         onClick={() => {
-          Taro.navigateTo({ url: "/pages/myCollection/index" });
+          Taro.navigateTo({ url: '/pages/myCollection/index' });
         }}
       />
       <AtListItem
@@ -85,7 +81,7 @@ const List = () => {
         arrow="right"
         thumb={ClockIcon}
         onClick={() => {
-          Taro.navigateTo({ url: "/pages/evaluateCourseHistory/index" });
+          Taro.navigateTo({ url: '/pages/evaluateCourseHistory/index' });
         }}
       />
       <AtListItem
@@ -93,7 +89,7 @@ const List = () => {
         arrow="right"
         thumb={MessageIcon}
         onClick={() => {
-          Taro.navigateTo({ url: "/pages/messageNotification/index" });
+          Taro.navigateTo({ url: '/pages/messageNotification/index' });
         }}
       />
       <AtListItem
@@ -101,7 +97,7 @@ const List = () => {
         arrow="right"
         thumb={MessageIcon}
         onClick={() => {
-          Taro.navigateTo({ url: "/pages/officialNotification/index" });
+          Taro.navigateTo({ url: '/pages/officialNotification/index' });
         }}
       />
       <AtListItem
@@ -109,7 +105,7 @@ const List = () => {
         arrow="right"
         thumb={MailIcon}
         onClick={() => {
-          Taro.navigateTo({ url: "/pages/feedback/index" });
+          Taro.navigateTo({ url: '/pages/feedback/index' });
         }}
       />
     </AtList>
