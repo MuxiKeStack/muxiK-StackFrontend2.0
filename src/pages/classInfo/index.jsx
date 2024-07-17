@@ -109,9 +109,9 @@ export default function index() {
   const commentExample = {
     username: '昵称',
     score: 3.5,
-    isHot: true,
-    date: '2023.7.13',
-    time: '16:30',
+    isHot: false,
+    date: "2023.7.13",
+    time: "16:30",
     content:
       '评价斤斤计较斤斤计较急急急急急急急急急斤斤计较急急急急急急急急急急急急急急急斤斤计较急急急急急急急急急急急急急急急cfadsutfc7acga促使第一次给有多个素材u辛苦参赛的他u发出委托方徐v阿托伐窜同时1蓄西安粗体为擦u逃窜他敦促台湾的垡等下颚骨我发帖都要',
     like: 123,
@@ -136,7 +136,7 @@ export default function index() {
         课程特点: <Label3 content="老师风趣幽默" /> <Label3 content="课程内容干货多" />
       </View>
       <Chart></Chart>
-      <Comment {...commentExample} />
+      <Comment {...commentExample}/>
     </View>
   );
 }

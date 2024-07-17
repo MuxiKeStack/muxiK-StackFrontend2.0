@@ -1,11 +1,8 @@
-import { View } from '@tarojs/components';
-import { useLoad } from '@tarojs/taro';
-import { useEffect, useState } from 'react';
-
-import './label2.scss';
-
-import Label3 from '../label3/label3';
-import ShowStar from '../showStar/showStar';
+import { View} from "@tarojs/components";
+import "./label2.scss";
+import { useState, useEffect } from "react";
+import Label3 from "../label3/label3";
+import ShowStar from "../showStar/showStar";
 
 export default function Label2(props) {
   const star2 = 'https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png';
@@ -23,26 +20,36 @@ export default function Label2(props) {
     setstarNum(newStar);
   };
 
-  const comments = props.comments;
+  // 修正renderFeatures函数
+  const renderFeatures = () => {
+    // 检查props.features是否为数组，并且不为空
+    const commentsArray = Array.isArray(props.features) && props.features.length > 0 ? props.features : [];
 
+    // 返回map的结果
+    return commentsArray.map((item, index) => {
+      // 确保item存在并且有内容可以显示
+      if (item) {
+        let obj = { content: item };
+        return <Label3 key={index} {...obj} />; // 添加key属性
+      }
+      return null;
+    });
+  };
+
+  // 修正useEffect
   useEffect(() => {
-    getStar(props.score);
-  });
+    getStar(props.composite_score);
+  }, [props.composite_score]); // 添加依赖项props.composite_score
 
-  useLoad(() => {
-    console.log('Page loaded.');
-  });
+  // ...其他代码
 
   return (
     <View className="label2">
       <View className="labeltext1">{props.name}</View>
       <View className="labeltext2">{props.teacher}</View>
-      <ShowStar score={props.score} />
+      <ShowStar score={props.composite_score} />
       <View className="comment">
-        {comments.map((item) => {
-          const obj = { content: item };
-          return <Label3 {...obj} />;
-        })}
+        {renderFeatures()} {/* 直接渲染返回的元素数组 */}
       </View>
     </View>
   );

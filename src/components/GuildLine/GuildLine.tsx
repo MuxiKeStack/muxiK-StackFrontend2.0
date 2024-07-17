@@ -14,7 +14,7 @@ const GuildLine: React.FC<GuildLineProps> = () => {
         size="35"
         color="#FFD777"
         onClick={() => {
-          Taro.navigateTo({ url: '' });
+          Taro.navigateTo({ url: "/pages/main/index" });
         }}
       ></AtIcon>
       <View className="add_button">
