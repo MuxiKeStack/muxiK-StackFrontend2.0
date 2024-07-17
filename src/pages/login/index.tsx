@@ -1,13 +1,16 @@
-//import Taro from "@tarojs/taro";
 import { Button, Checkbox, Image, Input, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import React, { useState } from 'react';
 
-import { FloatingWindow } from '@/components';
-import top_background from '@/img/login/top_background.png';
 import './index.scss';
-//import { post } from "@/fetch";
+
+// eslint-disable-next-line import/first
+import { FloatingWindow } from '@/components';
+
+// eslint-disable-next-line import/first
 import handleLogin from '@/api/handleLogin';
+// eslint-disable-next-line import/first
+import top_background from '@/img/login/top_background.png';
 
 type LoginProps = object;
 
@@ -20,20 +23,23 @@ const Login: React.FC<LoginProps> = () => {
   const [studentId, setStudentId] = useState('');
   const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const Login = () => {
+  const handleLoginClick = () => {
     if (agreeTerms) {
-      handleLogin({ student_id: studentId, password: password });
+      void handleLogin({ student_id: studentId, password: password }).then((r) =>
+        console.log(r)
+      );
     } else {
-      Taro.showToast({
+      void Taro.showToast({
         icon: 'error',
         title: '请确认隐私条例',
       });
-      console.log('请先确认隐私条例');
+      //console.log('请先确认隐私条例');
     }
   };
 
   return (
     <View className="login">
+      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
       <Image src={top_background} className="login_top_background"></Image>
       <View className="login_content">
         <View className="login_main">
@@ -47,15 +53,13 @@ const Login: React.FC<LoginProps> = () => {
             <Input
               className="login_input"
               placeholder="密码"
-              /* @ts-ignore */
-              type="password"
               value={password}
               onInput={(e) => setPassword(e.detail.value)}
             ></Input>
             <Text className="login_link">Forget your password?</Text>
           </View>
           <View className="login_main_button">
-            <Button className="login_button" onClick={Login}>
+            <Button className="login_button" onClick={handleLoginClick}>
               学号登录
             </Button>
             {/*这还差一个游客登陆*/}
