@@ -50,7 +50,7 @@
     "@tarojs/plugin-platform-tt": "3.6.14",
     "@tarojs/plugin-platform-weapp": "3.6.14",
     "@tarojs/react": "3.6.14",
-    "@tarojs/runtime": "3.6.14",
+    "@tarojs/runtime": "4.0.2",
     "@tarojs/shared": "3.6.14",
     "@tarojs/taro": "3.6.14",
     "crypto-js": "^4.2.0",
