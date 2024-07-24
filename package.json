@@ -72,7 +72,7 @@
     "@tarojs/test-utils-react": "^0.1.1",
     "@tarojs/webpack5-runner": "3.6.14",
     "@types/jest": "^29.3.1",
-    "@types/node": "^18.15.11",
+    "@types/node": "^20.14.12",
     "@types/node-sass": "^4.11.7",
     "@types/react": "^18.0.0",
     "@types/webpack-env": "^1.13.6",
