@@ -55,7 +55,7 @@ const Login: React.FC<LoginProps> = () => {
               className="login_input"
               placeholder="密码"
               value={password}
-              type="password"
+              password
               onInput={(e) => setPassword(e.detail.value)}
             ></Input>
             <Text className="login_link">Forget your password?</Text>
