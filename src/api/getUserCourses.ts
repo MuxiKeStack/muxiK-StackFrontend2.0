@@ -5,8 +5,9 @@ export async function getUserCourses(year: string, term: string) {
     let token: string = '';
     const getToken = () => {
       return new Promise<string>((resolve, reject) => {
-        Taro.getStorage({
+        void Taro.getStorage({
           key: 'shortToken',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           success: (res) => resolve(res.data),
           fail: (err) => reject(err),
         });

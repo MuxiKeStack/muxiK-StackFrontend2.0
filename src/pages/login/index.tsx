@@ -37,6 +37,7 @@ const Login: React.FC<LoginProps> = () => {
     }
   };
 
+  // @ts-ignore
   return (
     <View className="login">
       {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
@@ -54,6 +55,7 @@ const Login: React.FC<LoginProps> = () => {
               className="login_input"
               placeholder="密码"
               value={password}
+              type="password"
               onInput={(e) => setPassword(e.detail.value)}
             ></Input>
             <Text className="login_link">Forget your password?</Text>

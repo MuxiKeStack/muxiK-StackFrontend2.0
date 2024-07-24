@@ -1,0 +1,6 @@
+node_modules
+dist
+dist-ssr
+project.config.json
+project.private.config.json
+auto-imports.d.ts
