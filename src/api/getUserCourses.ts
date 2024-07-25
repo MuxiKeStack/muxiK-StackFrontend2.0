@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro';
+
 const preUrl = 'https://kstack.muxixyz.com';
 export async function getUserCourses(year: string, term: string) {
   try {
@@ -28,6 +29,7 @@ export async function getUserCourses(year: string, term: string) {
       console.log('code不为0');
     }
     console.log(response.data.data);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return response.data.data;
   } catch (error) {
     console.error(error);

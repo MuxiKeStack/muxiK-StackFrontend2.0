@@ -7,6 +7,7 @@ export async function get(url: string) {
     return new Promise<string>((resolve, reject) => {
       void Taro.getStorage({
         key: 'shortToken',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         success: (res) => resolve(res.data),
         fail: (err) => reject(err),
       });
@@ -31,7 +32,7 @@ export async function get(url: string) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     console.log(response.data.data);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error(error);
   }

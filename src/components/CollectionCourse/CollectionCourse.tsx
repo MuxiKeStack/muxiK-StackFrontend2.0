@@ -1,40 +1,41 @@
 import { View } from '@tarojs/components';
+import React from 'react';
 import { AtRate } from 'taro-ui';
 
-import React from 'react';
 import './index.scss';
 
-type CollectionCourseProps = object;
+interface CollectionCourseProps {
+  courseType: string;
+  courseName: string;
+  courseRate: number;
+  courseTeacher: string;
+  isCollected: boolean;
+}
 
-const CollectionCourse: React.FC<CollectionCourseProps> = (
+const CollectionCourse: React.FC<CollectionCourseProps> = ({
   courseType,
   courseName,
   courseRate,
   courseTeacher,
-  isCollected
-) => {
-  // const [courseType, setCourseType] = useState("专");
-  // const [courseName, setCourseName] = useState("高等数学A1");
-  // const [courseTeacher, setCourseTeacher] = useState("周振荣");
-  // const [courseRate, setCourseRate] = useState(3.5);
-  // const [isCollected, setIsCollected] = useState(true);
+  isCollected,
+}) => {
+  if (!isCollected) {
+    return null;
+  }
 
   return (
-    <>
-      {isCollected && (
-        <View className="collection_course">
-          <View className="collection_course_type">{courseType}</View>
-          <View className="collection_course_detail">
-            <View className="collection_course_name">{courseName}</View>
-            <View className="collection_course_description">
-              <View className="collection_course_teacher">{courseTeacher}</View>
-              <AtRate className="collection_course_rate" value={courseRate} size={15} />
-            </View>
-          </View>
-          <View className="collection_course_clollected">已收藏</View>
+    <View className="collection_course">
+      <View className="collection_course_type">{courseType}</View>
+      <View className="collection_course_detail">
+        <View className="collection_course_name">{courseName}</View>
+        <View className="collection_course_description">
+          <View className="collection_course_teacher">{courseTeacher}</View>
+          <AtRate className="collection_course_rate" value={courseRate} size={15} />
         </View>
-      )}
-    </>
+      </View>
+      <View className="collection_course_collected">已收藏</View>
+    </View>
   );
 };
+
 export default CollectionCourse;
