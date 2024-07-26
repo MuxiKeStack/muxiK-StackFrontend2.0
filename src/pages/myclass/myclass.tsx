@@ -1,7 +1,10 @@
-import { getUserCourses } from '@/api/getUserCourses';
 import { Picker, Text, View } from '@tarojs/components';
 import { useEffect, useState } from 'react';
+
 import './myclass.scss';
+
+// eslint-disable-next-line import/first
+import { getUserCourses } from '@/api/getUserCourses';
 
 interface CouresProps {
   name: string;
@@ -26,12 +29,16 @@ export default function Myclass() {
   const [myclasses, setMyclasses] = useState<CouresProps[]>([]);
 
   const onTimeChange = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { detail } = e;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     setYear(yearSelector[detail.value]);
   };
 
   const onSemChange = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { detail } = e;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     setSem(semSelector[detail.value]);
   };
 
@@ -48,13 +55,14 @@ export default function Myclass() {
               : sem === '第三学期'
                 ? '3'
                 : '0';
-        const classes = await getUserCourses(yearValue, semValue);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const classes: Array<CouresProps> = await getUserCourses(yearValue, semValue);
         setMyclasses(classes);
       } catch (error) {
         console.error('Error fetching user courses:', error);
       }
     }
-    fetchClasses();
+    void fetchClasses();
   }, [year, sem]);
 
   return (

@@ -37,7 +37,6 @@ const Login: React.FC<LoginProps> = () => {
     }
   };
 
-  // @ts-ignore
   return (
     <View className="login">
       {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}

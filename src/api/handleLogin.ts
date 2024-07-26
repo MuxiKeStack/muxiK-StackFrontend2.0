@@ -2,17 +2,22 @@ import Taro from '@tarojs/taro';
 
 const preUrl = 'https://kstack.muxixyz.com';
 
-const handleLogin = async (data = {}) => {
+interface LoginResponseHeaders {
+  'X-Jwt-Token'?: string;
+  'X-Refresh-Token'?: string;
+}
+
+const handleLogin = async (data: Record<string, unknown> = {}) => {
   const header = {
     'Content-Type': 'application/json;charset=utf-8',
   };
 
-  Taro.setStorage({
+  await Taro.setStorage({
     key: 'shortToken',
     data: 'shortToken',
   });
 
-  Taro.setStorage({
+  await Taro.setStorage({
     key: 'longToken',
     data: 'longToken',
   });
@@ -25,12 +30,12 @@ const handleLogin = async (data = {}) => {
       data: JSON.stringify(data),
     });
 
-    const headers = response.header || {};
+    const headers: LoginResponseHeaders = response.header || {};
     const shortToken = headers['X-Jwt-Token'];
     const longToken = headers['X-Refresh-Token'];
 
     if (shortToken && longToken) {
-      Taro.setStorage({
+      await Taro.setStorage({
         key: 'shortToken',
         data: shortToken.toString(),
         success: () => {
@@ -40,7 +45,7 @@ const handleLogin = async (data = {}) => {
         },
       });
 
-      Taro.setStorage({
+      await Taro.setStorage({
         key: 'longToken',
         data: longToken.toString(),
         success: () => {
@@ -49,15 +54,18 @@ const handleLogin = async (data = {}) => {
           console.log(longToken);
         },
       });
-      Taro.navigateTo({
+
+      await Taro.navigateTo({
         url: '/pages/personalPage/index',
       });
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (response.data.code !== 0) {
       console.log('登陆失败(code 不为 0)');
-      Taro.showToast({
+      await Taro.showToast({
         icon: 'error',
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
         title: response.data.msg,
       });
     }

@@ -1,8 +1,13 @@
 import { Image, Progress, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
+import React from 'react';
 import { AtList, AtListItem } from 'taro-ui';
 
+import './index.scss';
+
+// eslint-disable-next-line import/first
 import { GuildLine } from '@/components';
+
 import {
   BookIcon,
   ClockIcon,
@@ -11,7 +16,6 @@ import {
   StarIcon,
   TopBackground,
 } from '@/img/personalPage';
-import './index.scss';
 
 type PersonalPageProps = object;
 
@@ -32,6 +36,7 @@ const PersonalPage: React.FC<PersonalPageProps> = () => {
 const Head = () => {
   return (
     <>
+      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
       <Image src={TopBackground} className="personalPage_top_background"></Image>
       <View className="personalPage_user_container">
         {/* 用户头像 */}
@@ -65,7 +70,7 @@ const List = () => {
         arrow="right"
         thumb={BookIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/myclass/myclass' });
+          void Taro.navigateTo({ url: '/pages/myclass/myclass' });
         }}
       />
       <AtListItem
@@ -73,7 +78,7 @@ const List = () => {
         arrow="right"
         thumb={StarIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/myCollection/index' });
+          void Taro.navigateTo({ url: '/pages/myCollection/index' });
         }}
       />
       <AtListItem
@@ -81,7 +86,7 @@ const List = () => {
         arrow="right"
         thumb={ClockIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/evaluateCourseHistory/index' });
+          void Taro.navigateTo({ url: '/pages/evaluateCourseHistory/index' });
         }}
       />
       <AtListItem
@@ -89,7 +94,7 @@ const List = () => {
         arrow="right"
         thumb={MessageIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/messageNotification/index' });
+          void Taro.navigateTo({ url: '/pages/messageNotification/index' });
         }}
       />
       <AtListItem
@@ -97,7 +102,7 @@ const List = () => {
         arrow="right"
         thumb={MessageIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/officialNotification/index' });
+          void Taro.navigateTo({ url: '/pages/officialNotification/index' });
         }}
       />
       <AtListItem
@@ -105,7 +110,7 @@ const List = () => {
         arrow="right"
         thumb={MailIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/feedback/index' });
+          void Taro.navigateTo({ url: '/pages/feedback/index' });
         }}
       />
     </AtList>

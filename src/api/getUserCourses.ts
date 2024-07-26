@@ -25,11 +25,13 @@ export async function getUserCourses(year: string, term: string) {
       url: `${preUrl}/courses/list/mine?year=${year}&term=${term}`,
       header,
     });
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (response.data.code !== 0) {
       console.log('code不为0');
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     console.log(response.data.data);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
     return response.data.data;
   } catch (error) {
     console.error(error);
