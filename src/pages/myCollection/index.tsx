@@ -64,7 +64,7 @@ const MyCollection: React.FC = () => {
         {collection.map((course) => (
           <CollectionCourse
             key={course.id}
-            courseType={course.type || ''}
+            courseType={course.type}
             courseName={course.name || ''}
             courseRate={course.composite_score || 0}
             courseTeacher={course.teacher || '未知'}
