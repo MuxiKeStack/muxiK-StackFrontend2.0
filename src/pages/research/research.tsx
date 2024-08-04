@@ -103,7 +103,8 @@ const ConditionalRender = ({ isSpread, classes, hrs, handleSearch }) => {
         </View>
         <View className='historyResult'>
           {hrs.map((hr) => (
-            <Label1 key={hr.id} content={hr.keyword} onClick={() => handleSearch(hr.keyword)} />
+            <Label1 key={hr.id} content={hr.keyword} onClick={() =>handleSearch(hr.keyword)} 
+              />
           ))}
         </View>
       </View>

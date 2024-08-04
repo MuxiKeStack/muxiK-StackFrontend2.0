@@ -1,0 +1,80 @@
+// style.scss
+.comments {
+  padding: 10px;
+}
+
+.acomment {
+  width: 659rpx;
+  margin: 30rpx 0;
+  background: #F9F9F2;
+  border-radius: 43rpx 43rpx 43rpx 43rpx;
+  border: 2rpx solid #F9F9F2;
+  padding: 30rpx;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.avatar {
+  width: 57.97rpx;
+  height: 57.97rpx;
+  border-radius: 100%;
+  margin-right: 10px;
+  border: #d2d5d8 solid 5rpx;
+}
+
+.nickname {
+  font-weight: bold;
+  font-size: 22rpx;
+  color: #565552;
+}
+
+.comment-content {
+  margin-top: 5px;
+  font-weight: 400;
+  font-size: 22rpx;
+  color: #565552;
+}
+
+.replies {
+  margin-top: 20px;
+  padding-left: 10px;
+}
+
+.reply .nickname {
+  font-weight: 400;
+  font-size: 22rpx;
+  color: #565552;
+}
+
+.reply {
+  padding-left: 10px;
+  margin-bottom: 5px;
+}
+
+.reply-header {
+  display: flex;
+  align-items: center;
+}
+
+.reply-content {
+  margin-top: 5px;
+  font-weight: 400;
+  font-size: 22rpx;
+  color: #565552;
+  margin-left: 70rpx;
+}
+
+.time{
+  font-weight: 400;
+  font-size: 18rpx;
+  color: #A6A193;
+  margin-left:30rpx;
+}
+
+.reply-indicator{
+  margin-left: 10rpx;
+}

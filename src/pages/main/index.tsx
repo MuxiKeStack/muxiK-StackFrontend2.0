@@ -6,21 +6,10 @@ import { View } from '@tarojs/components';
 import SearchInput from '../../components/SearchInput/SearchInput'; 
 import './index.scss'
 import { GuildLine } from "@/components";
+import { CommentInfoType } from '../../assets/types';
 
 
-// 定义新对象的类型
-type NewObjectType = {
-  id: number;
-  content : string;
-  class_name: string;
-  teacher: string;
-  star_rating: number;
-  total_support_count: number;
-  total_oppose_count: number;
-  total_comment_count: number;
-  utime: number;
-  ctime: number;
-};
+
 
 type CourseDetailsType = {
   class_name: string;
@@ -42,7 +31,7 @@ export default function Index() {
   };
 
 
-  const [comments,setComments] = useState<NewObjectType[]>([]);
+  const [comments,setComments] = useState<CommentInfoType[]>([]);
 
 // 修改 fetchCourseDetails 函数以返回正确的类型
 async function fetchCourseDetails(courseId: number): Promise<CourseDetailsType> {
@@ -86,7 +75,7 @@ async function fetchUserDetails(User: number): Promise<UserDetailsType> {
   // 定义一个函数来处理数据并返回新的数组
 async function processData(data) {
 
-  const processedData: NewObjectType[] = [];
+  const processedData: CommentInfoType[] = [];
 
   for (const item of data) {
       try {
@@ -172,6 +161,15 @@ const getData = (type)=>{
     
   };
 
+  const handleCommentClick = (comment:CommentInfoType)=>{
+    console.log(comment)
+    // 序列化对象
+  const serializedComment = encodeURIComponent(JSON.stringify(comment))
+  Taro.navigateTo({
+    url: `/pages/evaluateInfo/index?comment=${serializedComment}`
+  });
+  }
+
   
   return (
     <View className='main'>
@@ -218,6 +216,7 @@ const getData = (type)=>{
           key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的
           {...comment} // 展开comment对象，将属性传递给Comment组件
           type='inner' // 固定属性，不需要从数组中获取
+          onClick={() => handleCommentClick(comment)}
         />
       ))}
 

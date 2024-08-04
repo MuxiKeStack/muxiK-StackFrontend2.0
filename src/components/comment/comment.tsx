@@ -1,20 +1,19 @@
-import React, { useEffect } from "react";
+// import React, { useEffect } from "react";
 import { Text, View, Image, Navigator } from "@tarojs/components";
 import "./comment.scss";
 import ShowStar from "../showStar/showStar";
 
 export default function comment(props) {
+
   
-  // let className = "课程名";
-  // let teacherName = "老师名";
   
   // 创建一个新的Date对象，传入时间戳
   const ctimeDate = new Date(props.ctime);
-  const utimeDate = new Date(props.utime);
+  // const utimeDate = new Date(props.utime);
 
 
   return (
-    <View className="bigcomment">
+    <View className="bigcomment" onClick={props.onClick}>
       <View className="commentplus">
       <View className="classTitle">
         {props.class_name  + " (" + props.teacher +") " }
@@ -58,7 +57,7 @@ export default function comment(props) {
         <View className="icon">
           <Navigator className="iconfont">&#xe785;</Navigator>
         </View>
-        <Text className="text1">{props.dislike}</Text>
+        <Text className="text1">{props.total_oppose_count}</Text>
       </View>
     </View>
   );
