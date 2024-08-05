@@ -7,18 +7,27 @@ export async function post(url = '', data = {}, isToken = true) {
     'Content-Type': 'application/json;charset=utf-8',
   };
 
-  if (isToken) {
-    Taro.getStorage({
-      key: 'token',
-      success: (res) => {
-        const token = res.data;
-        if (token) header['Authorization'] = token;
-        else {
-          Taro.navigateTo({ url: '/pages/login/index' });
-        }
-      },
+  const getToken = () => {
+    return new Promise((resolve, reject) => {
+      Taro.getStorage({
+        key: 'token',
+        success: (res) => {
+          const token = res.data;
+          if (token) {
+            resolve(token); // 如果token存在，解析Promise
+          } else {
+            reject(new Error('No token found')); // 如果没有token，拒绝Promise
+            Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
+          }
+        },
+        fail: (err) => {
+          reject(new Error(`Failed to get token: ${err}`)); // 存储操作失败时拒绝Promise
+        },
+      });
     });
-  }
+  };
+
+  if (isToken) header['Authorization'] = `Bearer ${await getToken()}`;
 
   try {
     const response = await Taro.request({

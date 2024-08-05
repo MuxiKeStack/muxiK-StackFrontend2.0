@@ -1,5 +1,8 @@
 export default defineAppConfig({
   pages: [
+    'pages/main/index',
+    'pages/classInfo/index',
+    'pages/evaluateInfo/index',
     'pages/login/index',
     'pages/personalPage/index',
     'pages/myCollection/index',
@@ -7,7 +10,6 @@ export default defineAppConfig({
     'pages/messageNotification/index',
     'pages/officialNotification/index',
     'pages/feedback/index',
-    'pages/classInfo/index',
     'pages/evaluate/evaluate',
     'pages/myclass/myclass',
     'pages/research/research',

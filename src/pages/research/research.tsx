@@ -1,17 +1,11 @@
+import Label2 from '@/components/label2/label2';
+import { get } from '@/fetch';
 import { Image, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
-
-import './research.scss';
-
-// eslint-disable-next-line import/first
-import Label2 from '@/components/label2/label2';
-
-// eslint-disable-next-line import/first
-import { get } from '@/fetch';
-
 import Label1 from '../../components/label1/label1';
 import SearchInput from '../../components/SearchInput/SearchInput';
+import './research.scss';
 
 export interface Course {
   id: number;
