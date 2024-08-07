@@ -1,9 +1,9 @@
 export default defineAppConfig({
   pages: [
+    'pages/login/index',
     'pages/main/index',
     'pages/classInfo/index',
     'pages/evaluateInfo/index',
-    'pages/login/index',
     'pages/personalPage/index',
     'pages/myCollection/index',
     'pages/evaluateCourseHistory/index',

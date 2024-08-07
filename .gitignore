@@ -5,11 +5,5 @@ deploy_versions/
 node_modules/
 .DS_Store
 .swc
-
-.yarn/*
-!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+.idea/
+.vscode/
