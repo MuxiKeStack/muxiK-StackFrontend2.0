@@ -46,7 +46,6 @@ const CollectionCourse: React.FC<CollectionCourseProps> = ({
       courseIcon = '个';
       break;
   }
-  //console.log(courseIcon);
   return (
     <View className="collection_course">
       <View className="collection_course_type">{courseIcon}</View>

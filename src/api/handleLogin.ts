@@ -56,7 +56,7 @@ const handleLogin = async (data: Record<string, unknown> = {}) => {
       });
 
       await Taro.navigateTo({
-        url: '/pages/personalPage/index',
+        url: '/pages/main/index',
       });
     }
 
