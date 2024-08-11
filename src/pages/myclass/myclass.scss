@@ -32,13 +32,15 @@
 }
 
 .text {
-  left: 72.46rpx;
-  top: 11rpx;
+  font-size: 33rpx;
+  left: 50%;
+  transform: translate(-50%);
   position: absolute;
   font-family:
     Segoe UI-Bold,
     Segoe UI,
     serif;
+  font-weight: bold;
 }
 
 .select {
@@ -52,11 +54,11 @@
   border-left: 12.68rpx solid transparent;
   border-right: 12.68rpx solid transparent;
   border-bottom: 21.74rpx solid transparent;
-  position: relative;
-  left: 311.59rpx;
-  top: 25.36rpx;
+  position: absolute; /* 绝对定位 */
+  right: 0; /* 右对齐 */
+  //top: 50%; /* 垂直居中 */
+  //transform: translateY(-50%); /* 垂直居中调整 */
 }
-
 .classes {
   display: flex;
   flex-direction: column;

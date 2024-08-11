@@ -8,7 +8,15 @@
   top: -13vh;
   left: -3vh;
 }
-
+.logo{
+  display: flex;
+  align-items: center;
+  width: 40vw;
+  height: 40vw;
+  resize: horizontal;
+  justify-content: center;
+  margin: auto;
+}
 .login_content {
   height: 70hv;
   display: flex;

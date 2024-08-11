@@ -16,36 +16,28 @@ interface CouresProps {
 }
 
 export default function Myclass() {
-  const [yearSelector] = useState([
+  const [yearSelector] = useState<string[]>([
     '2022-2023学年',
     '2023-2024学年',
     '2024-2025学年',
     '2025-2026学年',
   ]);
-  const [year, setYear] = useState('2024-2025学年');
   const [semSelector] = useState(['第一学期', '第二学期', '第三学期', '全部学期']);
+  const [year, setYear] = useState('2024-2025学年');
   const [sem, setSem] = useState('第一学期');
 
   const [myclasses, setMyclasses] = useState<CouresProps[]>([]);
 
-  const onTimeChange = (e) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { detail } = e;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    setYear(yearSelector[detail.value]);
-  };
-
-  const onSemChange = (e) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { detail } = e;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    setSem(semSelector[detail.value]);
+  const onTimeSemChange = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
+    const [yearIndex, semIndex] = e.detail.value;
+    setYear(yearSelector[yearIndex]);
+    setSem(semSelector[semIndex]);
   };
 
   useEffect(() => {
     async function fetchClasses() {
       try {
-        // 获取年份的前四位
         const yearValue = year.split('-')[0];
         const semValue =
           sem === '第一学期'
@@ -55,7 +47,6 @@ export default function Myclass() {
               : sem === '第三学期'
                 ? '3'
                 : '0';
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const classes: Array<CouresProps> = await getUserCourses(yearValue, semValue);
         setMyclasses(classes);
       } catch (error) {
@@ -68,15 +59,16 @@ export default function Myclass() {
   return (
     <View>
       <View className="select">
-        <Picker range={yearSelector} onChange={onTimeChange} mode="selector">
-          <View className="selector1">
-            <Text className="text">{year}</Text>
-            <View className="sjx"></View>
-          </View>
-        </Picker>
-        <Picker range={semSelector} onChange={onSemChange} mode="selector">
-          <View className="selector2">
-            <Text className="text">{sem}</Text>
+        <Picker
+          mode="multiSelector"
+          range={[yearSelector, semSelector]}
+          value={[yearSelector.indexOf(year), semSelector.indexOf(sem)]}
+          onChange={onTimeSemChange}
+        >
+          <View className="selector">
+            <Text className="text">
+              {year} {sem}
+            </Text>
             <View className="sjx"></View>
           </View>
         </Picker>

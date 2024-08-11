@@ -12,7 +12,7 @@ import Comment from '@/components/comment/comment';
 // eslint-disable-next-line import/first
 import { CommentInfoType } from '@/assets/types';
 // eslint-disable-next-line import/first
-import { get, postLogin } from '@/fetch';
+import { get } from '@/fetch';
 
 import SearchInput from '../../components/SearchInput/SearchInput';
 

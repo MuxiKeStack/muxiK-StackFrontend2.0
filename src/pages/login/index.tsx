@@ -11,7 +11,7 @@ import { FloatingWindow } from '@/components';
 import handleLogin from '@/api/handleLogin';
 // eslint-disable-next-line import/first
 import top_background from '@/img/login/top_background.png';
-
+//import icon from '@/img/login/logo.png'
 type LoginProps = object;
 
 const Login: React.FC<LoginProps> = () => {
@@ -41,6 +41,9 @@ const Login: React.FC<LoginProps> = () => {
     <View className="login">
       {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
       <Image src={top_background} className="login_top_background"></Image>
+      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+      TODO 照片布局
+      {/*<Image src={icon} className="logo"></Image>*/}
       <View className="login_content">
         <View className="login_main">
           <View className="login_main_text">
