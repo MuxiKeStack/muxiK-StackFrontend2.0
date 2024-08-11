@@ -39,7 +39,7 @@
   "author": "",
   "dependencies": {
     "@babel/runtime": "^7.21.5",
-    "@tarojs/components": "3.6.14",
+    "@tarojs/components": "3.6.34",
     "@tarojs/helper": "3.6.14",
     "@tarojs/plugin-framework-react": "3.6.14",
     "@tarojs/plugin-platform-alipay": "3.6.14",
