@@ -1,9 +1,7 @@
 node_modules
-.DS_Store
 dist
 dist-ssr
-*.local
 project.config.json
 project.private.config.json
 auto-imports.d.ts
-pnpm-lock.yaml
+src/components/ec-canvas

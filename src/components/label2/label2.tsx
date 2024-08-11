@@ -1,8 +1,8 @@
-import { View} from "@tarojs/components";
-import "./label2.scss";
-import { useState, useEffect } from "react";
-import Label3 from "../label3/label3";
-import ShowStar from "../showStar/showStar";
+import { View } from '@tarojs/components';
+import { useEffect, useState } from 'react';
+import Label3 from '../label3/label3';
+import ShowStar from '../showStar/showStar';
+import './label2.scss';
 
 export default function Label2(props) {
   const star2 = 'https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png';
@@ -23,7 +23,8 @@ export default function Label2(props) {
   // 修正renderFeatures函数
   const renderFeatures = () => {
     // 检查props.features是否为数组，并且不为空
-    const commentsArray = Array.isArray(props.features) && props.features.length > 0 ? props.features : [];
+    const commentsArray =
+      Array.isArray(props.features) && props.features.length > 0 ? props.features : [];
 
     // 返回map的结果
     return commentsArray.map((item, index) => {
