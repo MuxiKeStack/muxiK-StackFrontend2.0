@@ -8,6 +8,8 @@ import './index.scss';
 // eslint-disable-next-line import/first
 import { GuildLine } from '@/components';
 
+// eslint-disable-next-line import/first
+import { get } from '@/api/get';
 import {
   BookIcon,
   ClockIcon,
@@ -16,9 +18,10 @@ import {
   StarIcon,
   TopBackground,
 } from '@/img/personalPage';
-// eslint-disable-next-line import/first
-import { get } from '@/api/get';
-
+export interface UserInfo {
+  avatarUrl: string; // 用户头像的URL
+  nickName: string; // 用户昵称
+}
 type PersonalPageProps = object;
 export interface Response {
   code?: number;
@@ -48,6 +51,7 @@ const Head = () => {
   const [level, setLevel] = useState(1);
   const [nextLevel, setNextLevel] = useState(0);
   const [points, setPoints] = useState(0);
+  // const [userInfo, setUserInfo] = useState<UserInfo>(null);
   useEffect(() => {
     const fetchExp = async () => {
       try {
@@ -69,10 +73,10 @@ const Head = () => {
       {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
       <Image src={TopBackground} className="personalPage_top_background"></Image>
       <View className="personalPage_user_container">
-        {/* 用户头像 */}
-        <View className="personalPage_user_photo"></View>
+        <View className="personalPage_user_photo">
+          {/*  <Image src={userInfo.avatarUrl} className="avatar" />*/}
+        </View>
         <View className="personalPage_user_details">
-          {/* 用户名 */}
           <View className="personalPage_username">昵称</View>
           {/* 经验 */}
           <View className="personalPage_exp_value">

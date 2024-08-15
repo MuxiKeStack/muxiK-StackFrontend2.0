@@ -159,7 +159,7 @@ export default function Index() {
 
   useEffect(() => {
     void getData(1);
-  }, []);
+  }, [getData]);
 
   const [classType, setClassType] = useState(1);
 

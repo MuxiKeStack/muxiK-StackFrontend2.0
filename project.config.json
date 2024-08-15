@@ -2,14 +2,14 @@
   "miniprogramRoot": "dist/",
   "projectname": "myapp",
   "description": "木犀课栈",
-  "appid": "wxd66389579c4c011d",
+  "appid": "wx6220588048f6e417",
   "setting": {
     "urlCheck": true,
-    "es6": false,
-    "enhance": false,
+    "es6": true,
+    "enhance": true,
     "compileHotReLoad": false,
     "postcss": false,
-    "minified": false,
+    "minified": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],

@@ -23,8 +23,28 @@ const Login: React.FC<LoginProps> = () => {
   const [studentId, setStudentId] = useState('');
   const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+  const handleGetUserProfile = () => {
+    void Taro.getUserProfile({
+      desc: '用于完善用户资料',
+      success: (res) => {
+        console.log('用户信息:', res.userInfo);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        setUserInfo(res.userInfo);
+        Taro.setStorageSync('userInfo', res.userInfo);
+      },
+      fail: (err) => {
+        console.error('获取用户信息失败:', err);
+      },
+    });
+  };
+
   const handleLoginClick = () => {
     if (agreeTerms) {
+      if (!userInfo) {
+        handleGetUserProfile();
+      }
       void handleLogin({ student_id: studentId, password: password }).then((r) =>
         console.log(r)
       );
@@ -33,7 +53,6 @@ const Login: React.FC<LoginProps> = () => {
         icon: 'error',
         title: '请确认隐私条例',
       });
-      //console.log('请先确认隐私条例');
     }
   };
 
