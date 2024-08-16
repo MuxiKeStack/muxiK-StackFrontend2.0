@@ -37,7 +37,7 @@
 .PersonalPage .personalPage_user_details {
   width: 40vw;
   height: 20vw;
-  position: flex;
+  display: flex;
   align-items: end;
   position: relative;
 }
@@ -46,7 +46,11 @@
   width: 100%;
   font-size: 6vw;
 }
-
+.PersonalPage .personalPage_icon {
+  width: 100%;
+  font-size: 6vw;
+  color: white;
+}
 .PersonalPage .personalPage_exp_value {
   width: 100%;
   color: orange;

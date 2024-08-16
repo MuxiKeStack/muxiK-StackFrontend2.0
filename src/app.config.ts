@@ -14,6 +14,7 @@ export default defineAppConfig({
     'pages/myclass/myclass',
     'pages/research/research',
     'pages/index/index',
+    'pages/editPersonal/index',
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -78,6 +78,7 @@ const Head = () => {
         </View>
         <View className="personalPage_user_details">
           <View className="personalPage_username">昵称</View>
+          <View className="personalPage_icon">&gt;</View>
           {/* 经验 */}
           <View className="personalPage_exp_value">
             {points}/{nextLevel}
