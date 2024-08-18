@@ -3507,6 +3507,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/runtime@npm:4.0.4":
+  version: 4.0.4
+  resolution: "@tarojs/runtime@npm:4.0.4"
+  dependencies:
+    "@tarojs/shared": "npm:4.0.4"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/ace4c9cabf57982eddace9e2545c830e9766767c753304a7c3e0dec34475884c7f42d0d327ef2b04859b8e8f2b99f1b94325421d1ce6a4235191d0eca4725192
+  languageName: node
+  linkType: hard
+
 "@tarojs/service@npm:3.6.33":
   version: 3.6.33
   resolution: "@tarojs/service@npm:3.6.33"
@@ -3571,6 +3581,13 @@ __metadata:
   version: 4.0.3
   resolution: "@tarojs/shared@npm:4.0.3"
   checksum: 10c0/7bc3013ff4f419463a629e49992ff1c544c5bc369b0dae876ae5d35c670d3286407910674f09bc00296ee32c7d0be3a9af67e1d13903cc02d95d0ad57ff927f4
+  languageName: node
+  linkType: hard
+
+"@tarojs/shared@npm:4.0.4":
+  version: 4.0.4
+  resolution: "@tarojs/shared@npm:4.0.4"
+  checksum: 10c0/2acb3014dba6d46520802679c636095e3b6a3a43a4cb7b03da24e3408450096e2577f8eac3c661df48438f19eb1fc8e1c9a44e2cb8e0be450dc65801c7036cba
   languageName: node
   linkType: hard
 
@@ -12553,7 +12570,7 @@ __metadata:
     "@tarojs/plugin-platform-tt": "npm:4.0.3"
     "@tarojs/plugin-platform-weapp": "npm:3.6.34"
     "@tarojs/react": "npm:3.6.34"
-    "@tarojs/runtime": "npm:3.6.34"
+    "@tarojs/runtime": "npm:4.0.4"
     "@tarojs/shared": "npm:3.6.34"
     "@tarojs/taro": "npm:4.0.3"
     "@tarojs/taro-loader": "npm:3.6.34"

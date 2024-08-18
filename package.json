@@ -55,7 +55,7 @@
     "@tarojs/plugin-platform-tt": "4.0.3",
     "@tarojs/plugin-platform-weapp": "3.6.34",
     "@tarojs/react": "3.6.34",
-    "@tarojs/runtime": "3.6.34",
+    "@tarojs/runtime": "4.0.4",
     "@tarojs/shared": "3.6.34",
     "@tarojs/taro": "4.0.3",
     "eslint-config-prettier": "^9.1.0",
