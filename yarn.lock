@@ -18260,9 +18260,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xiaoyouyundong-fe@workspace:.":
+"muxiK-StackFrontend2.0@workspace:.":
   version: 0.0.0-use.local
-  resolution: "xiaoyouyundong-fe@workspace:."
+  resolution: "muxiK-StackFrontend2.0@workspace:."
   dependencies:
     "@babel/core": "npm:^7.24.9"
     "@babel/runtime": "npm:^7.24.8"
