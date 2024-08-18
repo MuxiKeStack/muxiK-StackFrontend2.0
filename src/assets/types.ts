@@ -16,10 +16,10 @@ export interface Comment {
 
 // 定义评论详情的类型
 export type CommentInfoType = {
-  nickname:string;
-  avatar:string;
+  nickname: string;
+  avatar: string;
   id: number;
-  content : string;
+  content: string;
   class_name: string;
   teacher: string;
   star_rating: number;

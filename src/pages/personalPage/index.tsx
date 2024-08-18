@@ -67,7 +67,7 @@ const List = () => {
         arrow="right"
         thumb={BookIcon}
         onClick={() => {
-          Taro.navigateTo({ url: "/pages/myclass/myclass" });
+          Taro.navigateTo({ url: '/pages/myclass/myclass' });
         }}
       />
       <AtListItem
