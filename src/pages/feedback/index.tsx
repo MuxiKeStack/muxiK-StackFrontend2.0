@@ -1,7 +1,6 @@
 import { Textarea, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 
-import React from 'react';
 import './index.scss';
 
 type FeedbackProps = object;
@@ -14,17 +13,17 @@ const Feedback: React.FC<FeedbackProps> = () => {
   const copyText = '要复制的字符串';
 
   const handleCopy = () => {
-    void Taro.setClipboardData({
+    Taro.setClipboardData({
       data: copyText,
       success: () => {
-        void Taro.showToast({
+        Taro.showToast({
           title: '复制成功',
           icon: 'success',
           duration: 2000,
         });
       },
       fail: () => {
-        void Taro.showToast({
+        Taro.showToast({
           title: '复制失败',
           icon: 'none',
           duration: 2000,

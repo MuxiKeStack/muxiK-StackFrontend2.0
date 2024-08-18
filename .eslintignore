@@ -1,7 +1,8 @@
+README.md
 node_modules
+.DS_Store
 dist
 dist-ssr
-project.config.json
-project.private.config.json
-auto-imports.d.ts
-src/components/ec-canvas
+*.local
+weapp.js
+babel.config.js
