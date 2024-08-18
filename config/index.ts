@@ -2,7 +2,7 @@ import path from 'path';
 import { UnifiedWebpackPluginV5 } from 'weapp-tailwindcss/webpack';
 
 const config = {
-  projectName: 'XiaoYouYunDong-FE',
+  projectName: 'muxiK-StackFrontend2.0',
   date: '2024-5-6',
   designWidth: 750,
   deviceRatio: {

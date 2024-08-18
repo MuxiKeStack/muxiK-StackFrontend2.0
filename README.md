@@ -1,20 +1,20 @@
 <div align="center">
-  <img width="130" src="https://github.com/XiaoYouYunDong.png" alt="ZhiHuiYuYan logo">
-  <h1 align="center">XiaoYouYunDong-FE</h1>
-  <h3>校友运动小程序前端</h3>
-  <a href="https://github.com/XiaoYouYunDong/XiaoYouYunDong-FE"><strong>探索项目文档 »</strong></a>
+  <img width="130" src="https://github.com/muxiK-StackFrontend2.0.png" alt="muxiK-StackFrontend2.0 logo">
+  <h1 align="center">muxiK-StackFrontend2.0</h1>
+  <h3>muxiK-StackFrontend2.0</h3>
+  <a href="https://github.com/MuxiKeStack/muxiK-StackFrontend2.0"><strong>探索项目文档 »</strong></a>
   <br />
   <br />
 
-![license](https://img.shields.io/github/license/XiaoYouYunDong/XiaoYouYunDong-FE)
-![language](https://img.shields.io/github/languages/top/XiaoYouYunDong/XiaoYouYunDong-FE)
-![last](https://img.shields.io/github/last-commit/XiaoYouYunDong/XiaoYouYunDong-FE)
+![license](https://img.shields.io/github/license/MuxiKeStack/muxiK-StackFrontend2.0)
+![language](https://img.shields.io/github/languages/top/MuxiKeStack/muxiK-StackFrontend2.0)
+![last](https://img.shields.io/github/last-commit/MuxiKeStack/muxiK-StackFrontend2.0)
 
 <a href="#" target="_blank">在线体验</a>
 ·
-<a href="https://github.com/XiaoYouYunDong/XiaoYouYunDong-FE/issues">报告Bug</a>
+<a href="https://github.com/MuxiKeStack/muxiK-StackFrontend2.0/issues">报告Bug</a>
 ·
-<a href="https://github.com/XiaoYouYunDong/XiaoYouYunDong-FE/issues">提出新特性</a>
+<a href="https://github.com/MuxiKeStack/muxiK-StackFrontend2.0/issues">提出新特性</a>
 
 </div>
 
@@ -38,8 +38,8 @@
 ### 💻 本地调试
 
 ```bash
-$ git https://github.com/XiaoYouYunDong/XiaoYouYunDong-FE.git
-$ cd ZhiHuiYuYan-FE
+$ git clone https://github.com/MuxiKeStack/muxiK-StackFrontend2.0.git
+$ cd muxiK-StackFrontend2.0
 $ yarn
 $ yarn dev:weapp
 ```
