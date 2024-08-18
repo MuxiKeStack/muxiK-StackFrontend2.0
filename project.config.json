@@ -1,14 +1,8 @@
 {
   "miniprogramRoot": "dist/",
-<<<<<<< Updated upstream
-  "projectname": "myapp",
-  "description": "木犀课栈",
-  "appid": "wxd66389579c4c011d",
-=======
   "projectname": "XiaoYouYunDong-FE",
   "description": "校友运动(小程序前端仓库)",
   "appid": "wx6220588048f6e417",
->>>>>>> Stashed changes
   "setting": {
     "urlCheck": true,
     "es6": false,

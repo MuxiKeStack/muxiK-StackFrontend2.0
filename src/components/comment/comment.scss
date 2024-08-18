@@ -34,7 +34,7 @@
   padding-right: 25rpx;
 }
 
-.comment {
+.comment{
   position: relative;
 }
 
@@ -58,22 +58,23 @@
   color: #565552;
 }
 
-.bigcomment .comment {
+.bigcomment .comment{
   position: relative;
   width: 600rpx;
   height: 388rpx;
 }
 
-.bigcomment .comment .stars {
+.bigcomment .comment .stars{
   position: absolute;
   left: 130rpx;
   top: 50rpx;
 }
 
+
 .bigcomment .comment .fire {
   width: 38rpx;
   height: 38rpx;
-  position: absolute;
+  position:absolute;
   top: 50rpx;
   right: 0rpx;
 }
@@ -130,11 +131,9 @@
   margin-left: 45rpx;
 }
 
-.bigcomment .classTitle {
+.bigcomment .classTitle{
   height: 43rpx;
-  font-family:
-    Segoe UI,
-    Segoe UI;
+  font-family: Segoe UI, Segoe UI;
   font-weight: bold;
   font-size: 33rpx;
   color: #565552;
@@ -143,7 +142,7 @@
   margin-bottom: 40rpx;
 }
 
-.comment .likes {
+.comment .likes{
   position: absolute;
   right: 0rpx;
   bottom: 20rpx;
