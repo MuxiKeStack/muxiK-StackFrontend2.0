@@ -1,33 +1,32 @@
-.label {
-  width: 145rpx;
-  height: 53rpx;
-  border-radius: 14rpx 14rpx 14rpx 14rpx;
-  font-family:
-    Segoe UI,
-    Segoe UI;
-  font-weight: bold;
-  font-size: 22rpx;
-  line-height: 53rpx;
-  text-align: center;
-  font-style: normal;
-  text-transform: none;
-  margin-right: 27.17rpx;
-  background: #f9f9f2;
-  color: #a5a29c;
+.label{
+    width: 145rpx;
+    height: 53rpx;
+    border-radius: 14rpx 14rpx 14rpx 14rpx;
+    font-family: Segoe UI, Segoe UI;
+    font-weight: bold;
+    font-size: 22rpx;
+    line-height: 53rpx;
+    text-align: center;
+    font-style: normal;
+    text-transform: none;
+    margin-right: 27.17rpx;
+    background: #F9F9F2;
+    color: #A5A29C;
 }
 
-.active {
-  background-color: #ffd777;
-  color: white;
+
+.active{
+    background-color: #FFD777 ;
+    color: white ;
 }
 
-.classLine {
-  margin-left: 45.29rpx;
-  margin-top: 75rpx;
-  display: flex;
-  margin-bottom: 70rpx;
+.classLine{
+    margin-left: 45.29rpx;
+    margin-top: 75rpx;
+    display: flex;
+    margin-bottom: 70rpx;
 }
 
-.main .bigcomment {
-  margin: 60rpx 0;
+.main .bigcomment{
+    margin: 60rpx 0;
 }

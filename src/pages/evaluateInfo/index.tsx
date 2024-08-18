@@ -1,12 +1,12 @@
+import { View,Input } from '@tarojs/components';
 import Comment from '@/components/comment/comment';
 import CommentComponent from '@/components/CommentComponent/CommentComponent';
-import { get, post } from '@/fetch';
-import { Input, View } from '@tarojs/components';
+import { useState, useEffect } from 'react';
+import { get,post } from '@/fetch';
 import Taro from '@tarojs/taro';
-import { useEffect, useState } from 'react';
 
-import { CommentInfoType, Comment as CommentType } from '../../assets/types';
-import './index.scss';
+import './index.scss'
+import { Comment as CommentType,CommentInfoType } from '../../assets/types';
 
 export default function Index() {
   const [allComments, setAllComments] = useState<CommentType[]>([]);
@@ -15,11 +15,12 @@ export default function Index() {
   const [replyContent, setReplyContent] = useState(''); // 存储回复内容
   const [placeholderContent, setplaceholderContent] = useState('写下你的评论...'); // 存储占位内容
 
-  const [comment, setComment] = useState<CommentInfoType | null>(null); //获取课评信息
+  const [comment, setComment] = useState<CommentInfoType | null>(null);//获取课评信息
   // const biz_id = 1;
   const [biz_id, setBiz_id] = useState<Number | null>(null);
 
   useEffect(() => {
+
     const handleQuery = () => {
       const query = Taro.getCurrentInstance()?.router?.params; // 获取查询参数
       const serializedComment = query?.comment;
@@ -38,11 +39,10 @@ export default function Index() {
     handleQuery();
 
     const fetchComments = async () => {
+
       // console.log(biz_id)
       try {
-        const res = await get(
-          `/comments/list?biz=Evaluation&biz_id=${biz_id}&cur_comment_id=0&limit=100`
-        );
+        const res = await get(`/comments/list?biz=Evaluation&biz_id=${biz_id}&cur_comment_id=0&limit=100`);
         // console.log(res.data);
         setAllComments(res.data);
         setCommentsLoaded(true);
@@ -56,7 +56,11 @@ export default function Index() {
       console.log(1);
       fetchComments();
     }
-  }, [biz_id, commentsLoaded]); // 依赖项中添加biz_id
+
+    
+    
+  }, [biz_id,commentsLoaded]); // 依赖项中添加biz_id
+  
 
   const handleCommentClick = (comment: CommentType) => {
     console.log(comment);
@@ -68,12 +72,12 @@ export default function Index() {
     setReplyContent(e.target.value);
   };
 
-  const handleClearReply = () => {
-    console.log(2);
+  const handleClearReply = () =>{
+    console.log(2)
     setReplyTo(null);
     setReplyContent('');
     setplaceholderContent('写下你的评论...');
-  };
+  }
 
   const handleReplySubmit = async () => {
     if (!replyContent.trim()) return; // 忽略空内容
@@ -90,15 +94,18 @@ export default function Index() {
     // )
 
     post('/comments/publish', {
-      biz: 'Evaluation',
+      biz: "Evaluation",
       biz_id,
       content: replyContent,
       parent_id: replyTo?.id || 0,
-      root_id:
-        replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
+      root_id: replyTo?.root_comment_id === 0 ? replyTo?.id : (replyTo?.root_comment_id || 0)
     }).then((res) => {
       console.log('评论发布成功', res);
     });
+
+    
+
+
 
     // try {
     //   const res = await post(`/comments/create`, {
@@ -109,31 +116,29 @@ export default function Index() {
     //   });
     //   console.log('评论发布成功', res);
 
-    // 清空回复目标和输入框
-    setReplyTo(null);
-    setReplyContent('');
+      // 清空回复目标和输入框
+      setReplyTo(null);
+      setReplyContent('');
 
-    setCommentsLoaded(false);
+      setCommentsLoaded(false);
   };
+
+  
 
   // 仅当评论数据加载完成时渲染CommentComponent
   return (
-    <View className="evaluateInfo" onClick={handleClearReply}>
+    <View className='evaluateInfo' onClick={handleClearReply}>
       <Comment {...comment} />
-      {commentsLoaded && (
-        <CommentComponent comments={allComments} onCommentClick={handleCommentClick} />
-      )}
+      {commentsLoaded && <CommentComponent comments={allComments} onCommentClick={handleCommentClick}/>}
       <View className="reply-input">
-        <Input
-          type="text"
-          placeholder={placeholderContent}
-          value={replyContent}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-          onInput={handleReplyChange}
-          onConfirm={handleReplySubmit}
-        />
+            <Input
+              type="text"
+              placeholder={placeholderContent}
+              value={replyContent}
+              onClick={(e)=>{e.stopPropagation();}}
+              onInput={handleReplyChange}
+              onConfirm={handleReplySubmit}
+            />
       </View>
     </View>
   );
