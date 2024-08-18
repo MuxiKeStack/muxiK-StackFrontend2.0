@@ -15,7 +15,13 @@
       "disablePlugins": [],
       "outputPath": ""
     },
-    "condition": false
+    "condition": false,
+    "coverView": false,
+    "autoAudits": false,
+    "uglifyFileName": false,
+    "packNpmRelationList": [],
+    "ignoreUploadUnusedFiles": true,
+    "bigPackageSizeSupport": false
   },
   "compileType": "miniprogram",
   "libVersion": "3.0.1",
