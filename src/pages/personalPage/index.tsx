@@ -9,7 +9,7 @@ import './index.scss';
 import { GuildLine } from '@/components';
 
 // eslint-disable-next-line import/first
-//import { get } from '@/api/get';
+import { get } from '@/api/get';
 import {
   BookIcon,
   ClockIcon,
@@ -73,10 +73,10 @@ const Head = () => {
       {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
       <Image src={TopBackground} className="personalPage_top_background"></Image>
       <View className="personalPage_user_container">
-        {/* 用户头像 */}
-        <View className="personalPage_user_photo"></View>
+        <View className="personalPage_user_photo">
+          {/*  <Image src={userInfo.avatarUrl} className="avatar" />*/}
+        </View>
         <View className="personalPage_user_details">
-          {/* 用户名 */}
           <View className="personalPage_username">昵称</View>
           <View className="personalPage_icon">&gt;</View>
           {/* 经验 */}

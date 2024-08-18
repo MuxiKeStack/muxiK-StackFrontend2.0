@@ -1,19 +1,17 @@
 import { Button, Checkbox, Image, Input, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import './index.scss';
 
 // eslint-disable-next-line import/first
 import { FloatingWindow } from '@/components';
 
-// eslint-disable-next-line import/first,@typescript-eslint/ban-ts-comment
-// @ts-expect-error
+// eslint-disable-next-line import/first
 import handleLogin from '@/api/handleLogin';
-//import { post } from '@/fetch';
 // eslint-disable-next-line import/first
 import top_background from '@/img/login/top_background.png';
-
+//import icon from '@/img/login/logo.png'
 type LoginProps = object;
 
 const Login: React.FC<LoginProps> = () => {
@@ -84,7 +82,7 @@ const Login: React.FC<LoginProps> = () => {
             <Text className="login_link">Forget your password?</Text>
           </View>
           <View className="login_main_button">
-            <Button className="login_button" onClick={handleLogin}>
+            <Button className="login_button" onClick={handleLoginClick}>
               学号登录
             </Button>
             {/*这还差一个游客登陆*/}
