@@ -1,9 +1,13 @@
 {
   "miniprogramRoot": "./",
-  "projectname": "myapp",
-  "appid": "testAppId",
+  "projectname": "muxiK-StackFrontend2.0",
+  "description": "校友运动(小程序前端仓库)",
+  "appid": "touristappid",
   "setting": {
+    "urlCheck": true,
     "es6": false,
+    "postcss": false,
     "minified": false
-  }
+  },
+  "compileType": "miniprogram"
 }

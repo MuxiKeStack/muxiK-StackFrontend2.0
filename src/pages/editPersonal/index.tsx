@@ -2,12 +2,15 @@ import { Button, Image, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect } from 'react';
 
-import { editIcon } from '@/img/editPersonal';
 import './index.scss';
+
+// eslint-disable-next-line import/first
+import { editIcon } from '@/img/editPersonal';
 
 const editInformationPage: React.FC = () => {
   let avatarUrl: string;
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     void Taro.chooseImage({
       count: 1,

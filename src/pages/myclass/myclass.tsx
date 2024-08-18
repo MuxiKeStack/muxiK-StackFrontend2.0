@@ -6,13 +6,13 @@ import './myclass.scss';
 // eslint-disable-next-line import/first
 import { getUserCourses } from '@/api/getUserCourses';
 
-interface CouresProps {
-  name: string;
-  teacher: string;
-  evaluated: boolean;
-  year: string;
-  term: string;
-  id: number;
+interface CourseProps {
+  name?: string;
+  teacher?: string;
+  evaluated?: boolean;
+  year?: string;
+  term?: string;
+  id?: number;
 }
 
 export default function Myclass() {
@@ -47,7 +47,7 @@ export default function Myclass() {
               : sem === '第三学期'
                 ? '3'
                 : '0';
-        const classes: Array<CouresProps> = await getUserCourses(yearValue, semValue);
+        const classes: Array<CourseProps> = await getUserCourses(yearValue, semValue);
         setMyclasses(classes);
       } catch (error) {
         console.error('Error fetching user courses:', error);

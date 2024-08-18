@@ -1,17 +1,12 @@
+import Comment from '@/components/comment/comment';
+import Label3 from '@/components/label3/label3';
+import ShowStar from '@/components/showStar/showStar';
 import { Text, View } from '@tarojs/components';
 import { Component } from 'react';
-
 import './index.scss';
-
-// eslint-disable-next-line import/first
-import Comment from '@/components/comment/comment';
-// eslint-disable-next-line import/first
-import Label3 from '@/components/label3/label3';
-// eslint-disable-next-line import/first
-import ShowStar from '@/components/showStar/showStar';
-
 //import Chart from '@/components/chart/chart'
-//@ts-expect-error
+//@ts-ignore
+
 import * as echarts from '../../components/ec-canvas/echarts.js'; // 引入echarts
 
 class Chart extends Component {

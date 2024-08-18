@@ -13,12 +13,12 @@ interface CollectionCourseProps {
 }
 
 const CollectionCourse: React.FC<CollectionCourseProps> = ({
-  courseType,
-  courseName,
-  courseRate,
-  courseTeacher,
-  isCollected,
-}) => {
+                                                             courseType,
+                                                             courseName,
+                                                             courseRate,
+                                                             courseTeacher,
+                                                             isCollected,
+                                                           }) => {
   if (!isCollected) {
     return null;
   }
