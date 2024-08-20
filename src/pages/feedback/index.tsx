@@ -1,5 +1,6 @@
 import { Textarea, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
+import React from 'react';
 
 import './index.scss';
 

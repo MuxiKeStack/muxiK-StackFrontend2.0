@@ -42,17 +42,44 @@
 }
 
 .floating_window_slide:nth-of-type(1) {
-  background-color: #f2e205;
+  //background-color: #f2e205;
+  font-size: 35rpx;
+  color: black;
+  align-items: flex-start; /* 上方对齐 */
+  padding: 30rpx;
+}
+.page-title {
+  font-size: 50rpx;
+  margin-bottom: 20rpx;
+  text-align: center;
 }
 
+.page-content {
+  font-size: 35rpx;
+  line-height: 50rpx;
+  color: #333;
+  white-space: pre-wrap;
+  text-align: left; /* 内容保持左对齐 */
+  width: 100%; /* 内容与页面宽度对齐 */
+  padding: 20rpx; /* 增加内边距，防止内容被边框挡住 */
+  box-sizing: border-box; /* 使内边距包含在元素总宽度和高度内 */
+  border: 2rpx solid transparent; /* 示例边框 */
+}
 .floating_window_slide:nth-of-type(2) {
   background-color: #f25c05;
+  align-items: flex-start; /* 上方对齐 */
+  padding: 30rpx;
+  text-align: center;
 }
 
 .floating_window_slide:nth-of-type(3) {
   background-color: #495f8c;
+  align-items: flex-start; /* 上方对齐 */
+  padding: 30rpx;
 }
 
 .floating_window_slide:nth-of-type(4) {
   background-color: #ce2b92;
+  align-items: flex-start; /* 上方对齐 */
+  padding: 30rpx;
 }
