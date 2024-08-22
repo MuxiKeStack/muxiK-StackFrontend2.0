@@ -1,30 +1,43 @@
 {
   "miniprogramRoot": "dist/",
-  "projectname": "myapp",
-  "description": "木犀课栈",
-  "appid": "wx2c572d2d3773032b",
+  "projectname": "muxiK-StackFrontend2.0",
+  "description": "muxiK-StackFrontend2.0",
+  "appid": "wx6220588048f6e417",
   "setting": {
     "urlCheck": true,
     "es6": false,
     "enhance": false,
     "compileHotReLoad": false,
-    "postcss": false,
-    "minified": false,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "autoAudits": false,
+    "coverView": true,
+    "showShadowRootInWxmlPanel": false,
+    "scopeDataCheck": false,
+    "useCompilerModule": false,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
-    "condition": false
+    "packNpmRelationList": [],
+    "condition": false,
+    "compileWorklet": false,
+    "ignoreUploadUnusedFiles": true,
+    "uglifyFileName": true
   },
   "compileType": "miniprogram",
-  "libVersion": "3.0.1",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {},
+  "libVersion": "3.4.2",
   "srcMiniprogramRoot": "dist/",
   "packOptions": {
     "ignore": [],
     "include": []
   },
-  "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2

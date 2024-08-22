@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "flex-direction",
+          "justify-content: space-evenly"
+        ]
+      }
+    ]
+  }
+}
