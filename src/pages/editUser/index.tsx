@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
-
 // eslint-disable-next-line import/first
 import { get } from '@/api/get';
 // eslint-disable-next-line import/first
