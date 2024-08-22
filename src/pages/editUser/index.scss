@@ -1,6 +1,5 @@
 .avatar-container {
   display: flex;
-  position: absolute;
 }
 .avatar-text {
   font-size: 32.61rpx;
@@ -14,3 +13,32 @@
   border-radius: 50%;
   border: #ffd777 solid 1.81rpx;
 }
+.nickname-container{
+  display: flex;
+}
+.nickname-text {
+  font-size: 32.61rpx;
+  width: 130.43rpx;
+  height: 43.48rpx;
+}
+.nickname{
+    height: 43.48rpx;
+    width: 228.26rpx;
+}
+.title-container{
+  display: flex;
+}
+.cancel-button{
+  width: 300rpx;
+  height: 81rpx;
+  background: #F9F9F2;
+}
+.save-button{
+  width: 300rpx;
+  height: 81rpx;
+  background: #F19900;
+}
+.button-container{
+  display: flex;
+}
+

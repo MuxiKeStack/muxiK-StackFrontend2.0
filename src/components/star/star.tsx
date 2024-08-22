@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import './star.scss';
 
-export default function Star(props) {
+export default function Star() {
   const star0 = 'https://s2.loli.net/2023/08/29/NRLD54kzG9nEOHW.png';
   const star1 = 'https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png';
 

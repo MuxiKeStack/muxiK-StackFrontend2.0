@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
+
 // eslint-disable-next-line import/first
 import { get } from '@/api/get';
 // eslint-disable-next-line import/first
@@ -16,6 +17,7 @@ const EditUser: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
   // const [editing, setEditing] = useState(false);
   const [nickName, setNickName] = useState('你好');
+  // const [title, setTitle] = useState('');
   // const textOnDoubleClick = useDoubleClick();
   useEffect(() => {
     const fetchUser = async () => {
@@ -42,6 +44,9 @@ const EditUser: React.FC = () => {
         console.log(res.tempFilePaths);
         setAvatarUrl(res.tempFilePaths[0]);
       },
+      fail: function (res) {
+        console.log(res);
+      },
     });
   };
   return (
@@ -51,20 +56,20 @@ const EditUser: React.FC = () => {
           <View className="avatar-text">修改头像 </View>
           <Image src={avatarUrl} onClick={chooseAvatar} className="avatar"></Image>
         </View>
-        <View className="nickName-container">
-          <View>昵称</View>
+        <View className="nickname-container">
+          <View className="nickname-text">昵称</View>
           <View>
-            {/*{editing ? (*/}
-            {/*  <Input value={nickName} />*/}
-            {/*) : (*/}
-            {/*  <View onClick={textOnDoubleClick(() => setEditing(true))}>{nickName}</View>*/}
-            {/*)}*/}
-            <View>超级无敌{nickName}</View>
+            <View className="nickname">超级无敌{nickName}</View>
           </View>
         </View>
-        <View className="title-container">
-          <View>称号</View>
-        </View>
+        {/*<View className="title-container">*/}
+        {/*  <View className="title-text">称号</View>*/}
+        {/*  <View className="title-container">*/}
+        {/*    <TitleButton title="知心学长"></TitleButton>*/}
+        {/*    <TitleButton title="课栈合伙人"></TitleButton>*/}
+        {/*    <TitleButton title="知心学长"></TitleButton>*/}
+        {/*  </View>*/}
+        {/*</View>*/}
         <View className="button-container">
           <Button className="cancel-button">取消</Button>
           <Button className="save-button">保存</Button>

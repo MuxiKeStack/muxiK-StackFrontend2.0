@@ -120,7 +120,14 @@ const Head = () => {
         </View>
         <View className="personalPage_user_details">
           <View className="personalPage_username">昵称</View>
-          <View className="personalPage_icon">&gt;</View>
+          <View
+            className="personalPage_icon"
+            onClick={() => {
+              void Taro.navigateTo({ url: '/pages/editUser/index' });
+            }}
+          >
+            &gt;
+          </View>
           {/* 经验 */}
           <View className="personalPage_exp_value">
             {points}/{nextLevel}
