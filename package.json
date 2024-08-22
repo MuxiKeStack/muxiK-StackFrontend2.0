@@ -54,7 +54,7 @@
     "@tarojs/shared": "3.6.14",
     "@tarojs/taro": "3.6.14",
     "crypto-js": "^4.2.0",
-    "echarts": "^5.4.3",
+    "echarts": "^5.5.1",
     "express": "^4.18.2",
     "nanoid": "^3.3.7",
     "prettier": "^3.3.3",
