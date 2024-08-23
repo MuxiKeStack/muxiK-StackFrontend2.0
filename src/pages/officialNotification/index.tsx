@@ -1,3 +1,5 @@
+/* eslint-disable unused-imports/no-unused-vars */
+/* eslint-disable no-console */
 import { View } from '@tarojs/components';
 import { useLoad } from '@tarojs/taro';
 import { useState } from 'react';
@@ -18,13 +20,11 @@ const OfficialNotification: React.FC<OfficialNotificationProps> = () => {
     console.log('Page loaded.');
   });
 
-  const [isImageDetail, setIsImageDetail] = useState(true);
-  const [notificationTime, setNotificationTime] = useState('07:25');
-  const [notificationTitle, setNotificationTitle] = useState('评课活动要开始了');
-  const [notificationDescription, setNotificationDescription] = useState('摘要');
-  const [notificationAlert, setNotificationAlert] = useState(
-    '您在高等数学下方的评论违规，请注意您的发言'
-  );
+  const [isImageDetail] = useState(true);
+  const [notificationTime] = useState('07:25');
+  const [notificationTitle] = useState('评课活动要开始了');
+  const [notificationDescription] = useState('摘要');
+  const [notificationAlert] = useState('您在高等数学下方的评论违规，请注意您的发言');
 
   return (
     <View className="OfficialNotification">

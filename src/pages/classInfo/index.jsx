@@ -1,13 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable import/first */
+import { Text, View } from '@tarojs/components';
+import { Component } from 'react';
+
+import './index.scss';
+
 import Comment from '@/components/comment/comment';
 import Label3 from '@/components/label3/label3';
 import ShowStar from '@/components/showStar/showStar';
-import { Text, View } from '@tarojs/components';
-import { Component } from 'react';
-import './index.scss';
+
 //import Chart from '@/components/chart/chart'
 //@ts-ignore
-
-// import * as echarts from '../../components/ec-canvas/echarts.js'; // 引入echarts
+import * as echarts from '../../components/ec-canvas/echarts.js'; // 引入echarts
 
 class Chart extends Component {
   constructor(props) {

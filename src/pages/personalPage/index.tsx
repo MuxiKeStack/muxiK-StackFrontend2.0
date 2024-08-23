@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-console */
+/* eslint-disable import/first */
 import { Image, Progress, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Text, View } from '@tarojs/components';
 import { useCallback } from 'react';
 
@@ -9,7 +11,7 @@ export default function Label1(props) {
       event.stopPropagation(); // 阻止事件冒泡
       props.onClick(props.content);
     },
-    [props.content, props.onClick]
+    [props]
   );
 
   return (

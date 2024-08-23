@@ -1,3 +1,8 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-base-to-string */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Taro from '@tarojs/taro';
 
 const preUrl = 'https://kstack.muxixyz.com';
@@ -9,7 +14,7 @@ export async function post(url = '', data = {}, isToken = true) {
 
   const getToken = () => {
     return new Promise((resolve, reject) => {
-      Taro.getStorage({
+      void Taro.getStorage({
         key: 'token',
         success: (res) => {
           const token = res.data;
@@ -17,7 +22,7 @@ export async function post(url = '', data = {}, isToken = true) {
             resolve(token); // 如果token存在，解析Promise
           } else {
             reject(new Error('No token found')); // 如果没有token，拒绝Promise
-            Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
+            void Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
           }
         },
         fail: (err) => {
@@ -60,15 +65,15 @@ export async function get(url = '', isToken = true) {
 
   const getToken = () => {
     return new Promise((resolve, reject) => {
-      Taro.getStorage({
-        key: 'shortToken',
+      void Taro.getStorage({
+        key: 'token',
         success: (res) => {
           const token = res.data;
           if (token) {
             resolve(token); // 如果token存在，解析Promise
           } else {
             reject(new Error('No token found')); // 如果没有token，拒绝Promise
-            Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
+            void Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
           }
         },
         fail: (err) => {
@@ -110,13 +115,13 @@ export async function put(url = '', data = {}, isToken = true) {
   };
 
   if (isToken) {
-    Taro.getStorage({
+    void Taro.getStorage({
       key: 'shortToken',
       success: (res) => {
         const token = res.data;
         if (token) header['Authorization'] = token;
         else {
-          Taro.navigateTo({ url: '/pages/login/index' });
+          void Taro.navigateTo({ url: '/pages/login/index' });
         }
       },
     });
@@ -153,7 +158,7 @@ export async function postPwd(url = '', data = {}, token: string) {
 
   if (token) header['Authorization'] = token;
   else {
-    Taro.navigateTo({ url: '/pages/login/index' });
+    void Taro.navigateTo({ url: '/pages/login/index' });
   }
 
   try {
@@ -181,13 +186,13 @@ export async function postLogin(url = '', data = {}, isToken = true) {
   };
 
   if (isToken) {
-    Taro.getStorage({
+    void Taro.getStorage({
       key: 'token',
       success: (res) => {
         const token = res.data;
         if (token) header['Authorization'] = token;
         else {
-          Taro.navigateTo({ url: '/pages/login/index' });
+          void Taro.navigateTo({ url: '/pages/login/index' });
         }
       },
     });
@@ -216,71 +221,3 @@ export async function postLogin(url = '', data = {}, isToken = true) {
     throw error;
   }
 }
-const handleLogin = async (data = {}) => {
-  //const systemInfo = Taro.getSystemInfoSync();
-  //后期看情况决定是不是加User-Agent
-  const header = {
-    'Content-Type': 'application/json;charset=utf-8',
-    //"User-Agent":systemInfo.model
-  };
-
-  Taro.setStorage({
-    key: 'shortToken',
-    data: 'shortToken',
-  });
-
-  Taro.setStorage({
-    key: 'longToken',
-    data: 'longToken',
-  });
-
-  try {
-    const response = await Taro.request({
-      method: 'POST',
-      url: `${preUrl}/users/login_ccnu`,
-      header,
-      data: JSON.stringify(data),
-    });
-
-    const headers = response.header || {};
-    const shortToken = headers['X-Jwt-Token'];
-    const longToken = headers['X-Refresh-Token'];
-
-    if (shortToken && longToken) {
-      Taro.setStorage({
-        key: 'shortToken',
-        data: shortToken.toString(),
-        success: () => {
-          console.log('shortToken 设置成功');
-          // 方便看情况 log 出 shortToken 后期上线之前删除掉这个
-          console.log(shortToken);
-        },
-      });
-
-      Taro.setStorage({
-        key: 'longToken',
-        data: longToken.toString(),
-        success: () => {
-          console.log('longToken 设置成功');
-          // 方便看情况 log 出 longToken 后期上线之前删除掉这个
-          console.log(longToken);
-        },
-      });
-      Taro.navigateTo({
-        url: '/pages/personalPage/index',
-      });
-    }
-
-    if (response.data.code !== 0) {
-      console.log('登陆失败(code 不为 0)');
-    }
-
-    if (!response.statusCode.toString().startsWith('2')) {
-      throw new Error(`${response.statusCode}`);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export default handleLogin;

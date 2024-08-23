@@ -1,5 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Image, Input, View } from '@tarojs/components';
 import React, { useRef, useState } from 'react';
+
 import './SearchInput.scss';
 
 type SearchInputProps = {

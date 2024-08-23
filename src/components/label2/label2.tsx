@@ -1,8 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { View } from '@tarojs/components';
 import { useEffect, useState } from 'react';
+
+import './label2.scss';
+
 import Label3 from '../label3/label3';
 import ShowStar from '../showStar/showStar';
-import './label2.scss';
 
 export default function Label2(props) {
   const star2 = 'https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png';
@@ -30,7 +37,7 @@ export default function Label2(props) {
     return commentsArray.map((item, index) => {
       // 确保item存在并且有内容可以显示
       if (item) {
-        let obj = { content: item };
+        const obj = { content: item };
         return <Label3 key={index} {...obj} />; // 添加key属性
       }
       return null;
@@ -40,7 +47,7 @@ export default function Label2(props) {
   // 修正useEffect
   useEffect(() => {
     getStar(props.composite_score);
-  }, [props.composite_score]); // 添加依赖项props.composite_score
+  }, [getStar, props.composite_score]); // 添加依赖项props.composite_score
 
   // ...其他代码
 

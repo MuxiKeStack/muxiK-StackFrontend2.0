@@ -152,7 +152,7 @@ function Chart() {
 //   }
 // }
 
-export default function index(){
+export default function index() {
   const commentNumber = 2;
 
   const [course, setCourse] = useState<Course | null>(null);

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { View } from '@tarojs/components';
 import { useLoad } from '@tarojs/taro';
 import { useState } from 'react';
@@ -17,11 +18,10 @@ const MessageNotification: React.FC<MessageNotificationProps> = () => {
     console.log('Page loaded.');
   });
 
-  const [notificationEventType, setNotificationEventType] = useState(true);
-  const [notificationUsername, setNotificationUsername] = useState('昵称');
-  const [notificationDescription, setNotificationDescription] =
-    useState('我正在回复你的评论');
-  const [notificationComment, setNotificationComment] = useState('这里是原评论内容');
+  const [notificationEventType] = useState(true);
+  const [notificationUsername] = useState('昵称');
+  const [notificationDescription] = useState('我正在回复你的评论');
+  const [notificationComment] = useState('这里是原评论内容');
 
   return (
     <View className="MessageNotification">

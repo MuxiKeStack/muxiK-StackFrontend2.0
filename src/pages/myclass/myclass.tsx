@@ -1,3 +1,8 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable unused-imports/no-unused-vars */
 import { Picker, Text, View } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 

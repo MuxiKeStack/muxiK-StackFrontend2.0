@@ -1,19 +1,23 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable no-useless-catch */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable import/first */
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
 import { GuildLine } from '@/components';
-// eslint-disable-next-line import/first
 import Comment from '@/components/comment/comment';
 
-// eslint-disable-next-line import/first
-import { CommentInfoType } from '@/assets/types';
-// eslint-disable-next-line import/first
-import { get } from '@/fetch';
+import { get, postLogin } from '@/fetch';
 
+import { CommentInfoType } from '../../assets/types';
 import SearchInput from '../../components/SearchInput/SearchInput';
 
 type CourseDetailsType = {
@@ -104,68 +108,66 @@ export default function Index() {
 
     return processedData;
   }
-  const preUrl = 'https://kstack.muxixyz.com';
 
-  const getToken = () => {
-    return new Promise<string>((resolve, reject) => {
-      void Taro.getStorage({
-        key: 'shortToken',
-        success: (res) => resolve(res.data),
-        fail: (err) => reject(err),
-      });
-    });
-  };
-  const getData = async (type) => {
-    let classType = 'CoursePropertyMajorCore';
-    switch (type) {
-      case 1:
-        classType = 'CoursePropertyMajorCore';
-        break;
-      case 2:
-        classType = 'CoursePropertyGeneralElective';
-        break;
-      case 3:
-        classType = 'CoursePropertyGeneralCore';
-        break;
-      case 4:
-        classType = 'CoursePropertyGeneralRequired';
-        break;
-    }
-    console.log(classType);
-
-    try {
-      const token = await getToken();
-      const header = {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json;charset=utf-8',
-      };
-
-      const response = await Taro.request({
-        method: 'GET',
-        url: `${preUrl}/evaluations/list/all?cur_evaluation_id=0&limit=10&property=${classType}`,
-        header,
-      });
-
-      if (response.data.code == 0) {
-        const newData = await processData(response.data.data);
-        setComments(newData);
-      } else {
-        console.log('请求失败，code不为0');
+  const getData = useCallback(
+    (type) => {
+      let classType = 'CoursePropertyMajorCore';
+      switch (type) {
+        case 1:
+          classType = 'CoursePropertyMajorCore';
+          break;
+        case 2:
+          classType = 'CoursePropertyGeneralElective';
+          break;
+        case 3:
+          classType = 'CoursePropertyGeneralCore';
+          break;
+        case 4:
+          classType = 'CoursePropertyGeneralRequired';
+          break;
       }
-    } catch (error) {
-      console.error('获取token或请求数据时发生错误:', error);
-    }
-  };
+      console.log(classType);
+      postLogin(
+        '/users/login_ccnu',
+        {
+          student_id: '2022214276',
+          password: 'Maggie1029',
+        },
+        false
+      ).then((res) => {
+        const customHeaderValue = res['X-Jwt-Token'];
+        // console.log(res);
+        // console.log(customHeaderValue);
+        Taro.setStorage({ key: 'token', data: customHeaderValue });
+        console.log('登录成功');
+        get(
+          `/evaluations/list/all?cur_evaluation_id=0&limit=10&property=${classType}`
+        ).then((res1) => {
+          // console.log(res.data);
+          if (res1.code == 0) {
+            processData(res1.data)
+              .then((newData) => {
+                setComments(newData);
+              })
+              .catch((error) => {
+                console.error('处理数据时发生错误:', error);
+              });
+          }
+        });
+      });
+    },
+    [processData]
+  );
 
   useEffect(() => {
-    void getData(1);
+    getData(1);
   }, [getData]);
 
   const [classType, setClassType] = useState(1);
 
   const handleClick = (type) => {
     setClassType(type);
-    void getData(type);
+    getData(type);
   };
 
   const handleSearch = (searchText: string) => {
@@ -178,7 +180,7 @@ export default function Index() {
     console.log(comment);
     // 序列化对象
     const serializedComment = encodeURIComponent(JSON.stringify(comment));
-    void Taro.navigateTo({
+    Taro.navigateTo({
       url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
     });
   };

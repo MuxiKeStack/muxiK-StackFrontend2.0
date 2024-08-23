@@ -20625,12 +20625,13 @@
   var SYSTEM_LANG = !env.domSupported
     ? DEFAULT_LOCALE
     : (function () {
-        var langStr = /* eslint-disable-next-line */
-        (
-          document.documentElement.lang ||
-          navigator.language ||
-          navigator.browserLanguage
-        ).toUpperCase();
+        var langStr =
+          /* eslint-disable-next-line */
+          (
+            document.documentElement.lang ||
+            navigator.language ||
+            navigator.browserLanguage
+          ).toUpperCase();
         return langStr.indexOf(LOCALE_ZH) > -1 ? LOCALE_ZH : DEFAULT_LOCALE;
       })();
 
@@ -24229,7 +24230,8 @@
    * ```
    */
 
-  function parseRawOption(rawOption, optionPreprocessorFuncs, isNew) { // `rawOption` May be modified
+  function parseRawOption(rawOption, optionPreprocessorFuncs, isNew) {
+    // `rawOption` May be modified
     var mediaList = [];
     var mediaDefault;
     var baseOption;
@@ -39615,7 +39617,8 @@
    * @return The results are always sorted by `storeDimIndex` asc.
    */
 
-  function prepareSeriesDataSchema(source, opt) { // TODO: TYPE completeDimensions type
+  function prepareSeriesDataSchema(source, opt) {
+    // TODO: TYPE completeDimensions type
     if (!isSourceInstance(source)) {
       source = createSourceFromSeriesDataOption(source);
     }

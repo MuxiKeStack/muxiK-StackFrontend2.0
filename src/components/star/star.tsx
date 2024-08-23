@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable unused-imports/no-unused-vars */
 import { Image, View } from '@tarojs/components';
 import { useState } from 'react';
 
@@ -23,7 +25,7 @@ export default function Star() {
         return (
           <Image
             className="star"
-            onClick={(e) => {
+            onClick={() => {
               starClick(index);
             }}
             src={star}

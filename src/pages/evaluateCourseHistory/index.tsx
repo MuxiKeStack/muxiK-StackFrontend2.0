@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { View } from '@tarojs/components';
 import { useLoad } from '@tarojs/taro';
 

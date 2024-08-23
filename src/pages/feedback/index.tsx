@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Textarea, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import React from 'react';
@@ -24,7 +25,7 @@ const Feedback: React.FC<FeedbackProps> = () => {
         });
       },
       fail: () => {
-        Taro.showToast({
+        void Taro.showToast({
           title: '复制失败',
           icon: 'none',
           duration: 2000,
