@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -20,7 +21,7 @@ import CommentComponent from '@/components/CommentComponent/CommentComponent';
 
 import { get, post } from '@/fetch';
 
-import { Comment as CommentType,CommentInfoType } from '../../assets/types';
+import { CommentInfoType, Comment as CommentType } from '../../assets/types';
 
 export default function Index() {
   const [allComments, setAllComments] = useState<CommentType[]>([]);
