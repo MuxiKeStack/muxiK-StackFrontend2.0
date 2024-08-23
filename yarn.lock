@@ -2847,6 +2847,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/api@npm:3.6.35":
+  version: 3.6.35
+  resolution: "@tarojs/api@npm:3.6.35"
+  dependencies:
+    "@babel/runtime": "npm:^7.14.5"
+    "@tarojs/runtime": "npm:3.6.35"
+    "@tarojs/shared": "npm:3.6.35"
+  checksum: 10c0/c2947580bbedd3e34516e828fc16b1956a17adcc903eb8c045d53d1cfa293453bd497b1dfae7a97a361ff6ed18f08047059092cc4f784d1c0de78d120df95487
+  languageName: node
+  linkType: hard
+
 "@tarojs/api@npm:4.0.3":
   version: 4.0.3
   resolution: "@tarojs/api@npm:4.0.3"
@@ -2939,27 +2950,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/components-advanced@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/components-advanced@npm:3.6.34"
+"@tarojs/components-advanced@npm:3.6.35":
+  version: 3.6.35
+  resolution: "@tarojs/components-advanced@npm:3.6.35"
   dependencies:
-    "@tarojs/components": "npm:3.6.34"
+    "@tarojs/components": "npm:3.6.35"
     classnames: "npm:^2.2.5"
     csstype: "npm:^3.1.1"
     memoize-one: "npm:^6.0.0"
     postcss: "npm:^8.4.18"
     tslib: "npm:^2.6.2"
   peerDependencies:
-    "@tarojs/runtime": ~3.6.34
-    "@tarojs/shared": ~3.6.34
-    "@tarojs/taro": ~3.6.34
+    "@tarojs/runtime": ~3.6.35
+    "@tarojs/shared": ~3.6.35
+    "@tarojs/taro": ~3.6.35
     react: ">=17"
   peerDependenciesMeta:
     react:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/de17d44ba8748d6795dab9693c6786465c5a612a6f79baf7afaf2edf755136cfff4926bfa5d538e9174a4591e9316056aef91aab2e8b7d4be11d913664c276dc
+  checksum: 10c0/c31b8fa50ff0a6f9d5e736209eac2e7344c0e5224dbe1f20be481fccd0c77532f29b24e3085ce26ec4106e5dce4c824f8b9d562c2072887b45b22901e361e31e
   languageName: node
   linkType: hard
 
@@ -3004,13 +3015,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/components@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/components@npm:3.6.34"
+"@tarojs/components@npm:3.6.35":
+  version: 3.6.35
+  resolution: "@tarojs/components@npm:3.6.35"
   dependencies:
     "@stencil/core": "npm:^2.22.2"
-    "@tarojs/components-advanced": "npm:3.6.34"
-    "@tarojs/taro": "npm:3.6.34"
+    "@tarojs/components-advanced": "npm:3.6.35"
+    "@tarojs/taro": "npm:3.6.35"
     classnames: "npm:^2.2.5"
     hammerjs: "npm:^2.0.8"
     hls.js: "npm:^1.1.5"
@@ -3024,7 +3035,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/c95f685d7348f1c0f46de0116fd88e5c957394366c3a97f7cf767d7339d9f4e065565b7b3bf866fc564f7de5f7d5d2212516da86bf5e1da6318bd550e27bb1d7
+  checksum: 10c0/7f8b463773c1b279b59bb381740361d0c284d745d815b3f0ae4a9ecb1ca9ed940e924e40e2ee6174e9129995463087e3d16d07bfd147c2713811849e87bdefb8
   languageName: node
   linkType: hard
 
@@ -3497,6 +3508,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/runtime@npm:3.6.35":
+  version: 3.6.35
+  resolution: "@tarojs/runtime@npm:3.6.35"
+  dependencies:
+    lodash-es: "npm:4.17.21"
+    tslib: "npm:^2.6.2"
+  peerDependencies:
+    "@tarojs/shared": ~3.6.35
+  checksum: 10c0/6ce6faa2f1cac79cb746415700c5915b44303908ac9aab75977d4fae027929906c005aadedcb37cb3eb5cc94917e00690c3ba54c406354a94ae6d1d6f450f876
+  languageName: node
+  linkType: hard
+
 "@tarojs/runtime@npm:4.0.3":
   version: 4.0.3
   resolution: "@tarojs/runtime@npm:4.0.3"
@@ -3567,6 +3590,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/shared@npm:3.6.35":
+  version: 3.6.35
+  resolution: "@tarojs/shared@npm:3.6.35"
+  checksum: 10c0/03330bc13a23c9e3b31699de5535a4303ecc6932d23a6445b2403cbb730b3c87b116c9ead7537a0414f390d06c3ff69dec5468efdff18de07aca1998966ee2bf
+  languageName: node
+  linkType: hard
+
 "@tarojs/shared@npm:4.0.3":
   version: 4.0.3
   resolution: "@tarojs/shared@npm:4.0.3"
@@ -3630,6 +3660,29 @@ __metadata:
     vue:
       optional: true
   checksum: 10c0/db93ea00f40dbd92a57d11566f21727c439988381ead3ff1a9306dc4d342306d9a1f38f484e09f6f5beb05c34a98992dd7d8483d1bb3fb40f09e5bd0a3424082
+  languageName: node
+  linkType: hard
+
+"@tarojs/taro@npm:3.6.35":
+  version: 3.6.35
+  resolution: "@tarojs/taro@npm:3.6.35"
+  dependencies:
+    "@tarojs/api": "npm:3.6.35"
+  peerDependencies:
+    "@tarojs/helper": ~3.6.35
+    "@tarojs/runtime": ~3.6.35
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/webpack":
+      optional: true
+    "@types/webpack-dev-server":
+      optional: true
+    postcss:
+      optional: true
+    vue:
+      optional: true
+  checksum: 10c0/1a5851b7d2963546c344d5b348a28ae609fc32708d165283df1c7610272ddd73e984ccbe811dc26120e59cadf5929d69f456fb10450163fd4a813cb79b5a99ab
   languageName: node
   linkType: hard
 
@@ -12542,7 +12595,7 @@ __metadata:
     "@taro-hooks/plugin-react": "npm:^2.0.11"
     "@taroify/core": "npm:^0.3.0-alpha.0"
     "@tarojs/cli": "npm:3.6.34"
-    "@tarojs/components": "npm:3.6.34"
+    "@tarojs/components": "npm:3.6.35"
     "@tarojs/helper": "npm:3.6.34"
     "@tarojs/plugin-framework-react": "npm:3.6.34"
     "@tarojs/plugin-platform-alipay": "npm:3.6.34"

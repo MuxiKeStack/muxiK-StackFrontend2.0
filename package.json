@@ -44,7 +44,7 @@
     "@taro-hooks/plugin-auto-import": "^2.0.11",
     "@taro-hooks/plugin-react": "^2.0.11",
     "@taroify/core": "^0.3.0-alpha.0",
-    "@tarojs/components": "3.6.34",
+    "@tarojs/components": "3.6.35",
     "@tarojs/helper": "3.6.34",
     "@tarojs/plugin-framework-react": "3.6.34",
     "@tarojs/plugin-platform-alipay": "3.6.34",
