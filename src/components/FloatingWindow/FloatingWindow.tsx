@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
 import { Swiper, SwiperItem, View } from '@tarojs/components';
+import React from 'react';
 
 import './index.scss';
 

@@ -2,8 +2,13 @@ import { Component, PropsWithChildren } from 'react';
 
 import '@/common/styles/app.scss';
 
+import checkToken from '@/utils/checkToken';
+
 class App extends Component<PropsWithChildren> {
-  // this.props.children 是将要会渲染的页面
+  //TODO 写成加interceptor 但是我还没写明白 别急
+  componentDidMount() {
+    checkToken();
+  }
   render() {
     return this.props.children;
   }

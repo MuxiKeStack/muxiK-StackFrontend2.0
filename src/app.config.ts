@@ -44,10 +44,10 @@
 
 export default defineAppConfig({
   pages: [
+    'pages/login/index',
     'pages/main/index',
     'pages/classInfo/index',
     'pages/evaluateInfo/index',
-    'pages/login/index',
     'pages/personalPage/index',
     'pages/myCollection/index',
     'pages/evaluateCourseHistory/index',
@@ -58,6 +58,7 @@ export default defineAppConfig({
     'pages/myclass/myclass',
     'pages/research/research',
     'pages/index/index',
+    'pages/editUser/index',
   ],
   window: {
     backgroundTextStyle: 'light',

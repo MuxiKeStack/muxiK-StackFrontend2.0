@@ -116,7 +116,7 @@ export async function put(url = '', data = {}, isToken = true) {
 
   if (isToken) {
     void Taro.getStorage({
-      key: 'token',
+      key: 'shortToken',
       success: (res) => {
         const token = res.data;
         if (token) header['Authorization'] = token;

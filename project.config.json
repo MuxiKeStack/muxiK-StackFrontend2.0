@@ -26,7 +26,7 @@
     "condition": false,
     "compileWorklet": false,
     "ignoreUploadUnusedFiles": true,
-    "uglifyFileName": true
+    "uglifyFileName": false
   },
   "compileType": "miniprogram",
   "simulatorType": "wechat",
