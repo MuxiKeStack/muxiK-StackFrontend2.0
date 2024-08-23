@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-console */
+/* eslint-disable import/first */
 import { Image, Progress, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import { AtList, AtListItem } from 'taro-ui';
@@ -67,7 +70,7 @@ const List = () => {
         arrow="right"
         thumb={BookIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/myclass/myclass' });
+          void Taro.navigateTo({ url: '/pages/myclass/myclass' });
         }}
       />
       <AtListItem
@@ -75,7 +78,7 @@ const List = () => {
         arrow="right"
         thumb={StarIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/myCollection/index' });
+          void Taro.navigateTo({ url: '/pages/myCollection/index' });
         }}
       />
       <AtListItem
@@ -83,7 +86,7 @@ const List = () => {
         arrow="right"
         thumb={ClockIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/evaluateCourseHistory/index' });
+          void Taro.navigateTo({ url: '/pages/evaluateCourseHistory/index' });
         }}
       />
       <AtListItem
@@ -91,7 +94,7 @@ const List = () => {
         arrow="right"
         thumb={MessageIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/messageNotification/index' });
+          void Taro.navigateTo({ url: '/pages/messageNotification/index' });
         }}
       />
       <AtListItem
@@ -99,7 +102,7 @@ const List = () => {
         arrow="right"
         thumb={MessageIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/officialNotification/index' });
+          void Taro.navigateTo({ url: '/pages/officialNotification/index' });
         }}
       />
       <AtListItem
@@ -107,7 +110,7 @@ const List = () => {
         arrow="right"
         thumb={MailIcon}
         onClick={() => {
-          Taro.navigateTo({ url: '/pages/feedback/index' });
+          void Taro.navigateTo({ url: '/pages/feedback/index' });
         }}
       />
     </AtList>

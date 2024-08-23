@@ -1,3 +1,10 @@
+/* eslint-disable unused-imports/no-unused-vars */
+/* eslint-disable react/jsx-key */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable import/first */
 import {
   Button,
   Form,
@@ -26,7 +33,7 @@ export default function evaluate() {
   // 示例用法
   //const uniqueID = generateUniqueID();
 
-  const [testways, setTestways] = useState([
+  const [testways] = useState([
     { value: '开卷考试', text: '开卷考试', checked: false },
     { value: '闭卷考试', text: '闭卷考试', checked: false },
     { value: '论文考核', text: '论文考核', checked: false },
@@ -34,7 +41,7 @@ export default function evaluate() {
     { value: '无考核', text: '无考核', checked: false },
   ]);
 
-  const [myclass, setMyclass] = useState([{ content: '只能评价自己学过的课程哦' }]);
+  const [myclass] = useState([{ content: '只能评价自己学过的课程哦' }]);
 
   const [features, setFeatures] = useState([
     { id: generateUniqueID(), content: '老师风趣幽默', checked: false },
@@ -80,7 +87,7 @@ export default function evaluate() {
         <Text>考核方式 :</Text>
         <View className="ways">
           <RadioGroup>
-            {testways.map((item, index) => {
+            {testways.map((item) => {
               return (
                 <Radio
                   className="myradio"

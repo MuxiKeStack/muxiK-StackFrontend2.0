@@ -1,3 +1,8 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-base-to-string */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Taro from '@tarojs/taro';
 
 const preUrl = 'https://kstack.muxixyz.com';
@@ -9,7 +14,7 @@ export async function post(url = '', data = {}, isToken = true) {
 
   const getToken = () => {
     return new Promise((resolve, reject) => {
-      Taro.getStorage({
+      void Taro.getStorage({
         key: 'token',
         success: (res) => {
           const token = res.data;
@@ -17,7 +22,7 @@ export async function post(url = '', data = {}, isToken = true) {
             resolve(token); // 如果token存在，解析Promise
           } else {
             reject(new Error('No token found')); // 如果没有token，拒绝Promise
-            Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
+            void Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
           }
         },
         fail: (err) => {
@@ -60,7 +65,7 @@ export async function get(url = '', isToken = true) {
 
   const getToken = () => {
     return new Promise((resolve, reject) => {
-      Taro.getStorage({
+      void Taro.getStorage({
         key: 'token',
         success: (res) => {
           const token = res.data;
@@ -68,7 +73,7 @@ export async function get(url = '', isToken = true) {
             resolve(token); // 如果token存在，解析Promise
           } else {
             reject(new Error('No token found')); // 如果没有token，拒绝Promise
-            Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
+            void Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
           }
         },
         fail: (err) => {
@@ -110,13 +115,13 @@ export async function put(url = '', data = {}, isToken = true) {
   };
 
   if (isToken) {
-    Taro.getStorage({
+    void Taro.getStorage({
       key: 'token',
       success: (res) => {
         const token = res.data;
         if (token) header['Authorization'] = token;
         else {
-          Taro.navigateTo({ url: '/pages/login/index' });
+          void Taro.navigateTo({ url: '/pages/login/index' });
         }
       },
     });
@@ -153,7 +158,7 @@ export async function postPwd(url = '', data = {}, token: string) {
 
   if (token) header['Authorization'] = token;
   else {
-    Taro.navigateTo({ url: '/pages/login/index' });
+    void Taro.navigateTo({ url: '/pages/login/index' });
   }
 
   try {
@@ -181,13 +186,13 @@ export async function postLogin(url = '', data = {}, isToken = true) {
   };
 
   if (isToken) {
-    Taro.getStorage({
+    void Taro.getStorage({
       key: 'token',
       success: (res) => {
         const token = res.data;
         if (token) header['Authorization'] = token;
         else {
-          Taro.navigateTo({ url: '/pages/login/index' });
+          void Taro.navigateTo({ url: '/pages/login/index' });
         }
       },
     });

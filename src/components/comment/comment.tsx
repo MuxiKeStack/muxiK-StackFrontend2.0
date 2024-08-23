@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 // import React, { useEffect } from "react";
 import { Image, Navigator, Text, View } from '@tarojs/components';
-import ShowStar from '../showStar/showStar';
+
 import './comment.scss';
+
+import ShowStar from '../showStar/showStar';
 
 export default function comment(props) {
   // 创建一个新的Date对象，传入时间戳

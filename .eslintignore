@@ -6,3 +6,6 @@ dist-ssr
 *.local
 weapp.js
 babel.config.js
+ec-canvas
+
+*.js

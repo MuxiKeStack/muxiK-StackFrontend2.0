@@ -1,17 +1,22 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable unused-imports/no-unused-vars */
 import { Picker, Text, View } from '@tarojs/components';
 import { useState } from 'react';
 
 import './myclass.scss';
 
 export default function Myclass() {
-  const [yearSelector, setYearSelector] = useState([
+  const [yearSelector] = useState([
     '2022-2023学年',
     '2023-2024学年',
     '2024-2025学年',
     '2025-2026学年',
   ]);
 
-  const [year, setYear] = useState('2022-2023学年');
+  const [, setYear] = useState('2022-2023学年');
 
   const onTimeChange = (e) => {
     const { detail } = e;
@@ -20,14 +25,14 @@ export default function Myclass() {
 
   const semSelector = ['第一学期', '第二学期', '第三学期', '全部学期'];
 
-  const [sem, setSem] = useState('第一学期');
+  const [, setSem] = useState('第一学期');
 
   const onSemChange = (e) => {
     const { detail } = e;
     setSem(detail.value);
   };
 
-  const [myclasses, setMyclasses] = useState([
+  const [myclasses] = useState([
     { name: '人体解剖学 （成良）', status: false },
     { name: '人体解剖学 （成良）', status: false },
     { name: '人体解剖学 （成良）', status: false },

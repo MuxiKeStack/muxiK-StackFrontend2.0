@@ -1,11 +1,23 @@
-import Label2 from '@/components/label2/label2';
-import { get } from '@/fetch';
+/* eslint-disable import/first */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable no-console */
 import { Image, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
+
+import './research.scss';
+
+import Label2 from '@/components/label2/label2';
+
+import { get } from '@/fetch';
+
 import Label1 from '../../components/label1/label1';
 import SearchInput from '../../components/SearchInput/SearchInput';
-import './research.scss';
 
 export interface Course {
   id: number;

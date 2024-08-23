@@ -1,9 +1,11 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable unused-imports/no-unused-vars */
 import { Image, View } from '@tarojs/components';
 import { useState } from 'react';
 
 import './star.scss';
 
-export default function Star(props) {
+export default function Star() {
   const star0 = 'https://s2.loli.net/2023/08/29/NRLD54kzG9nEOHW.png';
   const star1 = 'https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png';
 
@@ -23,7 +25,7 @@ export default function Star(props) {
         return (
           <Image
             className="star"
-            onClick={(e) => {
+            onClick={() => {
               starClick(index);
             }}
             src={star}

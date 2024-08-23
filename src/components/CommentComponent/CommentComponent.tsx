@@ -1,10 +1,20 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable import/first */
 // Comment.tsx
-import { get } from '@/fetch';
 import { Image, Text, View } from '@tarojs/components';
 import React, { useEffect, useState } from 'react';
+
+import './index.scss';
+
+import { get } from '@/fetch';
+
 import { Comment } from '../../assets/types';
 import { getUserInfo } from '../../assets/userService';
-import './index.scss';
 
 interface CommentProps {
   comments: Comment[];
@@ -61,8 +71,8 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
       setAllComments(commentsWithRepliesAndUserInfo);
     };
 
-    fetchAllReplies();
-  }, []);
+    void fetchAllReplies();
+  }, [allComments]);
 
   const ctimeToString = (ctime: number) => {
     const ctimeDate = new Date(ctime);

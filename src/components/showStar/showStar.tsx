@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Image, View } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 

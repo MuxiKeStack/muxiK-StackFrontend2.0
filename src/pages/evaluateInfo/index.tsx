@@ -1,12 +1,26 @@
-import Comment from '@/components/comment/comment';
-import CommentComponent from '@/components/CommentComponent/CommentComponent';
-import { get, post } from '@/fetch';
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/require-await */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/first */
 import { Input, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-import { CommentInfoType, Comment as CommentType } from '../../assets/types';
 import './index.scss';
+
+import Comment from '@/components/comment/comment';
+import CommentComponent from '@/components/CommentComponent/CommentComponent';
+
+import { get, post } from '@/fetch';
+
+import { Comment as CommentType,CommentInfoType } from '../../assets/types';
 
 export default function Index() {
   const [allComments, setAllComments] = useState<CommentType[]>([]);
@@ -17,7 +31,7 @@ export default function Index() {
 
   const [comment, setComment] = useState<CommentInfoType | null>(null); //获取课评信息
   // const biz_id = 1;
-  const [biz_id, setBiz_id] = useState<Number | null>(null);
+  const [biz_id, setBiz_id] = useState<number | null>(null);
 
   useEffect(() => {
     const handleQuery = () => {

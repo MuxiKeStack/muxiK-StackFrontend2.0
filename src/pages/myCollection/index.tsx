@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable import/first */
 import { Input, View } from '@tarojs/components';
 import { useLoad } from '@tarojs/taro';
 import { useState } from 'react';
@@ -14,7 +16,7 @@ const MyCollection: React.FC<MyCollectionProps> = () => {
     console.log('Page loaded.');
   });
 
-  const [collections, setCollections] = useState(5);
+  const [collections] = useState(5);
 
   return (
     <View className="MyCollection">

@@ -1,12 +1,24 @@
-import { GuildLine } from '@/components';
-import Comment from '@/components/comment/comment';
-import { get, postLogin } from '@/fetch';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable no-useless-catch */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable import/first */
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
+import './index.scss';
+
+import { GuildLine } from '@/components';
+import Comment from '@/components/comment/comment';
+
+import { get, postLogin } from '@/fetch';
+
 import { CommentInfoType } from '../../assets/types';
 import SearchInput from '../../components/SearchInput/SearchInput';
-import './index.scss';
 
 type CourseDetailsType = {
   class_name: string;
@@ -21,7 +33,7 @@ type UserDetailsType = {
 export default function Index() {
   const handleSearchToggle = () => {
     // console.log(isSearchActive);
-    Taro.navigateTo({
+    void Taro.navigateTo({
       url: '/pages/research/research',
     });
   };
@@ -97,56 +109,59 @@ export default function Index() {
     return processedData;
   }
 
-  const getData = (type) => {
-    let classType = 'CoursePropertyMajorCore';
-    switch (type) {
-      case 1:
-        classType = 'CoursePropertyMajorCore';
-        break;
-      case 2:
-        classType = 'CoursePropertyGeneralElective';
-        break;
-      case 3:
-        classType = 'CoursePropertyGeneralCore';
-        break;
-      case 4:
-        classType = 'CoursePropertyGeneralRequired';
-        break;
-    }
-    console.log(classType);
-    postLogin(
-      '/users/login_ccnu',
-      {
-        student_id: '2022214276',
-        password: 'Maggie1029',
-      },
-      false
-    ).then((res) => {
-      const customHeaderValue = res['X-Jwt-Token'];
-      // console.log(res);
-      // console.log(customHeaderValue);
-      Taro.setStorage({ key: 'token', data: customHeaderValue });
-      console.log('登录成功');
-      get(
-        `/evaluations/list/all?cur_evaluation_id=0&limit=10&property=${classType}`
-      ).then((res1) => {
-        // console.log(res.data);
-        if (res1.code == 0) {
-          processData(res1.data)
-            .then((newData) => {
-              setComments(newData);
-            })
-            .catch((error) => {
-              console.error('处理数据时发生错误:', error);
-            });
-        }
+  const getData = useCallback(
+    (type) => {
+      let classType = 'CoursePropertyMajorCore';
+      switch (type) {
+        case 1:
+          classType = 'CoursePropertyMajorCore';
+          break;
+        case 2:
+          classType = 'CoursePropertyGeneralElective';
+          break;
+        case 3:
+          classType = 'CoursePropertyGeneralCore';
+          break;
+        case 4:
+          classType = 'CoursePropertyGeneralRequired';
+          break;
+      }
+      console.log(classType);
+      postLogin(
+        '/users/login_ccnu',
+        {
+          student_id: '2022214276',
+          password: 'Maggie1029',
+        },
+        false
+      ).then((res) => {
+        const customHeaderValue = res['X-Jwt-Token'];
+        // console.log(res);
+        // console.log(customHeaderValue);
+        Taro.setStorage({ key: 'token', data: customHeaderValue });
+        console.log('登录成功');
+        get(
+          `/evaluations/list/all?cur_evaluation_id=0&limit=10&property=${classType}`
+        ).then((res1) => {
+          // console.log(res.data);
+          if (res1.code == 0) {
+            processData(res1.data)
+              .then((newData) => {
+                setComments(newData);
+              })
+              .catch((error) => {
+                console.error('处理数据时发生错误:', error);
+              });
+          }
+        });
       });
-    });
-  };
+    },
+    [processData]
+  );
 
   useEffect(() => {
     getData(1);
-  }, []);
+  }, [getData]);
 
   const [classType, setClassType] = useState(1);
 

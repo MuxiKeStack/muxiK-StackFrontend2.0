@@ -7,11 +7,11 @@ import './index.scss';
 type CollectionCourseProps = object;
 
 const CollectionCourse: React.FC<CollectionCourseProps> = () => {
-  const [courseType, setCourseType] = useState('专');
-  const [courseName, setCourseName] = useState('高等数学A1');
-  const [courseTeacher, setCourseTeacher] = useState('周振荣');
-  const [courseRate, setCourseRate] = useState(3.5);
-  const [isClollected, setIsClollected] = useState(true);
+  const [courseType] = useState('专');
+  const [courseName] = useState('高等数学A1');
+  const [courseTeacher] = useState('周振荣');
+  const [courseRate] = useState(3.5);
+  const [isClollected] = useState(true);
 
   return (
     <>
