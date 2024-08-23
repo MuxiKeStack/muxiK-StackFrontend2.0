@@ -8,10 +8,8 @@ import { AtList, AtListItem } from 'taro-ui';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
 import { GuildLine } from '@/components';
 
-// eslint-disable-next-line import/first
 import { get } from '@/api/get';
 import {
   BookIcon,
@@ -82,7 +80,7 @@ const Head = () => {
     const fetchExp = async () => {
       try {
         const url = '/points/users/mine';
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         const response: ResponseLevel = await get(url);
         console.log(response);
         setLevel(response.data.level);
@@ -98,7 +96,7 @@ const Head = () => {
     const fetchNew = async () => {
       try {
         const url = '/users/profile';
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         const response: ResponseUser = await get(url);
         console.log('用户信息');
         console.log(response);
@@ -115,7 +113,7 @@ const Head = () => {
 
   return (
     <>
-      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+      {}
       <Image src={TopBackground} className="personalPage_top_background"></Image>
       <View className="personalPage_user_container">
         <View className="personalPage_user_photo">

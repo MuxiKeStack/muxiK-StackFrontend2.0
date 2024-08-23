@@ -1,4 +1,3 @@
-/* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable no-console */
 import { View } from '@tarojs/components';
 import { useLoad } from '@tarojs/taro';

@@ -1,8 +1,7 @@
-/* eslint-disable react/jsx-key */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable unused-imports/no-unused-vars */
+
 import { Picker, Text, View } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 
@@ -34,7 +33,6 @@ export default function Myclass() {
   const [myclasses, setMyclasses] = useState<CouresProps[]>([]);
 
   const onTimeSemChange = (e) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const [yearIndex, semIndex] = e.detail.value;
     setYear(yearSelector[yearIndex]);
     setSem(semSelector[semIndex]);

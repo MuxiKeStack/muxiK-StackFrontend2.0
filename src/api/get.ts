@@ -31,7 +31,7 @@ export async function get(url: string) {
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     console.log(response.data.data);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return response.data;
   } catch (error) {
     console.error(error);

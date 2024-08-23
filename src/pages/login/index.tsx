@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-floating-promises */
+
 /* eslint-disable no-console */
 /* eslint-disable import/first */
 import { Button, Checkbox, Image, Input, Text, View } from '@tarojs/components';
@@ -10,12 +10,9 @@ import React, { useState } from 'react';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
 import { FloatingWindow } from '@/components';
 
-// eslint-disable-next-line import/first
 import handleLogin from '@/api/handleLogin';
-// eslint-disable-next-line import/first
 import top_background from '@/img/login/top_background.png';
 //import icon from '@/img/login/logo.png'
 type LoginProps = object;
@@ -35,7 +32,7 @@ const Login: React.FC<LoginProps> = () => {
       desc: '用于完善用户资料',
       success: (res) => {
         console.log('用户信息:', res.userInfo);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
         // @ts-expect-error
         setUserInfo(res.userInfo);
         Taro.setStorageSync('userInfo', res.userInfo);
@@ -64,9 +61,9 @@ const Login: React.FC<LoginProps> = () => {
 
   return (
     <View className="login">
-      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+      {}
       <Image src={top_background} className="login_top_background"></Image>
-      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+      {}
       TODO 照片布局
       {/*<Image src={icon} className="logo"></Image>*/}
       <View className="login_content">

@@ -9,7 +9,6 @@ import { get } from '@/api/get';
 // eslint-disable-next-line import/first
 import { ResponseUser } from '@/pages/personalPage';
 
-// eslint-disable-next-line import/first
 //import { useDoubleClick } from '@/hooks/useDoubleClick';
 
 const EditUser: React.FC = () => {

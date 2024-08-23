@@ -7,10 +7,8 @@ import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
 import CollectionCourse from '@/components/CollectionCourse/CollectionCourse';
 
-// eslint-disable-next-line import/first
 import { get } from '@/api/get';
 
 interface CollectionProps {
