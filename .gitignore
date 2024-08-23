@@ -8,4 +8,3 @@ node_modules/
 .idea/
 .vscode/
 .cloudbase/
-.yarn/install-state.gz
