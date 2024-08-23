@@ -7,7 +7,7 @@ import './index.scss';
 //import Chart from '@/components/chart/chart'
 //@ts-ignore
 
-import * as echarts from '../../components/ec-canvas/echarts.js'; // 引入echarts
+// import * as echarts from '../../components/ec-canvas/echarts.js'; // 引入echarts
 
 class Chart extends Component {
   constructor(props) {

@@ -4,7 +4,7 @@
   "setting": {
     "compileHotReLoad": true,
     "bigPackageSizeSupport": true,
-    "urlCheck": true,
+    "urlCheck": false,
     "autoAudits": true,
     "preloadBackgroundData": false,
     "skylineRenderEnable": false

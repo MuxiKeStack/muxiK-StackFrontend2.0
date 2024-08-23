@@ -1,17 +1,23 @@
-import Comment from '@/components/comment/comment';
-import Label3 from '@/components/label3/label3';
-import ShowStar from '@/components/showStar/showStar';
 import { Text, View } from '@tarojs/components';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
+
 import './index.scss';
-import { useState,useEffect } from 'react';
-//import Chart from '@/components/chart/chart'
-//@ts-ignore
-import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts'
+
+// eslint-disable-next-line import/first
+import Comment from '@/components/comment/comment';
+// eslint-disable-next-line import/first
+import Label3 from '@/components/label3/label3';
+// eslint-disable-next-line import/first
+import ShowStar from '@/components/showStar/showStar';
+
 // import echarts from '../../assets/js/echarts.js'
+// eslint-disable-next-line import/first
 import { get } from '@/fetch';
-import echarts from '../../assets/js/echarts'
-import { features } from 'process';
+
+import echarts from '../../assets/js/echarts';
 
 // 定义接口
 interface Course {
@@ -29,9 +35,8 @@ interface Course {
   is_subscribed: boolean;
 }
 
-
- function Chart() {
-  const echartsRef = useRef<EchartsHandle>(null)
+function Chart() {
+  const echartsRef = useRef<EchartsHandle>(null);
   const option: EChartOption = {
     legend: {
       top: 50,
@@ -56,9 +61,9 @@ interface Course {
         type: 'line',
       },
     ],
-  }
+  };
 
-  return <Echarts echarts={echarts} option={option} ref={echartsRef} />
+  return <Echarts echarts={echarts} option={option} ref={echartsRef} />;
 }
 
 // class Chart extends Component {
@@ -147,8 +152,7 @@ interface Course {
 //   }
 // }
 
-export default function index() {
-
+export default function index(){
   const commentNumber = 2;
 
   const [course, setCourse] = useState<Course | null>(null);
@@ -156,9 +160,9 @@ export default function index() {
   useEffect(() => {
     const getCourseData = async () => {
       try {
-        get(`/courses/1/detail`,true).then((res) => {
-          console.log(res)
-          setCourse(res.data)
+        get(`/courses/1/detail`, true).then((res) => {
+          console.log(res);
+          setCourse(res.data);
         });
       } catch (error) {
         // 错误处理，例如弹出提示
@@ -173,8 +177,8 @@ export default function index() {
     username: '昵称',
     score: 3.5,
     isHot: false,
-    date: "2023.7.13",
-    time: "16:30",
+    date: '2023.7.13',
+    time: '16:30',
     content:
       '评价斤斤计较斤斤计较急急急急急急急急急斤斤计较急急急急急急急急急急急急急急急斤斤计较急急急急急急急急急急急急急急急cfadsutfc7acga促使第一次给有多个素材u辛苦参赛的他u发出委托方徐v阿托伐窜同时1蓄西安粗体为擦u逃窜他敦促台湾的垡等下颚骨我发帖都要',
     like: 123,
@@ -185,7 +189,6 @@ export default function index() {
   if (!course) {
     return <Text>Loading...</Text>; // 数据加载中
   }
-  
 
   return (
     <View className="classInfo">
@@ -201,10 +204,13 @@ export default function index() {
         课程分类: <Label3 content={course.type} />
       </View>
       <View className="p">
-        课程特点: {course.features.map((feature)=><Label3 content={feature}></Label3>)}
+        课程特点:{' '}
+        {course.features.map((feature) => (
+          <Label3 content={feature}></Label3>
+        ))}
       </View>
       <Chart></Chart>
-      <Comment {...commentExample}/>
+      <Comment {...commentExample} />
     </View>
   );
 }

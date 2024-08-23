@@ -63,6 +63,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 30rpx;
 }
 
 .eachClass {
@@ -77,6 +78,9 @@
   left: 65rpx;
 }
 .classteacher {
+  position: relative;
+  top: 20rpx;
+  left: 65rpx;
 }
 .eachClass View {
   width: 27rpx;
