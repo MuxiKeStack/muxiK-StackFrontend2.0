@@ -1,10 +1,11 @@
-import type { UserConfigExport } from '@tarojs/cli';
-
-export default {
-  logger: {
-    quiet: false,
-    stats: true,
+// eslint-disable-next-line import/no-commonjs
+module.exports = {
+  env: {
+    NODE_ENV: '"development"',
   },
+  defineConstants: {},
   mini: {},
-  h5: {},
-} satisfies UserConfigExport;
+  h5: {
+    esnextModules: ['taro-ui'],
+  },
+};
