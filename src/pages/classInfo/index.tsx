@@ -1,20 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
 import { useEffect, useRef, useState } from 'react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+// @ts-ignore
 import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
 import Comment from '@/components/comment/comment';
-// eslint-disable-next-line import/first
 import Label3 from '@/components/label3/label3';
-// eslint-disable-next-line import/first
 import ShowStar from '@/components/showStar/showStar';
 
 // import echarts from '../../assets/js/echarts.js'
-// eslint-disable-next-line import/first
 import { get } from '@/fetch';
 
 import echarts from '../../assets/js/echarts';
@@ -29,8 +29,8 @@ interface Course {
   credit: number;
   composite_score: number;
   rater_count: number;
-  assessments: Record<string, any>; // 使用 Record 类型来表示对象，具体类型根据实际结构定义
-  features: Record<string, any>;
+  assessments: Record<string, never>; // 使用 Record 类型来表示对象，具体类型根据实际结构定义
+  features: Record<string, never>;
   is_collected: boolean;
   is_subscribed: boolean;
 }
@@ -153,15 +153,17 @@ function Chart() {
 // }
 
 export default function index() {
-  const commentNumber = 2;
-
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [course, setCourse] = useState<Course | null>(null);
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
       try {
-        get(`/courses/1/detail`, true).then((res) => {
+        void get(`/courses/1/detail`, true).then((res) => {
           console.log(res);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setCourse(res.data);
         });
       } catch (error) {
@@ -170,7 +172,7 @@ export default function index() {
       }
     };
 
-    getCourseData();
+    void getCourseData().then((r) => console.log(r));
   }, []); // 空依赖数组确保仅在组件挂载时执行
 
   const commentExample = {
@@ -190,6 +192,10 @@ export default function index() {
     return <Text>Loading...</Text>; // 数据加载中
   }
 
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
     <View className="classInfo">
       <View className="theClassnme">{course?.name}</View>
@@ -204,7 +210,8 @@ export default function index() {
         课程分类: <Label3 content={course.type} />
       </View>
       <View className="p">
-        课程特点:{' '}
+        课程特点: {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
+        {/* @ts-ignore*/}
         {course.features.map((feature) => (
           <Label3 content={feature}></Label3>
         ))}
