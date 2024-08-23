@@ -8297,15 +8297,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-taro@npm:3.6.34":
-  version: 3.6.34
-  resolution: "eslint-config-taro@npm:3.6.34"
+"eslint-config-taro@npm:3.6.35":
+  version: 3.6.35
+  resolution: "eslint-config-taro@npm:3.6.35"
   dependencies:
     "@babel/eslint-parser": "npm:^7.17.0"
     "@typescript-eslint/parser": "npm:^6.2.0"
   peerDependencies:
     eslint: "*"
-  checksum: 10c0/c223954bef22f1b953bdfcb3348485db3b313e6d55486464acfdbb792e9f94bb89bed2885bb980512bda1303e812cfeab051da5a3f96f2cb960a6db98e2dac37
+  checksum: 10c0/0a15a1d362499bdacd631680ad2f21e2f08f524619b979226c52c255b2cdc70fba3a860b9e4e64efad24f09df825399d631cabaf030f68d70d2c37981fd2404c
   languageName: node
   linkType: hard
 
@@ -12571,7 +12571,7 @@ __metadata:
     cssnano: "npm:^7.0.4"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"
-    eslint-config-taro: "npm:3.6.34"
+    eslint-config-taro: "npm:3.6.35"
     eslint-plugin-import: "npm:^2.29.1"
     eslint-plugin-prettier: "npm:^5.2.1"
     eslint-plugin-react: "npm:^7.35.0"
