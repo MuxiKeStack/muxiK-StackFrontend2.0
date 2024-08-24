@@ -209,7 +209,7 @@ export default function index() {
         课程分类: <Label3 content={course.type} />
       </View>
       <View className="p">
-        课程特点: {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
+        课程特点: {}
         {/* @ts-ignore*/}
         {course.features.map((feature) => (
           <Label3 content={feature}></Label3>
