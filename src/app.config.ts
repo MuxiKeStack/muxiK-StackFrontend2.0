@@ -35,10 +35,6 @@
 //       { pagePath: 'pages/456/index', text: '456' },
 //     ],
 //   },
-//   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-//   usingComponents: Object.assign({
-//     iconfont: `common/components/iconfont/weapp/weapp`,
-//   }),
 //   lazyCodeLoading: 'requiredComponents',
 // });
 
@@ -60,10 +56,22 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/editUser/index',
   ],
+  //   tabBar: {
+  //     /* tab页面必须放在主包里 */
+  //     custom: true,
+  //     list: [
+  //       {
+  //         pagePath: 'pages/123/index',
+  //         text: '123',
+  //       },
+  //       { pagePath: 'pages/456/index', text: '456' },
+  //     ],
+  //   },
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black',
   },
+  lazyCodeLoading: 'requiredComponents',
 });

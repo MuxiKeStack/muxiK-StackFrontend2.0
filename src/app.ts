@@ -2,7 +2,7 @@ import { Component, PropsWithChildren } from 'react';
 
 import '@/common/styles/app.scss';
 
-import checkToken from '@/utils/checkToken';
+import checkToken from '@/common/utils/checkToken';
 
 class App extends Component<PropsWithChildren> {
   //TODO 写成加interceptor 但是我还没写明白 别急

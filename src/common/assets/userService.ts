@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 // userService.ts
-import { get } from '@/fetch'; // 确保这个路径正确
+import { get } from '@/common/utils/fetch'; // 确保这个路径正确
 
 import { User } from './types';
 

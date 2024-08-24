@@ -16,12 +16,12 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import Comment from '@/components/comment/comment';
-import CommentComponent from '@/components/CommentComponent/CommentComponent';
+import Comment from '@/common/components/comment/comment';
+import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
 
-import { get, post } from '@/fetch';
+import { get, post } from '@/common/utils/fetch';
 
-import { CommentInfoType, Comment as CommentType } from '../../assets/types';
+import { CommentInfoType, Comment as CommentType } from '../../common/assets/types';
 
 export default function Index() {
   const [allComments, setAllComments] = useState<CommentType[]>([]);

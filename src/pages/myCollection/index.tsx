@@ -7,9 +7,8 @@ import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
-import CollectionCourse from '@/components/CollectionCourse/CollectionCourse';
-
-import { get } from '@/api/get';
+import { get } from '@/common/api/get';
+import CollectionCourse from '@/common/components/CollectionCourse/CollectionCourse';
 
 interface CollectionProps {
   composite_score?: number;

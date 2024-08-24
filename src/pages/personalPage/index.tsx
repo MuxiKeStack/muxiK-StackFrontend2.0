@@ -8,9 +8,7 @@ import { AtList, AtListItem } from 'taro-ui';
 
 import './index.scss';
 
-import { GuildLine } from '@/components';
-
-import { get } from '@/api/get';
+import { get } from '@/common/api/get';
 import {
   BookIcon,
   ClockIcon,
@@ -18,7 +16,8 @@ import {
   MessageIcon,
   StarIcon,
   TopBackground,
-} from '@/img/personalPage';
+} from '@/common/assets/img/personalPage';
+import { GuildLine } from '@/common/components';
 
 export interface UserInfo {
   avatarUrl: string; // 用户头像的URL

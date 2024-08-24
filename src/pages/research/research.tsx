@@ -12,12 +12,10 @@ import React, { useEffect, useState } from 'react';
 
 import './research.scss';
 
-import Label2 from '@/components/label2/label2';
-
-import { get } from '@/fetch';
-
-import Label1 from '../../components/label1/label1';
-import SearchInput from '../../components/SearchInput/SearchInput';
+import Label1 from '@/common/components/label1/label1';
+import Label2 from '@/common/components/label2/label2';
+import SearchInput from '@/common/components/SearchInput/SearchInput';
+import { get } from '@/common/utils/fetch';
 
 export interface Course {
   id: number;

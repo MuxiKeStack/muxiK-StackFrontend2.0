@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import './myclass.scss';
 
 // eslint-disable-next-line import/first
-import { getUserCourses } from '@/api/getUserCourses';
+import { getUserCourses } from '@/common/api/getUserCourses';
 
 interface CouresProps {
   name: string;

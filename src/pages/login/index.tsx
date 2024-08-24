@@ -10,10 +10,9 @@ import React, { useState } from 'react';
 
 import './index.scss';
 
-import { FloatingWindow } from '@/components';
-
-import handleLogin from '@/api/handleLogin';
-import top_background from '@/img/login/top_background.png';
+import handleLogin from '@/common/api/handleLogin';
+import top_background from '@/common/assets/img/login/top_background.png';
+import { FloatingWindow } from '@/common/components';
 //import icon from '@/img/login/logo.png'
 type LoginProps = object;
 

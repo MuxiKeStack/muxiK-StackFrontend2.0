@@ -10,14 +10,13 @@ import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
 
 import './index.scss';
 
-import Comment from '@/components/comment/comment';
-import Label3 from '@/components/label3/label3';
-import ShowStar from '@/components/showStar/showStar';
-
+import Comment from '@/common/components/comment/comment';
+import Label3 from '@/common/components/label3/label3';
+import ShowStar from '@/common/components/showStar/showStar';
 // import echarts from '../../assets/js/echarts.js'
-import { get } from '@/fetch';
+import { get } from '@/common/utils/fetch';
 
-import echarts from '../../assets/js/echarts';
+import echarts from '../../common/assets/js/echarts';
 
 // 定义接口
 interface Course {
@@ -210,7 +209,7 @@ export default function index() {
         课程分类: <Label3 content={course.type} />
       </View>
       <View className="p">
-        课程特点: {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
+        课程特点: {}
         {/* @ts-ignore*/}
         {course.features.map((feature) => (
           <Label3 content={feature}></Label3>

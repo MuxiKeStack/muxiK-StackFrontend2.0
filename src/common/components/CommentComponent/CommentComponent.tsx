@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { get } from '@/fetch';
+import { get } from '@/common/utils/fetch';
 
 import { Comment } from '../../assets/types';
 import { getUserInfo } from '../../assets/userService';

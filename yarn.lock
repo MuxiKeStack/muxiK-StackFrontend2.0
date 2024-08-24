@@ -2950,7 +2950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/components-advanced@npm:3.6.35":
+"@tarojs/components-advanced@npm:3.6.35, @tarojs/components-advanced@npm:^3.6.35":
   version: 3.6.35
   resolution: "@tarojs/components-advanced@npm:3.6.35"
   dependencies:
@@ -10317,12 +10317,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^9.1.2":
-  version: 9.1.4
-  resolution: "husky@npm:9.1.4"
+"husky@npm:^9.1.5":
+  version: 9.1.5
+  resolution: "husky@npm:9.1.5"
   bin:
     husky: bin.js
-  checksum: 10c0/f5185003bef9ad9ec3f40e821963e4c12409b993fdcab89e3d660bed7d8c9d8bfd399f05222e27e0ead6589601fb1bb08d1a589c51751a4ab0547ead3429b8de
+  checksum: 10c0/f42efb95a026303eb880898760f802d88409780dd72f17781d2dfc302177d4f80b641cf1f1694f53f6d97c536c7397684133d8c8fe4a4426f7460186a7d1c6b8
   languageName: node
   linkType: hard
 
@@ -10396,6 +10396,13 @@ __metadata:
   bin:
     image-size: bin/image-size.js
   checksum: 10c0/655204163af06732f483a9fe7cce9dff4a29b7b2e88f5c957a5852e8143fa750f5e54b1955a2ca83de99c5220dbd680002d0d4e09140b01433520f4d5a0b1f4c
+  languageName: node
+  linkType: hard
+
+"immer@npm:^10.1.1":
+  version: 10.1.1
+  resolution: "immer@npm:10.1.1"
+  checksum: 10c0/b749e10d137ccae91788f41bd57e9387f32ea6d6ea8fd7eb47b23fd7766681575efc7f86ceef7fe24c3bc9d61e38ff5d2f49c2663b2b0c056e280a4510923653
   languageName: node
   linkType: hard
 
@@ -12649,6 +12656,7 @@ __metadata:
     "@taroify/core": "npm:^0.3.0-alpha.0"
     "@tarojs/cli": "npm:3.6.35"
     "@tarojs/components": "npm:3.6.35"
+    "@tarojs/components-advanced": "npm:^3.6.35"
     "@tarojs/helper": "npm:3.6.34"
     "@tarojs/plugin-framework-react": "npm:3.6.34"
     "@tarojs/plugin-platform-alipay": "npm:3.6.34"
@@ -12684,7 +12692,8 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^4.6.2"
     eslint-plugin-simple-import-sort: "npm:^12.1.1"
     eslint-plugin-unused-imports: "npm:^4.0.1"
-    husky: "npm:^9.1.2"
+    husky: "npm:^9.1.5"
+    immer: "npm:^10.1.1"
     lodash: "npm:4.17.21"
     postcss: "npm:^8.4.40"
     postcss-rem-to-responsive-pixel: "npm:^6.0.1"
