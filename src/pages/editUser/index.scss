@@ -1,32 +1,60 @@
 .avatar-container {
   display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: space-between;
+  width: 100vw;
+  height: 15vh;
 }
 .avatar-text {
-  font-size: 32.61rpx;
-  width: 130.43rpx;
+  font-size: 4.5vw;
+  width: 20vw;
   height: 43.48rpx;
+  align-content: center;
+  color: #565552;
+  margin-left: 10%;
 }
 .avatar {
   background-color: white;
-  width: 144.93rpx;
-  height: 144.93rpx;
+  width: 10vh;
+  height: 10vh;
   border-radius: 50%;
   border: #ffd777 solid 1.81rpx;
+  align-content: center;
+  margin-right: 25%;
 }
 .nickname-container {
   display: flex;
+  width: 100vw;
+  height: 15vh;
+  align-items: center; /* 垂直居中 */
+  justify-content: space-between;
 }
 .nickname-text {
-  font-size: 32.61rpx;
-  width: 130.43rpx;
+  font-size: 4.5vw;
+  width: 20vw;
   height: 43.48rpx;
+  align-content: center;
+  color: #565552;
+  margin-left: 10%;
 }
 .nickname {
   height: 43.48rpx;
-  width: 228.26rpx;
+  width: 50vw;
+  font-size: 4.5vw;
+  //margin-left: 30%;
+  margin-right: 25%;
 }
+.divide-line {
+  border: 3.2rpx dashed #ffd777;
+  width: 90%;
+  margin: 0 auto;
+}
+
 .title-container {
   display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 10vh;
 }
 .cancel-button {
   width: 300rpx;

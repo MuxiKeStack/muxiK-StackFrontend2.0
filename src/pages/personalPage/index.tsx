@@ -54,7 +54,6 @@ export interface WebUserProfileVo {
   title_ownership: { [key: string]: boolean };
   using_title: string;
   utime?: number;
-  //[property: string]: any;
 }
 const PersonalPage: React.FC<PersonalPageProps> = () => {
   useLoad(() => {
@@ -80,7 +79,6 @@ const Head = () => {
     const fetchExp = async () => {
       try {
         const url = '/points/users/mine';
-
         const response: ResponseLevel = await get(url);
         console.log(response);
         setLevel(response.data.level);
@@ -96,7 +94,6 @@ const Head = () => {
     const fetchNew = async () => {
       try {
         const url = '/users/profile';
-
         const response: ResponseUser = await get(url);
         console.log('用户信息');
         console.log(response);
