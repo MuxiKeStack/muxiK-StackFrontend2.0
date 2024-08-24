@@ -1,17 +1,12 @@
-/* eslint-disable no-console */
 import { Textarea, View } from '@tarojs/components';
-import Taro, { useLoad } from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import React from 'react';
 
 import './index.scss';
 
-type FeedbackProps = object;
+interface FeedbackProps {}
 
-const Feedback: React.FC<FeedbackProps> = () => {
-  useLoad(() => {
-    console.log('Page loaded.');
-  });
-
+const Feedback: React.FC<FeedbackProps> = React.memo(() => {
   const copyText = '799651462';
 
   const handleCopy = () => {
@@ -49,6 +44,6 @@ const Feedback: React.FC<FeedbackProps> = () => {
       </View>
     </View>
   );
-};
+});
 
 export default Feedback;
