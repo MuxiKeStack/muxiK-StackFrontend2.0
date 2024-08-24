@@ -1,5 +1,6 @@
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
+import React from 'react';
 import { AtIcon } from 'taro-ui';
 
 import './index.scss';

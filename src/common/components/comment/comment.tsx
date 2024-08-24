@@ -42,7 +42,7 @@ export default function Comment(props: CommentInfo & { type?: string }) {
   return (
     <View className="bigcomment" onClick={handleClick}>
       <View className="commentplus">
-        {isCoursePending ? (
+        {!courseDetail[course_id || 0] ? (
           <>
             <View className="classTitle">pending</View>
           </>
@@ -57,7 +57,7 @@ export default function Comment(props: CommentInfo & { type?: string }) {
           </>
         )}
         <View className="comment">
-          {isPublisherInfoPending || !publisher_id ? (
+          {!publisher[publisher_id || 0] ? (
             <>
               <View>pending</View>
             </>
@@ -65,12 +65,12 @@ export default function Comment(props: CommentInfo & { type?: string }) {
             <>
               <View
                 className="tx"
-                style={`background-image: url(${publisher[publisher_id].avatar});`}
+                style={`background-image: url(${publisher[publisher_id || 0]?.avatar});`}
               ></View>
-              <View className="userName">{publisher[publisher_id].nickname}</View>
+              <View className="userName">{publisher[publisher_id || 0]?.nickname}</View>
               <View className="time">{ctimeDate.toLocaleString()}</View>
               <View className="stars">
-                <ShowStar score={props.star_rating}></ShowStar>
+                <ShowStar score={props?.star_rating}></ShowStar>
               </View>
               <Image
                 // style={`display:${props.isHot ? 'block' : 'none'}`}
