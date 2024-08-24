@@ -1,18 +1,13 @@
-/* eslint-disable no-console */
 import { Textarea, View } from '@tarojs/components';
-import Taro, { useLoad } from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import React from 'react';
 
 import './index.scss';
 
-type FeedbackProps = object;
+interface FeedbackProps {}
 
-const Feedback: React.FC<FeedbackProps> = () => {
-  useLoad(() => {
-    console.log('Page loaded.');
-  });
-
-  const copyText = '要复制的字符串';
+const Feedback: React.FC<FeedbackProps> = React.memo(() => {
+  const copyText = '799651462';
 
   const handleCopy = () => {
     void Taro.setClipboardData({
@@ -35,20 +30,20 @@ const Feedback: React.FC<FeedbackProps> = () => {
   };
 
   return (
-    <View className="Feedback">
+    <View className="flex flex-col items-center gap-2">
       <Textarea
-        className="feedback_input"
+        className="mt-10 h-[20vh] w-4/5 rounded-lg bg-[#f9f9f9] p-4 text-sm"
         placeholder="欢迎为课栈提建议or私聊和我们说悄悄话呀~"
         maxlength={500}
       />
-      <View className="feedback_contact_us">
-        <View className="feedback_qq_team">课栈交流群：799651462</View>
-        <View className="feedback_copy" onClick={handleCopy}>
+      <View className="flex w-[90%] items-center justify-between">
+        <View className="text-sm text-[#646464]">课栈交流群：799651462</View>
+        <View className="text-sm text-orange-400 underline" onClick={handleCopy}>
           点击复制
         </View>
       </View>
     </View>
   );
-};
+});
 
 export default Feedback;
