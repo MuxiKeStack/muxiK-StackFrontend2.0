@@ -17,8 +17,8 @@ import { useState } from 'react';
 
 import './evaluate.scss';
 
-import Label3 from '@/components/label3/label3';
-import Star from '@/components/star/star';
+import Label3 from '@/common/components/label3/label3';
+import Star from '@/common/components/star/star';
 
 export default function evaluate() {
   function generateUniqueID() {

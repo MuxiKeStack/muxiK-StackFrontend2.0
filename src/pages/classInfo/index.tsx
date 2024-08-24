@@ -10,14 +10,13 @@ import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
 
 import './index.scss';
 
-import Comment from '@/components/comment/comment';
-import Label3 from '@/components/label3/label3';
-import ShowStar from '@/components/showStar/showStar';
-
+import Comment from '@/common/components/comment/comment';
+import Label3 from '@/common/components/label3/label3';
+import ShowStar from '@/common/components/showStar/showStar';
 // import echarts from '../../assets/js/echarts.js'
-import { get } from '@/fetch';
+import { get } from '@/common/utils/fetch';
 
-import echarts from '../../assets/js/echarts';
+import echarts from '../../common/assets/js/echarts';
 
 // 定义接口
 interface Course {

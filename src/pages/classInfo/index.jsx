@@ -9,9 +9,9 @@ import { Component } from 'react';
 
 import './index.scss';
 
-import Comment from '@/components/comment/comment';
-import Label3 from '@/components/label3/label3';
-import ShowStar from '@/components/showStar/showStar';
+import Comment from '@/common/components/comment/comment';
+import Label3 from '@/common/components/label3/label3';
+import ShowStar from '@/common/components/showStar/showStar';
 
 //import Chart from '@/components/chart/chart'
 //@ts-ignore

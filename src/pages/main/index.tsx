@@ -12,13 +12,12 @@ import { useCallback, useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { GuildLine } from '@/components';
-import Comment from '@/components/comment/comment';
+import { GuildLine } from '@/common/components';
+import Comment from '@/common/components/comment/comment';
+import SearchInput from '@/common/components/SearchInput/SearchInput';
+import { get, postLogin } from '@/common/utils/fetch';
 
-import { get, postLogin } from '@/fetch';
-
-import { CommentInfoType } from '../../assets/types';
-import SearchInput from '../../components/SearchInput/SearchInput';
+import { CommentInfoType } from '../../common/assets/types';
 
 type CourseDetailsType = {
   class_name: string;

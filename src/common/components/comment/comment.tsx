@@ -8,7 +8,7 @@ import './comment.scss';
 
 import ShowStar from '../showStar/showStar';
 
-export default function comment(props) {
+export default function Comment(props) {
   // 创建一个新的Date对象，传入时间戳
   const ctimeDate = new Date(props.ctime);
   // const utimeDate = new Date(props.utime);
