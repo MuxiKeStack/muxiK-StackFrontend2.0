@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import Taro from '@tarojs/taro';
 import { StateCreator } from 'zustand';
 
-import { get as fetchGet } from '@/api/get';
-import { CommentInfo } from '@/assets/types';
+import { get as fetchGet } from '@/common/api/get';
+import { CommentInfo } from '@/common/assets/types';
 
 import { CommentInfoSlice, COURSE_TYPE, CourseInfoStore } from './types';
 

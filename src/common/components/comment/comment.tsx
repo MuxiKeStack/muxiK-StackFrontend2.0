@@ -1,13 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable simple-import-sort/imports */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 // import React, { useEffect } from "react";
 import { Image, Navigator, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useTransition } from 'react';
 
+import { useCourseStore } from '@/pages/main/store/store';
+
 import './comment.scss';
 
 import { CommentInfo } from '../../assets/types';
-import { useCourseStore } from '../../pages/main/store/store';
 import ShowStar from '../showStar/showStar';
 
 export default function Comment(props: CommentInfo & { type?: string }) {
@@ -31,7 +37,8 @@ export default function Comment(props: CommentInfo & { type?: string }) {
     startPublisherTransition(() => {
       useCourseStore.getState().getPublishers(publisher_id || 0);
     });
-  }, []);
+  }, [course_id, publisher_id]);
+
   return (
     <View className="bigcomment" onClick={handleClick}>
       <View className="commentplus">

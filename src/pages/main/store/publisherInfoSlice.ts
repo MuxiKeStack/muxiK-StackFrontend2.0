@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
 
-import { get as fetchGet } from '@/api/get';
+import { get as fetchGet } from '@/common/api/get';
 
 import { CourseInfoStore, PublisherDetailsType, PublisherInfoSlice } from './types';
 
