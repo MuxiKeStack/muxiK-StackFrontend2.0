@@ -66,7 +66,7 @@ export async function get(url = '', isToken = true) {
   const getToken = () => {
     return new Promise((resolve, reject) => {
       void Taro.getStorage({
-        key: 'token',
+        key: 'shortToken',
         success: (res) => {
           const token = res.data;
           if (token) {
