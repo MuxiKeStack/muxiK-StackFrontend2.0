@@ -12,9 +12,9 @@ interface TabBarProps {}
 
 const TAB_LIST: Array<{ pagePath: string; name: string; icon?: string }> = [
   { pagePath: '/pages/main/index', name: 'Home', icon: 'streaming' },
-  { pagePath: '/pages/123/index', name: 'Download', icon: 'download-cloud' },
-  { pagePath: '/pages/456/index', name: '+' },
-  { pagePath: '/pages/789/index', name: 'Massage', icon: 'message' },
+  { pagePath: '/pages/main/index', name: 'Download', icon: 'download-cloud' },
+  { pagePath: '/pages/main/index', name: '+' },
+  { pagePath: '/pages/messageNotification/index', name: 'Massage', icon: 'message' },
   { pagePath: '/pages/personalPage/index', name: 'Profile', icon: 'user' },
 ];
 
