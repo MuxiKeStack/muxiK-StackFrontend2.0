@@ -72,7 +72,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
     };
 
     void fetchAllReplies();
-  }, [allComments]);
+  }, []);
 
   const ctimeToString = (ctime: number) => {
     const ctimeDate = new Date(ctime);

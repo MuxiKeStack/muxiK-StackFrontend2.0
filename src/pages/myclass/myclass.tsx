@@ -4,6 +4,7 @@
 
 import { Picker, Text, View } from '@tarojs/components';
 import { useEffect, useState } from 'react';
+import Taro from '@tarojs/taro';
 
 import './myclass.scss';
 
@@ -59,6 +60,16 @@ export default function Myclass() {
     void fetchClasses();
   }, [year, sem]);
 
+  const handleClassClick = (id, name) => {
+    // 拼接查询字符串参数
+    const query = `?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}`;
+    // 使用 navigateTo 跳转到 evaluate 页面，并传递参数
+    Taro.navigateTo({
+      url: `/pages/evaluate/evaluate${query}`
+    });
+  };
+
+
   return (
     <View>
       <View className="select">
@@ -78,7 +89,8 @@ export default function Myclass() {
       </View>
       <View className="classes">
         {myclasses.map((each, index) => (
-          <View key={index} className="eachClass">
+          <View key={index} className="eachClass"
+          onClick={() => handleClassClick(each.id, each.name)}>
             <Text className="classname">{each.name}</Text>
             <Text className="classteacher">{each.teacher}</Text>
             <Text className="classstatus">{each.evaluated ? '已评课' : '未评课'}</Text>
