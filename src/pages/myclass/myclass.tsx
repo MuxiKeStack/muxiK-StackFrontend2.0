@@ -60,11 +60,11 @@ export default function Myclass() {
     void fetchClasses();
   }, [year, sem]);
 
-  const handleClassClick = (id, name) => {
+  const handleClassClick = (id: number, name: string) => {
     // 拼接查询字符串参数
     const query = `?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}`;
     // 使用 navigateTo 跳转到 evaluate 页面，并传递参数
-    Taro.navigateTo({
+    void Taro.navigateTo({
       url: `/pages/evaluate/evaluate${query}`,
     });
   };

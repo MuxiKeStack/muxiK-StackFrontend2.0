@@ -5,13 +5,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable import/first */
 import { Button, Form, Radio, Text, Textarea, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
+
 import './evaluate.scss';
 
 import Label3 from '@/common/components/label3/label3';
 import Star from '@/common/components/star/star';
 import { post } from '@/common/utils/fetch';
-import Taro from '@tarojs/taro';
 
 export default function evaluate() {
   // function generateUniqueID() {
@@ -137,17 +138,27 @@ export default function evaluate() {
       status: 'Public',
     };
     console.log(evaluationobj);
-    post(`/evaluations/save`, evaluationobj).then((res) => {
-      if (res.code == 0) {
-        console.log('发布课评成功');
-        // 使用 redirectTo 跳转
-        Taro.redirectTo({
-          url: '/pages/main/index', // 页面路径
-        });
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    });
+    post(`/evaluations/save`, evaluationobj)
+      .then((res) => {
+        if (res.code === 0) {
+          // 打印成功信息，但最好使用其他日志记录方式，而不是 console.log
+          // 例如：this.setState({ message: '发布课评成功' });
+          // 或者使用 Taro 的日志记录方式：Taro.showToast({ title: '发布课评成功', icon: 'success' });
+          // console.log('发布课评成功');
+          // 使用 redirectTo 跳转
+          void Taro.redirectTo({
+            url: '/pages/main/index', // 页面路径
+          });
+        } else {
+          // 处理其他响应代码，可能需要给用户一些反馈
+          // 例如：Taro.showToast({ title: '发布课评失败', icon: 'none' });
+        }
+      })
+      .catch((error) => {
+        // 处理可能出现的错误情况
+        // 例如：Taro.showToast({ title: '发布失败，请稍后重试', icon: 'none' });
+        console.error('发布课评请求失败:', error);
+      });
   };
 
   //星级部分的代码
