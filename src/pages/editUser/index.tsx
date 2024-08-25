@@ -10,6 +10,8 @@ import './index.scss';
 import { get } from '@/common/api/get';
 import { fetchQiniuToken, fetchToQiniu } from '@/common/api/qiniu';
 import { editIcon } from '@/common/assets/img/editPersonal';
+import TitleButton from '@/common/components/titleButton/titleButton';
+import { post } from '@/common/utils/fetch';
 import { ResponseUser } from '@/pages/personalPage';
 
 //import { useDoubleClick } from '@/hooks/useDoubleClick';
@@ -21,6 +23,13 @@ const EditUser: React.FC = () => {
   const [nickName, setNickName] = useState('昵称昵称昵称');
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [editableNickName, setEditableNickName] = useState(nickName);
+  const [selectedTitle, setSelectedTitle] = useState<string>('None');
+  const [titleOwnership, setTitleOwnership] = useState({
+    CCNUWithMe: false,
+    CaringSenior: false,
+    KeStackPartner: false,
+    None: false,
+  });
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -30,6 +39,10 @@ const EditUser: React.FC = () => {
         console.log(response);
         setNickName(response.data.nickname);
         setAvatarUrl(response.data.avatar);
+        setSelectedTitle(response.data.using_title);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        setTitleOwnership(response.data.title_ownership);
       } catch (error) {
         console.error('Error fetching collection data:', error);
       }
@@ -65,62 +78,83 @@ const EditUser: React.FC = () => {
     setNickName(editableNickName);
     setIsEditingNickname(false);
   };
+  const handleSave = () => {
+    void post(
+      '/users/edit',
+      { avatar: avatarUrl, nickname: nickName, using_title: selectedTitle },
+      true
+    ).then((res) => console.log(res));
+  };
+  const handleTitleSelect = (title: string) => {
+    if (titleOwnership[title]) {
+      setSelectedTitle(title);
+    }
+  };
+
   return (
-    <>
-      <View>
-        <View className="avatar-container">
-          <View className="avatar-text">修改头像 </View>
-          <Image src={avatarUrl} onClick={chooseAvatar} className="avatar"></Image>
-        </View>
-        <View className="divide-line"></View>
-        <View className="nickname-container">
-          <View className="nickname-text">昵称</View>
-          <View>
-            {isEditingNickname ? (
-              <View className="nickname">
-                <Input
-                  type="text"
-                  value={editableNickName}
-                  onInput={handleNicknameChange}
-                  onBlur={handleNicknameSave}
-                  className="nickname-input"
-                />
-                {/*<Image*/}
-                {/*  src={editIcon}*/}
-                {/*  onClick={handleEditIconClick}*/}
-                {/*  className="editor-nickname"*/}
-                {/*></Image>*/}
-              </View>
-            ) : (
-              <View className="nickname">
-                {nickName}
-                <Image
-                  src={editIcon}
-                  onClick={handleEditIconClick}
-                  className="editor-nickname"
-                ></Image>
-              </View>
-            )}
-          </View>
-        </View>
-        <View className="divide-line"></View>
-        {/*<View className="title-container">*/}
-        {/*  <View className="title-text">称号</View>*/}
-        {/*  <View className="title-container">*/}
-        {/*    <TitleButton title="知心学长"></TitleButton>*/}
-        {/*    <TitleButton title="课栈合伙人"></TitleButton>*/}
-        {/*    <TitleButton title="知心学长"></TitleButton>*/}
-        {/*  </View>*/}
-        {/*</View>*/}
-        <View className="button-container">
-          <Button className="cancel-button">取消</Button>
-          <Button className="save-button">保存</Button>
-        </View>
+    <View>
+      <View className="avatar-container">
+        <View className="avatar-text">修改头像</View>
+        <Image src={avatarUrl} onClick={chooseAvatar} className="avatar"></Image>
+      </View>
+      <View className="divide-line"></View>
+      <View className="nickname-container">
+        <View className="nickname-text">昵称</View>
         <View>
-          <Button>退出登陆</Button>
+          {isEditingNickname ? (
+            <View className="nickname">
+              <Input
+                type="text"
+                value={editableNickName}
+                onInput={handleNicknameChange}
+                onBlur={handleNicknameSave}
+                className="nickname-input"
+              />
+            </View>
+          ) : (
+            <View className="nickname">
+              {nickName}
+              <Image
+                src={editIcon}
+                onClick={handleEditIconClick}
+                className="editor-nickname"
+              ></Image>
+            </View>
+          )}
         </View>
       </View>
-    </>
+      <View className="divide-line"></View>
+      <View className="title-container">
+        <View className="title-text">称号</View>
+        <View className="title-container">
+          <TitleButton
+            title="知心学长"
+            onClick={() => handleTitleSelect('CaringSenior')}
+            isSelected={selectedTitle === 'CaringSenior'}
+            isDisabled={!titleOwnership.CaringSenior}
+          ></TitleButton>
+          <TitleButton
+            title="课栈合伙人"
+            onClick={() => handleTitleSelect('KeStackPartner')}
+            isSelected={selectedTitle === 'KeStackPartner'}
+            isDisabled={!titleOwnership.KeStackPartner}
+          ></TitleButton>
+          <TitleButton
+            title="华师有我"
+            onClick={() => handleTitleSelect('CCNUWithMe')}
+            isSelected={selectedTitle === 'CCNUWithMe'}
+            isDisabled={!titleOwnership.CCNUWithMe}
+          ></TitleButton>
+        </View>
+      </View>
+      <View className="button-container">
+        <Button className="cancel-button">取消</Button>
+        <Button className="save-button" onClick={handleSave}>
+          保存
+        </Button>
+      </View>
+    </View>
   );
 };
+
 export default EditUser;

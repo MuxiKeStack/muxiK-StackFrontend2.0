@@ -110,7 +110,6 @@ export default function Index() {
         {comments[classType] &&
           comments[classType].map((comment) => (
             <Comment
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的
               {...comment} // 展开comment对象，将属性传递给Comment组件
               type="inner" // 固定属性，不需要从数组中获取

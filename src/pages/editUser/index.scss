@@ -13,6 +13,15 @@
   color: #565552;
   margin-left: 10%;
 }
+.title-text {
+  font-size: 4.5vw;
+  width: 20vw;
+  height: 43.48rpx;
+  align-content: center;
+  color: #565552;
+  margin-left: 10%;
+}
+
 .avatar {
   background-color: white;
   width: 10vh;
@@ -57,9 +66,10 @@
 
 .title-container {
   display: flex;
-  align-items: center;
+  align-items: center; /* 垂直居中 */
+  justify-content: space-between;
   width: 100vw;
-  height: 10vh;
+  height: 15vh;
 }
 .cancel-button {
   width: 300rpx;
