@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { Picker, Text, View } from '@tarojs/components';
-import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
+import { useEffect, useState } from 'react';
 
 import './myclass.scss';
 
@@ -65,10 +65,9 @@ export default function Myclass() {
     const query = `?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}`;
     // 使用 navigateTo 跳转到 evaluate 页面，并传递参数
     Taro.navigateTo({
-      url: `/pages/evaluate/evaluate${query}`
+      url: `/pages/evaluate/evaluate${query}`,
     });
   };
-
 
   return (
     <View>
@@ -89,8 +88,11 @@ export default function Myclass() {
       </View>
       <View className="classes">
         {myclasses.map((each, index) => (
-          <View key={index} className="eachClass"
-          onClick={() => handleClassClick(each.id, each.name)}>
+          <View
+            key={index}
+            className="eachClass"
+            onClick={() => handleClassClick(each.id, each.name)}
+          >
             <Text className="classname">{each.name}</Text>
             <Text className="classteacher">{each.teacher}</Text>
             <Text className="classstatus">{each.evaluated ? '已评课' : '未评课'}</Text>
