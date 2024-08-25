@@ -62,9 +62,10 @@ export default defineAppConfig({
     list: [
       {
         pagePath: 'pages/main/index',
-        text: 'clock',
+        text: 'Home',
       },
-      { pagePath: 'pages/personalPage/index', text: 'user' },
+      { pagePath: 'pages/messageNotification/index', text: 'Massage' },
+      { pagePath: 'pages/personalPage/index', text: 'Profile' },
     ],
   },
   window: {
