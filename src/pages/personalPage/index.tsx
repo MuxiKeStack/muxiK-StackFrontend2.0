@@ -13,7 +13,6 @@ import {
   BookIcon,
   ClockIcon,
   MailIcon,
-  MessageIcon,
   StarIcon,
   TopBackground,
 } from '@/common/assets/img/personalPage';
