@@ -1,74 +1,119 @@
-/* eslint-disable no-console */
-import { View } from '@tarojs/components';
-import { useLoad } from '@tarojs/taro';
-import { useState } from 'react';
+import { Text, View } from '@tarojs/components';
+import { memo, useState } from 'react';
+import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
-type MessageNotificationProps = object;
-type MessageProps = {
+// eslint-disable-next-line import/first
+import uniqueKeyUtil from '@/common/utils/keyGen';
+
+type Notification = {
   username: string;
   eventType: boolean;
   description: string;
   comment: string;
+  timestamp: string;
 };
 
-const MessageNotification: React.FC<MessageNotificationProps> = () => {
-  useLoad(() => {
-    console.log('Page loaded.');
+interface MessageNotificationProps {}
+
+interface MessageProps extends Notification {}
+
+interface TabBarProps {
+  tab: string;
+  setTab: (tab: string) => void;
+}
+
+const Tabs: { name: string; icon: string }[] = [
+  {
+    name: '提问',
+    icon: 'clock',
+  },
+  {
+    name: '点赞',
+    icon: 'clock',
+  },
+  {
+    name: '官方',
+    icon: 'clock',
+  },
+];
+
+const MessageNotification: React.FC<MessageNotificationProps> = memo(() => {
+  const [tab, setTab] = useState<string>('提问');
+  const [notification, setNotification] = useState<Notification>({
+    username: '昵称',
+    eventType: true,
+    description: '我正在回复你的评论',
+    comment: '这里是原评论内容',
+    timestamp: '2023年1月1日',
   });
 
-  const [notificationEventType] = useState(true);
-  const [notificationUsername] = useState('昵称');
-  const [notificationDescription] = useState('我正在回复你的评论');
-  const [notificationComment] = useState('这里是原评论内容');
-
   return (
-    <View className="MessageNotification">
+    <View className="flex h-[95vh] w-full flex-col items-center gap-4 overflow-y-scroll px-4 pt-2">
+      <TabBar tab={tab} setTab={setTab} />
       <Message
-        username={notificationUsername}
-        eventType={notificationEventType}
-        description={notificationDescription}
-        comment={notificationComment}
+        username={notification.username}
+        eventType={notification.eventType}
+        description={notification.description}
+        comment={notification.comment}
+        timestamp={notification.timestamp}
       />
       <Message
-        username={notificationUsername}
+        username={notification.username}
         eventType={false}
-        description={notificationDescription}
-        comment={notificationComment}
+        description={notification.description}
+        comment={notification.comment}
+        timestamp={notification.timestamp}
       />
     </View>
   );
-};
+});
 
-const Message: React.FC<MessageProps> = ({
-  username,
-  eventType,
-  description,
-  comment,
-}) => {
-  return (
-    <View className="messageNotification_message">
-      <View className="messageNotification_photo"></View>
-      <View className="messageNotification_detail">
-        <View className="messageNotification_username">{username}</View>
-        <View className="messageNotification_event">
-          <View className="messageNotification_event_type">
-            {eventType ? '回复：' : '赞了我'}
-          </View>
-          {eventType && (
-            <View className="messageNotification_description">{description}</View>
-          )}
+const TabBar: React.FC<TabBarProps> = memo(({ tab, setTab }) => (
+  <View className="mb-2 flex w-full justify-evenly">
+    {Tabs.map((item) => (
+      <View key={uniqueKeyUtil.nextKey()} className="flex flex-col items-center gap-2">
+        <View className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f9f9f2] shadow-lg">
+          <AtIcon
+            value={item.icon}
+            size="35"
+            color={tab === item.name ? '#f18900' : '#FFD777'}
+            onClick={() => {
+              setTab(item.name);
+            }}
+          ></AtIcon>
         </View>
-        <View className="messageNotification_comment">{comment}</View>
+        <Text>{item.name}</Text>
+      </View>
+    ))}
+  </View>
+));
+
+const Message: React.FC<MessageProps> = memo(
+  ({ username, eventType, description, comment, timestamp }) => (
+    <View className="flex w-full gap-4">
+      <View className="h-14 w-16 rounded-full border bg-[#f9f9f2]"></View>
+      <View className="flex w-full flex-col gap-2">
+        <View className="flex w-full justify-between">
+          <Text className="text-sm font-bold">{username}</Text>
+          <Text className="text-xs text-gray-200">{timestamp}</Text>
+        </View>
+        <View className="flex">
+          <View className="text-sm text-gray-300">{eventType ? '回复：' : '赞了我'}</View>
+          {eventType && <View className="text-sm text-gray-500">{description}</View>}
+        </View>
+        <View className="border-l-4 border-gray-300 pl-2 text-sm text-gray-500">
+          {comment}
+        </View>
         {eventType && (
-          <View className="messageNotification_reply">
-            <View className="messageNotification_reply_text">回复TA:</View>
+          <View className="flex h-6 w-full items-center rounded-lg bg-[#f9f9f2] px-2">
+            <View className="text-xs text-gray-300">回复TA:</View>
           </View>
         )}
       </View>
     </View>
-  );
-};
+  )
+);
 
 export default MessageNotification;

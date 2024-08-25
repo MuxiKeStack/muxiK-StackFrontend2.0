@@ -1,19 +1,51 @@
+/* eslint-disable import/first */
 import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { memo } from 'react';
+import { AtIcon } from 'taro-ui';
 
-// 这边说一下，tabbar的样式没办法用tailwindcss，所以只能写原生
 import './index.scss';
 
-// import useActiveButtonStore from '@/common/hooks/useActiveNav';
+import useActiveButtonStore, { ActiveButtonType } from '@/common/hooks/useActiveNav';
+import uniqueKeyUtil from '@/common/utils/keyGen';
 
-// const TAB_LIST: Array<{ pagePath: string; text?: string }> = [
-//   { pagePath: '/pages/123/index', text: '123' },
-//   { pagePath: '/pages/456/index', text: '456' },
-// ];
+interface TabBarProps {}
 
-const TabBar: React.FC = () => {
-  // const { activeButton, setActiveButton } = useActiveButtonStore();
+const TAB_LIST: Array<{ pagePath: string; name: string; icon?: string }> = [
+  { pagePath: '/pages/main/index', name: 'Home', icon: 'streaming' },
+  { pagePath: '/pages/main/index', name: 'Download', icon: 'download-cloud' },
+  { pagePath: '/pages/main/index', name: '+' },
+  { pagePath: '/pages/messageNotification/index', name: 'Massage', icon: 'message' },
+  { pagePath: '/pages/personalPage/index', name: 'Profile', icon: 'user' },
+];
 
-  return <View className="tabBar">test</View>;
-};
+const TabBar: React.FC<TabBarProps> = memo(() => {
+  const { activeButton, setActiveButton } = useActiveButtonStore();
+
+  return (
+    <View className="guild_line">
+      {TAB_LIST.map((item) => (
+        <>
+          {item.name === '+' ? (
+            <View className="add_button">
+              <View className="add_sign">+</View>
+            </View>
+          ) : (
+            <AtIcon
+              key={uniqueKeyUtil.nextKey()}
+              value={item.icon as string}
+              size="35"
+              color={activeButton === item.name ? '#f18900' : '#FFD777'}
+              onClick={() => {
+                void Taro.switchTab({ url: item.pagePath });
+                setActiveButton(item.name as ActiveButtonType);
+              }}
+            ></AtIcon>
+          )}
+        </>
+      ))}
+    </View>
+  );
+});
 
 export default TabBar;
