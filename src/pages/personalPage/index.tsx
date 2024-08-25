@@ -17,7 +17,6 @@ import {
   StarIcon,
   TopBackground,
 } from '@/common/assets/img/personalPage';
-import { GuildLine } from '@/common/components';
 
 export interface UserInfo {
   avatarUrl: string; // 用户头像的URL
@@ -63,7 +62,6 @@ const PersonalPage: React.FC<PersonalPageProps> = () => {
     <View className="PersonalPage">
       <Head />
       <List />
-      <GuildLine />
     </View>
   );
 };
