@@ -11,7 +11,6 @@ import { useEffect, useMemo } from 'react';
 
 import './index.scss';
 
-import { GuildLine } from '@/common/components';
 import Comment from '@/common/components/comment/comment';
 import SearchInput from '@/common/components/SearchInput/SearchInput';
 
@@ -118,8 +117,6 @@ export default function Index() {
             />
           ))}
       </ScrollView>
-
-      <GuildLine />
     </View>
   );
 }
