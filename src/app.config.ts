@@ -56,17 +56,18 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/editUser/index',
   ],
-  //   tabBar: {
-  //     /* tab页面必须放在主包里 */
-  //     custom: true,
-  //     list: [
-  //       {
-  //         pagePath: 'pages/123/index',
-  //         text: '123',
-  //       },
-  //       { pagePath: 'pages/456/index', text: '456' },
-  //     ],
-  //   },
+  tabBar: {
+    /* tab页面必须放在主包里 */
+    custom: true,
+    list: [
+      {
+        pagePath: 'pages/main/index',
+        text: 'Home',
+      },
+      { pagePath: 'pages/messageNotification/index', text: 'Massage' },
+      { pagePath: 'pages/personalPage/index', text: 'Profile' },
+    ],
+  },
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',

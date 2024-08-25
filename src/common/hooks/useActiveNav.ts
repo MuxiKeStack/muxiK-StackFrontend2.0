@@ -1,14 +1,14 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
-export type ButtonType = '123' | '456';
+export type ActiveButtonType = 'Home' | 'Download' | '+' | 'Massage' | 'Profile';
 
 interface ActiveButtonState {
-  activeButton: ButtonType;
-  setActiveButton: (button: ButtonType) => void;
+  activeButton: ActiveButtonType;
+  setActiveButton: (button: ActiveButtonType) => void;
 }
 
 const useActiveButtonStore = create<ActiveButtonState>((set) => ({
-  activeButton: '123',
+  activeButton: 'Home',
   setActiveButton: (button) => set({ activeButton: button }),
 }));
 
