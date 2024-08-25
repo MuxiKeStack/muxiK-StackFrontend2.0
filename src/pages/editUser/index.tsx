@@ -1,122 +1,61 @@
-import { Button, Icon, Image, Input, View } from '@tarojs/components';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-console */
+/* eslint-disable import/first */
+import { Button, Image, Input, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
 import { get } from '@/common/api/get';
-// eslint-disable-next-line import/first
+import { fetchQiniuToken, fetchToQiniu } from '@/common/api/qiniu';
+import { editIcon } from '@/common/assets/img/editPersonal';
 import { ResponseUser } from '@/pages/personalPage';
 
 //import { useDoubleClick } from '@/hooks/useDoubleClick';
 // import { editIcon } from "@/img/editPersonal";
-export interface ResponseQiniu {
-  code?: number;
-  data?: WebGetTubeTokenData;
-  msg?: string;
-}
-interface QiniuUploadData {
-  token: string;
-  key?: string;
-}
-interface QiniuUploadResponse {
-  key: string;
-  hash: string;
-}
-export interface WebGetTubeTokenData {
-  access_token?: string;
-  domain_name?: string;
-}
+
 const EditUser: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
   // const [editing, setEditing] = useState(false);
   const [nickName, setNickName] = useState('昵称昵称昵称');
-  const [uploadToken, setUploadToken] = useState<string | undefined>();
-  const [uploadDomain, setUploadDomain] = useState<string | undefined>();
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [editableNickName, setEditableNickName] = useState(nickName);
-  // const [title, setTitle] = useState('');
-  // const textOnDoubleClick = useDoubleClick();
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const url = '/users/profile';
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         const response: ResponseUser = await get(url);
         console.log(response);
+        setNickName(response.data.nickname);
+        setAvatarUrl(response.data.avatar);
       } catch (error) {
         console.error('Error fetching collection data:', error);
       }
     };
     void fetchUser();
   }, []);
-  useEffect(() => {
-    const fetchQiniuToken = async () => {
-      try {
-        const url = '/tube/access_token';
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const response: ResponseQiniu = await get(url);
-        if (response.code) {
-          setUploadToken(response.data?.access_token);
-          setUploadDomain(response.data?.domain_name);
-        }
-      } catch (error) {
-        console.error('Error fetching Qiniu token:', error);
-      }
-    };
-    void fetchQiniuToken();
-  }, []);
   const chooseAvatar = () => {
     void Taro.chooseImage({
-      count: 1,
+      count: 1, // 默认9
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        const filePath = res.tempFilePaths[0];
-        setAvatarUrl(filePath);
+        void fetchQiniuToken();
+        const tempFilePath = res.tempFilePaths[0];
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        void fetchToQiniu(tempFilePath).then((res: string) => setAvatarUrl(res));
         console.log(res);
-        if (uploadToken && uploadDomain) {
-          uploadToQiniu(filePath);
-        }
       },
-      fail: (err) => {
-        console.error('Failed to choose image:', err);
-      },
-    });
-  };
-
-  const uploadToQiniu = (filePath: string) => {
-    const data: QiniuUploadData = {
-      token: uploadToken as string,
-    };
-
-    void Taro.uploadFile({
-      url: `https://${uploadDomain}`,
-      filePath: filePath,
-      name: 'file',
-      formData: data,
-      success: (res) => {
-        if (res.statusCode === 200) {
-          const responseData: QiniuUploadResponse = JSON.parse(
-            res.data
-          ) as QiniuUploadResponse;
-          const imageUrl = `https://${uploadDomain}/${responseData.key}`;
-          console.log(imageUrl);
-          setAvatarUrl(imageUrl);
-        } else {
-          console.error('Upload failed:', res);
-        }
-      },
-      fail: (err) => {
-        console.error('Error during upload:', err);
+      fail: function (res) {
+        console.log(res);
       },
     });
   };
   const handleEditIconClick = () => {
     setIsEditingNickname(!isEditingNickname);
   };
-
   const handleNicknameChange = (e) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
     setEditableNickName(e.target.value);
@@ -138,17 +77,28 @@ const EditUser: React.FC = () => {
           <View className="nickname-text">昵称</View>
           <View>
             {isEditingNickname ? (
-              <Input
-                type="text"
-                value={editableNickName}
-                onInput={handleNicknameChange}
-                onBlur={handleNicknameSave}
-                className="nickname-input"
-              />
+              <View className="nickname">
+                <Input
+                  type="text"
+                  value={editableNickName}
+                  onInput={handleNicknameChange}
+                  onBlur={handleNicknameSave}
+                  className="nickname-input"
+                />
+                {/*<Image*/}
+                {/*  src={editIcon}*/}
+                {/*  onClick={handleEditIconClick}*/}
+                {/*  className="editor-nickname"*/}
+                {/*></Image>*/}
+              </View>
             ) : (
               <View className="nickname">
                 {nickName}
-                <Icon type="info" size="20" onClick={handleEditIconClick} />
+                <Image
+                  src={editIcon}
+                  onClick={handleEditIconClick}
+                  className="editor-nickname"
+                ></Image>
               </View>
             )}
           </View>

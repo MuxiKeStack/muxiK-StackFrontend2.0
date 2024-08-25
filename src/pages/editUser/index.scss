@@ -43,6 +43,11 @@
   font-size: 4.5vw;
   //margin-left: 30%;
   margin-right: 25%;
+  display: flex;
+}
+.editor-nickname {
+  width: 4vw;
+  height: 4vw;
 }
 .divide-line {
   border: 3.2rpx dashed #ffd777;
