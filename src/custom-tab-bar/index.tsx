@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo } from 'react';
@@ -5,8 +6,8 @@ import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
 import useActiveButtonStore, { ActiveButtonType } from '@/common/hooks/useActiveNav';
+import uniqueKeyUtil from '@/common/utils/keyGen';
 
 interface TabBarProps {}
 
@@ -23,7 +24,7 @@ const TabBar: React.FC<TabBarProps> = memo(() => {
 
   return (
     <View className="guild_line">
-      {TAB_LIST.map((item, index) => (
+      {TAB_LIST.map((item) => (
         <>
           {item.name === '+' ? (
             <View className="add_button">
@@ -31,7 +32,7 @@ const TabBar: React.FC<TabBarProps> = memo(() => {
             </View>
           ) : (
             <AtIcon
-              key={index}
+              key={uniqueKeyUtil.nextKey()}
               value={item.icon as string}
               size="35"
               color={activeButton === item.name ? '#f18900' : '#FFD777'}

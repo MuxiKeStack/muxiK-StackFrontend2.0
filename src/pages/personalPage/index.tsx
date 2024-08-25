@@ -13,7 +13,6 @@ import {
   BookIcon,
   ClockIcon,
   MailIcon,
-  MessageIcon,
   StarIcon,
   TopBackground,
 } from '@/common/assets/img/personalPage';
@@ -168,22 +167,6 @@ const List = () => {
         thumb={ClockIcon}
         onClick={() => {
           void Taro.navigateTo({ url: '/pages/evaluateCourseHistory/index' });
-        }}
-      />
-      <AtListItem
-        title="消息提醒"
-        arrow="right"
-        thumb={MessageIcon}
-        onClick={() => {
-          void Taro.navigateTo({ url: '/pages/messageNotification/index' });
-        }}
-      />
-      <AtListItem
-        title="官方消息"
-        arrow="right"
-        thumb={MessageIcon}
-        onClick={() => {
-          void Taro.navigateTo({ url: '/pages/officialNotification/index' });
         }}
       />
       <AtListItem
