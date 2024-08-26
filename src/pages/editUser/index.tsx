@@ -93,13 +93,21 @@ const EditUser: React.FC = () => {
       { avatar: avatarUrl, nickname: nickName, using_title: selectedTitle },
       true
     ).then((res) => console.log(res));
+    void Taro.showToast({
+      icon: 'success',
+      title: '保存成功',
+    });
   };
   const handleTitleSelect = (title: string) => {
     if (titleOwnership[title]) {
       setSelectedTitle(title);
     }
   };
-
+  // Taro.redirectTo({url:'pages/login/index'});
+  const handleLogout = () => {
+    void post('/users/logout', {}, true).then((res) => console.log(res));
+    void Taro.redirectTo({ url: 'pages/login/index' });
+  };
   return (
     <View>
       <View className="avatar-container">
@@ -157,11 +165,21 @@ const EditUser: React.FC = () => {
         </View>
       </View>
       <View className="button-container">
-        <Button className="cancel-button">取消</Button>
+        <Button
+          className="cancel-button"
+          onClick={() => {
+            void Taro.navigateTo({ url: 'pages/personalPage/index' });
+          }}
+        >
+          取消
+        </Button>
         <Button className="save-button" onClick={handleSave}>
           保存
         </Button>
       </View>
+      <Button className="logout-button" onClick={handleLogout}>
+        退出登陆
+      </Button>
     </View>
   );
 };

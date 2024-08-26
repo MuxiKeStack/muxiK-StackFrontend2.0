@@ -17,11 +17,8 @@ import {
   TopBackground,
 } from '@/common/assets/img/personalPage';
 import TitleButton from '@/common/components/titleButton/titleButton';
+import useActiveNav from '@/common/hooks/useActiveNav';
 
-export interface UserInfo {
-  avatarUrl: string; // 用户头像的URL
-  nickName: string; // 用户昵称
-}
 type PersonalPageProps = object;
 export interface ResponseLevel {
   code?: number;
@@ -67,6 +64,7 @@ const PersonalPage: React.FC<PersonalPageProps> = () => {
 };
 
 const Head = () => {
+  const router = useActiveNav();
   const [level, setLevel] = useState(1);
   const [nextLevel, setNextLevel] = useState(0);
   const [points, setPoints] = useState(0);
@@ -88,7 +86,7 @@ const Head = () => {
       }
     };
     void fetchExp();
-  }, []);
+  }, [router]);
   useEffect(() => {
     const fetchNew = async () => {
       try {
@@ -119,14 +117,12 @@ const Head = () => {
             break;
         }
         setSelectedTitle(translatedTitle);
-        console.log(translatedTitle);
-        console.log(selectedTitle);
       } catch (error) {
         console.error('Error fetching collection data:', error);
       }
     };
     void fetchNew();
-  }, []);
+  }, [router]);
   if (newUser) {
     void Taro.navigateTo({ url: '/pages/editUser/index' });
   }
