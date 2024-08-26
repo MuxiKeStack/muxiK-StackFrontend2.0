@@ -16,6 +16,7 @@ import {
   StarIcon,
   TopBackground,
 } from '@/common/assets/img/personalPage';
+import TitleButton from '@/common/components/titleButton/titleButton';
 
 export interface UserInfo {
   avatarUrl: string; // 用户头像的URL
@@ -69,7 +70,9 @@ const Head = () => {
   const [level, setLevel] = useState(1);
   const [nextLevel, setNextLevel] = useState(0);
   const [points, setPoints] = useState(0);
-  // const [userInfo, setUserInfo] = useState<UserInfo>(null);
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [nickName, setNickName] = useState('昵称昵称昵称');
+  const [selectedTitle, setSelectedTitle] = useState<string>('None');
   const [newUser, setNewUser] = useState(false);
   useEffect(() => {
     const fetchExp = async () => {
@@ -94,6 +97,30 @@ const Head = () => {
         console.log('用户信息');
         console.log(response);
         setNewUser(response.data.new);
+        setNickName(response.data.nickname);
+        setAvatarUrl(response.data.avatar);
+        console.log(response.data.using_title);
+        let translatedTitle = '';
+        switch (response.data.using_title) {
+          case 'CaringSenior':
+            translatedTitle = '知心学长';
+            setSelectedTitle('知心学长');
+            break;
+          case 'KeStackPartner':
+            translatedTitle = '课栈合伙人';
+            setSelectedTitle('课栈合伙人');
+            break;
+          case 'CCNUWithMe':
+            translatedTitle = '华师有我';
+            setSelectedTitle('华师有我');
+            break;
+          default:
+            translatedTitle = response.data.using_title;
+            break;
+        }
+        setSelectedTitle(translatedTitle);
+        console.log(translatedTitle);
+        console.log(selectedTitle);
       } catch (error) {
         console.error('Error fetching collection data:', error);
       }
@@ -110,17 +137,24 @@ const Head = () => {
       <Image src={TopBackground} className="personalPage_top_background"></Image>
       <View className="personalPage_user_container">
         <View className="personalPage_user_photo">
-          {/*  <Image src={userInfo.avatarUrl} className="avatar" />*/}
+          <Image src={avatarUrl} className="personalPage_user_photo" />
         </View>
-        <View className="personalPage_user_details">
-          <View className="personalPage_username">昵称</View>
-          <View
-            className="personalPage_icon"
-            onClick={() => {
-              void Taro.navigateTo({ url: '/pages/editUser/index' });
-            }}
-          >
-            &gt;
+        <View className="personalPage_user_container1">
+          <View className="personalPage_user_details">
+            <View className="personalPage_username">{nickName}</View>
+            <View className="personalPage_username_title">
+              {selectedTitle !== 'None' && (
+                <TitleButton title={selectedTitle}></TitleButton>
+              )}
+            </View>
+            <View
+              className="personalPage_icon"
+              onClick={() => {
+                void Taro.navigateTo({ url: '/pages/editUser/index' });
+              }}
+            >
+              &gt;
+            </View>
           </View>
           {/* 经验 */}
           <View className="personalPage_exp_value">

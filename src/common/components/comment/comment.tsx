@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable simple-import-sort/imports */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 // import React, { useEffect } from "react";
@@ -38,7 +34,15 @@ export default function Comment(props: CommentInfo & { type?: string }) {
       useCourseStore.getState().getPublishers(publisher_id || 0);
     });
   }, [course_id, publisher_id]);
+  async function navigateToPage() {
+    await Taro.navigateTo({
+      url: '/pages/classInfo/index', // 确保路径正确
+    });
+  }
 
+  function handleClickToClass() {
+    navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise
+  }
   return (
     <View className="bigcomment" onClick={handleClick}>
       <View className="commentplus">
@@ -48,7 +52,7 @@ export default function Comment(props: CommentInfo & { type?: string }) {
           </>
         ) : (
           <>
-            <View className="classTitle">
+            <View className="classTitle" onClick={handleClickToClass}>
               {courseDetail[course_id || 0]?.name +
                 ' (' +
                 courseDetail[course_id || 0]?.teacher +

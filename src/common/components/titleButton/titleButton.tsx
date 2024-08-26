@@ -2,10 +2,23 @@ import { Button } from '@tarojs/components';
 
 import '../titleButton/titleButton.scss';
 
-export interface TitleButtonProps {
+interface TitleButtonProps {
   title: string;
+  isSelected?: boolean;
+  isDisabled?: boolean;
+  onClick?: () => void;
 }
-const TitleButton = ({ title }: TitleButtonProps) => {
-  return <Button className="title-button">{title}</Button>;
+
+const TitleButton = ({ title, isSelected, isDisabled, onClick }: TitleButtonProps) => {
+  return (
+    <Button
+      className={`title-button ${isSelected ? 'selected' : ''}`}
+      disabled={isDisabled}
+      onClick={onClick}
+    >
+      {title}
+    </Button>
+  );
 };
+
 export default TitleButton;

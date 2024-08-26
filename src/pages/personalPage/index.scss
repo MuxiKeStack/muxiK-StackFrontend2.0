@@ -43,13 +43,25 @@
 }
 
 .PersonalPage .personalPage_username {
-  width: 100%;
-  font-size: 6vw;
+  font-size: 4vw;
+  width: 36vw;
+  margin-left: 1vw;
+  white-space: nowrap;
 }
 .PersonalPage .personalPage_icon {
-  width: 100%;
-  font-size: 6vw;
+  font-size: 4vw;
   color: white;
+}
+.personalPage_user_container1 {
+  display: flex;
+}
+.personalPage_username_title {
+  width: 20vw;
+  margin-left: 2vw;
+  margin-right: 2vw;
+}
+.PersonalPage .personalPage_username_container {
+  display: flex;
 }
 .PersonalPage .personalPage_exp_value {
   width: 100%;

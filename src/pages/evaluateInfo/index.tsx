@@ -1,6 +1,6 @@
 /* eslint-disable simple-import-sort/imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/require-await */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -92,43 +92,40 @@ export default function Index() {
 
   const handleReplySubmit = async () => {
     if (!replyContent.trim()) return; // 忽略空内容
-    // console.log(1);
 
-    // console.log(
-    //   {
-    //     biz: "Evaluation",
-    //     biz_id,
-    //     content: replyContent,
-    //     parent_id: replyTo?.id || 0,
-    //     root_id: replyTo?.root_comment_id === 0 ? replyTo?.id : (replyTo?.root_comment_id || 0)
-    //   }
-    // )
+    try {
+      await post('/comments/publish', {
+        biz: 'Evaluation',
+        biz_id,
+        content: replyContent,
+        parent_id: replyTo?.id || 0,
+        root_id:
+          replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
+      });
+      console.log('评论发布成功');
 
-    post('/comments/publish', {
-      biz: 'Evaluation',
-      biz_id,
-      content: replyContent,
-      parent_id: replyTo?.id || 0,
-      root_id:
-        replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
-    }).then((res) => {
-      console.log('评论发布成功', res);
-    });
+      // 清空回复目标和输入框
+      setReplyTo(null);
+      setReplyContent('');
+      setplaceholderContent('写下你的评论...');
 
-    // try {
-    //   const res = await post(`/comments/create`, {
-    //     biz_id,
-    //     content: replyContent,
-    //     parent_comment_id: replyTo?.id || 0,
-    //     reply_to_uid: replyTo?.commentator_id || 0,
-    //   });
-    //   console.log('评论发布成功', res);
-
-    // 清空回复目标和输入框
-    setReplyTo(null);
-    setReplyContent('');
-
-    setCommentsLoaded(false);
+      // 评论发布成功后，重新加载评论
+      setCommentsLoaded(false); // 先将commentsLoaded设为false，避免useEffect中的fetchComments不被调用
+      const fetchComments = async () => {
+        try {
+          const res = await get(
+            `/comments/list?biz=Evaluation&biz_id=${biz_id}&cur_comment_id=0&limit=100`
+          );
+          setAllComments(res.data);
+          setCommentsLoaded(true);
+        } catch (error) {
+          console.error('加载评论失败', error);
+        }
+      };
+      await fetchComments();
+    } catch (error) {
+      console.error('评论发布失败', error);
+    }
   };
 
   // 仅当评论数据加载完成时渲染CommentComponent

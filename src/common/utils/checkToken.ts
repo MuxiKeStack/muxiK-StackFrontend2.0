@@ -9,7 +9,7 @@ function checkToken() {
   } else {
     // eslint-disable-next-line no-console
     console.log('无token先登陆');
-    void Taro.switchTab({ url: '/pages/login/index' });
+    void Taro.redirectTo({ url: '/pages/login/index' });
   }
 }
 export default checkToken;

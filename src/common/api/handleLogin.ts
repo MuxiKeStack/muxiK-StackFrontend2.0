@@ -55,7 +55,7 @@ const handleLogin = async (data: Record<string, unknown> = {}) => {
         },
       });
 
-      await Taro.navigateTo({
+      await Taro.switchTab({
         url: '/pages/main/index',
       });
     }
