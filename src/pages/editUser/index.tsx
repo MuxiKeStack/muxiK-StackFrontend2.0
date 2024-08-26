@@ -67,6 +67,7 @@ const EditUser: React.FC = () => {
     setIsEditingNickname(!isEditingNickname);
   };
   const handleNicknameChange = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const value = e.target.value;
 
     // 检查字符长度是否超过 7 个字

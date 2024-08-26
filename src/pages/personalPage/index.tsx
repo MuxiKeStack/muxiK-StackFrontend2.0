@@ -143,17 +143,19 @@ const Head = () => {
           <View className="personalPage_user_details">
             <View className="personalPage_username">{nickName}</View>
             <View className="personalPage_username_title">
-          {selectedTitle !== 'None' && <TitleButton title={selectedTitle}></TitleButton>}
+              {selectedTitle !== 'None' && (
+                <TitleButton title={selectedTitle}></TitleButton>
+              )}
+            </View>
+            <View
+              className="personalPage_icon"
+              onClick={() => {
+                void Taro.navigateTo({ url: '/pages/editUser/index' });
+              }}
+            >
+              &gt;
+            </View>
           </View>
-          <View
-            className="personalPage_icon"
-            onClick={() => {
-              void Taro.navigateTo({ url: '/pages/editUser/index' });
-            }}
-          >
-            &gt;
-          </View>
-        </View>
           {/* 经验 */}
           <View className="personalPage_exp_value">
             {points}/{nextLevel}
