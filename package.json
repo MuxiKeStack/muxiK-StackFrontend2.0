@@ -58,7 +58,7 @@
     "@tarojs/react": "3.6.34",
     "@tarojs/runtime": "3.6.35",
     "@tarojs/shared": "3.6.34",
-    "@tarojs/taro": "4.0.3",
+    "@tarojs/taro": "4.0.4",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "immer": "^10.1.1",
