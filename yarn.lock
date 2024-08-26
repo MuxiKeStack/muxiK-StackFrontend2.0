@@ -3480,15 +3480,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/react@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/react@npm:3.6.34"
+"@tarojs/react@npm:3.6.35":
+  version: 3.6.35
+  resolution: "@tarojs/react@npm:3.6.35"
   dependencies:
     react-reconciler: "npm:0.27.0"
   peerDependencies:
-    "@tarojs/runtime": ~3.6.34
-    "@tarojs/shared": ~3.6.34
-  checksum: 10c0/61e06310886e558b577d0b5b0383d4aad37c9b1c977a11884e9bf854069f258761c51d6abbe9ea0f94d0a3d2fd4785ccd16ede834127159afe8085215120ac07
+    "@tarojs/runtime": ~3.6.35
+    "@tarojs/shared": ~3.6.35
+  checksum: 10c0/801e9cd595472d7fa8cb64ba9e21ba0413a487c6884682caa64fa2137015b14b63f149a8ae835efd865fcee0ab384540a1f2140d53adf3d0464a696c33fd219f
   languageName: node
   linkType: hard
 
@@ -12666,7 +12666,7 @@ __metadata:
     "@tarojs/plugin-platform-swan": "npm:4.0.3"
     "@tarojs/plugin-platform-tt": "npm:4.0.3"
     "@tarojs/plugin-platform-weapp": "npm:3.6.34"
-    "@tarojs/react": "npm:3.6.34"
+    "@tarojs/react": "npm:3.6.35"
     "@tarojs/runtime": "npm:3.6.35"
     "@tarojs/shared": "npm:3.6.34"
     "@tarojs/taro": "npm:4.0.3"
