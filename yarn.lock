@@ -2781,6 +2781,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/api@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/api@npm:4.0.5"
+  peerDependencies:
+    "@tarojs/runtime": 4.0.5
+    "@tarojs/shared": 4.0.5
+  checksum: 10c0/971bd4ae9d01a4f79d3e94e00390821ccee53d2930b2019178ff3939064a9c2a996b375a54f1bbda77e387238d7eb8cf4b635c097e3dc0c4c75dc48d7011b66e
+  languageName: node
+  linkType: hard
+
 "@tarojs/binding-darwin-arm64@npm:3.6.35":
   version: 3.6.35
   resolution: "@tarojs/binding-darwin-arm64@npm:3.6.35"
@@ -3745,6 +3755,44 @@ __metadata:
     webpack-dev-server:
       optional: true
   checksum: 10c0/9bc78b151d8cb709056f2c7217bdb224c5f4bddf0a238ec162b7de7ed7d8d17e1a1e3e1f1ba8e85a58742bf2d803eb67a4b5c8a68fed3e2724f644250f2b6866
+  languageName: node
+  linkType: hard
+
+"@tarojs/taro@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/taro@npm:4.0.5"
+  dependencies:
+    "@tarojs/api": "npm:4.0.5"
+    "@tarojs/runtime": "npm:4.0.5"
+    "@types/postcss-url": "npm:^10.0.4"
+  peerDependencies:
+    "@tarojs/components": 4.0.5
+    "@tarojs/helper": 4.0.5
+    "@tarojs/shared": 4.0.5
+    "@types/react": ^18
+    html-webpack-plugin: ^5
+    postcss: ^8
+    rollup: ^3
+    vue: ^3
+    webpack: ^5
+    webpack-chain: ^6
+    webpack-dev-server: ^4
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    html-webpack-plugin:
+      optional: true
+    rollup:
+      optional: true
+    vue:
+      optional: true
+    webpack:
+      optional: true
+    webpack-chain:
+      optional: true
+    webpack-dev-server:
+      optional: true
+  checksum: 10c0/ab3ec290bd341fd233fe526b1a58e242a3be78d0a6fc56c7a6e5b758fd584053b8b5fd78bb990e9302e9c915ab8e8e262963bd891278102d1ae56d1612c688e8
   languageName: node
   linkType: hard
 
@@ -12622,7 +12670,7 @@ __metadata:
     "@tarojs/react": "npm:4.0.5"
     "@tarojs/runtime": "npm:3.6.35"
     "@tarojs/shared": "npm:3.6.34"
-    "@tarojs/taro": "npm:4.0.3"
+    "@tarojs/taro": "npm:4.0.5"
     "@tarojs/taro-loader": "npm:4.0.5"
     "@tarojs/webpack5-runner": "npm:3.6.35"
     "@types/node": "npm:^22.0.0"
