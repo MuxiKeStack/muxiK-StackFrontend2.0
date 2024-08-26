@@ -3446,13 +3446,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/plugin-platform-tt@npm:4.0.3":
-  version: 4.0.3
-  resolution: "@tarojs/plugin-platform-tt@npm:4.0.3"
+"@tarojs/plugin-platform-tt@npm:4.0.4":
+  version: 4.0.4
+  resolution: "@tarojs/plugin-platform-tt@npm:4.0.4"
   peerDependencies:
-    "@tarojs/service": 4.0.3
-    "@tarojs/shared": 4.0.3
-  checksum: 10c0/0aec71907a866b057eaf274df862a5ce2f05a9336cca2fcd967929373f688599ea40a0dc5a0f78c113fa76fb57c2cd8e4fb558cccd6b8f21062a88b5456d96b3
+    "@tarojs/service": 4.0.4
+    "@tarojs/shared": 4.0.4
+  checksum: 10c0/babf2833c9837f033aa5e2d06fea32a3d68521f284522d043c10a010e1ddfb8dc634ea7bb6f4fd127ad4b09e340121cda9cf74a4cbcf36ad21983b2b96460dd0
   languageName: node
   linkType: hard
 
@@ -12664,7 +12664,7 @@ __metadata:
     "@tarojs/plugin-platform-jd": "npm:3.6.34"
     "@tarojs/plugin-platform-qq": "npm:3.6.33"
     "@tarojs/plugin-platform-swan": "npm:4.0.3"
-    "@tarojs/plugin-platform-tt": "npm:4.0.3"
+    "@tarojs/plugin-platform-tt": "npm:4.0.4"
     "@tarojs/plugin-platform-weapp": "npm:3.6.34"
     "@tarojs/react": "npm:3.6.34"
     "@tarojs/runtime": "npm:3.6.35"
