@@ -1,21 +1,19 @@
 /* eslint-disable */
-import Taro, { setNavigationBarTitle } from '@tarojs/taro';
-import { BarChart } from 'echarts/charts';
 import { Canvas } from '@tarojs/components';
-import { GridComponent } from 'echarts/components';
-import * as echarts from 'echarts/core';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Echarts, EchartsRenderer } from 'taro-charts';
+import Taro from '@tarojs/taro';
 import { EChartsOption } from 'echarts';
+import * as echarts from 'echarts/core';
+import { useCallback, useEffect, useState } from 'react';
+import { Echarts } from 'taro-charts';
 
 const { windowWidth } = Taro.getSystemInfoSync();
 const E_HEIGHT = 300;
 const E_WIDTH = windowWidth;
 
-export default function Charts(props: {options: EChartsOption}) {
-//   useEffect(() => {
-//     setNavigationBarTitle({ title: '基础柱状图' });
-//   }, []);
+export default function Charts(props: { options: EChartsOption }) {
+  //   useEffect(() => {
+  //     setNavigationBarTitle({ title: '基础柱状图' });
+  //   }, []);
 
   const option = {
     xAxis: {
@@ -31,7 +29,7 @@ export default function Charts(props: {options: EChartsOption}) {
         type: 'bar',
       },
     ],
-  }
+  };
   const [chart, setChart] = useState<echarts.ECharts>();
 
   useEffect(() => {
