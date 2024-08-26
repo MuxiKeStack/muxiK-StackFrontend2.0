@@ -12,16 +12,18 @@ import './comment.scss';
 import { CommentInfo } from '../../assets/types';
 import ShowStar from '../showStar/showStar';
 
-type CommentProps = CommentInfo & { type?: string; isHot?: boolean; showAll?: boolean };
-export default function Comment(props: CommentProps) {
+type CommentProps = CommentInfo & {
+  type?: string;
+  isHot?: boolean;
+  showAll?: boolean;
+  onClick?: (comment: CommentInfo) => void;
+};
+export default function Comment({ onClick, ...props }: CommentProps) {
   const { course_id, publisher_id, showAll } = props;
   const [, startPublisherTransition] = useTransition();
   const [, startCourseTransition] = useTransition();
   const handleClick = () => {
-    const serializedComment = encodeURIComponent(JSON.stringify(props));
-    Taro.navigateTo({
-      url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
-    });
+    onClick && onClick(props);
   };
   useEffect(() => {
     startCourseTransition(() => {
@@ -31,15 +33,6 @@ export default function Comment(props: CommentProps) {
       useCourseStore.getState().getPublishers(publisher_id || 0);
     });
   }, [course_id, publisher_id]);
-  async function navigateToPage() {
-    await Taro.navigateTo({
-      url: '/pages/classInfo/index', // 确保路径正确
-    });
-  }
-
-  function handleClickToClass() {
-    navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise
-  }
   return (
     <View className="bigcomment" onClick={handleClick}>
       <View className="commentplus">
@@ -92,6 +85,15 @@ const CommentHeader = ({
 }: CommentProps) => {
   const courseDetail = useCourseStore((state) => state.courseDetail);
   const publisher = useCourseStore((state) => state.publishers);
+  async function navigateToPage() {
+    await Taro.navigateTo({
+      url: '/pages/classInfo/index', // 确保路径正确
+    });
+  }
+
+  function handleClickToClass() {
+    navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise
+  }
   return (
     <>
       {!courseDetail[course_id || 0] ? (
@@ -100,7 +102,7 @@ const CommentHeader = ({
         </>
       ) : (
         <>
-          <View className="classTitle">
+          <View className="classTitle" onClick={handleClickToClass}>
             {courseDetail[course_id || 0]?.name +
               ' (' +
               courseDetail[course_id || 0]?.teacher +

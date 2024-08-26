@@ -13,8 +13,8 @@ import './index.scss';
 
 import { get } from '@/common/utils/fetch';
 
+import { useCourseStore } from '@/pages/main/store/store';
 import { Comment } from '../../assets/types';
-import { getUserInfo } from '../../assets/userService';
 
 interface CommentProps {
   comments: Comment[];
@@ -24,7 +24,7 @@ interface CommentProps {
 const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) => {
   // console.log(comments);
   const [allComments, setAllComments] = useState<Comment[]>(comments);
-
+  const dispatch = useCourseStore(({ getPublishers }) => ({ getPublishers }));
   useEffect(() => {
     const fetchAllReplies = async () => {
       const topLevelComments = allComments.filter(
@@ -48,7 +48,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
 
       const commentsWithUserInfo = await Promise.all(
         updatedComments.map(async (comment) => {
-          const user = await getUserInfo(comment.commentator_id);
+          const user = await dispatch.getPublishers(comment.commentator_id);
           return { ...comment, user };
         })
       );
@@ -58,7 +58,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
           const replies = comment.replies || [];
           const repliesWithUserInfo = await Promise.all(
             replies.map(async (reply) => {
-              const user = await getUserInfo(reply.commentator_id);
+              const user = await dispatch.getPublishers(reply.commentator_id);
               return { ...reply, user };
             })
           );

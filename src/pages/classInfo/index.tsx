@@ -3,21 +3,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable import/first */
-import { Text, View } from '@tarojs/components';
-import { useEffect, useRef, useState } from 'react';
-// @ts-ignore
-import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
-
-import './index.scss';
-
-import Comment from '@/common/components/comment/comment';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
+import { Text, View } from '@tarojs/components';
+import { useEffect, useState } from 'react';
+import './index.scss';
 // import echarts from '../../assets/js/echarts.js'
+import Charts from '@/common/components/chart';
 import { get } from '@/common/utils/fetch';
-
-import echarts from '../../common/assets/js/echarts';
-
 // 定义接口
 interface Course {
   id: number;
@@ -33,123 +26,6 @@ interface Course {
   is_collected: boolean;
   is_subscribed: boolean;
 }
-
-function Chart() {
-  const echartsRef = useRef<EchartsHandle>(null);
-  const option: EChartOption = {
-    legend: {
-      top: 50,
-      left: 'center',
-      z: 100,
-    },
-    tooltip: {
-      trigger: 'axis',
-      show: true,
-      confine: true,
-    },
-    xAxis: {
-      type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    },
-    yAxis: {
-      type: 'value',
-    },
-    series: [
-      {
-        data: [150, 230, 224, 218, 135, 147, 260],
-        type: 'line',
-      },
-    ],
-  };
-
-  return <Echarts echarts={echarts} option={option} ref={echartsRef} />;
-}
-
-// class Chart extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       ec: {
-//         onInit: function (canvas, width, height) {
-//           const chart = echarts.init(canvas, null, {
-//             width: width,
-//             height: height,
-//           });
-//           canvas.setChart(chart);
-//           const option = {
-//             xAxis: {
-//               type: 'category',
-//               boundaryGap: false,
-//             },
-//             yAxis: {
-//               type: 'value',
-//               boundaryGap: [0, '30%'],
-//             },
-//             visualMap: {
-//               type: 'piecewise',
-//               show: false,
-//               dimension: 0,
-//               seriesIndex: 0,
-//               pieces: [
-//                 {
-//                   gt: 1,
-//                   lt: 3,
-//                   color: 'rgba(0, 0, 180, 0.4)',
-//                 },
-//                 {
-//                   gt: 5,
-//                   lt: 7,
-//                   color: 'rgba(0, 0, 180, 0.4)',
-//                 },
-//               ],
-//             },
-//             series: [
-//               {
-//                 type: 'line',
-//                 smooth: 0.6,
-//                 symbol: 'none',
-//                 lineStyle: {
-//                   color: '#5470C6',
-//                   width: 5,
-//                 },
-//                 markLine: {
-//                   symbol: ['none', 'none'],
-//                   label: { show: false },
-//                   data: [{ xAxis: 1 }, { xAxis: 3 }, { xAxis: 5 }, { xAxis: 7 }],
-//                 },
-//                 areaStyle: {},
-//                 data: [
-//                   ['2019-10-10', 200],
-//                   ['2019-10-11', 560],
-//                   ['2019-10-12', 750],
-//                   ['2019-10-13', 580],
-//                   ['2019-10-14', 250],
-//                   ['2019-10-15', 300],
-//                   ['2019-10-16', 450],
-//                   ['2019-10-17', 300],
-//                   ['2019-10-18', 100],
-//                 ],
-//               },
-//             ],
-//           };
-//           chart.setOption(option);
-//           return chart;
-//         },
-//       },
-//     };
-//   }
-//   render() {
-//     return (
-//       <View className="canvas-container">
-//         <ec-canvas
-//           id="mychart-dom-bar"
-//           canvas-id="mychart-bar"
-//           ec={this.state.ec}
-//         ></ec-canvas>
-//       </View>
-//     );
-//   }
-// }
 
 export default function index() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -215,8 +91,8 @@ export default function index() {
           <Label3 content={feature}></Label3>
         ))}
       </View>
-      <Chart></Chart>
-      <Comment {...commentExample} />
+      <Charts options={}></Charts>
+      {/* <Comment {...commentExample} /> */}
     </View>
   );
 }

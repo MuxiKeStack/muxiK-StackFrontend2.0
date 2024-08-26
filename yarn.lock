@@ -7610,6 +7610,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"echarts@npm:^5.5.1":
+  version: 5.5.1
+  resolution: "echarts@npm:5.5.1"
+  dependencies:
+    tslib: "npm:2.3.0"
+    zrender: "npm:5.6.0"
+  checksum: 10c0/2f7e3037f17fda99d977092767943f4d9b0c8f886f86701ec88591707713b5e5fd683e56086b6ba5245b322f088184bdb06eac488234c20a1869b08cb6b4e523
+  languageName: node
+  linkType: hard
+
 "ee-first@npm:1.1.1":
   version: 1.1.1
   resolution: "ee-first@npm:1.1.1"
@@ -12625,6 +12635,7 @@ __metadata:
     babel-preset-taro: "npm:3.6.35"
     cache-loader: "npm:^4.1.0"
     cssnano: "npm:^7.0.4"
+    echarts: "npm:^5.5.1"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-config-taro: "npm:3.6.35"
@@ -12648,9 +12659,11 @@ __metadata:
     react-refresh: "npm:^0.14.2"
     stylelint: "npm:16.7.0"
     tailwindcss: "npm:^3.4.6"
+    taro-charts: "npm:^1.0.7"
     taro-hooks: "npm:^2.0.11"
     taro-iconfont-cli: "npm:^3.3.0"
     taro-plugin-compiler-optimization: "npm:^1.0.4"
+    taro-react-echarts: "npm:^1.2.2"
     taro-ui: "npm:^3.3.0"
     thread-loader: "npm:^4.0.2"
     ts-node: "npm:^10.9.2"
@@ -16886,6 +16899,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"taro-charts@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "taro-charts@npm:1.0.7"
+  peerDependencies:
+    "@tarojs/components": ^3.4.12
+    "@tarojs/taro": ^3.5.7
+    "@wuba/react-native-echarts": ^1.0.0
+    echarts: ^5.4.1
+  checksum: 10c0/9d9bd60a412be4c9a4519f673b367467a52b7d64115728a312d9d26feb13ac338fa41fb7ff8495a5a1148614b97fc6ea3f6e199e73007ae80e8bf74fa67f3af7
+  languageName: node
+  linkType: hard
+
 "taro-hooks@npm:^2.0.11":
   version: 2.1.0
   resolution: "taro-hooks@npm:2.1.0"
@@ -16930,6 +16955,18 @@ __metadata:
   version: 1.0.4
   resolution: "taro-plugin-compiler-optimization@npm:1.0.4"
   checksum: 10c0/6d301944f18ef3df204861fb727c4551984e3237cd0215a3891ae11e13949da829b73dba0f0b804f66b559d480bd495df8933ad740e97fe849f8a279c87872f1
+  languageName: node
+  linkType: hard
+
+"taro-react-echarts@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "taro-react-echarts@npm:1.2.2"
+  peerDependencies:
+    "@tarojs/components": ">=3"
+    "@tarojs/taro": ">=3"
+    react: ">=16.9"
+    react-dom: ">=16.9"
+  checksum: 10c0/875d2d9d5e95f39199a449fd5565e0329165b2a3e30a7f735b0bbaa9988098d2fc536a4d2935682b6ab7a913305e2f0b341c861ba64a95f3b846e153430fd29d
   languageName: node
   linkType: hard
 
@@ -17234,6 +17271,13 @@ __metadata:
     minimist: "npm:^1.2.6"
     strip-bom: "npm:^3.0.0"
   checksum: 10c0/5b4f301a2b7a3766a986baf8fc0e177eb80bdba6e396792ff92dc23b5bca8bb279fc96517dcaaef63a3b49bebc6c4c833653ec58155780bc906bdbcf7dda0ef5
+  languageName: node
+  linkType: hard
+
+"tslib@npm:2.3.0":
+  version: 2.3.0
+  resolution: "tslib@npm:2.3.0"
+  checksum: 10c0/a845aed84e7e7dbb4c774582da60d7030ea39d67307250442d35c4c5dd77e4b44007098c37dd079e100029c76055f2a362734b8442ba828f8cc934f15ed9be61
   languageName: node
   linkType: hard
 
@@ -18548,6 +18592,15 @@ __metadata:
     toposort: "npm:^2.0.2"
     type-fest: "npm:^2.19.0"
   checksum: 10c0/fe142141365eed0f78fb2e18bdd2f10bf101385dae12a5f9de14884448067bdca16a54b547fc0bffec04a098dd70b4519ff366422f3da006fd11a0717a7863ac
+  languageName: node
+  linkType: hard
+
+"zrender@npm:5.6.0":
+  version: 5.6.0
+  resolution: "zrender@npm:5.6.0"
+  dependencies:
+    tslib: "npm:2.3.0"
+  checksum: 10c0/f7c5a1739dfec60b9bead0d0657c47868391b1009cc82a603f9dbf247fa625df28dcdb3e7b2e18404657e2c987f95e0e1bb5613519c2d823854f3dda44e2ee96
   languageName: node
   linkType: hard
 
