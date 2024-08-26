@@ -3693,6 +3693,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/taro-loader@npm:3.6.35":
+  version: 3.6.35
+  resolution: "@tarojs/taro-loader@npm:3.6.35"
+  dependencies:
+    "@tarojs/helper": "npm:3.6.35"
+    "@tarojs/taro": "npm:3.6.35"
+    loader-utils: "npm:^1.2.3"
+  checksum: 10c0/c230b35dc535530c1f503b01129aefb8ba713bb4f34ac13fa8692398c1783e48c8665f55aa1d6313ef7a4c6c07a52ff17c1475e1c22ad93f1a2e424aec8321fe
+  languageName: node
+  linkType: hard
+
 "@tarojs/taro@npm:3.6.34":
   version: 3.6.34
   resolution: "@tarojs/taro@npm:3.6.34"
@@ -12670,7 +12681,7 @@ __metadata:
     "@tarojs/runtime": "npm:3.6.35"
     "@tarojs/shared": "npm:3.6.34"
     "@tarojs/taro": "npm:4.0.3"
-    "@tarojs/taro-loader": "npm:3.6.34"
+    "@tarojs/taro-loader": "npm:3.6.35"
     "@tarojs/webpack5-runner": "npm:3.6.34"
     "@types/node": "npm:^22.0.0"
     "@types/react": "npm:^18.3.3"
