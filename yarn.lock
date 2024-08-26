@@ -5496,9 +5496,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-taro@npm:3.6.34":
-  version: 3.6.34
-  resolution: "babel-preset-taro@npm:3.6.34"
+"babel-preset-taro@npm:3.6.35":
+  version: 3.6.35
+  resolution: "babel-preset-taro@npm:3.6.35"
   dependencies:
     "@babel/plugin-proposal-class-properties": "npm:^7.14.5"
     "@babel/plugin-proposal-decorators": "npm:^7.14.5"
@@ -5509,7 +5509,7 @@ __metadata:
     "@babel/preset-typescript": "npm:^7.14.5"
     "@babel/runtime": "npm:^7.14.5"
     "@babel/runtime-corejs3": "npm:^7.14.5"
-    "@tarojs/helper": "npm:3.6.34"
+    "@tarojs/helper": "npm:3.6.35"
     babel-plugin-dynamic-import-node: "npm:2.3.3"
     babel-plugin-minify-dead-code-elimination: "npm:^0.5.2"
     babel-plugin-transform-imports-api: "npm:1.0.0"
@@ -5519,7 +5519,7 @@ __metadata:
     react-refresh: "npm:^0.11.0"
   peerDependencies:
     "@babel/core": "*"
-  checksum: 10c0/4f814ebcdb32768cccd63f9813e3683a02771d3e95aad726f980af80267bfa42252ebb5313199569926d86824512ca778ecfae20cc3b0220601b8f32e33fbbe5
+  checksum: 10c0/caf8db11510d9f0611776073558be4d0025ea54704c0b09a296393b5feb36eb1a497d976b2ff342bc5735ea5235ff9b561e64075f27c42c25b315c49a55c75bd
   languageName: node
   linkType: hard
 
@@ -12680,7 +12680,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^7.17.0"
     autoprefixer: "npm:^10.4.19"
     babel-plugin-import: "npm:^1.13.8"
-    babel-preset-taro: "npm:3.6.34"
+    babel-preset-taro: "npm:3.6.35"
     cache-loader: "npm:^4.1.0"
     cssnano: "npm:^7.0.4"
     eslint: "npm:^8.57.0"
