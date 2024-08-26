@@ -3439,15 +3439,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/react@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/react@npm:3.6.34"
+"@tarojs/react@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/react@npm:4.0.5"
   dependencies:
-    react-reconciler: "npm:0.27.0"
+    "@tarojs/runtime": "npm:4.0.5"
+    "@tarojs/shared": "npm:4.0.5"
+    react-reconciler: "npm:0.29.0"
   peerDependencies:
-    "@tarojs/runtime": ~3.6.34
-    "@tarojs/shared": ~3.6.34
-  checksum: 10c0/61e06310886e558b577d0b5b0383d4aad37c9b1c977a11884e9bf854069f258761c51d6abbe9ea0f94d0a3d2fd4785ccd16ede834127159afe8085215120ac07
+    react: ^18
+  checksum: 10c0/ae9ac00bad2c4ac5ed178f7e6d571ee831f94edce192e64051b754f6f6ffdf5687a2ea731e50d2ebc70bec84e5ea26dbf74e9ec30db0c5ec45c658a81e150cc4
   languageName: node
   linkType: hard
 
@@ -3521,6 +3522,16 @@ __metadata:
     "@tarojs/shared": "npm:4.0.3"
     tslib: "npm:^2.6.2"
   checksum: 10c0/8b77efec2fc022044a0e1f32a0434b7d9716e7853aa91a1d273eb35dec8a6fb67b986094fa617fdf12297fda5ab837254430fe25b771a1541b50546b0489d158
+  languageName: node
+  linkType: hard
+
+"@tarojs/runtime@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/runtime@npm:4.0.5"
+  dependencies:
+    "@tarojs/shared": "npm:4.0.5"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/65dddb8535c4f1ffa74a333b187921cb0ba5e91d6c7d5b01056acc7e17cfea9a10659cb5bdb2c8cbacfdbb4fec063a141d78ce2c245ca23bb0665fdc771b4f0d
   languageName: node
   linkType: hard
 
@@ -3613,6 +3624,13 @@ __metadata:
   version: 4.0.3
   resolution: "@tarojs/shared@npm:4.0.3"
   checksum: 10c0/7bc3013ff4f419463a629e49992ff1c544c5bc369b0dae876ae5d35c670d3286407910674f09bc00296ee32c7d0be3a9af67e1d13903cc02d95d0ad57ff927f4
+  languageName: node
+  linkType: hard
+
+"@tarojs/shared@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/shared@npm:4.0.5"
+  checksum: 10c0/92a121369e4880a6c3ab7e6a6c5d28ff8367c71c08fccbdd9171b3a92cc68e8afe0a9d9d46b2fcee8937c4c87a5d3a1886f3f75a0fa2d6822dd3cb5dc547ae85
   languageName: node
   linkType: hard
 
@@ -12618,7 +12636,7 @@ __metadata:
     "@tarojs/plugin-platform-swan": "npm:4.0.3"
     "@tarojs/plugin-platform-tt": "npm:4.0.3"
     "@tarojs/plugin-platform-weapp": "npm:3.6.34"
-    "@tarojs/react": "npm:3.6.34"
+    "@tarojs/react": "npm:4.0.5"
     "@tarojs/runtime": "npm:3.6.35"
     "@tarojs/shared": "npm:3.6.34"
     "@tarojs/taro": "npm:4.0.3"
@@ -15031,15 +15049,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-reconciler@npm:0.27.0":
-  version: 0.27.0
-  resolution: "react-reconciler@npm:0.27.0"
+"react-reconciler@npm:0.29.0":
+  version: 0.29.0
+  resolution: "react-reconciler@npm:0.29.0"
   dependencies:
     loose-envify: "npm:^1.1.0"
-    scheduler: "npm:^0.21.0"
+    scheduler: "npm:^0.23.0"
   peerDependencies:
-    react: ^18.0.0
-  checksum: 10c0/55daff215ff9544dc5b2ba6ecda20520df0f1b2ca145c00fd0905ced1b025f3779664715c36b511a8906aa24b8b433270b0032cd499c55c4e4c878cddc8fc986
+    react: ^18.2.0
+  checksum: 10c0/637442f98ee816b8f86586f537712a0463b53e12c0f4dec716dfdde68dfa52cef1d10138acfad194d5571296cde8715c331aa3986e538087acdc1ef83187a9b0
   languageName: node
   linkType: hard
 
@@ -15692,16 +15710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.21.0":
-  version: 0.21.0
-  resolution: "scheduler@npm:0.21.0"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10c0/083a9a0c83f4923f7f5bb28d8bcf13cff42c90f4303bc187166520fcfc576c97e946d426c707d5a9c0aa0a655819605dd0c741467c626824bbf191251c126f1b
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.23.2":
+"scheduler@npm:^0.23.0, scheduler@npm:^0.23.2":
   version: 0.23.2
   resolution: "scheduler@npm:0.23.2"
   dependencies:
