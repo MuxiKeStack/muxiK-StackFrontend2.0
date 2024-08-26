@@ -3,13 +3,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable import/first */
-import Label3 from '@/common/components/label3/label3';
-import ShowStar from '@/common/components/showStar/showStar';
 import { Text, View } from '@tarojs/components';
 import { useEffect, useState } from 'react';
+
 import './index.scss';
+
 // import echarts from '../../assets/js/echarts.js'
 import Charts from '@/common/components/chart';
+import Label3 from '@/common/components/label3/label3';
+import ShowStar from '@/common/components/showStar/showStar';
 import { get } from '@/common/utils/fetch';
 // 定义接口
 interface Course {

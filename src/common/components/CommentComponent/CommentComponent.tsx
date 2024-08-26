@@ -12,8 +12,8 @@ import React, { useEffect, useState } from 'react';
 import './index.scss';
 
 import { get } from '@/common/utils/fetch';
-
 import { useCourseStore } from '@/pages/main/store/store';
+
 import { Comment } from '../../assets/types';
 
 interface CommentProps {
