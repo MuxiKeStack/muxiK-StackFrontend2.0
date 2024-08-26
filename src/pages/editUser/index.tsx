@@ -14,13 +14,10 @@ import TitleButton from '@/common/components/titleButton/titleButton';
 import { post } from '@/common/utils/fetch';
 import { ResponseUser } from '@/pages/personalPage';
 
-//import { useDoubleClick } from '@/hooks/useDoubleClick';
-// import { editIcon } from "@/img/editPersonal";
-
 const EditUser: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
   // const [editing, setEditing] = useState(false);
-  const [nickName, setNickName] = useState('昵称昵称昵称');
+  const [nickName, setNickName] = useState('请修改昵称');
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [editableNickName, setEditableNickName] = useState(nickName);
   const [selectedTitle, setSelectedTitle] = useState<string>('None');
@@ -70,8 +67,19 @@ const EditUser: React.FC = () => {
     setIsEditingNickname(!isEditingNickname);
   };
   const handleNicknameChange = (e) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
-    setEditableNickName(e.target.value);
+    const value = e.target.value;
+
+    // 检查字符长度是否超过 7 个字
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (value.length <= 7) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setEditableNickName(value);
+    } else {
+      void Taro.showToast({
+        icon: 'error',
+        title: '昵称不能超过7个字',
+      });
+    }
   };
 
   const handleNicknameSave = () => {

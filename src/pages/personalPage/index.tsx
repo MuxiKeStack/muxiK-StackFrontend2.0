@@ -71,10 +71,8 @@ const Head = () => {
   const [nextLevel, setNextLevel] = useState(0);
   const [points, setPoints] = useState(0);
   const [avatarUrl, setAvatarUrl] = useState('');
-  // const [editing, setEditing] = useState(false);
   const [nickName, setNickName] = useState('昵称昵称昵称');
   const [selectedTitle, setSelectedTitle] = useState<string>('None');
-  // const [userInfo, setUserInfo] = useState<UserInfo>(null);
   const [newUser, setNewUser] = useState(false);
   useEffect(() => {
     const fetchExp = async () => {
@@ -101,7 +99,28 @@ const Head = () => {
         setNewUser(response.data.new);
         setNickName(response.data.nickname);
         setAvatarUrl(response.data.avatar);
-        setSelectedTitle(response.data.using_title);
+        console.log(response.data.using_title);
+        let translatedTitle = '';
+        switch (response.data.using_title) {
+          case 'CaringSenior':
+            translatedTitle = '知心学长';
+            setSelectedTitle('知心学长');
+            break;
+          case 'KeStackPartner':
+            translatedTitle = '课栈合伙人';
+            setSelectedTitle('课栈合伙人');
+            break;
+          case 'CCNUWithMe':
+            translatedTitle = '华师有我';
+            setSelectedTitle('华师有我');
+            break;
+          default:
+            translatedTitle = response.data.using_title;
+            break;
+        }
+        setSelectedTitle(translatedTitle);
+        console.log(translatedTitle);
+        console.log(selectedTitle);
       } catch (error) {
         console.error('Error fetching collection data:', error);
       }
@@ -120,9 +139,12 @@ const Head = () => {
         <View className="personalPage_user_photo">
           <Image src={avatarUrl} className="personalPage_user_photo" />
         </View>
-        <View className="personalPage_user_details">
-          <View className="personalPage_username">{nickName}</View>
+        <View className="personalPage_user_container1">
+          <View className="personalPage_user_details">
+            <View className="personalPage_username">{nickName}</View>
+            <View className="personalPage_username_title">
           {selectedTitle !== 'None' && <TitleButton title={selectedTitle}></TitleButton>}
+          </View>
           <View
             className="personalPage_icon"
             onClick={() => {
@@ -131,6 +153,7 @@ const Head = () => {
           >
             &gt;
           </View>
+        </View>
           {/* 经验 */}
           <View className="personalPage_exp_value">
             {points}/{nextLevel}

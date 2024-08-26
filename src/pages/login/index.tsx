@@ -11,9 +11,10 @@ import React, { useState } from 'react';
 import './index.scss';
 
 import handleLogin from '@/common/api/handleLogin';
+import iconLogo from '@/common/assets/img/login/logo.png';
 import top_background from '@/common/assets/img/login/top_background.png';
 import { FloatingWindow } from '@/common/components';
-//import icon from '@/img/login/logo.png'
+
 type LoginProps = object;
 
 const Login: React.FC<LoginProps> = () => {
@@ -60,12 +61,9 @@ const Login: React.FC<LoginProps> = () => {
 
   return (
     <View className="login">
-      {}
       <Image src={top_background} className="login_top_background"></Image>
-      {}
-      TODO 照片布局
-      {/*<Image src={icon} className="logo"></Image>*/}
       <View className="login_content">
+        <Image src={iconLogo} className="logo"></Image>
         <View className="login_main">
           <View className="login_main_text">
             <Input
@@ -87,8 +85,6 @@ const Login: React.FC<LoginProps> = () => {
             <Button className="login_button" onClick={handleLoginClick}>
               学号登录
             </Button>
-            {/*这还差一个游客登陆*/}
-            <Button className="guest_button login_button">游客登录</Button>
           </View>
         </View>
         <View className="login_terms">
