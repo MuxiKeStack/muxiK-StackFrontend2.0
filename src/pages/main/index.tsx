@@ -6,7 +6,7 @@
 
 /* eslint-disable import/first */
 import { ScrollView, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useMemo } from 'react';
 
 import './index.scss';
@@ -43,6 +43,9 @@ export default function Index() {
       changeType,
     })
   );
+  useDidShow(() => {
+    dispatch.refershComments();
+  });
   useEffect(() => {
     dispatch.loadMoreComments();
   }, [dispatch.loadMoreComments]);
