@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import echarts from '../../common/assets/js/echarts';
+// import echarts from '../../common/assets/js/echarts';
 // import Charts from '@/common/components/chart';
 import Comment from '@/common/components/comment/comment';
 import Label3 from '@/common/components/label3/label3';
@@ -17,8 +17,8 @@ import { get } from '@/common/utils/fetch';
 import Taro from '@tarojs/taro';
 import { CommentInfoType } from '../../common/assets/types';
 
-import { useRef } from 'react';
-import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
+// import { useRef } from 'react';
+// import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
 // 定义接口
 interface Course {
   id: number;
