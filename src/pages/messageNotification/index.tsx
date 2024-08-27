@@ -7,7 +7,7 @@ import './index.scss';
 // eslint-disable-next-line import/first
 import uniqueKeyUtil from '@/common/utils/keyGen';
 
-type Notification = {
+type Message = {
   username: string;
   eventType: boolean;
   description: string;
@@ -15,9 +15,9 @@ type Notification = {
   timestamp: string;
 };
 
-interface MessageNotificationProps {}
+interface NotificationProps {}
 
-interface MessageProps extends Notification {}
+interface MessageProps extends Message {}
 
 interface TabBarProps {
   tab: string;
@@ -38,37 +38,6 @@ const Tabs: { name: string; icon: string }[] = [
     icon: 'clock',
   },
 ];
-
-const MessageNotification: React.FC<MessageNotificationProps> = memo(() => {
-  const [tab, setTab] = useState<string>('提问');
-  const [notification, setNotification] = useState<Notification>({
-    username: '昵称',
-    eventType: true,
-    description: '我正在回复你的评论',
-    comment: '这里是原评论内容',
-    timestamp: '2023年1月1日',
-  });
-
-  return (
-    <View className="flex h-[95vh] w-full flex-col items-center gap-4 overflow-y-scroll px-4 pt-2">
-      <TabBar tab={tab} setTab={setTab} />
-      <Message
-        username={notification.username}
-        eventType={notification.eventType}
-        description={notification.description}
-        comment={notification.comment}
-        timestamp={notification.timestamp}
-      />
-      <Message
-        username={notification.username}
-        eventType={false}
-        description={notification.description}
-        comment={notification.comment}
-        timestamp={notification.timestamp}
-      />
-    </View>
-  );
-});
 
 const TabBar: React.FC<TabBarProps> = memo(({ tab, setTab }) => (
   <View className="mb-2 flex w-full justify-evenly">
@@ -116,4 +85,39 @@ const Message: React.FC<MessageProps> = memo(
   )
 );
 
-export default MessageNotification;
+const Notification: React.FC<NotificationProps> = memo(() => {
+  const [tab, setTab] = useState<string>('提问');
+  const [notification, setNotification] = useState<Message>({
+    username: '昵称',
+    eventType: true,
+    description: '我正在回复你的评论',
+    comment: '这里是原评论内容',
+    timestamp: '2023年1月1日',
+  });
+
+  return (
+    <View className="flex h-[95vh] w-full flex-col items-center gap-4 overflow-y-scroll px-4 pt-2">
+      <TabBar tab={tab} setTab={setTab} />
+      {tab === '提问' && (
+        <Message
+          username={notification.username}
+          eventType={notification.eventType}
+          description={notification.description}
+          comment={notification.comment}
+          timestamp={notification.timestamp}
+        />
+      )}
+      {tab === '点赞' && (
+        <Message
+          username={notification.username}
+          eventType={false}
+          description={notification.description}
+          comment={notification.comment}
+          timestamp={notification.timestamp}
+        />
+      )}
+    </View>
+  );
+});
+
+export default Notification;

@@ -1,24 +1,16 @@
-/* eslint-disable no-console */
 import { View } from '@tarojs/components';
-import { useLoad } from '@tarojs/taro';
 import { useState } from 'react';
 
 import './index.scss';
 
-type OfficialNotificationProps = object;
-type ImageDetailProps = {
+interface OfficialNotificationProps {}
+
+interface OfficialProps {
   title: string;
-  description: string;
-};
-type AlertDetailProps = {
-  alert: string;
-};
+  description?: string;
+}
 
 const OfficialNotification: React.FC<OfficialNotificationProps> = () => {
-  useLoad(() => {
-    console.log('Page loaded.');
-  });
-
   const [isImageDetail] = useState(true);
   const [notificationTime] = useState('07:25');
   const [notificationTitle] = useState('评课活动要开始了');
@@ -32,39 +24,31 @@ const OfficialNotification: React.FC<OfficialNotificationProps> = () => {
         {isImageDetail ? (
           <ImageDetail title={notificationTitle} description={notificationDescription} />
         ) : (
-          <AlertDetail alert={notificationAlert} />
+          <AlertDetail title={notificationAlert} />
         )}
       </View>
       <View className="officialnotification_notification">
         <View className="officialnotification_time">{notificationTime}</View>
-        <AlertDetail alert={notificationAlert} />
+        <AlertDetail title={notificationAlert} />
       </View>
     </View>
   );
 };
 
-const ImageDetail: React.FC<ImageDetailProps> = ({ title, description }) => {
-  return (
-    <>
-      <View className="officialnotification_detail">
-        <View className="officialnotification_image"></View>
-        <View className="officialnotification_text">
-          <View className="officialnotification_title">{title}</View>
-          <View className="officialnotification_description">{description}</View>
-        </View>
-      </View>
-    </>
-  );
-};
+const ImageDetail: React.FC<OfficialProps> = ({ title, description }) => (
+  <View className="officialnotification_detail">
+    <View className="officialnotification_image"></View>
+    <View className="officialnotification_text">
+      <View className="officialnotification_title">{title}</View>
+      <View className="officialnotification_description">{description}</View>
+    </View>
+  </View>
+);
 
-const AlertDetail: React.FC<AlertDetailProps> = ({ alert }) => {
-  return (
-    <>
-      <View className="officialnotification_alert">
-        <View className="officialnotification_alert_text">{alert}</View>
-      </View>
-    </>
-  );
-};
+const AlertDetail: React.FC<OfficialProps> = ({ title }) => (
+  <View className="officialnotification_alert">
+    <View className="officialnotification_alert_text">{title}</View>
+  </View>
+);
 
 export default OfficialNotification;
