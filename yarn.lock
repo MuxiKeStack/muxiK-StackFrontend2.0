@@ -12668,7 +12668,7 @@ __metadata:
     "@tarojs/plugin-platform-tt": "npm:4.0.5"
     "@tarojs/plugin-platform-weapp": "npm:3.6.34"
     "@tarojs/react": "npm:4.0.5"
-    "@tarojs/runtime": "npm:3.6.35"
+    "@tarojs/runtime": "npm:4.0.5"
     "@tarojs/shared": "npm:3.6.34"
     "@tarojs/taro": "npm:4.0.5"
     "@tarojs/taro-loader": "npm:4.0.5"
