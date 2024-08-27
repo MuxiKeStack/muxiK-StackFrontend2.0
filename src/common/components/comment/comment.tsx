@@ -87,7 +87,7 @@ const CommentHeader = ({
   const publisher = useCourseStore((state) => state.publishers);
   async function navigateToPage() {
     await Taro.navigateTo({
-      url: '/pages/classInfo/index', // 确保路径正确
+      url: '/pages/classInfo/index?course_id=' + course_id, // 传递 course_id 参数
     });
   }
 
