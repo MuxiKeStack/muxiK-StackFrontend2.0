@@ -15,6 +15,11 @@ type Message = {
   timestamp: string;
 };
 
+interface OfficialProps {
+  title: string;
+  description?: string;
+}
+
 interface NotificationProps {}
 
 interface MessageProps extends Message {}
@@ -85,6 +90,22 @@ const Message: React.FC<MessageProps> = memo(
   )
 );
 
+const ImageOfficial: React.FC<OfficialProps> = ({ title, description }) => (
+  <View className="flex h-[30vh] w-full flex-col overflow-hidden rounded-lg bg-[#f9f9f2]">
+    <View className="flex-[4] border-b-2 border-[#ffd777]"></View>
+    <View className="flex flex-1 flex-col gap-1 px-4 py-2">
+      <Text className="text-md">{title}</Text>
+      <Text className="text-sm text-[#565552]">{description}</Text>
+    </View>
+  </View>
+);
+
+const AlertOfficial: React.FC<OfficialProps> = ({ title }) => (
+  <View className="flex w-full items-center rounded-l-full rounded-r-full bg-[#f9f9f2] p-4 text-sm">
+    <Text className="text-sm text-[#f18900]">{title}</Text>
+  </View>
+);
+
 const Notification: React.FC<NotificationProps> = memo(() => {
   const [tab, setTab] = useState<string>('提问');
   const [notification, setNotification] = useState<Message>({
@@ -94,6 +115,11 @@ const Notification: React.FC<NotificationProps> = memo(() => {
     comment: '这里是原评论内容',
     timestamp: '2023年1月1日',
   });
+  const [isImageDetail] = useState(true);
+  const [notificationTime] = useState('07:25');
+  const [notificationTitle] = useState('评课活动要开始了');
+  const [notificationDescription] = useState('摘要');
+  const [notificationAlert] = useState('您在高等数学下方的评论违规，请注意您的发言');
 
   return (
     <View className="flex h-[95vh] w-full flex-col items-center gap-4 overflow-y-scroll px-4 pt-2">
@@ -115,6 +141,25 @@ const Notification: React.FC<NotificationProps> = memo(() => {
           comment={notification.comment}
           timestamp={notification.timestamp}
         />
+      )}
+      {tab === '官方' && (
+        <>
+          <View className="flex w-full flex-col items-center gap-4">
+            <View className="text-xs text-gray-500">{notificationTime}</View>
+            {isImageDetail ? (
+              <ImageOfficial
+                title={notificationTitle}
+                description={notificationDescription}
+              />
+            ) : (
+              <AlertOfficial title={notificationAlert} />
+            )}
+          </View>
+          <View className="flex w-full flex-col items-center gap-4">
+            <View className="text-xs text-gray-500">{notificationTime}</View>
+            <AlertOfficial title={notificationAlert} />
+          </View>
+        </>
       )}
     </View>
   );
