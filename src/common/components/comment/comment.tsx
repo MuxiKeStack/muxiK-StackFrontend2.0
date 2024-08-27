@@ -12,19 +12,18 @@ import './comment.scss';
 import { CommentInfo } from '../../assets/types';
 import ShowStar from '../showStar/showStar';
 
-export default function Comment(props: CommentInfo & { type?: string }) {
-  const { course_id, ctime, publisher_id } = props;
-  // 创建一个新的Date对象，传入时间戳
-  const ctimeDate = new Date(ctime || 0);
-  const courseDetail = useCourseStore((state) => state.courseDetail);
-  const publisher = useCourseStore((state) => state.publishers);
-  const [isPublisherInfoPending, startPublisherTransition] = useTransition();
-  const [isCoursePending, startCourseTransition] = useTransition();
+type CommentProps = CommentInfo & {
+  type?: string;
+  isHot?: boolean;
+  showAll?: boolean;
+  onClick?: (comment: CommentInfo) => void;
+};
+export default function Comment({ onClick, ...props }: CommentProps) {
+  const { course_id, publisher_id, showAll } = props;
+  const [, startPublisherTransition] = useTransition();
+  const [, startCourseTransition] = useTransition();
   const handleClick = () => {
-    const serializedComment = encodeURIComponent(JSON.stringify(props));
-    Taro.navigateTo({
-      url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
-    });
+    onClick && onClick(props);
   };
   useEffect(() => {
     startCourseTransition(() => {
@@ -34,60 +33,17 @@ export default function Comment(props: CommentInfo & { type?: string }) {
       useCourseStore.getState().getPublishers(publisher_id || 0);
     });
   }, [course_id, publisher_id]);
-  async function navigateToPage() {
-    await Taro.navigateTo({
-      url: '/pages/classInfo/index', // 确保路径正确
-    });
-  }
-
-  function handleClickToClass() {
-    navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise
-  }
   return (
     <View className="bigcomment" onClick={handleClick}>
       <View className="commentplus">
-        {!courseDetail[course_id || 0] ? (
-          <>
-            <View className="classTitle">pending</View>
-          </>
-        ) : (
-          <>
-            <View className="classTitle" onClick={handleClickToClass}>
-              {courseDetail[course_id || 0]?.name +
-                ' (' +
-                courseDetail[course_id || 0]?.teacher +
-                ') '}
-            </View>
-          </>
-        )}
-        <View className="comment">
-          {!publisher[publisher_id || 0] ? (
-            <>
-              <View>pending</View>
-            </>
-          ) : (
-            <>
-              <View
-                className="tx"
-                style={`background-image: url(${publisher[publisher_id || 0]?.avatar});`}
-              ></View>
-              <View className="userName">{publisher[publisher_id || 0]?.nickname}</View>
-              <View className="time">{ctimeDate.toLocaleString()}</View>
-              <View className="stars">
-                <ShowStar score={props?.star_rating}></ShowStar>
-              </View>
-              <Image
-                // style={`display:${props.isHot ? 'block' : 'none'}`}
-                className="fire"
-                src="https://s2.loli.net/2023/11/12/2ITKRcDPMZaQCvk.png"
-              ></Image>
-            </>
-          )}
-          <View className="content">{props.content}</View>
-          <View
-            className="likes"
-            style={`display:${props.type == 'inner' ? 'block' : 'none'}`}
-          >
+        <CommentHeader {...props}></CommentHeader>
+        <View className={`content ${!showAll ? 'text-overflow' : 'text-showAll'}`}>
+          {props.content}
+          {/* {!showAll && <Text>...</Text>} */}
+        </View>
+
+        {props.type === 'inner' && (
+          <View className="likes">
             <View className="icon">
               <Navigator className="iconfont">&#xe786;</Navigator>
             </View>
@@ -97,7 +53,7 @@ export default function Comment(props: CommentInfo & { type?: string }) {
             </View>
             <Text className="text1">{props.total_comment_count}</Text>
           </View>
-        </View>
+        )}
       </View>
       <View
         className="likes"
@@ -119,3 +75,65 @@ export default function Comment(props: CommentInfo & { type?: string }) {
     </View>
   );
 }
+
+const CommentHeader = ({
+  course_id,
+  publisher_id,
+  ctime,
+  isHot,
+  star_rating,
+}: CommentProps) => {
+  const courseDetail = useCourseStore((state) => state.courseDetail);
+  const publisher = useCourseStore((state) => state.publishers);
+  async function navigateToPage() {
+    await Taro.navigateTo({
+      url: '/pages/classInfo/index?course_id=' + course_id, // 传递 course_id 参数
+    });
+  }
+
+  function handleClickToClass() {
+    navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise
+  }
+  return (
+    <>
+      {!courseDetail[course_id || 0] ? (
+        <>
+          <View className="classTitle">pending</View>
+        </>
+      ) : (
+        <>
+          <View className="classTitle" onClick={handleClickToClass}>
+            {courseDetail[course_id || 0]?.name +
+              ' (' +
+              courseDetail[course_id || 0]?.teacher +
+              ') '}
+          </View>
+        </>
+      )}
+      <View className="comment">
+        {!publisher[publisher_id || 0] ? (
+          <>
+            <View>pending</View>
+          </>
+        ) : (
+          <>
+            <View
+              className="tx"
+              style={`background-image: url(${publisher[publisher_id || 0]?.avatar});`}
+            ></View>
+            <View className="userName">{publisher[publisher_id || 0]?.nickname}</View>
+            <View className="time">{new Date(ctime as number).toLocaleString()}</View>
+            <View className="stars">
+              <ShowStar score={star_rating}></ShowStar>
+            </View>
+            <Image
+              style={`display:${isHot ? 'block' : 'none'}`}
+              className="fire"
+              src="https://s2.loli.net/2023/11/12/2ITKRcDPMZaQCvk.png"
+            ></Image>
+          </>
+        )}
+      </View>
+    </>
+  );
+};
