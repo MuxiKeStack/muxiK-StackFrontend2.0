@@ -56,7 +56,7 @@
     "@tarojs/plugin-platform-tt": "4.0.5",
     "@tarojs/plugin-platform-weapp": "3.6.34",
     "@tarojs/react": "4.0.5",
-    "@tarojs/runtime": "3.6.35",
+    "@tarojs/runtime": "4.0.5",
     "@tarojs/shared": "3.6.34",
     "@tarojs/taro": "4.0.5",
     "echarts": "^5.5.1",
