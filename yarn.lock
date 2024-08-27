@@ -2716,12 +2716,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taroify/core@npm:^0.3.0-alpha.0":
-  version: 0.3.0-alpha.0
-  resolution: "@taroify/core@npm:0.3.0-alpha.0"
+"@taroify/core@npm:^0.4.0-alpha.0":
+  version: 0.4.0-alpha.0
+  resolution: "@taroify/core@npm:0.4.0-alpha.0"
   dependencies:
-    "@taroify/hooks": "npm:^0.3.0-alpha.0"
-    "@taroify/icons": "npm:^0.3.0-alpha.0"
+    "@taroify/hooks": "npm:^0.4.0-alpha.0"
+    "@taroify/icons": "npm:^0.4.0-alpha.0"
     classnames: "npm:^2.2.6"
     lodash: "npm:^4.17.21"
     promise: "npm:^8.1.0"
@@ -2732,31 +2732,31 @@ __metadata:
     "@tarojs/components": ">=3"
     "@tarojs/taro": ">=3"
     react: ^18.2.0
-  checksum: 10c0/9d7acdb4efdd4e01c09aca0cc7a809dd23fc2659f1ee7aa4ac016dabb24707a7dc0dfe252653cbd7507a0f27420a89e74060ac5f5467d32962d0fdaed8fa44a3
+  checksum: 10c0/0ccd3538be88166a6462950355f71f3eb1508453bacc5ba1dc8f2040840fe69da2dab93bddd111c99386b1ce8bcee60b36d777b07c5543fba3e435f055e1458a
   languageName: node
   linkType: hard
 
-"@taroify/hooks@npm:^0.3.0-alpha.0":
-  version: 0.3.0-alpha.0
-  resolution: "@taroify/hooks@npm:0.3.0-alpha.0"
+"@taroify/hooks@npm:^0.4.0-alpha.0":
+  version: 0.4.0-alpha.0
+  resolution: "@taroify/hooks@npm:0.4.0-alpha.0"
   dependencies:
     "@vant/area-data": "npm:^1.2.1"
   peerDependencies:
     "@tarojs/taro": ">=3"
     lodash: ^4.17.21
     react: ^18.2.0
-  checksum: 10c0/2ffcdb95350d2272818bbe34d885aa9f8fdb3910d34d94bfc13f2f23cda9b4545e431d209371bf993e1e1a449fce481f48610e3f3dd6e389894e54a3c808519b
+  checksum: 10c0/6a268db3523216c685c15d4286a90c90e9bed85437083a4c1a98f76d0549ed9a96028d891263495028ebbd6fdaf777784585d9fa9031ecacb84a2536fe637856
   languageName: node
   linkType: hard
 
-"@taroify/icons@npm:^0.3.0-alpha.0":
-  version: 0.3.0-alpha.0
-  resolution: "@taroify/icons@npm:0.3.0-alpha.0"
+"@taroify/icons@npm:^0.4.0-alpha.0":
+  version: 0.4.0-alpha.0
+  resolution: "@taroify/icons@npm:0.4.0-alpha.0"
   dependencies:
     classnames: "npm:^2.2.6"
   peerDependencies:
     "@tarojs/components": ">=3"
-  checksum: 10c0/9a3bfcabc5d806b3b30c0aca0d590af221d8b288c94efadac02f63627dcb6d5382cfc4387f502cd0664c1fa597c37f6266031fa4233677181de41c66577ff42f
+  checksum: 10c0/986d81ec22b3755c89098c653bf98bc745d5b50cabbafaed650e3ca8113105752d02cc63e0ea0b3a10e98a472f4b6624581772e57835e0ae3352b689915ca4a4
   languageName: node
   linkType: hard
 
@@ -12654,7 +12654,7 @@ __metadata:
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.15"
     "@taro-hooks/plugin-auto-import": "npm:^2.0.11"
     "@taro-hooks/plugin-react": "npm:^2.0.11"
-    "@taroify/core": "npm:^0.3.0-alpha.0"
+    "@taroify/core": "npm:^0.4.0-alpha.0"
     "@tarojs/cli": "npm:3.6.35"
     "@tarojs/components": "npm:3.6.35"
     "@tarojs/components-advanced": "npm:^3.6.35"
