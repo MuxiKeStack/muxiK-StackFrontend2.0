@@ -2716,12 +2716,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taroify/core@npm:^0.3.0-alpha.0":
-  version: 0.3.0-alpha.0
-  resolution: "@taroify/core@npm:0.3.0-alpha.0"
+"@taroify/core@npm:^0.4.0-alpha.0":
+  version: 0.4.0-alpha.0
+  resolution: "@taroify/core@npm:0.4.0-alpha.0"
   dependencies:
-    "@taroify/hooks": "npm:^0.3.0-alpha.0"
-    "@taroify/icons": "npm:^0.3.0-alpha.0"
+    "@taroify/hooks": "npm:^0.4.0-alpha.0"
+    "@taroify/icons": "npm:^0.4.0-alpha.0"
     classnames: "npm:^2.2.6"
     lodash: "npm:^4.17.21"
     promise: "npm:^8.1.0"
@@ -2732,42 +2732,31 @@ __metadata:
     "@tarojs/components": ">=3"
     "@tarojs/taro": ">=3"
     react: ^18.2.0
-  checksum: 10c0/9d7acdb4efdd4e01c09aca0cc7a809dd23fc2659f1ee7aa4ac016dabb24707a7dc0dfe252653cbd7507a0f27420a89e74060ac5f5467d32962d0fdaed8fa44a3
+  checksum: 10c0/0ccd3538be88166a6462950355f71f3eb1508453bacc5ba1dc8f2040840fe69da2dab93bddd111c99386b1ce8bcee60b36d777b07c5543fba3e435f055e1458a
   languageName: node
   linkType: hard
 
-"@taroify/hooks@npm:^0.3.0-alpha.0":
-  version: 0.3.0-alpha.0
-  resolution: "@taroify/hooks@npm:0.3.0-alpha.0"
+"@taroify/hooks@npm:^0.4.0-alpha.0":
+  version: 0.4.0-alpha.0
+  resolution: "@taroify/hooks@npm:0.4.0-alpha.0"
   dependencies:
     "@vant/area-data": "npm:^1.2.1"
   peerDependencies:
     "@tarojs/taro": ">=3"
     lodash: ^4.17.21
     react: ^18.2.0
-  checksum: 10c0/2ffcdb95350d2272818bbe34d885aa9f8fdb3910d34d94bfc13f2f23cda9b4545e431d209371bf993e1e1a449fce481f48610e3f3dd6e389894e54a3c808519b
+  checksum: 10c0/6a268db3523216c685c15d4286a90c90e9bed85437083a4c1a98f76d0549ed9a96028d891263495028ebbd6fdaf777784585d9fa9031ecacb84a2536fe637856
   languageName: node
   linkType: hard
 
-"@taroify/icons@npm:^0.3.0-alpha.0":
-  version: 0.3.0-alpha.0
-  resolution: "@taroify/icons@npm:0.3.0-alpha.0"
+"@taroify/icons@npm:^0.4.0-alpha.0":
+  version: 0.4.0-alpha.0
+  resolution: "@taroify/icons@npm:0.4.0-alpha.0"
   dependencies:
     classnames: "npm:^2.2.6"
   peerDependencies:
     "@tarojs/components": ">=3"
-  checksum: 10c0/9a3bfcabc5d806b3b30c0aca0d590af221d8b288c94efadac02f63627dcb6d5382cfc4387f502cd0664c1fa597c37f6266031fa4233677181de41c66577ff42f
-  languageName: node
-  linkType: hard
-
-"@tarojs/api@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/api@npm:3.6.34"
-  dependencies:
-    "@babel/runtime": "npm:^7.14.5"
-    "@tarojs/runtime": "npm:3.6.34"
-    "@tarojs/shared": "npm:3.6.34"
-  checksum: 10c0/96bd58c38eb65089660955f2c4412122a6990863bcf2ee60d781bca63c1466b880e5468b849792fb6168267555f4d4246cd480e23ff05b342ec4cca33c964c9c
+  checksum: 10c0/986d81ec22b3755c89098c653bf98bc745d5b50cabbafaed650e3ca8113105752d02cc63e0ea0b3a10e98a472f4b6624581772e57835e0ae3352b689915ca4a4
   languageName: node
   linkType: hard
 
@@ -2789,6 +2778,16 @@ __metadata:
     "@tarojs/runtime": 4.0.3
     "@tarojs/shared": 4.0.3
   checksum: 10c0/b07783c370b3b274ea3690fc4413b5c710ceb08fd17364a8150277d84495ea1506ab2a1bc2ebd99a49625417e1ba115f58248ea9fff0653d7290a9294ed45913
+  languageName: node
+  linkType: hard
+
+"@tarojs/api@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/api@npm:4.0.5"
+  peerDependencies:
+    "@tarojs/runtime": 4.0.5
+    "@tarojs/shared": 4.0.5
+  checksum: 10c0/971bd4ae9d01a4f79d3e94e00390821ccee53d2930b2019178ff3939064a9c2a996b375a54f1bbda77e387238d7eb8cf4b635c097e3dc0c4c75dc48d7011b66e
   languageName: node
   linkType: hard
 
@@ -3120,6 +3119,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/helper@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/helper@npm:4.0.5"
+  dependencies:
+    "@babel/core": "npm:^7.24.4"
+    "@babel/generator": "npm:^7.24.4"
+    "@babel/parser": "npm:^7.24.4"
+    "@babel/traverse": "npm:^7.24.1"
+    "@babel/types": "npm:^7.24.0"
+    "@swc/core": "npm:1.3.96"
+    "@swc/register": "npm:0.1.10"
+    ansi-escapes: "npm:^4.3.2"
+    chalk: "npm:^4.1.2"
+    chokidar: "npm:^3.6.0"
+    cross-spawn: "npm:^7.0.3"
+    debug: "npm:^4.3.4"
+    dotenv: "npm:^16.4.5"
+    dotenv-expand: "npm:^11.0.6"
+    esbuild: "npm:~0.21.0"
+    find-yarn-workspace-root: "npm:^2.0.0"
+    fs-extra: "npm:^11.2.0"
+    lodash: "npm:^4.17.21"
+    require-from-string: "npm:^2.0.2"
+    resolve: "npm:^1.22.8"
+    supports-hyperlinks: "npm:^3.0.0"
+  checksum: 10c0/22af5000202f9327049bfa48e5e1670278e95f47986b0e497a08f4c5931541796fdd3f75667bc58b1cd127ceeaf3b269b524f62eb7c5006352ba222e005ed8e5
+  languageName: node
+  linkType: hard
+
 "@tarojs/plugin-doctor-darwin-arm64@npm:0.0.11":
   version: 0.0.11
   resolution: "@tarojs/plugin-doctor-darwin-arm64@npm:0.0.11"
@@ -3370,13 +3398,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/plugin-platform-swan@npm:4.0.3":
-  version: 4.0.3
-  resolution: "@tarojs/plugin-platform-swan@npm:4.0.3"
+"@tarojs/plugin-platform-swan@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/plugin-platform-swan@npm:4.0.5"
   peerDependencies:
-    "@tarojs/service": 4.0.3
-    "@tarojs/shared": 4.0.3
-  checksum: 10c0/e3ac125c86a2883ac1fdf6559fda244e950031574ad2af9c8d8b1ed674e1ef8aa55dc14751e8b32152b7e07969cd8bfb2872bc206d3d6f44ae7a81c0d1f88e65
+    "@tarojs/service": 4.0.5
+    "@tarojs/shared": 4.0.5
+  checksum: 10c0/da1e928bcf1f122414b4a7bdda88aa08cb953d54cab76c973093c4a2927aa116f0430a76e28ff6741ecefbd9a16b6667e9be4474223db1552806577e36c1d3cc
   languageName: node
   linkType: hard
 
@@ -3393,13 +3421,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/plugin-platform-tt@npm:4.0.3":
-  version: 4.0.3
-  resolution: "@tarojs/plugin-platform-tt@npm:4.0.3"
+"@tarojs/plugin-platform-tt@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/plugin-platform-tt@npm:4.0.5"
   peerDependencies:
-    "@tarojs/service": 4.0.3
-    "@tarojs/shared": 4.0.3
-  checksum: 10c0/0aec71907a866b057eaf274df862a5ce2f05a9336cca2fcd967929373f688599ea40a0dc5a0f78c113fa76fb57c2cd8e4fb558cccd6b8f21062a88b5456d96b3
+    "@tarojs/service": 4.0.5
+    "@tarojs/shared": 4.0.5
+  checksum: 10c0/9c4b327502cf567f8dede8dd3aadb89b672c7f0e55df12c7206bca95acd023021423f8b2d109a1b5c65dc5d88b3951d34466c4b29139f613843c18efad4b97cc
   languageName: node
   linkType: hard
 
@@ -3439,15 +3467,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/react@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/react@npm:3.6.34"
+"@tarojs/react@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/react@npm:4.0.5"
   dependencies:
-    react-reconciler: "npm:0.27.0"
+    "@tarojs/runtime": "npm:4.0.5"
+    "@tarojs/shared": "npm:4.0.5"
+    react-reconciler: "npm:0.29.0"
   peerDependencies:
-    "@tarojs/runtime": ~3.6.34
-    "@tarojs/shared": ~3.6.34
-  checksum: 10c0/61e06310886e558b577d0b5b0383d4aad37c9b1c977a11884e9bf854069f258761c51d6abbe9ea0f94d0a3d2fd4785ccd16ede834127159afe8085215120ac07
+    react: ^18
+  checksum: 10c0/ae9ac00bad2c4ac5ed178f7e6d571ee831f94edce192e64051b754f6f6ffdf5687a2ea731e50d2ebc70bec84e5ea26dbf74e9ec30db0c5ec45c658a81e150cc4
   languageName: node
   linkType: hard
 
@@ -3490,18 +3519,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/runtime@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/runtime@npm:3.6.34"
-  dependencies:
-    lodash-es: "npm:4.17.21"
-    tslib: "npm:^2.6.2"
-  peerDependencies:
-    "@tarojs/shared": ~3.6.34
-  checksum: 10c0/7d03f175d97ce474a7bac6c2c019783144de56b1b5f1609417751e2928989121d722093fab13e28b9edf58b1764e49756d99e834582ffea8b7555af65b0d86ba
-  languageName: node
-  linkType: hard
-
 "@tarojs/runtime@npm:3.6.35":
   version: 3.6.35
   resolution: "@tarojs/runtime@npm:3.6.35"
@@ -3521,6 +3538,16 @@ __metadata:
     "@tarojs/shared": "npm:4.0.3"
     tslib: "npm:^2.6.2"
   checksum: 10c0/8b77efec2fc022044a0e1f32a0434b7d9716e7853aa91a1d273eb35dec8a6fb67b986094fa617fdf12297fda5ab837254430fe25b771a1541b50546b0489d158
+  languageName: node
+  linkType: hard
+
+"@tarojs/runtime@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/runtime@npm:4.0.5"
+  dependencies:
+    "@tarojs/shared": "npm:4.0.5"
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/65dddb8535c4f1ffa74a333b187921cb0ba5e91d6c7d5b01056acc7e17cfea9a10659cb5bdb2c8cbacfdbb4fec063a141d78ce2c245ca23bb0665fdc771b4f0d
   languageName: node
   linkType: hard
 
@@ -3616,6 +3643,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/shared@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/shared@npm:4.0.5"
+  checksum: 10c0/92a121369e4880a6c3ab7e6a6c5d28ff8367c71c08fccbdd9171b3a92cc68e8afe0a9d9d46b2fcee8937c4c87a5d3a1886f3f75a0fa2d6822dd3cb5dc547ae85
+  languageName: node
+  linkType: hard
+
 "@tarojs/taro-h5@npm:4.0.3":
   version: 4.0.3
   resolution: "@tarojs/taro-h5@npm:4.0.3"
@@ -3641,17 +3675,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/taro-loader@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/taro-loader@npm:3.6.34"
-  dependencies:
-    "@tarojs/helper": "npm:3.6.34"
-    "@tarojs/taro": "npm:3.6.34"
-    loader-utils: "npm:^1.2.3"
-  checksum: 10c0/acac56ed87c5180cd9082197d8599d355a4708be726cd33aeaf74066e7e04e2d9491dc46e6fb39470ea52a1a1ee15b410bb5be8e5547a09ac1c1509c13c7d28c
-  languageName: node
-  linkType: hard
-
 "@tarojs/taro-loader@npm:3.6.35":
   version: 3.6.35
   resolution: "@tarojs/taro-loader@npm:3.6.35"
@@ -3663,26 +3686,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/taro@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/taro@npm:3.6.34"
+"@tarojs/taro-loader@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/taro-loader@npm:4.0.5"
   dependencies:
-    "@tarojs/api": "npm:3.6.34"
+    "@tarojs/helper": "npm:4.0.5"
   peerDependencies:
-    "@tarojs/helper": ~3.6.34
-    "@tarojs/runtime": ~3.6.34
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/webpack":
-      optional: true
-    "@types/webpack-dev-server":
-      optional: true
-    postcss:
-      optional: true
-    vue:
-      optional: true
-  checksum: 10c0/db93ea00f40dbd92a57d11566f21727c439988381ead3ff1a9306dc4d342306d9a1f38f484e09f6f5beb05c34a98992dd7d8483d1bb3fb40f09e5bd0a3424082
+    webpack: 5.91.0
+  checksum: 10c0/07813c45f4e97059459ab51c828039c00c17f47e46184330871ab52f3432cb02dd4c3d595f35e5f17326066185a7bc527049d7c75e1649b8406ed2ef0787a0bf
   languageName: node
   linkType: hard
 
@@ -3744,6 +3755,44 @@ __metadata:
     webpack-dev-server:
       optional: true
   checksum: 10c0/9bc78b151d8cb709056f2c7217bdb224c5f4bddf0a238ec162b7de7ed7d8d17e1a1e3e1f1ba8e85a58742bf2d803eb67a4b5c8a68fed3e2724f644250f2b6866
+  languageName: node
+  linkType: hard
+
+"@tarojs/taro@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/taro@npm:4.0.5"
+  dependencies:
+    "@tarojs/api": "npm:4.0.5"
+    "@tarojs/runtime": "npm:4.0.5"
+    "@types/postcss-url": "npm:^10.0.4"
+  peerDependencies:
+    "@tarojs/components": 4.0.5
+    "@tarojs/helper": 4.0.5
+    "@tarojs/shared": 4.0.5
+    "@types/react": ^18
+    html-webpack-plugin: ^5
+    postcss: ^8
+    rollup: ^3
+    vue: ^3
+    webpack: ^5
+    webpack-chain: ^6
+    webpack-dev-server: ^4
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    html-webpack-plugin:
+      optional: true
+    rollup:
+      optional: true
+    vue:
+      optional: true
+    webpack:
+      optional: true
+    webpack-chain:
+      optional: true
+    webpack-dev-server:
+      optional: true
+  checksum: 10c0/ab3ec290bd341fd233fe526b1a58e242a3be78d0a6fc56c7a6e5b758fd584053b8b5fd78bb990e9302e9c915ab8e8e262963bd891278102d1ae56d1612c688e8
   languageName: node
   linkType: hard
 
@@ -5446,9 +5495,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-taro@npm:3.6.34":
-  version: 3.6.34
-  resolution: "babel-preset-taro@npm:3.6.34"
+"babel-preset-taro@npm:3.6.35":
+  version: 3.6.35
+  resolution: "babel-preset-taro@npm:3.6.35"
   dependencies:
     "@babel/plugin-proposal-class-properties": "npm:^7.14.5"
     "@babel/plugin-proposal-decorators": "npm:^7.14.5"
@@ -5459,7 +5508,7 @@ __metadata:
     "@babel/preset-typescript": "npm:^7.14.5"
     "@babel/runtime": "npm:^7.14.5"
     "@babel/runtime-corejs3": "npm:^7.14.5"
-    "@tarojs/helper": "npm:3.6.34"
+    "@tarojs/helper": "npm:3.6.35"
     babel-plugin-dynamic-import-node: "npm:2.3.3"
     babel-plugin-minify-dead-code-elimination: "npm:^0.5.2"
     babel-plugin-transform-imports-api: "npm:1.0.0"
@@ -5469,7 +5518,7 @@ __metadata:
     react-refresh: "npm:^0.11.0"
   peerDependencies:
     "@babel/core": "*"
-  checksum: 10c0/4f814ebcdb32768cccd63f9813e3683a02771d3e95aad726f980af80267bfa42252ebb5313199569926d86824512ca778ecfae20cc3b0220601b8f32e33fbbe5
+  checksum: 10c0/caf8db11510d9f0611776073558be4d0025ea54704c0b09a296393b5feb36eb1a497d976b2ff342bc5735ea5235ff9b561e64075f27c42c25b315c49a55c75bd
   languageName: node
   linkType: hard
 
@@ -7607,6 +7656,16 @@ __metadata:
     jsbn: "npm:~0.1.0"
     safer-buffer: "npm:^2.1.0"
   checksum: 10c0/6cf168bae1e2dad2e46561d9af9cbabfbf5ff592176ad4e9f0f41eaaf5fe5e10bb58147fe0a804de62b1ee9dad42c28810c88d652b21b6013c47ba8efa274ca1
+  languageName: node
+  linkType: hard
+
+"echarts@npm:^5.5.1":
+  version: 5.5.1
+  resolution: "echarts@npm:5.5.1"
+  dependencies:
+    tslib: "npm:2.3.0"
+    zrender: "npm:5.6.0"
+  checksum: 10c0/2f7e3037f17fda99d977092767943f4d9b0c8f886f86701ec88591707713b5e5fd683e56086b6ba5245b322f088184bdb06eac488234c20a1869b08cb6b4e523
   languageName: node
   linkType: hard
 
@@ -12595,7 +12654,7 @@ __metadata:
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.15"
     "@taro-hooks/plugin-auto-import": "npm:^2.0.11"
     "@taro-hooks/plugin-react": "npm:^2.0.11"
-    "@taroify/core": "npm:^0.3.0-alpha.0"
+    "@taroify/core": "npm:^0.4.0-alpha.0"
     "@tarojs/cli": "npm:3.6.35"
     "@tarojs/components": "npm:3.6.35"
     "@tarojs/components-advanced": "npm:^3.6.35"
@@ -12605,14 +12664,14 @@ __metadata:
     "@tarojs/plugin-platform-h5": "npm:4.0.3"
     "@tarojs/plugin-platform-jd": "npm:3.6.34"
     "@tarojs/plugin-platform-qq": "npm:3.6.33"
-    "@tarojs/plugin-platform-swan": "npm:4.0.3"
-    "@tarojs/plugin-platform-tt": "npm:4.0.3"
+    "@tarojs/plugin-platform-swan": "npm:4.0.5"
+    "@tarojs/plugin-platform-tt": "npm:4.0.5"
     "@tarojs/plugin-platform-weapp": "npm:3.6.34"
-    "@tarojs/react": "npm:3.6.34"
-    "@tarojs/runtime": "npm:3.6.35"
+    "@tarojs/react": "npm:4.0.5"
+    "@tarojs/runtime": "npm:4.0.5"
     "@tarojs/shared": "npm:3.6.34"
-    "@tarojs/taro": "npm:4.0.3"
-    "@tarojs/taro-loader": "npm:3.6.34"
+    "@tarojs/taro": "npm:4.0.5"
+    "@tarojs/taro-loader": "npm:4.0.5"
     "@tarojs/webpack5-runner": "npm:3.6.35"
     "@types/node": "npm:^22.0.0"
     "@types/react": "npm:^18.3.3"
@@ -12622,9 +12681,10 @@ __metadata:
     "@typescript-eslint/parser": "npm:^7.17.0"
     autoprefixer: "npm:^10.4.19"
     babel-plugin-import: "npm:^1.13.8"
-    babel-preset-taro: "npm:3.6.34"
+    babel-preset-taro: "npm:3.6.35"
     cache-loader: "npm:^4.1.0"
     cssnano: "npm:^7.0.4"
+    echarts: "npm:^5.5.1"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-config-taro: "npm:3.6.35"
@@ -12648,9 +12708,11 @@ __metadata:
     react-refresh: "npm:^0.14.2"
     stylelint: "npm:16.7.0"
     tailwindcss: "npm:^3.4.6"
+    taro-charts: "npm:^1.0.7"
     taro-hooks: "npm:^2.0.11"
     taro-iconfont-cli: "npm:^3.3.0"
     taro-plugin-compiler-optimization: "npm:^1.0.4"
+    taro-react-echarts: "npm:^1.2.2"
     taro-ui: "npm:^3.3.0"
     thread-loader: "npm:^4.0.2"
     ts-node: "npm:^10.9.2"
@@ -15018,15 +15080,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-reconciler@npm:0.27.0":
-  version: 0.27.0
-  resolution: "react-reconciler@npm:0.27.0"
+"react-reconciler@npm:0.29.0":
+  version: 0.29.0
+  resolution: "react-reconciler@npm:0.29.0"
   dependencies:
     loose-envify: "npm:^1.1.0"
-    scheduler: "npm:^0.21.0"
+    scheduler: "npm:^0.23.0"
   peerDependencies:
-    react: ^18.0.0
-  checksum: 10c0/55daff215ff9544dc5b2ba6ecda20520df0f1b2ca145c00fd0905ced1b025f3779664715c36b511a8906aa24b8b433270b0032cd499c55c4e4c878cddc8fc986
+    react: ^18.2.0
+  checksum: 10c0/637442f98ee816b8f86586f537712a0463b53e12c0f4dec716dfdde68dfa52cef1d10138acfad194d5571296cde8715c331aa3986e538087acdc1ef83187a9b0
   languageName: node
   linkType: hard
 
@@ -15679,16 +15741,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.21.0":
-  version: 0.21.0
-  resolution: "scheduler@npm:0.21.0"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10c0/083a9a0c83f4923f7f5bb28d8bcf13cff42c90f4303bc187166520fcfc576c97e946d426c707d5a9c0aa0a655819605dd0c741467c626824bbf191251c126f1b
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.23.2":
+"scheduler@npm:^0.23.0, scheduler@npm:^0.23.2":
   version: 0.23.2
   resolution: "scheduler@npm:0.23.2"
   dependencies:
@@ -16886,6 +16939,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"taro-charts@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "taro-charts@npm:1.0.7"
+  peerDependencies:
+    "@tarojs/components": ^3.4.12
+    "@tarojs/taro": ^3.5.7
+    "@wuba/react-native-echarts": ^1.0.0
+    echarts: ^5.4.1
+  checksum: 10c0/9d9bd60a412be4c9a4519f673b367467a52b7d64115728a312d9d26feb13ac338fa41fb7ff8495a5a1148614b97fc6ea3f6e199e73007ae80e8bf74fa67f3af7
+  languageName: node
+  linkType: hard
+
 "taro-hooks@npm:^2.0.11":
   version: 2.1.0
   resolution: "taro-hooks@npm:2.1.0"
@@ -16930,6 +16995,18 @@ __metadata:
   version: 1.0.4
   resolution: "taro-plugin-compiler-optimization@npm:1.0.4"
   checksum: 10c0/6d301944f18ef3df204861fb727c4551984e3237cd0215a3891ae11e13949da829b73dba0f0b804f66b559d480bd495df8933ad740e97fe849f8a279c87872f1
+  languageName: node
+  linkType: hard
+
+"taro-react-echarts@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "taro-react-echarts@npm:1.2.2"
+  peerDependencies:
+    "@tarojs/components": ">=3"
+    "@tarojs/taro": ">=3"
+    react: ">=16.9"
+    react-dom: ">=16.9"
+  checksum: 10c0/875d2d9d5e95f39199a449fd5565e0329165b2a3e30a7f735b0bbaa9988098d2fc536a4d2935682b6ab7a913305e2f0b341c861ba64a95f3b846e153430fd29d
   languageName: node
   linkType: hard
 
@@ -17234,6 +17311,13 @@ __metadata:
     minimist: "npm:^1.2.6"
     strip-bom: "npm:^3.0.0"
   checksum: 10c0/5b4f301a2b7a3766a986baf8fc0e177eb80bdba6e396792ff92dc23b5bca8bb279fc96517dcaaef63a3b49bebc6c4c833653ec58155780bc906bdbcf7dda0ef5
+  languageName: node
+  linkType: hard
+
+"tslib@npm:2.3.0":
+  version: 2.3.0
+  resolution: "tslib@npm:2.3.0"
+  checksum: 10c0/a845aed84e7e7dbb4c774582da60d7030ea39d67307250442d35c4c5dd77e4b44007098c37dd079e100029c76055f2a362734b8442ba828f8cc934f15ed9be61
   languageName: node
   linkType: hard
 
@@ -18548,6 +18632,15 @@ __metadata:
     toposort: "npm:^2.0.2"
     type-fest: "npm:^2.19.0"
   checksum: 10c0/fe142141365eed0f78fb2e18bdd2f10bf101385dae12a5f9de14884448067bdca16a54b547fc0bffec04a098dd70b4519ff366422f3da006fd11a0717a7863ac
+  languageName: node
+  linkType: hard
+
+"zrender@npm:5.6.0":
+  version: 5.6.0
+  resolution: "zrender@npm:5.6.0"
+  dependencies:
+    tslib: "npm:2.3.0"
+  checksum: 10c0/f7c5a1739dfec60b9bead0d0657c47868391b1009cc82a603f9dbf247fa625df28dcdb3e7b2e18404657e2c987f95e0e1bb5613519c2d823854f3dda44e2ee96
   languageName: node
   linkType: hard
 

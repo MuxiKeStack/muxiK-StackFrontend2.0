@@ -6,7 +6,7 @@
 
 /* eslint-disable import/first */
 import { ScrollView, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useMemo } from 'react';
 
 import './index.scss';
@@ -43,6 +43,9 @@ export default function Index() {
       changeType,
     })
   );
+  useDidShow(() => {
+    dispatch.refershComments();
+  });
   useEffect(() => {
     dispatch.loadMoreComments();
   }, [dispatch.loadMoreComments]);
@@ -110,6 +113,12 @@ export default function Index() {
         {comments[classType] &&
           comments[classType].map((comment) => (
             <Comment
+              onClick={(props) => {
+                const serializedComment = encodeURIComponent(JSON.stringify(props));
+                Taro.navigateTo({
+                  url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
+                });
+              }}
               key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的
               {...comment} // 展开comment对象，将属性传递给Comment组件
               type="inner" // 固定属性，不需要从数组中获取

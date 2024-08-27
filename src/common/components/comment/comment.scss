@@ -1,5 +1,5 @@
 //@import '../../lib/style/font.scss';
-
+$content-line-height: 30;
 /* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
 @font-face {
   font-family: 'iconfont'; /* Project id 4326563 */
@@ -18,130 +18,139 @@
   color: #f18900;
 }
 
-.commentplus {
-  position: relative;
-  margin-left: 45rpx;
-  margin-right: 45rpx;
-  background: #f9f9f2;
-  border-radius: 43rpx 43rpx 43rpx 43rpx;
-  opacity: 1;
-  border: 2rpx solid #f9f9f2;
-  padding-top: 38rpx;
-  padding-left: 36rpx;
-  padding-right: 25rpx;
-}
-
 .comment {
   position: relative;
+  .tx {
+    width: 92.39rpx;
+    height: 92.39rpx;
+    background-color: white;
+    border-radius: 50%;
+    border: #d2d5d8 solid 5rpx;
+    float: left;
+    background-size: contain;
+    //background-image: url("https://thirdqq.qlogo.cn/qqapp/1109891254/F03D55D191E57BA9D69CF8DF5F80414D/100");
+  }
+  .userName {
+    position: absolute;
+    left: 130rpx;
+    top: 13.5rpx;
+    font-size: 22rpx;
+    font-weight: bold;
+    color: #565552;
+  }
+  .likes {
+    position: absolute;
+    right: 0rpx;
+    bottom: 20rpx;
+  }
 }
 
-.comment .tx {
-  width: 92.39rpx;
-  height: 92.39rpx;
-  background-color: white;
-  border-radius: 50%;
-  border: #d2d5d8 solid 5rpx;
-  float: left;
-  background-size: contain;
-  //background-image: url("https://thirdqq.qlogo.cn/qqapp/1109891254/F03D55D191E57BA9D69CF8DF5F80414D/100");
+.bigcomment {
+  .commentplus {
+    position: relative;
+    margin-left: 45rpx;
+    margin-right: 45rpx;
+    background: #f9f9f2;
+    border-radius: 43rpx 43rpx 43rpx 43rpx;
+    opacity: 1;
+    border: 2rpx solid #f9f9f2;
+    padding-top: 38rpx;
+    padding-left: 36rpx;
+    padding-right: 25rpx;
+    display: flex;
+    flex-direction: column;
+    .classTitle {
+      height: 43rpx;
+      font-family:
+        Segoe UI,
+        Segoe UI;
+      font-weight: bold;
+      font-size: 33rpx;
+      color: #565552;
+      font-style: normal;
+      text-transform: none;
+      margin-bottom: 40rpx;
+    }
+    .comment {
+      position: relative;
+      width: 600rpx;
+      display: flex;
+      flex-direction: column;
+      margin-top: 10rpx;
+      .stars {
+        position: absolute;
+        left: 130rpx;
+        top: 50rpx;
+      }
+      .fire {
+        width: 38rpx;
+        height: 38rpx;
+        position: absolute;
+        top: 50rpx;
+        right: 0rpx;
+      }
+      .time {
+        position: absolute;
+        top: 13.5rpx;
+        right: 0rpx;
+        // margin-right: 36rpx;
+        font-size: 22rpx;
+        font-family:
+          Segoe UI-Regular,
+          Segoe UI;
+        font-weight: 400;
+        color: #565552;
+      }
+    }
+    .content {
+      // clear: both;
+      font-size: 22rpx;
+      font-family:
+        Segoe UI-Regular,
+        Segoe UI;
+      font-weight: 400;
+      line-height: calc(#{$content-line-height}rpx);
+      color: #565552;
+      margin: 30rpx 0;
+      height: calc(#{$content-line-height}rpx);
+      overflow: hidden;
+    }
+    .likes {
+      margin-top: 25rpx;
+      margin-left: 45rpx;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 25rpx;
+    }
+  }
+  .icon {
+    width: 40rpx;
+    height: 40rpx;
+    box-shadow: 0rpx 5rpx 11rpx 2rpx rgba(0, 0, 0, 0.16);
+    opacity: 1;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    line-height: 40rpx;
+    margin-left: 15rpx;
+    Image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .text1 {
+    font-size: 22rpx;
+    font-weight: bold;
+    color: black;
+  }
 }
-
-.comment .userName {
-  position: absolute;
-  left: 130rpx;
-  top: 13.5rpx;
-  font-size: 22rpx;
-  font-weight: bold;
-  color: #565552;
+.text-overflow {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  /*! autoprefixer: off */
 }
-
-.bigcomment .comment {
-  position: relative;
-  width: 600rpx;
-  height: 388rpx;
-}
-
-.bigcomment .comment .stars {
-  position: absolute;
-  left: 130rpx;
-  top: 50rpx;
-}
-
-.bigcomment .comment .fire {
-  width: 38rpx;
-  height: 38rpx;
-  position: absolute;
-  top: 50rpx;
-  right: 0rpx;
-}
-
-.bigcomment .comment .time {
-  position: absolute;
-  top: 13.5rpx;
-  right: 0rpx;
-  // margin-right: 36rpx;
-  font-size: 22rpx;
-  font-family:
-    Segoe UI-Regular,
-    Segoe UI;
-  font-weight: 400;
-  color: #565552;
-}
-
-.comment .content {
-  clear: both;
-  font-size: 22rpx;
-  font-family:
-    Segoe UI-Regular,
-    Segoe UI;
-  font-weight: 400;
-  color: #565552;
-  position: relative;
-  top: 30rpx;
-}
-
-.bigcomment .icon Image {
-  width: 100%;
-  height: 100%;
-}
-
-.bigcomment .icon {
-  width: 40rpx;
-  height: 40rpx;
-  box-shadow: 0rpx 5rpx 11rpx 2rpx rgba(0, 0, 0, 0.16);
-  opacity: 1;
-  border-radius: 50%;
-  display: inline-block;
-  text-align: center;
-  line-height: 40rpx;
-  margin-left: 15rpx;
-}
-
-.bigcomment .text1 {
-  font-size: 22rpx;
-  font-weight: bold;
-  color: black;
-}
-.bigcomment .likes {
-  margin-top: 25rpx;
-  margin-left: 45rpx;
-}
-
-.bigcomment .classTitle {
-  height: 43rpx;
-  font-family:
-    Segoe UI,
-    Segoe UI;
-  font-weight: bold;
-  font-size: 33rpx;
-  color: #565552;
-  font-style: normal;
-  text-transform: none;
-  margin-bottom: 40rpx;
-}
-
-.comment .likes {
-  position: absolute;
-  right: 0rpx;
-  bottom: 20rpx;
+.text-showAll {
+  height: auto !important;
 }

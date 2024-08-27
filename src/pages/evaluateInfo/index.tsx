@@ -131,7 +131,7 @@ export default function Index() {
   // 仅当评论数据加载完成时渲染CommentComponent
   return (
     <View className="evaluateInfo" onClick={handleClearReply}>
-      <Comment {...comment} />
+      <Comment showAll {...comment} />
       {commentsLoaded && (
         <CommentComponent comments={allComments} onCommentClick={handleCommentClick} />
       )}
