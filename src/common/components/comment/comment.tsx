@@ -86,10 +86,10 @@ const CommentHeader = ({
   const courseDetail = useCourseStore((state) => state.courseDetail);
   const publisher = useCourseStore((state) => state.publishers);
   async function navigateToPage() {
-    await Taro.navigateTo({
-      url: '/pages/classInfo/index', // 确保路径正确
-    });
-  }
+  await Taro.navigateTo({
+    url: '/pages/classInfo/index?course_id=' + course_id, // 传递 course_id 参数
+  });
+}
 
   function handleClickToClass() {
     navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise

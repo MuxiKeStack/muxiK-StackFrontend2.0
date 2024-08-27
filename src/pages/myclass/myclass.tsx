@@ -93,8 +93,9 @@ export default function Myclass() {
             className="eachClass"
             onClick={() => handleClassClick(each.id, each.name)}
           >
+            <View className='circle'></View>
             <Text className="classname">{each.name}</Text>
-            <Text className="classteacher">{each.teacher}</Text>
+            <Text className="classteacher">{'（'+each.teacher+'）'}</Text>
             <Text className="classstatus">{each.evaluated ? '已评课' : '未评课'}</Text>
             <Text className="jt">➜</Text>
           </View>

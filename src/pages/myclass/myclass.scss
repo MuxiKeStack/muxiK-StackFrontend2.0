@@ -4,7 +4,6 @@
   display: flex;
 }
 .text {
-  font-size: 2.5vh;
   left: 50%;
   transform: translate(-50%);
   position: absolute;
@@ -30,46 +29,57 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30rpx;
+  margin-top: 10rpx;
 }
 
 .eachClass {
   border-bottom: 1rpx solid #ffd777;
   height: 118rpx;
   width: 659rpx;
+  position: relative;
+  font-weight: 400;
+  font-size: 29rpx;
+  display: flex;
+  align-items: center;
 }
 
-.classname {
-  position: relative;
-  top: -17rpx;
-  left: 65rpx;
-}
-.classteacher {
-  position: relative;
-  top: 20rpx;
-  left: 65rpx;
-}
-.eachClass View {
+// .classteacher {
+//   position: relative;
+//   top: 20rpx;
+//   left: 65rpx;
+// }
+.eachClass .circle{
   width: 27rpx;
   height: 27rpx;
   background-color: #ffd777;
   border-radius: 100%;
-  position: relative;
-  top: 50rpx;
-  left: 9rpx;
+  margin-right: 10rpx;
 }
 
-.classstatus {
+.classstatus{
   color: #f18900;
-  position: relative;
-  left: 180rpx;
-  top: -15rpx;
+  position: absolute;
+  right: 70rpx;
 }
 
-.jt {
+// .classstatus {
+//   color: #f18900;
+//   position: relative;
+//   left: 180rpx;
+//   top: -15rpx;
+// }
+
+// .jt {
+//   color: #f18900;
+//   font-size: 60rpx;
+//   position: relative;
+//   left: 200rpx;
+//   top: -5rpx;
+// }
+
+.jt{
   color: #f18900;
-  font-size: 60rpx;
-  position: relative;
-  left: 200rpx;
-  top: -5rpx;
+  position: absolute;
+  right: 0;
+  font-size: 50rpx;
 }
