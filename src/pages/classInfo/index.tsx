@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 import './index.scss';
@@ -14,7 +15,7 @@ import Comment from '@/common/components/comment/comment';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get } from '@/common/utils/fetch';
-import Taro from '@tarojs/taro';
+
 import { CommentInfoType } from '../../common/assets/types';
 
 // import { useRef } from 'react';
@@ -55,7 +56,7 @@ function translateCourseProperty(englishDescription) {
   return entry ? entry[1] : '未找到对应的中文描述';
 }
 
-export default function index() {
+export default function Index() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [course, setCourse] = useState<Course | null>(null);
 
@@ -101,7 +102,7 @@ export default function index() {
           true
         ).then((res) => {
           console.log(res);
-          setComments(res.data);
+          setComments(res.data as CommentInfoType[]);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         });
       } catch (error) {
@@ -141,8 +142,8 @@ export default function index() {
       <View className="p">
         课程特点: {}
         {/* @ts-ignore*/}
-        {featuresList.map((feature, index) => (
-          <Label3 key={index} content={feature} />
+        {featuresList.map((feature, keyindex) => (
+          <Label3 key={keyindex} content={feature} />
         ))}
       </View>
 
@@ -154,7 +155,7 @@ export default function index() {
           <Comment
             onClick={(props) => {
               const serializedComment = encodeURIComponent(JSON.stringify(props));
-              Taro.navigateTo({
+              void Taro.navigateTo({
                 url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
               });
             }}
