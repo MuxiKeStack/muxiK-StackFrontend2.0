@@ -3,7 +3,6 @@
 
 import React, { FunctionComponent } from 'react';
 
-
 export type IconNames = 'comment' | 'like' | 'wechat' | 'yanjing' | 'yanjing1' | 'xiaxue';
 
 interface Props {
