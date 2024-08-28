@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { create, StateCreator } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 

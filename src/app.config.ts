@@ -56,6 +56,7 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/editUser/index',
   ],
+  /* eslint-disable */
   usingComponents: Object.assign(useGlobalIconFont()),
   tabBar: {
     /* tab页面必须放在主包里 */
