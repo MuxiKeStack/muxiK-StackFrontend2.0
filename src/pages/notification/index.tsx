@@ -1,14 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
+import { getUserInfo } from '@/common/assets/userService';
+import { get } from '@/common/utils/fetch';
 import uniqueKeyUtil from '@/common/utils/keyGen';
+import { formatIsoDate } from '@/common/utils/timeFormat';
 
 type Message = {
   username: string;
+  avatar: string;
   eventType: boolean;
   description: string;
   comment: string;
@@ -108,8 +119,11 @@ const AlertOfficial: React.FC<OfficialProps> = ({ title }) => (
 
 const Notification: React.FC<NotificationProps> = memo(() => {
   const [tab, setTab] = useState<string>('提问');
+  const [message, setMessage] = useState<Message[]>([]);
+
   const [notification, setNotification] = useState<Message>({
     username: '昵称',
+    avatar: '',
     eventType: true,
     description: '我正在回复你的评论',
     comment: '这里是原评论内容',
@@ -121,21 +135,82 @@ const Notification: React.FC<NotificationProps> = memo(() => {
   const [notificationDescription] = useState('摘要');
   const [notificationAlert] = useState('您在高等数学下方的评论违规，请注意您的发言');
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await get(
+          `/feed/events_list?last_time=${0}&direction=${'After'}&limit=${10}`
+        );
+
+        if (tab === '提问') {
+          const comments = res.data
+            .filter((item) => item.type === 'Comment')
+            .map((item) => JSON.parse(item.content));
+
+          const questions = await Promise.all(
+            comments.map(async (item) => {
+              const commentRes = await get(`/comments/${item.Ext.commentId}/detail`);
+              const parentRes = await get(
+                `/comments/${commentRes.data.parent_comment_id}/detail`
+              );
+              const commentator = await getUserInfo(item.Ext.commentator);
+
+              console.log(
+                JSON.stringify({
+                  username: commentator.nickname,
+                  avatar: commentator.avatar,
+                  eventType: true,
+                  description: commentRes.data.content,
+                  comment: parentRes.data.content,
+                  timestamp: formatIsoDate(item.Ctime as string),
+                })
+              );
+
+              return {
+                username: commentator.nickname,
+                avatar: commentator.avatar,
+                eventType: true,
+                description: commentRes.data.content,
+                comment: parentRes.data.content,
+                timestamp: formatIsoDate(item.Ctime as string),
+              };
+            })
+          );
+
+          setMessage(questions);
+        } else if (tab === '点赞') {
+          console.log('点赞');
+        } else {
+          console.log('官方');
+        }
+
+        console.log('最终 ' + message);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    void fetchData();
+  }, [tab]);
+
   return (
     <View className="flex h-[95vh] w-full flex-col items-center gap-4 overflow-y-scroll px-4 pt-2">
       <TabBar tab={tab} setTab={setTab} />
-      {tab === '提问' && (
-        <Message
-          username={notification.username}
-          eventType={notification.eventType}
-          description={notification.description}
-          comment={notification.comment}
-          timestamp={notification.timestamp}
-        />
-      )}
+      {tab === '提问' &&
+        message.map((item) => (
+          <Message
+            key={uniqueKeyUtil.nextKey()}
+            username={item.username}
+            avatar=""
+            eventType={item.eventType}
+            description={item.description}
+            comment={item.comment}
+            timestamp={item.timestamp}
+          />
+        ))}
       {tab === '点赞' && (
         <Message
           username={notification.username}
+          avatar=""
           eventType={false}
           description={notification.description}
           comment={notification.comment}
