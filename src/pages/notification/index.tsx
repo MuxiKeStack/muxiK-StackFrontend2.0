@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable import/first */
-import { Text, View } from '@tarojs/components';
+import { Image, Text, View } from '@tarojs/components';
 import { memo, useEffect, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
@@ -76,9 +76,11 @@ const TabBar: React.FC<TabBarProps> = memo(({ tab, setTab }) => (
 ));
 
 const Message: React.FC<MessageProps> = memo(
-  ({ username, eventType, description, comment, timestamp }) => (
+  ({ username, avatar, eventType, description, comment, timestamp }) => (
     <View className="flex w-full gap-4">
-      <View className="h-14 w-16 rounded-full border bg-[#f9f9f2]"></View>
+      <View className="flex aspect-square h-12 w-12 items-center justify-center rounded-full border-4 border-gray-300 bg-[#f9f9f2]">
+        <Image src={avatar} className="h-full w-full rounded-full" />
+      </View>
       <View className="flex w-full flex-col gap-2">
         <View className="flex w-full justify-between">
           <Text className="text-sm font-bold">{username}</Text>
@@ -193,14 +195,14 @@ const Notification: React.FC<NotificationProps> = memo(() => {
   }, [tab]);
 
   return (
-    <View className="flex h-[95vh] w-full flex-col items-center gap-4 overflow-y-scroll px-4 pt-2">
+    <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll px-4 pt-2">
       <TabBar tab={tab} setTab={setTab} />
       {tab === '提问' &&
         message.map((item) => (
           <Message
             key={uniqueKeyUtil.nextKey()}
             username={item.username}
-            avatar=""
+            avatar={item.avatar}
             eventType={item.eventType}
             description={item.description}
             comment={item.comment}
