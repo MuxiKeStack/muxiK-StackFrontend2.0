@@ -37,6 +37,7 @@
 //   },
 //   lazyCodeLoading: 'requiredComponents',
 // });
+import { useGlobalIconFont } from './common/components/iconfont/helper';
 
 export default defineAppConfig({
   pages: [
@@ -55,6 +56,7 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/editUser/index',
   ],
+  usingComponents: Object.assign(useGlobalIconFont()),
   tabBar: {
     /* tab页面必须放在主包里 */
     custom: true,

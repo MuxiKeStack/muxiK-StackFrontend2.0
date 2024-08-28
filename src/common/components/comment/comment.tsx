@@ -6,7 +6,7 @@ import Taro from '@tarojs/taro';
 import { useEffect, useTransition } from 'react';
 
 import { useCourseStore } from '@/pages/main/store/store';
-
+import IconFont from '../iconfont';
 import './comment.scss';
 
 import { CommentInfo } from '../../assets/types';
@@ -45,11 +45,13 @@ export default function Comment({ onClick, ...props }: CommentProps) {
         {props.type === 'inner' && (
           <View className="likes">
             <View className="icon">
-              <Navigator className="iconfont">&#xe786;</Navigator>
+              <IconFont name="like" />
+              {/* <Navigator className="iconfont">&#xe786;</Navigator> */}
             </View>
             <Text className="text1">{props.total_support_count}</Text>
             <View className="icon">
-              <Navigator className="iconfont">&#xe769;</Navigator>
+              <IconFont name="comment" />
+              {/* <Navigator className="iconfont">&#xe769;</Navigator> */}
             </View>
             <Text className="text1">{props.total_comment_count}</Text>
           </View>
