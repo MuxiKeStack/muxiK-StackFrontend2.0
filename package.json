@@ -49,7 +49,7 @@
     "@tarojs/helper": "3.6.34",
     "@tarojs/plugin-framework-react": "3.6.34",
     "@tarojs/plugin-platform-alipay": "3.6.34",
-    "@tarojs/plugin-platform-h5": "4.0.3",
+    "@tarojs/plugin-platform-h5": "4.0.5",
     "@tarojs/plugin-platform-jd": "3.6.34",
     "@tarojs/plugin-platform-qq": "3.6.33",
     "@tarojs/plugin-platform-swan": "4.0.5",
