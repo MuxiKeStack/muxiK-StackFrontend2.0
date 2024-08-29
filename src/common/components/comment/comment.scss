@@ -1,13 +1,13 @@
 //@import '../../lib/style/font.scss';
 $content-line-height: 30;
 /* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
-@font-face {
-  font-family: 'iconfont'; /* Project id 4326563 */
-  src:
-    url('//123/t/c/font_4326563_5kfmphwtn65.woff2?t=1699759598184') format('woff2'),
-    url('//123/t/c/font_4326563_5kfmphwtn65.woff?t=1699759598184') format('woff'),
-    url('//123/t/c/font_4326563_5kfmphwtn65.ttf?t=1699759598184') format('truetype');
-}
+// @font-face {
+//   font-family: 'iconfont'; /* Project id 4326563 */
+//   src:
+//     url('//123/t/c/font_4326563_5kfmphwtn65.woff2?t=1699759598184') format('woff2'),
+//     url('//123/t/c/font_4326563_5kfmphwtn65.woff?t=1699759598184') format('woff'),
+//     url('//123/t/c/font_4326563_5kfmphwtn65.ttf?t=1699759598184') format('truetype');
+// }
 
 .iconfont {
   font-family: 'iconfont' !important;

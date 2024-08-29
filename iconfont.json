@@ -1,5 +1,5 @@
 {
-  "symbol_url": "123.js",
+  "symbol_url": "//at.alicdn.com/t/c/font_4436186_ra7sc0n5lb.js",
   "save_dir": "./src/common/components/iconfont",
   "use_typescript": true,
   "platforms": ["weapp"],
