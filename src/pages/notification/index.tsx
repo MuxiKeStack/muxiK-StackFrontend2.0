@@ -138,55 +138,55 @@ const Notification: React.FC<NotificationProps> = memo(() => {
   const [notificationAlert] = useState('您在高等数学下方的评论违规，请注意您的发言');
 
   useEffect(() => {
+    setMessage([]);
     const fetchData = async () => {
       try {
         const res = await get(
           `/feed/events_list?last_time=${0}&direction=${'After'}&limit=${10}`
         );
 
-        if (tab === '提问') {
-          const comments = res.data
-            .filter((item) => item.type === 'Comment')
-            .map((item) => JSON.parse(item.content));
-
-          const questions = await Promise.all(
-            comments.map(async (item) => {
-              const commentRes = await get(`/comments/${item.Ext.commentId}/detail`);
-              const parentRes = await get(
-                `/comments/${commentRes.data.parent_comment_id}/detail`
-              );
-              const commentator = await getUserInfo(item.Ext.commentator);
-
-              console.log(
-                JSON.stringify({
-                  username: commentator.nickname,
-                  avatar: commentator.avatar,
-                  eventType: true,
-                  description: commentRes.data.content,
-                  comment: parentRes.data.content,
-                  timestamp: formatIsoDate(item.Ctime as string),
-                })
-              );
+        const personalItems = async (items, itemType) => {
+          return Promise.all(
+            items.map(async (item) => {
+              let detailRes, user;
+              if (itemType === 'Comment') {
+                detailRes = await get(`/comments/${item.Ext.commentId}/detail`);
+                user = await getUserInfo(item.Ext.commentator);
+              } else if (itemType === 'Support') {
+                detailRes =
+                  item.Ext.biz === 'Evaluation'
+                    ? await get(`/evaluations/${item.Ext.bizId}/detail`)
+                    : await get(`/answers/${item.Ext.bizId}/detail`);
+                user = await getUserInfo(item.Ext.supporter);
+              }
 
               return {
-                username: commentator.nickname,
-                avatar: commentator.avatar,
-                eventType: true,
-                description: commentRes.data.content,
-                comment: parentRes.data.content,
+                username: user.nickname,
+                avatar: user.avatar,
+                eventType: itemType === 'Comment',
+                description: itemType === 'Comment' ? detailRes.data.content : '',
+                comment: detailRes.data.content,
                 timestamp: formatIsoDate(item.Ctime as string),
               };
             })
           );
+        };
 
-          setMessage(questions);
+        if (tab === '提问') {
+          const comments = res.data
+            .filter((item) => item.type === 'Comment')
+            .map((item) => JSON.parse(item.content));
+          setMessage(await personalItems(comments, 'Comment'));
         } else if (tab === '点赞') {
-          console.log('点赞');
+          const supports = res.data
+            .filter((item) => item.type === 'Support')
+            .map((item) => JSON.parse(item.content));
+          setMessage(await personalItems(supports, 'Support'));
         } else {
           console.log('官方');
         }
 
-        console.log('最终 ' + message);
+        console.log('最终 ' + JSON.stringify(message));
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -197,7 +197,7 @@ const Notification: React.FC<NotificationProps> = memo(() => {
   return (
     <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll px-4 pt-2">
       <TabBar tab={tab} setTab={setTab} />
-      {tab === '提问' &&
+      {(tab === '提问' || tab === '点赞') &&
         message.map((item) => (
           <Message
             key={uniqueKeyUtil.nextKey()}
@@ -209,16 +209,6 @@ const Notification: React.FC<NotificationProps> = memo(() => {
             timestamp={item.timestamp}
           />
         ))}
-      {tab === '点赞' && (
-        <Message
-          username={notification.username}
-          avatar=""
-          eventType={false}
-          description={notification.description}
-          comment={notification.comment}
-          timestamp={notification.timestamp}
-        />
-      )}
       {tab === '官方' && (
         <>
           <View className="flex w-full flex-col items-center gap-4">
