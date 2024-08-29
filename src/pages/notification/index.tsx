@@ -21,7 +21,7 @@ type Message = {
   username: string;
   avatar: string;
   eventType: boolean;
-  description: string;
+  description?: string;
   comment: string;
   timestamp: string;
 };
@@ -103,7 +103,7 @@ const Message: React.FC<MessageProps> = memo(
   )
 );
 
-const ImageOfficial: React.FC<OfficialProps> = ({ title, description }) => (
+const ImageOfficial: React.FC<OfficialProps> = memo(({ title, description }) => (
   <View className="flex h-[30vh] w-full flex-col overflow-hidden rounded-lg bg-[#f9f9f2]">
     <View className="flex-[4] border-b-2 border-[#ffd777]"></View>
     <View className="flex flex-1 flex-col gap-1 px-4 py-2">
@@ -111,27 +111,18 @@ const ImageOfficial: React.FC<OfficialProps> = ({ title, description }) => (
       <Text className="text-sm text-[#565552]">{description}</Text>
     </View>
   </View>
-);
+));
 
-const AlertOfficial: React.FC<OfficialProps> = ({ title }) => (
+const AlertOfficial: React.FC<OfficialProps> = memo(({ title }) => (
   <View className="flex w-full items-center rounded-l-full rounded-r-full bg-[#f9f9f2] p-4 text-sm">
     <Text className="text-sm text-[#f18900]">{title}</Text>
   </View>
-);
+));
 
 const Notification: React.FC<NotificationProps> = memo(() => {
   const [tab, setTab] = useState<string>('提问');
   const [message, setMessage] = useState<Message[]>([]);
 
-  const [notification, setNotification] = useState<Message>({
-    username: '昵称',
-    avatar: '',
-    eventType: true,
-    description: '我正在回复你的评论',
-    comment: '这里是原评论内容',
-    timestamp: '2023年1月1日',
-  });
-  const [isImageDetail] = useState(true);
   const [notificationTime] = useState('07:25');
   const [notificationTitle] = useState('评课活动要开始了');
   const [notificationDescription] = useState('摘要');
@@ -148,9 +139,12 @@ const Notification: React.FC<NotificationProps> = memo(() => {
         const personalItems = async (items, itemType) => {
           return Promise.all(
             items.map(async (item) => {
-              let detailRes, user;
+              let detailRes, parentRes, user;
               if (itemType === 'Comment') {
                 detailRes = await get(`/comments/${item.Ext.commentId}/detail`);
+                parentRes = await get(
+                  `/comments/${detailRes.data.parent_comment_id}/detail`
+                );
                 user = await getUserInfo(item.Ext.commentator);
               } else if (itemType === 'Support') {
                 detailRes =
@@ -164,8 +158,11 @@ const Notification: React.FC<NotificationProps> = memo(() => {
                 username: user.nickname,
                 avatar: user.avatar,
                 eventType: itemType === 'Comment',
-                description: itemType === 'Comment' ? detailRes.data.content : '',
-                comment: detailRes.data.content,
+                description: itemType === 'Comment' && detailRes.data.content,
+                comment:
+                  itemType === 'Comment'
+                    ? parentRes.data.content
+                    : detailRes.data.content,
                 timestamp: formatIsoDate(item.Ctime as string),
               };
             })
@@ -188,6 +185,7 @@ const Notification: React.FC<NotificationProps> = memo(() => {
 
         console.log('最终 ' + JSON.stringify(message));
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Error fetching data:', error);
       }
     };
@@ -213,14 +211,10 @@ const Notification: React.FC<NotificationProps> = memo(() => {
         <>
           <View className="flex w-full flex-col items-center gap-4">
             <View className="text-xs text-gray-500">{notificationTime}</View>
-            {isImageDetail ? (
-              <ImageOfficial
-                title={notificationTitle}
-                description={notificationDescription}
-              />
-            ) : (
-              <AlertOfficial title={notificationAlert} />
-            )}
+            <ImageOfficial
+              title={notificationTitle}
+              description={notificationDescription}
+            />
           </View>
           <View className="flex w-full flex-col items-center gap-4">
             <View className="text-xs text-gray-500">{notificationTime}</View>
