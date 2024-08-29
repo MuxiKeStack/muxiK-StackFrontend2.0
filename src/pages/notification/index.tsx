@@ -7,7 +7,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable import/first */
 import { Image, Text, View } from '@tarojs/components';
-import { memo, useEffect, useState } from 'react';
+import VirtualList from '@tarojs/components-advanced/dist/components/virtual-list';
+import Taro from '@tarojs/taro';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
 import './index.scss';
@@ -30,8 +32,6 @@ interface OfficialProps {
   title: string;
   description?: string;
 }
-
-interface NotificationProps {}
 
 interface MessageProps extends Message {}
 
@@ -103,6 +103,23 @@ const Message: React.FC<MessageProps> = memo(
   )
 );
 
+const MessageItem = memo(
+  ({ id, index, data }: { id: string; index: number; data: Message[] }) => {
+    const message = data[index];
+    return (
+      <Message
+        key={uniqueKeyUtil.nextKey()}
+        username={message.username}
+        avatar={message.avatar}
+        eventType={message.eventType}
+        description={message.description}
+        comment={message.comment}
+        timestamp={message.timestamp}
+      />
+    );
+  }
+);
+
 const ImageOfficial: React.FC<OfficialProps> = memo(({ title, description }) => (
   <View className="flex h-[30vh] w-full flex-col overflow-hidden rounded-lg bg-[#f9f9f2]">
     <View className="flex-[4] border-b-2 border-[#ffd777]"></View>
@@ -119,106 +136,150 @@ const AlertOfficial: React.FC<OfficialProps> = memo(({ title }) => (
   </View>
 ));
 
-const Notification: React.FC<NotificationProps> = memo(() => {
+const Notification: React.FC = memo(() => {
   const [tab, setTab] = useState<string>('提问');
-  const [message, setMessage] = useState<Message[]>([]);
+  const [ctime, setCtime] = useState<number>(0);
+  const [commentMessage, setCommentMessage] = useState<Message[]>([]);
+  const [supportMessage, setSupportMessage] = useState<Message[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [notificationTime] = useState('07:25');
-  const [notificationTitle] = useState('评课活动要开始了');
-  const [notificationDescription] = useState('摘要');
-  const [notificationAlert] = useState('您在高等数学下方的评论违规，请注意您的发言');
+  const fetchData = async () => {
+    try {
+      const res = await get(
+        `/feed/events_list?last_time=${ctime}&direction=${'After'}&limit=${10}`
+      );
+
+      const personalItems = async (items, itemType) => {
+        return Promise.all(
+          items.map(async (item) => {
+            let detailRes, parentRes, user;
+            if (itemType === 'Comment') {
+              detailRes = await get(`/comments/${item.Ext.commentId}/detail`);
+              parentRes = await get(
+                `/comments/${detailRes.data.parent_comment_id}/detail`
+              );
+              user = await getUserInfo(item.Ext.commentator);
+            } else if (itemType === 'Support') {
+              detailRes =
+                item.Ext.biz === 'Evaluation'
+                  ? await get(`/evaluations/${item.Ext.bizId}/detail`)
+                  : await get(`/answers/${item.Ext.bizId}/detail`);
+              user = await getUserInfo(item.Ext.supporter);
+            }
+
+            // console.log(
+            //   JSON.stringify({
+            //     username: user.nickname,
+            //     avatar: user.avatar,
+            //     eventType: itemType === 'Comment',
+            //     description: itemType === 'Comment' && detailRes.data.content,
+            //     comment:
+            //       itemType === 'Comment'
+            //         ? parentRes.data.content
+            //         : detailRes.data.content,
+            //     timestamp: formatIsoDate(item.Ctime as string),
+            //   })
+            // );
+
+            return {
+              username: user.nickname,
+              avatar: user.avatar,
+              eventType: itemType === 'Comment',
+              description: itemType === 'Comment' && detailRes.data.content,
+              comment:
+                itemType === 'Comment' ? parentRes.data.content : detailRes.data.content,
+              timestamp: formatIsoDate(item.Ctime as string),
+            };
+          })
+        );
+      };
+
+      if (tab === '提问') {
+        const comments = res.data
+          .filter((item) => item.type === 'Comment')
+          .map((item) => JSON.parse(item.content));
+        setCommentMessage([
+          ...commentMessage,
+          ...(await personalItems(comments, 'Comment')),
+        ]);
+      } else if (tab === '点赞') {
+        const supports = res.data
+          .filter((item) => item.type === 'Support')
+          .map((item) => JSON.parse(item.content));
+        setSupportMessage([
+          ...supportMessage,
+          ...(await personalItems(supports, 'Support')),
+        ]);
+      } else {
+        // console.log('官方');
+      }
+
+      Taro.hideLoading();
+      setLoading(false);
+      // console.log('最终 ' + JSON.stringify(message));
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleScroll = (message: Message[]) =>
+    useCallback(
+      (event) => {
+        const { scrollDirection, scrollOffset } = event.detail;
+        if (
+          !loading &&
+          scrollDirection === 'forward' &&
+          scrollOffset > (message.length - 5) * 120 + 5
+        ) {
+          fetchData();
+        }
+      },
+      [loading, message.length]
+    );
 
   useEffect(() => {
-    setMessage([]);
-    const fetchData = async () => {
-      try {
-        const res = await get(
-          `/feed/events_list?last_time=${0}&direction=${'After'}&limit=${10}`
-        );
-
-        const personalItems = async (items, itemType) => {
-          return Promise.all(
-            items.map(async (item) => {
-              let detailRes, parentRes, user;
-              if (itemType === 'Comment') {
-                detailRes = await get(`/comments/${item.Ext.commentId}/detail`);
-                parentRes = await get(
-                  `/comments/${detailRes.data.parent_comment_id}/detail`
-                );
-                user = await getUserInfo(item.Ext.commentator);
-              } else if (itemType === 'Support') {
-                detailRes =
-                  item.Ext.biz === 'Evaluation'
-                    ? await get(`/evaluations/${item.Ext.bizId}/detail`)
-                    : await get(`/answers/${item.Ext.bizId}/detail`);
-                user = await getUserInfo(item.Ext.supporter);
-              }
-
-              return {
-                username: user.nickname,
-                avatar: user.avatar,
-                eventType: itemType === 'Comment',
-                description: itemType === 'Comment' && detailRes.data.content,
-                comment:
-                  itemType === 'Comment'
-                    ? parentRes.data.content
-                    : detailRes.data.content,
-                timestamp: formatIsoDate(item.Ctime as string),
-              };
-            })
-          );
-        };
-
-        if (tab === '提问') {
-          const comments = res.data
-            .filter((item) => item.type === 'Comment')
-            .map((item) => JSON.parse(item.content));
-          setMessage(await personalItems(comments, 'Comment'));
-        } else if (tab === '点赞') {
-          const supports = res.data
-            .filter((item) => item.type === 'Support')
-            .map((item) => JSON.parse(item.content));
-          setMessage(await personalItems(supports, 'Support'));
-        } else {
-          console.log('官方');
-        }
-
-        console.log('最终 ' + JSON.stringify(message));
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error fetching data:', error);
-      }
-    };
-    void fetchData();
+    void Taro.showLoading({
+      title: '加载中',
+    });
+    setLoading(true);
+    fetchData();
   }, [tab]);
 
   return (
-    <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll px-4 pt-2">
+    <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll px-4 pb-[13vh] pt-2">
       <TabBar tab={tab} setTab={setTab} />
-      {(tab === '提问' || tab === '点赞') &&
-        message.map((item) => (
-          <Message
-            key={uniqueKeyUtil.nextKey()}
-            username={item.username}
-            avatar={item.avatar}
-            eventType={item.eventType}
-            description={item.description}
-            comment={item.comment}
-            timestamp={item.timestamp}
-          />
-        ))}
+      {tab === '提问' && (
+        <VirtualList
+          height="100%"
+          width="100%"
+          item={MessageItem}
+          itemData={commentMessage}
+          itemCount={commentMessage.length}
+          itemSize={120}
+          onScroll={handleScroll(commentMessage)}
+        />
+      )}
+      {tab === '点赞' && (
+        <VirtualList
+          height="100%"
+          width="100%"
+          item={MessageItem}
+          itemData={supportMessage}
+          itemCount={supportMessage.length}
+          itemSize={120}
+          onScroll={handleScroll(supportMessage)}
+        />
+      )}
       {tab === '官方' && (
         <>
           <View className="flex w-full flex-col items-center gap-4">
-            <View className="text-xs text-gray-500">{notificationTime}</View>
-            <ImageOfficial
-              title={notificationTitle}
-              description={notificationDescription}
-            />
+            <View className="text-xs text-gray-500">07:25</View>
+            <ImageOfficial title="评课活动要开始了" description="摘要" />
           </View>
           <View className="flex w-full flex-col items-center gap-4">
-            <View className="text-xs text-gray-500">{notificationTime}</View>
-            <AlertOfficial title={notificationAlert} />
+            <View className="text-xs text-gray-500">07:25</View>
+            <AlertOfficial title="您在高等数学下方的评论违规，请注意您的发言" />
           </View>
         </>
       )}
