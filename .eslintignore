@@ -9,4 +9,4 @@ babel.config.js
 ec-canvas
 
 *.js
-src/common/components/VirtualList.tsx
+VirtualList.tsx
