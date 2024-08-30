@@ -57,7 +57,6 @@ function translateCourseProperty(englishDescription) {
 }
 
 export default function Index() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [course, setCourse] = useState<Course | null>(null);
 
   const [courseId, setCourseId] = useState<string | null>(null);
@@ -76,7 +75,6 @@ export default function Index() {
     getParams();
   }, []); // 这个 effect 仅在组件挂载时运行一次
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
@@ -103,7 +101,6 @@ export default function Index() {
         ).then((res) => {
           console.log(res);
           setComments(res.data as CommentInfoType[]);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         });
       } catch (error) {
         // 错误处理，例如弹出提示
