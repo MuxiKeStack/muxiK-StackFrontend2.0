@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Image, Progress, View } from '@tarojs/components';
+import { Image, Progress, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
@@ -80,28 +80,28 @@ const Header: React.FC = memo(() => {
         </View>
         <View className="flex flex-col gap-2">
           <View className="flex w-2/5 items-center gap-2">
-            <View className="text-md whitespace-nowrap">{user.nickName}</View>
+            <Text className="text-md whitespace-nowrap">{user.nickName}</Text>
             {user.selectedTitle !== 'None' && (
               <View className="w-1/5">
                 <TitleButton title={user.selectedTitle}></TitleButton>
               </View>
             )}
-            <View
+            <Text
               className="text-md font-bold text-white"
               onClick={() => {
                 void Taro.navigateTo({ url: '/pages/editUser/index' });
               }}
             >
               &gt;
-            </View>
+            </Text>
           </View>
-          <View className="flex w-full justify-end text-xs font-bold text-orange-400">
+          <Text className="flex w-full justify-end text-xs font-bold text-orange-400">
             {user.points}/{user.nextLevel}
-          </View>
+          </Text>
           <View className="-mt-3 flex items-center gap-1">
-            <View className="text-md flex items-center font-bold text-orange-400">
+            <Text className="text-md flex items-center font-bold text-orange-400">
               Exp{user.level}&nbsp;&nbsp;
-            </View>
+            </Text>
             <Progress
               percent={(user.points / user.nextLevel) * 100}
               color="orange"
