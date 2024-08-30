@@ -16,43 +16,8 @@ import {
   TopBackground,
 } from '@/common/assets/img/personalPage';
 import TitleButton from '@/common/components/titleButton/titleButton';
+import type { ResponseLevel, ResponseUser } from '@/common/types/userTypes';
 import uniqueKeyUtil from '@/common/utils/keyGen';
-
-export interface UserInfo {
-  avatarUrl: string; // 用户头像的URL
-  nickName: string; // 用户昵称
-}
-type PersonalPageProps = object;
-export interface ResponseLevel {
-  code?: number;
-  data: WebPointInfoVo;
-  msg?: string;
-}
-export interface WebPointInfoVo {
-  level: number;
-  next_level_points: number;
-  points: number;
-}
-export interface ResponseUser {
-  code?: number;
-  data: WebUserProfileVo;
-  msg?: string;
-}
-export interface WebUserProfileVo {
-  avatar: string;
-  ctime: number;
-  grade_sharing_is_signed?: boolean;
-  id: number;
-  /**
-   * 是否为新用户，新用户尚未编辑过个人信息
-   */
-  new: boolean;
-  nickname: string;
-  studentId: string;
-  title_ownership: { [key: string]: boolean };
-  using_title: string;
-  utime?: number;
-}
 
 const ListItems: { title: string; icon: string; url: string }[] = [
   { title: '我的课程', icon: BookIcon, url: '/pages/myclass/myclass' },
@@ -65,7 +30,7 @@ const ListItems: { title: string; icon: string; url: string }[] = [
   { title: '意见反馈', icon: MailIcon, url: '/pages/feedback/index' },
 ];
 
-const Page: React.FC<PersonalPageProps> = memo(() => (
+const Page: React.FC = memo(() => (
   <View className="flex flex-col items-center">
     <Head />
     <List />

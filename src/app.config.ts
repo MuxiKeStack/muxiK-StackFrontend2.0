@@ -32,7 +32,7 @@ export default defineAppConfig({
         text: 'Home',
       },
       { pagePath: 'pages/notification/index', text: 'Massage' },
-      { pagePath: 'pages/personalPage/index', text: 'Profile' },
+      { pagePath: 'pages/profile/index', text: 'Profile' },
     ],
   },
   window: {
