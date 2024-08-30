@@ -106,7 +106,17 @@ const EditUser: React.FC = () => {
   // Taro.redirectTo({url:'pages/login/index'});
   const handleLogout = () => {
     void post('/users/logout', {}, true).then((res) => console.log(res));
-    void Taro.redirectTo({ url: 'pages/login/index' });
+    void Taro.removeStorage({
+      key: 'shortToken',
+      success: (res) => console.log(res),
+      fail: (err) => console.log(err),
+    });
+    void Taro.removeStorage({
+      key: 'longToken',
+      success: (res) => console.log(res),
+      fail: (err) => console.log(err),
+    });
+    void Taro.redirectTo({ url: '/pages/login/index' });
   };
   return (
     <View>
@@ -168,7 +178,7 @@ const EditUser: React.FC = () => {
         <Button
           className="cancel-button"
           onClick={() => {
-            void Taro.navigateTo({ url: 'pages/personalPage/index' });
+            void Taro.switchTab({ url: '/pages/personalPage/index' });
           }}
         >
           取消
