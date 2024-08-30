@@ -66,7 +66,7 @@ const ListItems: { title: string; icon: string; url: string }[] = [
 ];
 
 const Page: React.FC<PersonalPageProps> = memo(() => (
-  <View className="PersonalPage">
+  <View className="flex flex-col items-center">
     <Head />
     <List />
   </View>
@@ -118,6 +118,7 @@ const Head: React.FC = memo(() => {
           newUser: responseUser.data.new,
         });
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Error fetching collection data:', error);
       }
     };
@@ -130,21 +131,27 @@ const Head: React.FC = memo(() => {
 
   return (
     <>
-      <Image src={TopBackground} className="personalPage_top_background"></Image>
-      <View className="personalPage_user_container">
-        <View className="personalPage_user_photo">
-          <Image src={user.avatarUrl} className="personalPage_user_photo" />
+      <Image
+        src={TopBackground}
+        className="relative top-[-35vh] h-[70vh] w-[115%]"
+      ></Image>
+      <View className="absolute top-[12vh] flex w-full items-center gap-4 px-[10%]">
+        <View className="aspect-square h-[20vw] w-[20vw] rounded-full bg-white">
+          <Image
+            src={user.avatarUrl}
+            className="aspect-square h-[20vw] w-[20vw] rounded-full bg-white"
+          />
         </View>
-        <View className="personalPage_user_container1">
-          <View className="personalPage_user_details">
-            <View className="personalPage_username">{user.nickName}</View>
-            <View className="personalPage_username_title">
-              {user.selectedTitle !== 'None' && (
+        <View className="flex flex-col gap-2">
+          <View className="flex w-2/5 items-center gap-2">
+            <View className="text-md whitespace-nowrap">{user.nickName}</View>
+            {user.selectedTitle !== 'None' && (
+              <View className="w-1/5">
                 <TitleButton title={user.selectedTitle}></TitleButton>
-              )}
-            </View>
+              </View>
+            )}
             <View
-              className="personalPage_icon"
+              className="text-md font-bold text-white"
               onClick={() => {
                 void Taro.navigateTo({ url: '/pages/editUser/index' });
               }}
@@ -152,18 +159,19 @@ const Head: React.FC = memo(() => {
               &gt;
             </View>
           </View>
-          {/* 经验 */}
-          <View className="personalPage_exp_value">
+          <View className="flex w-full justify-end text-xs font-bold text-orange-400">
             {user.points}/{user.nextLevel}
           </View>
-          <View className="personalPage_progress_line">
-            <View className="personalPage_exp_text">Exp{user.level}&nbsp;&nbsp;</View>
+          <View className="-mt-3 flex items-center gap-1">
+            <View className="text-md flex items-center font-bold text-orange-400">
+              Exp{user.level}&nbsp;&nbsp;
+            </View>
             <Progress
               percent={(user.points / user.nextLevel) * 100}
               color="orange"
               strokeWidth={6}
               borderRadius={100}
-              className="personalPage_progress"
+              className="w-32"
             ></Progress>
           </View>
         </View>
@@ -176,7 +184,7 @@ const List: React.FC = memo(() => {
   const navigate = useCallback((url: string) => void Taro.navigateTo({ url }), []);
 
   return (
-    <AtList className="personalPage_list">
+    <AtList className="relative bottom-[30vh] w-full px-[5%]">
       {ListItems.map((item) => (
         <AtListItem
           key={uniqueKeyUtil.nextKey()}
