@@ -120,6 +120,24 @@ const MessageItem = memo(
   }
 );
 
+const OfficialItem = memo(
+  ({ id, index, data }: { id: string; index: number; data: Message[] }) => {
+    const message = data[index];
+    return (
+      <>
+        <View className="flex w-full flex-col items-center gap-4">
+          <View className="text-xs text-gray-500">07:25</View>
+          <ImageOfficial title="评课活动要开始了" description="摘要" />
+        </View>
+        <View className="flex w-full flex-col items-center gap-4">
+          <View className="text-xs text-gray-500">07:25</View>
+          <AlertOfficial title="您在高等数学下方的评论违规，请注意您的发言" />
+        </View>
+      </>
+    );
+  }
+);
+
 const ImageOfficial: React.FC<OfficialProps> = memo(({ title, description }) => (
   <View className="flex h-[30vh] w-full flex-col overflow-hidden rounded-lg bg-[#f9f9f2]">
     <View className="flex-[4] border-b-2 border-[#ffd777]"></View>
@@ -211,7 +229,7 @@ const Notification: React.FC = memo(() => {
           ...(await personalItems(supports, 'Support')),
         ]);
       } else {
-        // console.log('官方');
+        console.log('官方');
       }
 
       Taro.hideLoading();
@@ -243,46 +261,31 @@ const Notification: React.FC = memo(() => {
       title: '加载中',
     });
     setLoading(true);
+    setCommentMessage([]);
+    setSupportMessage([]);
     fetchData();
   }, [tab]);
 
   return (
     <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll px-4 pb-[13vh] pt-2">
       <TabBar tab={tab} setTab={setTab} />
-      {tab === '提问' && (
-        <VirtualList
-          height="100%"
-          width="100%"
-          item={MessageItem}
-          itemData={commentMessage}
-          itemCount={commentMessage.length}
-          itemSize={120}
-          onScroll={handleScroll(commentMessage)}
-        />
-      )}
-      {tab === '点赞' && (
-        <VirtualList
-          height="100%"
-          width="100%"
-          item={MessageItem}
-          itemData={supportMessage}
-          itemCount={supportMessage.length}
-          itemSize={120}
-          onScroll={handleScroll(supportMessage)}
-        />
-      )}
-      {tab === '官方' && (
-        <>
-          <View className="flex w-full flex-col items-center gap-4">
-            <View className="text-xs text-gray-500">07:25</View>
-            <ImageOfficial title="评课活动要开始了" description="摘要" />
-          </View>
-          <View className="flex w-full flex-col items-center gap-4">
-            <View className="text-xs text-gray-500">07:25</View>
-            <AlertOfficial title="您在高等数学下方的评论违规，请注意您的发言" />
-          </View>
-        </>
-      )}
+      <VirtualList
+        height="100%"
+        width="100%"
+        item={tab === '提问' || tab === '点赞' ? MessageItem : OfficialItem}
+        itemData={tab === '提问' ? commentMessage : tab === '点赞' ? supportMessage : []}
+        itemCount={
+          tab === '提问'
+            ? commentMessage.length
+            : tab === '点赞'
+              ? supportMessage.length
+              : 1
+        }
+        itemSize={tab === '提问' || tab === '点赞' ? 120 : 300}
+        onScroll={handleScroll(
+          tab === '提问' ? commentMessage : tab === '点赞' ? supportMessage : []
+        )}
+      />
     </View>
   );
 });
