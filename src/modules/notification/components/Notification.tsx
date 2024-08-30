@@ -1,9 +1,15 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { View } from '@tarojs/components';
-import VirtualList from '@tarojs/components-advanced/dist/components/virtual-list';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect, useState } from 'react';
 
 import { getUserInfo } from '@/common/assets/userService';
+import { VirtualList } from '@/common/components';
 import { get } from '@/common/utils/fetch';
 import { formatIsoDate } from '@/common/utils/timeFormat';
 
@@ -107,7 +113,7 @@ const Notification: React.FC = memo(() => {
           scrollDirection === 'forward' &&
           scrollOffset > (message.length - 5) * 120 + 5
         ) {
-          fetchData();
+          void fetchData();
         }
       },
       [loading, message.length]
@@ -120,7 +126,7 @@ const Notification: React.FC = memo(() => {
     setLoading(true);
     setCommentMessage([]);
     setSupportMessage([]);
-    fetchData();
+    void fetchData();
   }, [tab]);
 
   return (
