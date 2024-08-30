@@ -1,11 +1,9 @@
 import { memo } from 'react';
 
-import Notification from '@/modules/notification';
-
 import './index.scss';
 
-const Page: React.FC = memo(() => {
-  return <Notification />;
-});
+import Notification from '../../modules/notification';
+
+const Page: React.FC = memo(() => <Notification />);
 
 export default Page;

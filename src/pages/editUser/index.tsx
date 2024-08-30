@@ -11,8 +11,8 @@ import { get } from '@/common/api/get';
 import { fetchQiniuToken, fetchToQiniu } from '@/common/api/qiniu';
 import { editIcon } from '@/common/assets/img/editPersonal';
 import TitleButton from '@/common/components/titleButton/titleButton';
+import type { ResponseUser } from '@/common/types/userTypes';
 import { post } from '@/common/utils/fetch';
-import { ResponseUser } from '@/pages/personalPage';
 
 const EditUser: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState('');

@@ -16,7 +16,7 @@ const TAB_LIST: Array<{ pagePath: string; name: string; icon?: string }> = [
   { pagePath: '/pages/main/index', name: 'Download', icon: 'download-cloud' },
   { pagePath: '/pages/main/index', name: '+' },
   { pagePath: '/pages/notification/index', name: 'Massage', icon: 'message' },
-  { pagePath: '/pages/personalPage/index', name: 'Profile', icon: 'user' },
+  { pagePath: '/pages/profile/index', name: 'Profile', icon: 'user' },
 ];
 
 const TabBar: React.FC<TabBarProps> = memo(() => {
