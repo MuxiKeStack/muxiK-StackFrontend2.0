@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable no-console */
 /* eslint-disable import/first */
 import { Image, Progress, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
@@ -200,7 +199,7 @@ const List = () => {
         arrow="right"
         thumb={ClockIcon}
         onClick={() => {
-          void Taro.navigateTo({ url: '/pages/evaluateCourseHistory/index' });
+          void Taro.navigateTo({ url: '/subpackages/profile/pages/history/index' });
         }}
       />
       <AtListItem
