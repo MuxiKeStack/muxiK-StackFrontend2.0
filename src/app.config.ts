@@ -2,6 +2,8 @@
 
 export default defineAppConfig({
   pages: [
+    // 'pages/questionInfo/index',
+    'pages/publishQuestion/index',
     'pages/login/index',
     'pages/main/index',
     'pages/classInfo/index',
