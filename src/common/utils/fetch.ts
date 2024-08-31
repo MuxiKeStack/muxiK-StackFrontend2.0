@@ -1,8 +1,4 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-base-to-string */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Taro from '@tarojs/taro';
 
 const preUrl = 'https://kstack.muxixyz.com';
@@ -17,7 +13,7 @@ export async function post(url = '', data = {}, isToken = true) {
       void Taro.getStorage({
         key: 'shortToken',
         success: (res) => {
-          const token = res.data;
+          const token = res.data as string;
           if (token) {
             resolve(token); // 如果token存在，解析Promise
           } else {
@@ -26,13 +22,13 @@ export async function post(url = '', data = {}, isToken = true) {
           }
         },
         fail: (err) => {
-          reject(new Error(`Failed to get token: ${err}`)); // 存储操作失败时拒绝Promise
+          reject(new Error(`Failed to get token: ${err as unknown as string}`)); // 存储操作失败时拒绝Promise
         },
       });
     });
   };
 
-  if (isToken) header['Authorization'] = `Bearer ${await getToken()}`;
+  if (isToken) header['Authorization'] = `Bearer ${(await getToken()) as string}`;
 
   try {
     const response = await Taro.request({
@@ -53,6 +49,7 @@ export async function post(url = '', data = {}, isToken = true) {
 
     return response.data;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log('error', error);
     throw error;
   }
@@ -68,7 +65,8 @@ export async function get(url = '', isToken = true) {
       void Taro.getStorage({
         key: 'shortToken',
         success: (res) => {
-          const token = res.data;
+          const token = res.data as string;
+
           if (token) {
             resolve(token); // 如果token存在，解析Promise
           } else {
@@ -77,20 +75,19 @@ export async function get(url = '', isToken = true) {
           }
         },
         fail: (err) => {
-          reject(new Error(`Failed to get token: ${err}`)); // 存储操作失败时拒绝Promise
+          reject(new Error(`Failed to get token: ${err as unknown as string}`)); // 存储操作失败时拒绝Promise
         },
       });
     });
   };
 
-  if (isToken) header['Authorization'] = `Bearer ${await getToken()}`;
+  if (isToken) header['Authorization'] = `Bearer ${(await getToken()) as string}`;
 
   try {
     const response = await Taro.request({
       url: `${preUrl}${url}`,
       method: 'GET',
       header,
-      // redirect: 'follow',
     });
 
     if (!response.statusCode.toString().startsWith('2')) {
@@ -104,6 +101,7 @@ export async function get(url = '', isToken = true) {
 
     return response.data;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log('error', error);
     throw error;
   }
@@ -118,7 +116,8 @@ export async function put(url = '', data = {}, isToken = true) {
     void Taro.getStorage({
       key: 'shortToken',
       success: (res) => {
-        const token = res.data;
+        const token = res.data as string;
+
         if (token) header['Authorization'] = token;
         else {
           void Taro.navigateTo({ url: '/pages/login/index' });
@@ -146,6 +145,7 @@ export async function put(url = '', data = {}, isToken = true) {
 
     return response.data;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log('error', error);
     throw error;
   }
@@ -175,6 +175,7 @@ export async function postPwd(url = '', data = {}, token: string) {
 
     return response.data;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log('error', error);
     throw error;
   }
@@ -189,7 +190,7 @@ export async function postLogin(url = '', data = {}, isToken = true) {
     void Taro.getStorage({
       key: 'token',
       success: (res) => {
-        const token = res.data;
+        const token = res.data as string;
         if (token) header['Authorization'] = token;
         else {
           void Taro.navigateTo({ url: '/pages/login/index' });
@@ -217,6 +218,7 @@ export async function postLogin(url = '', data = {}, isToken = true) {
 
     return response.header; //返回相应体头部
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log('error', error);
     throw error;
   }

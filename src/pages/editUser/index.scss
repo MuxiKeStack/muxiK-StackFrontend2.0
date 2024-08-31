@@ -53,6 +53,8 @@
   //margin-left: 30%;
   margin-right: 25%;
   display: flex;
+  gap: 1vw;
+  align-items: center;
 }
 .editor-nickname {
   width: 4vw;
@@ -80,7 +82,5 @@
   width: 300rpx;
   height: 81rpx;
   background: #f19900;
-}
-.button-container {
-  display: flex;
+  color: white;
 }
