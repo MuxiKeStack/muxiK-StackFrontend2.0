@@ -1,9 +1,11 @@
-import askicon from '@/common/assets/img/publishQuestion/ask.png';
-import { get, post } from '@/common/utils/fetch';
 import { Button, Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
-import { Course } from '../../common/assets/types';
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+import askicon from '@/common/assets/img/publishQuestion/ask.png';
+import { Course } from '@/common/assets/types';
+import { get, post } from '@/common/utils/fetch';
 
 import './index.scss';
 
@@ -55,8 +57,8 @@ export default function Index() {
   const courseId = 2347; //先用概率统计A来调试吧！
 
   //用户个人身份信息
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [nickName, setNickName] = useState('昵称');
+  const [avatarUrl, setAvatarUrl] = useState<string>('');
+  const [nickName, setNickName] = useState<string>('昵称');
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/require-await
@@ -64,8 +66,9 @@ export default function Index() {
       try {
         void get(`/courses/${courseId}/detail`, true).then((res) => {
           console.log(res);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setCourse(res.data);
+          // 检查 res 是否有 data 属性，并且断言其类型
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          setCourse(res?.data as Course);
         });
       } catch (error) {
         // 错误处理，例如弹出提示
@@ -80,9 +83,15 @@ export default function Index() {
     const fetchProfile = async () => {
       try {
         const url = '/users/profile';
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const response: ResponseUser = await get(url);
-        setNickName(response.data.nickname);
-        setAvatarUrl(response.data.avatar);
+        if (
+          typeof response?.data?.nickname == 'string' &&
+          typeof response?.data?.avatar == 'string'
+        ) {
+          setNickName(response?.data?.nickname);
+          setAvatarUrl(response?.data?.avatar);
+        }
       } catch (error) {
         console.error('Error fetching collection data:', error);
       }
@@ -93,8 +102,15 @@ export default function Index() {
   const [question, setQuestion] = useState<string>('');
 
   const countContent = (e) => {
-    const { value } = e.detail;
-    setQuestion(value); // 更新状态为当前输入框的值
+    /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { value } = e?.detail ?? {};
+    if (typeof value === 'string') {
+      setQuestion(value);
+    } else {
+      console.error('Expected a string but received a different type');
+    }
+    /* eslint-enable @typescript-eslint/no-unsafe-member-access */
     // const length = value.length;
     // setLength(length);
   };
@@ -107,10 +123,11 @@ export default function Index() {
     };
     post(`/questions/publish`, questionobj)
       .then((res) => {
-        if (res.code === 0) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (res?.code === 0) {
           // 打印成功信息，但最好使用其他日志记录方式，而不是 console.log
           // 例如：this.setState({ message: '发布课评成功' });
-          Taro.showToast({ title: '发布问题成功', icon: 'success' });
+          void Taro.showToast({ title: '发布问题成功', icon: 'success' });
           // console.log('发布课评成功');
           // 使用 redirectTo 跳转
           // void Taro.redirectTo({
@@ -118,12 +135,12 @@ export default function Index() {
           // });
         } else {
           // 处理其他响应代码，可能需要给用户一些反馈
-          Taro.showToast({ title: '发布课评失败', icon: 'none' });
+          void Taro.showToast({ title: '发布课评失败', icon: 'none' });
         }
       })
       .catch((error) => {
         // 处理可能出现的错误情况
-        Taro.showToast({ title: '发布失败，请稍后重试', icon: 'none' });
+        void Taro.showToast({ title: '发布失败，请稍后重试', icon: 'none' });
         console.error('发布问题请求失败:', error);
       });
   };
@@ -141,7 +158,10 @@ export default function Index() {
             <View className="currentDate">{getCurrentDate()}</View>
           </View>
         </View>
-        <Image src={askicon} className="askicon"></Image>
+        {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          <Image src={askicon} className="askicon"></Image>
+        }
         <Textarea
           maxlength={450}
           onInput={countContent}
