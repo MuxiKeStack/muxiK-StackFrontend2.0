@@ -5,7 +5,7 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 
 import { get } from '@/common/api/get';
 import { TopBackground } from '@/common/assets/img/personalPage';
-import TitleButton from '@/common/components/titleButton/titleButton';
+import { TitleButton } from '@/common/components';
 import type { ResponseLevel, ResponseUser } from '@/common/types/userTypes';
 
 const Header: React.FC = memo(() => {
@@ -79,12 +79,10 @@ const Header: React.FC = memo(() => {
           />
         </View>
         <View className="flex flex-col gap-2">
-          <View className="flex w-2/5 items-center gap-2">
+          <View className="flex items-center gap-2">
             <Text className="text-md whitespace-nowrap">{user.nickName}</Text>
             {user.selectedTitle !== 'None' && (
-              <View className="w-1/5">
-                <TitleButton title={user.selectedTitle}></TitleButton>
-              </View>
+              <TitleButton title={user.selectedTitle} isSelected></TitleButton>
             )}
             <Text
               className="text-md font-bold text-white"
@@ -107,7 +105,7 @@ const Header: React.FC = memo(() => {
               color="orange"
               strokeWidth={6}
               borderRadius={100}
-              className="w-32"
+              className="w-36"
             ></Progress>
           </View>
         </View>
