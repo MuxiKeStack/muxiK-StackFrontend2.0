@@ -9,4 +9,4 @@ babel.config.js
 ec-canvas
 
 *.js
-src/pages/notification/index.tsx
+VirtualList.tsx
