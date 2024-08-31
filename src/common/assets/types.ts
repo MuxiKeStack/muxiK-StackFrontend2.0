@@ -62,3 +62,18 @@ export interface CommentInfo {
   total_support_count?: number;
   utime?: number;
 }
+
+export interface Course {
+  id: number;
+  name: string;
+  teacher: string;
+  school: string;
+  type: string;
+  credit: number;
+  composite_score: number;
+  rater_count: number;
+  assessments: Record<string, never>; // 使用 Record 类型来表示对象，具体类型根据实际结构定义
+  features: Record<string, never>;
+  is_collected: boolean;
+  is_subscribed: boolean;
+}
