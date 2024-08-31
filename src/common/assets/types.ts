@@ -76,4 +76,4 @@ export interface Course {
   features: Record<string, never>;
   is_collected: boolean;
   is_subscribed: boolean;
-} 
+}

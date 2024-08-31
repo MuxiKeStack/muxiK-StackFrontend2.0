@@ -16,12 +16,11 @@ import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get } from '@/common/utils/fetch';
 
-import { CommentInfoType,Course } from '../../common/assets/types';
+import { CommentInfoType, Course } from '../../common/assets/types';
 
 // import { useRef } from 'react';
 // import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
 // 定义接口
-
 
 // 创建一个对象来存储英文描述和对应的中文描述
 const coursePropertyMap = {

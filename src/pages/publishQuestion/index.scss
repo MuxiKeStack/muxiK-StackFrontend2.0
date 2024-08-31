@@ -1,77 +1,77 @@
 .theClassnme {
-    font-size: 43rpx;
-    font-weight: bold;
-    color: #565552;
-    text-align: center;
-    margin-top: 22rpx;
-}
-  
-.teacherName {
-    font-size: 33rpx;
-    font-weight: 400;
-    color: #9f9f9c;
-    text-align: center;
-    margin-top: 15rpx;
-    margin-bottom: 27rpx;
+  font-size: 43rpx;
+  font-weight: bold;
+  color: #565552;
+  text-align: center;
+  margin-top: 22rpx;
 }
 
-.publishView{
-    background-color: #F9F9F2;
-    padding: 45rpx;
-    width: 659.42rpx;
-    position: relative;
-    left: 50%;
-    transform:translateX(-50%);
+.teacherName {
+  font-size: 33rpx;
+  font-weight: 400;
+  color: #9f9f9c;
+  text-align: center;
+  margin-top: 15rpx;
+  margin-bottom: 27rpx;
+}
+
+.publishView {
+  background-color: #f9f9f2;
+  padding: 45rpx;
+  width: 659.42rpx;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .avatar {
-    width: 90.58rpx;
-    height: 90.58rpx;
-    border-radius: 100%;
-    margin-right: 10px;
-    border: #d2d5d8 solid 5rpx;
-    margin-right: 27rpx;
+  width: 90.58rpx;
+  height: 90.58rpx;
+  border-radius: 100%;
+  margin-right: 10px;
+  border: #d2d5d8 solid 5rpx;
+  margin-right: 27rpx;
 }
-  
+
 .nickname {
-    font-weight: bold;
-    font-size: 22rpx;
-    color: #565552;
+  font-weight: bold;
+  font-size: 22rpx;
+  color: #565552;
 }
 
-.currentDate{
-    font-weight: 400;
-    font-size: 14rpx;
-    color: #9F9F9C;
-    margin-top: 20rpx;
+.currentDate {
+  font-weight: 400;
+  font-size: 14rpx;
+  color: #9f9f9c;
+  margin-top: 20rpx;
 }
 
-.publish-header{
-    display: flex;
-    align-items: center;
+.publish-header {
+  display: flex;
+  align-items: center;
 }
 
-.askicon{
-    width: 44.44rpx;
-    height: 47.05rpx;
-    margin: 28rpx 0;
+.askicon {
+  width: 44.44rpx;
+  height: 47.05rpx;
+  margin: 28rpx 0;
 }
 
-.quesionContent{
-    width: 568.84rpx;
-    height: 719.2rpx;
-    background-color: white;
-    padding: 40rpx;
-    font-size: 25rpx;
-    box-sizing: border-box;
+.quesionContent {
+  width: 568.84rpx;
+  height: 719.2rpx;
+  background-color: white;
+  padding: 40rpx;
+  font-size: 25rpx;
+  box-sizing: border-box;
 }
 
-.publishBtn{
-    margin-top: 60rpx;
-    width: 230.07rpx;
-    height: 70.65rpx;
-    border-radius: 50rpx;
-    background-color: #FFD777;
-    color: white;
-    line-height: 70.65rpx;
+.publishBtn {
+  margin-top: 60rpx;
+  width: 230.07rpx;
+  height: 70.65rpx;
+  border-radius: 50rpx;
+  background-color: #ffd777;
+  color: white;
+  line-height: 70.65rpx;
 }

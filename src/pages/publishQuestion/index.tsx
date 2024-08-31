@@ -1,11 +1,11 @@
-import { View,Image,Text,Textarea,Button } from '@tarojs/components';
-import { useEffect,useState } from 'react';
-import { get,post } from '@/common/utils/fetch';
-import { Course } from '../../common/assets/types';
-import askicon from '@/common/assets/img/publishQuestion/ask.png'
+import askicon from '@/common/assets/img/publishQuestion/ask.png';
+import { get, post } from '@/common/utils/fetch';
+import { Button, Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
+import { useEffect, useState } from 'react';
+import { Course } from '../../common/assets/types';
 
-import './index.scss'
+import './index.scss';
 
 export interface UserInfo {
   avatarUrl: string; // 用户头像的URL
@@ -58,7 +58,6 @@ export default function Index() {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [nickName, setNickName] = useState('昵称');
 
-
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
@@ -75,24 +74,23 @@ export default function Index() {
     };
 
     if (courseId) void getCourseData().then((r) => console.log(r));
-
   }, [courseId]); // 在courseId变化时运行
 
-  useEffect(()=>{
-    const fetchProfile = async () =>{
-      try{
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
         const url = '/users/profile';
         const response: ResponseUser = await get(url);
         setNickName(response.data.nickname);
         setAvatarUrl(response.data.avatar);
-      }catch (error) {
+      } catch (error) {
         console.error('Error fetching collection data:', error);
       }
-    }
+    };
     void fetchProfile();
-  },[])//仅在挂载时运行一次
+  }, []); //仅在挂载时运行一次
 
-  const [question,setQuestion] = useState<string>('')
+  const [question, setQuestion] = useState<string>('');
 
   const countContent = (e) => {
     const { value } = e.detail;
@@ -102,12 +100,11 @@ export default function Index() {
   };
 
   const postQuestion = () => {
-
     const questionobj = {
-      biz:'Course',
-      biz_id:courseId,
-      content:question 
-    }
+      biz: 'Course',
+      biz_id: courseId,
+      content: question,
+    };
     post(`/questions/publish`, questionobj)
       .then((res) => {
         if (res.code === 0) {
@@ -136,24 +133,26 @@ export default function Index() {
       <View className="teacherName">
         {course?.school} {course?.teacher}
       </View>
-      <View className='publishView'>
+      <View className="publishView">
         <View className="publish-header">
-            <Image src={avatarUrl ?? ''} className="avatar" />
-            <View className='nameDate'>
-              <Text className="nickname">{nickName}</Text>
-              <View className='currentDate'>{getCurrentDate()}</View>
-            </View>
+          <Image src={avatarUrl ?? ''} className="avatar" />
+          <View className="nameDate">
+            <Text className="nickname">{nickName}</Text>
+            <View className="currentDate">{getCurrentDate()}</View>
+          </View>
         </View>
-        <Image src={askicon} className='askicon'></Image>
+        <Image src={askicon} className="askicon"></Image>
         <Textarea
           maxlength={450}
           onInput={countContent}
           placeholderStyle="font-size: 25rpx;"
           placeholder="关于课程你有什么要了解的？"
           className="quesionContent"
-      ></Textarea>
+        ></Textarea>
       </View>
-      <Button onClick={postQuestion} className='publishBtn'>提交</Button>
+      <Button onClick={postQuestion} className="publishBtn">
+        提交
+      </Button>
     </View>
   );
 }
