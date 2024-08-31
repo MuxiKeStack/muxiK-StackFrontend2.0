@@ -41,6 +41,8 @@ import { useGlobalIconFont } from './common/components/iconfont/helper';
 
 export default defineAppConfig({
   pages: [
+    // 'pages/questionInfo/index',
+    'pages/publishQuestion/index',
     'pages/login/index',
     'pages/main/index',
     'pages/classInfo/index',
@@ -58,18 +60,18 @@ export default defineAppConfig({
   ],
   /* eslint-disable */
   usingComponents: Object.assign(useGlobalIconFont()),
-  tabBar: {
-    /* tab页面必须放在主包里 */
-    custom: true,
-    list: [
-      {
-        pagePath: 'pages/main/index',
-        text: 'Home',
-      },
-      { pagePath: 'pages/notification/index', text: 'Massage' },
-      { pagePath: 'pages/personalPage/index', text: 'Profile' },
-    ],
-  },
+  // tabBar: {
+  //   /* tab页面必须放在主包里 */
+  //   custom: true,
+  //   list: [
+  //     {
+  //       pagePath: 'pages/main/index',
+  //       text: 'Home',
+  //     },
+  //     { pagePath: 'pages/notification/index', text: 'Massage' },
+  //     { pagePath: 'pages/personalPage/index', text: 'Profile' },
+  //   ],
+  // },
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
