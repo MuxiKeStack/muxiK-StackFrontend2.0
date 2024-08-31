@@ -162,7 +162,7 @@ const EditUser: React.FC = () => {
           ></TitleButton>
         </View>
       </View>
-      <View className="button-container">
+      <View className="flex">
         <Button className="cancel-button">取消</Button>
         <Button className="save-button" onClick={handleSave}>
           保存
