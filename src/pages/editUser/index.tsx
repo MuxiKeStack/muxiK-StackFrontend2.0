@@ -10,7 +10,7 @@ import './index.scss';
 import { get } from '@/common/api/get';
 import { fetchQiniuToken, fetchToQiniu } from '@/common/api/qiniu';
 import { editIcon } from '@/common/assets/img/editPersonal';
-import TitleButton from '@/common/components/titleButton/titleButton';
+import { TitleButton } from '@/common/components';
 import type { ResponseUser } from '@/common/types/userTypes';
 import { post } from '@/common/utils/fetch';
 
@@ -92,10 +92,12 @@ const EditUser: React.FC = () => {
       '/users/edit',
       { avatar: avatarUrl, nickname: nickName, using_title: selectedTitle },
       true
-    ).then((res) => console.log(res));
-    void Taro.showToast({
-      icon: 'success',
-      title: '保存成功',
+    ).then((res) => {
+      console.log(res);
+      void Taro.showToast({ icon: 'success', title: '保存成功' });
+      setTimeout(() => {
+        void Taro.switchTab({ url: '/pages/profile/index' });
+      }, 1000);
     });
   };
   const handleTitleSelect = (title: string) => {
@@ -174,22 +176,15 @@ const EditUser: React.FC = () => {
           ></TitleButton>
         </View>
       </View>
-      <View className="button-container">
-        <Button
-          className="cancel-button"
-          onClick={() => {
-            void Taro.switchTab({ url: '/pages/personalPage/index' });
-          }}
-        >
-          取消
-        </Button>
+      <View className="flex">
+        <Button className="cancel-button">取消</Button>
         <Button className="save-button" onClick={handleSave}>
           保存
         </Button>
+        <Button className="logout-button" onClick={handleLogout}>
+          退出登陆
+        </Button>
       </View>
-      <Button className="logout-button" onClick={handleLogout}>
-        退出登陆
-      </Button>
     </View>
   );
 };
