@@ -1,9 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 /* eslint-disable import/first */
 import { ScrollView, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
@@ -43,18 +38,22 @@ export default function Index() {
       changeType,
     })
   );
+
   useDidShow(() => {
-    dispatch.refershComments();
+    void dispatch.refershComments();
   });
+
   useEffect(() => {
-    dispatch.loadMoreComments();
+    void dispatch.loadMoreComments();
   }, [dispatch.loadMoreComments]);
 
   const handleChangeType = (type) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     dispatch.changeType(type);
   };
+
   useEffect(() => {
-    !comments[classType].length && dispatch.refershComments();
+    void (!comments[classType].length && dispatch.refershComments());
   }, [classType]);
 
   const handleSearch = (searchText: string) => {
@@ -62,21 +61,26 @@ export default function Index() {
     // 这里可以添加发送API请求的代码
     // 例如: fetchSearchResults(searchText);
   };
+
   const geneHandler = () => {
     let timeNow = Date.now();
     return (e) => {
       if (
         !useCourseStore.getState().loading &&
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         e.detail.scrollTop > e.detail.scrollHeight / 2 &&
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         e.detail.deltaY < 0 &&
         Date.now() - timeNow > 1000
       ) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         console.log(e.detail);
-        dispatch.loadMoreComments();
+        void dispatch.loadMoreComments();
         timeNow = Date.now();
       }
     };
   };
+
   const loadMoreHandler = useMemo(() => {
     return geneHandler();
   }, [loading]);
@@ -115,7 +119,7 @@ export default function Index() {
             <Comment
               onClick={(props) => {
                 const serializedComment = encodeURIComponent(JSON.stringify(props));
-                Taro.navigateTo({
+                void Taro.navigateTo({
                   url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
                 });
               }}
