@@ -11,7 +11,7 @@ import './index.scss';
 
 // import echarts from '../../common/assets/js/echarts';
 // import Charts from '@/common/components/chart';
-import Comment from '@/common/components/comment/comment';
+import { Comment } from '@/common/components';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get } from '@/common/utils/fetch';

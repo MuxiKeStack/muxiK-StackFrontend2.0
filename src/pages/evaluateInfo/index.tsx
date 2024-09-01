@@ -16,9 +16,8 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import Comment from '@/common/components/comment/comment';
+import { Comment } from '@/common/components';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
-
 import { get, post } from '@/common/utils/fetch';
 
 import { CommentInfoType, Comment as CommentType } from '../../common/assets/types';

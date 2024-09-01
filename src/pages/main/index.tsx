@@ -11,7 +11,7 @@ import { useEffect, useMemo } from 'react';
 
 import './index.scss';
 
-import Comment from '@/common/components/comment/comment';
+import { Comment } from '@/common/components';
 import SearchInput from '@/common/components/SearchInput/SearchInput';
 
 import { useCourseStore } from './store/store';

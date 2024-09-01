@@ -4,7 +4,7 @@ import { Image, Navigator, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { memo, useEffect, useTransition } from 'react';
 
-import './comment.scss';
+import './style.scss';
 
 import { useCourseStore } from '@/pages/main/store/store';
 
