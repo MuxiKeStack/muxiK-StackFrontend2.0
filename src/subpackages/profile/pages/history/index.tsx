@@ -4,8 +4,6 @@ import './index.scss';
 
 import History from '../../modules';
 
-const Page: React.FC = memo(() => {
-  return <History />;
-});
+const Page: React.FC = memo(() => <History />);
 
 export default Page;

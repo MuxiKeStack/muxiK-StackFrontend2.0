@@ -2863,7 +2863,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/components-advanced@npm:3.6.35, @tarojs/components-advanced@npm:^3.6.35":
+"@tarojs/components-advanced@npm:3.6.35":
   version: 3.6.35
   resolution: "@tarojs/components-advanced@npm:3.6.35"
   dependencies:
@@ -2887,7 +2887,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/components-advanced@npm:4.0.5":
+"@tarojs/components-advanced@npm:4.0.5, @tarojs/components-advanced@npm:^4.0.5":
   version: 4.0.5
   resolution: "@tarojs/components-advanced@npm:4.0.5"
   dependencies:
@@ -12563,7 +12563,7 @@ __metadata:
     "@taroify/core": "npm:^0.4.0-alpha.0"
     "@tarojs/cli": "npm:3.6.35"
     "@tarojs/components": "npm:3.6.35"
-    "@tarojs/components-advanced": "npm:^3.6.35"
+    "@tarojs/components-advanced": "npm:^4.0.5"
     "@tarojs/helper": "npm:3.6.34"
     "@tarojs/plugin-framework-react": "npm:3.6.34"
     "@tarojs/plugin-platform-alipay": "npm:3.6.34"
