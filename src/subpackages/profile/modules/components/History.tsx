@@ -7,7 +7,7 @@ import uniqueKeyUtil from '@/common/utils/keyGen';
 
 const History: React.FC = memo(() => {
   return (
-    <View className="flex h-screen flex-col items-center gap-0.5 overflow-y-scroll py-2">
+    <View className="flex h-screen flex-col items-center gap-4 overflow-y-scroll py-4">
       <Comment
         onClick={(props) => {
           const serializedComment = encodeURIComponent(JSON.stringify(props));
