@@ -16,9 +16,8 @@ const History: React.FC = memo(() => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await get(
-        `evaluations/list/mine?cur_evaluation_id=${0}&limit=${10}&status=${'Public'}`
+        `/evaluations/list/mine?cur_evaluation_id=${0}&limit=${10}&status=${'Public'}`
       );
-      console.log(res.data);
       setComments(res.data);
     };
     void fetchData();
