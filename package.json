@@ -104,7 +104,7 @@
     "prettier-plugin-organize-imports": "^4.0.0",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "react-refresh": "^0.14.2",
-    "stylelint": "16.7.0",
+    "stylelint": "16.9.0",
     "tailwindcss": "^3.4.6",
     "taro-iconfont-cli": "^3.3.0",
     "taro-plugin-compiler-optimization": "^1.0.4",
