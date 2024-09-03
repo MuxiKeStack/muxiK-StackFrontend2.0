@@ -1,5 +1,3 @@
-// import { useGlobalIconFont } from './common/components/iconfont/helper';
-
 export default defineAppConfig({
   pages: [
     // 'pages/questionInfo/index',
@@ -24,8 +22,10 @@ export default defineAppConfig({
       pages: ['pages/history/index'],
     },
   ],
-  /* eslint-disable */
-  // usingComponents: Object.assign(useGlobalIconFont()),
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  usingComponents: Object.assign({
+    iconfont: './common/components/iconfont/weapp/weapp',
+  }),
   tabBar: {
     custom: true,
     list: [
