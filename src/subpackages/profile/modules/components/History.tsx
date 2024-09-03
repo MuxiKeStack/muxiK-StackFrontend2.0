@@ -28,6 +28,8 @@ const History: React.FC = memo(() => {
     setComments([...comments, ...res.data]);
     if (res.data.length < 10) {
       setEnd(true);
+    } else {
+      setIndex(res.data[res.data.length - 1].id);
     }
     setLoading(false);
     void Taro.hideLoading();
@@ -36,7 +38,6 @@ const History: React.FC = memo(() => {
   const listReachBottom = () => {
     setLoading(true);
     setTimeout(() => {
-      setIndex((i) => i + 1);
       void fetchData();
     }, 1000);
   };
