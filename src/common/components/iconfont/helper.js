@@ -1,7 +1,7 @@
 /* eslint-disable */
 const useGlobalIconFont = () => {
   return {
-    iconfont: `common/components/iconfont/${process.env.TARO_ENV}/${process.env.TARO_ENV}`,
+    iconfont: `common/components\iconfont/${process.env.TARO_ENV}/${process.env.TARO_ENV}`,
   };
 };
 

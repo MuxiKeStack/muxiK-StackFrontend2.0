@@ -86,7 +86,7 @@ export default function Index() {
   }, [loading]);
 
   return (
-    <View className="main">
+    <View className="h-screen pb-[35vh]">
       <SearchInput
         onSearch={handleSearch} // 传递搜索逻辑
         onSearchToggle={handleSearchToggle}
@@ -109,24 +109,27 @@ export default function Index() {
         })}
       </View>
       <ScrollView
-        style={{ height: '60vh' }}
+        style={{ height: '100%' }}
         scrollY
         onScroll={(e) => loadMoreHandler(e)}
         // onScroll={handleScroll}
       >
         {comments[classType] &&
           comments[classType].map((comment) => (
-            <Comment
-              onClick={(props) => {
-                const serializedComment = encodeURIComponent(JSON.stringify(props));
-                void Taro.navigateTo({
-                  url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
-                });
-              }}
-              key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的
-              {...comment} // 展开comment对象，将属性传递给Comment组件
-              type="inner" // 固定属性，不需要从数组中获取
-            />
+            <>
+              <Comment
+                onClick={(props) => {
+                  const serializedComment = encodeURIComponent(JSON.stringify(props));
+                  void Taro.navigateTo({
+                    url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
+                  });
+                }}
+                key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的
+                {...comment} // 展开comment对象，将属性传递给Comment组件
+                type="inner" // 固定属性，不需要从数组中获取
+              />
+              <View className="h-4 w-full"></View>
+            </>
           ))}
       </ScrollView>
     </View>
