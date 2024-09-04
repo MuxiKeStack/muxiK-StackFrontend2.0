@@ -1,11 +1,11 @@
-import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
-import { useCourseStore } from '@/pages/main/store/store';
 import { Image, Text, View } from '@tarojs/components';
 import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
-import IconFont from '../iconfont';
+import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
+import { useCourseStore } from '@/pages/main/store/store';
 
+import IconFont from '../iconfont';
 import './index.scss';
 
 interface IUser {
@@ -73,9 +73,9 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
   useEffect(() => {
     const fetchAllPublishers = async () => {
       // 函数，用于获取每个答案的用户信息
-      async function getAnswersWithUserInfo(answers) {
+      async function getAnswersWithUserInfo(ianswers: IAnswer[]) {
         const answersWithUserInfo = await Promise.all(
-          answers.map(async (answer) => {
+          ianswers.map(async (answer) => {
             const user = await dispatch.getPublishers(answer.publisher_id);
             return { ...answer, user };
           })
@@ -84,19 +84,14 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
       }
 
       // 调用函数并处理结果
-      getAnswersWithUserInfo(answers)
-        .then((answersWithUserInfo) => {
-          setAnswers(answersWithUserInfo);
-        })
-        .catch((error) => {
-          console.error('Error fetching answers with user info:', error);
-        });
+      const answersWithUserInfo = await getAnswersWithUserInfo(answers);
+      setAnswers(answersWithUserInfo);
 
       // 函数，用于获取问题的提问者用户信息
-      async function getQuestionWithUserInfo(question) {
+      async function getQuestionWithUserInfo(iquestion: IQuestion) {
         try {
-          const user = await dispatch.getPublishers(question.questioner_id);
-          const questionWithUserInfo = { ...question, user };
+          const user = await dispatch.getPublishers(iquestion.questioner_id);
+          const questionWithUserInfo = { ...iquestion, user };
           return questionWithUserInfo;
         } catch (error) {
           console.error('Error fetching question with user info:', error);
@@ -105,16 +100,11 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
       }
 
       // 调用函数并处理结果
-      getQuestionWithUserInfo(question)
-        .then((questionWithUserInfo) => {
-          setQuestion(questionWithUserInfo);
-        })
-        .catch((error) => {
-          console.error('Failed to fetch question with user info:', error);
-        });
+      const questionWithUserInfo = await getQuestionWithUserInfo(question);
+      setQuestion(questionWithUserInfo);
     };
 
-    fetchAllPublishers();
+    void fetchAllPublishers();
   });
   return (
     <View className="questionDetail">
@@ -146,9 +136,7 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
                 <Image src={askicon} className="askicon"></Image>
               }
               <View className="answer-content">
-                {
-                  '本网站使用cookies以提升您的使用体验及统计网站流量相关数据。继续使用本网站表示您同意我们使用cookies。我们的《隐私及Cookie政策》提供更多关于cookies使用及停用的相关信息。'
-                }
+                本网站使用cookies以提升您的使用体验及统计网站流量相关数据。继续使用本网站表示您同意我们使用cookies。我们的《隐私及Cookie政策》提供更多关于cookies使用及停用的相关信息。
               </View>
             </View>
             <View className="answer-statistics">
