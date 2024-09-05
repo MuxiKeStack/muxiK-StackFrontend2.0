@@ -1,6 +1,6 @@
 export default defineAppConfig({
   pages: [
-    // 'pages/questionInfo/index',
+    'pages/questionInfo/index',
     'pages/login/index',
     'pages/main/index',
     'pages/publishQuestion/index',
@@ -15,6 +15,7 @@ export default defineAppConfig({
     'pages/research/research',
     'pages/index/index',
     'pages/editUser/index',
+    'pages/publishQuestion/index',
   ],
   subpackages: [
     {

@@ -1,10 +1,12 @@
-import { Button, Image, Text, Textarea, View } from '@tarojs/components';
+import { Button, Image, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import { Course } from '@/common/assets/types';
+import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
+import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
 import { get, post } from '@/common/utils/fetch';
 
 import './index.scss';
@@ -146,18 +148,13 @@ export default function Index() {
   };
   return (
     <View>
-      <View className="theClassnme">{course?.name}</View>
-      <View className="teacherName">
-        {course?.school} {course?.teacher}
-      </View>
+      <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
       <View className="publishView">
-        <View className="publish-header">
-          <Image src={avatarUrl ?? ''} className="avatar" />
-          <View className="nameDate">
-            <Text className="nickname">{nickName}</Text>
-            <View className="currentDate">{getCurrentDate()}</View>
-          </View>
-        </View>
+        <PublishHeader
+          avatarUrl={avatarUrl}
+          nickName={nickName}
+          date={getCurrentDate()}
+        />
         {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           <Image src={askicon} className="askicon"></Image>
