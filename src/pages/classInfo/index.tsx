@@ -16,7 +16,6 @@ import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get } from '@/common/utils/fetch';
 
-
 // import { useRef } from 'react';
 // import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
 // 定义接口

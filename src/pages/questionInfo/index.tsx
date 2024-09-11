@@ -1,9 +1,10 @@
+import { View } from '@tarojs/components';
+import React, { useEffect, useState } from 'react';
+
 import { Course } from '@/common/assets/types';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail'; // 假设你的组件文件名为QuestionDetail.tsx
 import { get } from '@/common/utils/fetch';
-import { View } from '@tarojs/components';
-import React, { useEffect, useState } from 'react';
 
 const Index: React.FC = () => {
   const question = {

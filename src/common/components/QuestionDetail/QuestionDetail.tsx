@@ -1,12 +1,13 @@
 import { Image, Text, View } from '@tarojs/components';
 import React, { useEffect, useState } from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
+import './index.scss';
+
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
 import { useCourseStore } from '@/pages/main/store/store';
 
 import IconFont from '../iconfont';
-import './index.scss';
 
 interface IUser {
   avatar: string;

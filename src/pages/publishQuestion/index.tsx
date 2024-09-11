@@ -1,15 +1,20 @@
+/* eslint-disable-next-line import/first */
 import { Button, Image, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-import askicon from '@/common/assets/img/publishQuestion/ask.png';
-import { Course } from '@/common/assets/types';
-import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
-import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
-import { get, post } from '@/common/utils/fetch';
-
 import './index.scss';
+
+// eslint-disable-next-line import/first
+import askicon from '@/common/assets/img/publishQuestion/ask.png';
+// eslint-disable-next-line import/first
+import { Course } from '@/common/assets/types';
+// eslint-disable-next-line import/first
+import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
+// eslint-disable-next-line import/first
+import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
+// eslint-disable-next-line import/first
+import { get, post } from '@/common/utils/fetch';
 
 export interface UserInfo {
   avatarUrl: string; // 用户头像的URL
