@@ -27,7 +27,6 @@ interface IQuestion {
 }
 
 const App = () => {
-
   const [course, setCourse] = useState<Course | null>(null);
   const [questions, setQuestions] = useState<IQuestion[] | null>(null);
   const courseId = 2347; //先用概率统计A来调试吧
