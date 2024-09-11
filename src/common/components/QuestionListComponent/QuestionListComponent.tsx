@@ -1,11 +1,10 @@
-import { Image, View } from '@tarojs/components';
-import React, { useEffect, useState } from 'react';
+import answericon from '@/common/assets/img/publishQuestion/answer.png';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
-import answericon from '@/common/assets/img/publishQuestion/answer.png'
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
 import { useCourseStore } from '@/pages/main/store/store';
+import { Image, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-
+import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
@@ -58,17 +57,18 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
         const user = await dispatch.getPublishers(question.questioner_id);
         const questionWithUserInfo = { ...question, user };
         setQuestion(questionWithUserInfo);
-    
+
         // 检查 preview_answers 是否存在并且是一个数组
-        const previewAnswersWithUserInfo = question.preview_answers && question.preview_answers.length > 0
-          ? await Promise.all(
-              question.preview_answers.map(async (answer) => {
-                const user = await dispatch.getPublishers(answer.publisher_id);
-                return { ...answer, user };
-              })
-            )
-          : [];
-    
+        const previewAnswersWithUserInfo =
+          question.preview_answers && question.preview_answers.length > 0
+            ? await Promise.all(
+                question.preview_answers.map(async (answer) => {
+                  const user = await dispatch.getPublishers(answer.publisher_id);
+                  return { ...answer, user };
+                })
+              )
+            : [];
+
         // 更新问题状态，包括填充了用户信息的 preview_answers
         setQuestion((prev) => ({
           ...prev,
@@ -79,13 +79,13 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
         console.error('Error fetching question with user info:', error);
       }
     };
-    
+
     void fetchQuestionWithUserInfo();
   }, [question]);
 
   const handleQuestionDetailClick = () => {
     Taro.navigateTo({
-      url: `/pages/questionInfo/index?id=${questionDetail.id}`
+      url: `/pages/questionInfo/index?id=${questionDetail.id}`,
     });
   };
 
@@ -103,21 +103,20 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
         </View>
       </View>
       <View className="answer-list">
-        {questionDetail.preview_answers && questionDetail.preview_answers.map((answer, index) => (
-          <View key={index} className="answer-item">
-            <PublishHeader
-              avatarUrl={answer?.user?.avatar ?? ''}
-              nickName={answer?.user?.nickname ?? ''}
-              date={formatTime(answer.ctime)}
-            />
-            <View className="question-item">
-              <Image src={answericon} className="askicon" />
-              <View className="answer-content">
-                {answer.content}
+        {questionDetail.preview_answers &&
+          questionDetail.preview_answers.map((answer, index) => (
+            <View key={index} className="answer-item">
+              <PublishHeader
+                avatarUrl={answer?.user?.avatar ?? ''}
+                nickName={answer?.user?.nickname ?? ''}
+                date={formatTime(answer.ctime)}
+              />
+              <View className="question-item">
+                <Image src={answericon} className="askicon" />
+                <View className="answer-content">{answer.content}</View>
               </View>
             </View>
-          </View>
-        ))}
+          ))}
       </View>
     </View>
   );

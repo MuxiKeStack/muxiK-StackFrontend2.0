@@ -3,8 +3,8 @@ import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail'; // 假设你的组件文件名为QuestionDetail.tsx
 import { get } from '@/common/utils/fetch';
 import { View } from '@tarojs/components';
-import React, { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
+import React, { useEffect, useState } from 'react';
 
 interface IQuestion {
   id: number;
@@ -68,16 +68,14 @@ const Index: React.FC = () => {
 
   const [course, setCourse] = useState<Course | null>(null);
 
-  const [question,setQuestion] = useState<IQuestion | null>(null);
+  const [question, setQuestion] = useState<IQuestion | null>(null);
 
-  const [answers,setAnswers] = useState<IAnswer[] | null>(null);
-
-  
+  const [answers, setAnswers] = useState<IAnswer[] | null>(null);
 
   const courseId = 2347; //先用概率统计A来调试吧
-  const [questionId,setQuestionId] = useState<String | null>(null);
+  const [questionId, setQuestionId] = useState<String | null>(null);
 
-  // const questionId = 5; 
+  // const questionId = 5;
 
   useEffect(() => {
     const getParams = () => {
@@ -125,11 +123,14 @@ const Index: React.FC = () => {
     };
 
     if (courseId) void getQuestionDetail().then((r) => console.log(r));
-    
+
     // eslint-disable-next-line @typescript-eslint/require-await
     const getAnswersList = async () => {
       try {
-        void get(`/answers/list/questions/${questionId}?cur_answer_id=0&limit=100`, true).then((res) => {
+        void get(
+          `/answers/list/questions/${questionId}?cur_answer_id=0&limit=100`,
+          true
+        ).then((res) => {
           console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -142,18 +143,12 @@ const Index: React.FC = () => {
     };
 
     if (courseId) void getAnswersList().then((r) => console.log(r));
-
-  }, [courseId,questionId]); // 在courseId变化时运行
+  }, [courseId, questionId]); // 在courseId变化时运行
 
   return (
     <View>
       <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
-      {
-        question ?
-        <QuestionDetail question={question} answers={answers} />
-        : ''
-      }
-      
+      {question ? <QuestionDetail question={question} answers={answers} /> : ''}
     </View>
   );
 };

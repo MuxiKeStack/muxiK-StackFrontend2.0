@@ -1,11 +1,10 @@
 import { Image, Text, View } from '@tarojs/components';
 import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+import answericon from '@/common/assets/img/publishQuestion/answer.png';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
 import { useCourseStore } from '@/pages/main/store/store';
-import answericon from '@/common/assets/img/publishQuestion/answer.png'
-
 
 import IconFont from '../iconfont';
 import './index.scss';
@@ -72,8 +71,6 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
   const [questionDetail, setQuestion] = useState<IQuestion>(question);
   const [answersDetail, setAnswers] = useState<IAnswer[] | null>(answers);
 
-  
-
   useEffect(() => {
     const fetchAllPublishers = async () => {
       // 函数，用于获取每个答案的用户信息
@@ -120,7 +117,7 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
     };
 
     void fetchAllPublishers();
-  },[question,answers]);
+  }, [question, answers]);
   return (
     <View className="questionDetail">
       <View className="question-detail">
@@ -138,36 +135,35 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
         </View>
       </View>
       <View className="answer-list">
-        {answersDetail && answersDetail.map((answer, index) => (
-          <View key={index} className="answer-item">
-            <PublishHeader
-              avatarUrl={answer?.user?.avatar ?? ''}
-              nickName={answer?.user?.nickname ?? ''}
-              date={formatTime(answer.ctime)}
-            />
-            <View className="question-item">
-              {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                <Image src={answericon} className="askicon"></Image>
-              }
-              <View className="answer-content">
-                {answer?.content}
+        {answersDetail &&
+          answersDetail.map((answer, index) => (
+            <View key={index} className="answer-item">
+              <PublishHeader
+                avatarUrl={answer?.user?.avatar ?? ''}
+                nickName={answer?.user?.nickname ?? ''}
+                date={formatTime(answer.ctime)}
+              />
+              <View className="question-item">
+                {
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  <Image src={answericon} className="askicon"></Image>
+                }
+                <View className="answer-content">{answer?.content}</View>
+              </View>
+              <View className="answer-statistics">
+                <View className="icon">
+                  <IconFont name="comment" />
+                  {/* <Navigator className="iconfont">&#xe769;</Navigator> */}
+                </View>
+                <Text className="text1">{answer.total_comment_count}</Text>
+                <View className="icon">
+                  <IconFont name="like" />
+                  {/* <Navigator className="iconfont">&#xe786;</Navigator> */}
+                </View>
+                <Text className="text1">{answer.total_support_count}</Text>
               </View>
             </View>
-            <View className="answer-statistics">
-              <View className="icon">
-                <IconFont name="comment" />
-                {/* <Navigator className="iconfont">&#xe769;</Navigator> */}
-              </View>
-              <Text className="text1">{answer.total_comment_count}</Text>
-              <View className="icon">
-                <IconFont name="like" />
-                {/* <Navigator className="iconfont">&#xe786;</Navigator> */}
-              </View>
-              <Text className="text1">{answer.total_support_count}</Text>
-            </View>
-          </View>
-        ))}
+          ))}
       </View>
     </View>
   );
