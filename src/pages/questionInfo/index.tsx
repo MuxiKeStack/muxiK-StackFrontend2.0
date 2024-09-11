@@ -1,10 +1,11 @@
+import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import React, { useEffect, useState } from 'react';
+
 import { Course } from '@/common/assets/types';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail'; // 假设你的组件文件名为QuestionDetail.tsx
 import { get } from '@/common/utils/fetch';
-import { View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import React, { useEffect, useState } from 'react';
 
 interface IQuestion {
   id: number;
@@ -73,7 +74,7 @@ const Index: React.FC = () => {
   const [answers, setAnswers] = useState<IAnswer[] | null>(null);
 
   const courseId = 2347; //先用概率统计A来调试吧
-  const [questionId, setQuestionId] = useState<String | null>(null);
+  const [questionId, setQuestionId] = useState<string | null>(null);
 
   // const questionId = 5;
 
