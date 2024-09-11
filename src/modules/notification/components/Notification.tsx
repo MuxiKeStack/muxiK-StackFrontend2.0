@@ -76,7 +76,7 @@ const Notification: React.FC = memo(() => {
       };
 
       if (tab === '提问') {
-        const comments = !res.data
+        const comments = Array.isArray(res.data)
           ? res.data
               .filter((item) => item.type === 'Comment')
               .map((item) => JSON.parse(item.content))
@@ -86,7 +86,7 @@ const Notification: React.FC = memo(() => {
           ...(await personalItems(comments, 'Comment')),
         ]);
       } else if (tab === '点赞') {
-        const supports = !res.data
+        const supports = Array.isArray(res.data)
           ? res.data
               .filter((item) => item.type === 'Support')
               .map((item) => JSON.parse(item.content))
