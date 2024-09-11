@@ -1,9 +1,8 @@
 export default defineAppConfig({
   pages: [
-    'pages/questionList/index',
-    'pages/questionInfo/index',
     'pages/login/index',
     'pages/main/index',
+    'pages/publishQuestion/index',
     'pages/classInfo/index',
     'pages/evaluateInfo/index',
     'pages/profile/index',
@@ -11,11 +10,11 @@ export default defineAppConfig({
     'pages/notification/index',
     'pages/feedback/index',
     'pages/evaluate/evaluate',
+    'pages/questionInfo/index',
     'pages/myclass/myclass',
     'pages/research/research',
     'pages/index/index',
     'pages/editUser/index',
-    'pages/publishQuestion/index',
   ],
   subpackages: [
     {

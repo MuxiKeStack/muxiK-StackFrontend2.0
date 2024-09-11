@@ -56,7 +56,7 @@ const Research: React.FC = () => {
 
   const handleClick = () => {
     console.log(2);
-    Taro.redirectTo({
+    Taro.switchTab({
       url: '/pages/main/index',
     });
   };

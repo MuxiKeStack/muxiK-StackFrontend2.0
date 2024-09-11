@@ -145,7 +145,7 @@ export default function evaluate() {
           // 或者使用 Taro 的日志记录方式：Taro.showToast({ title: '发布课评成功', icon: 'success' });
           // console.log('发布课评成功');
           // 使用 redirectTo 跳转
-          void Taro.redirectTo({
+          void Taro.switchTab({
             url: '/pages/main/index', // 页面路径
           });
         } else {
