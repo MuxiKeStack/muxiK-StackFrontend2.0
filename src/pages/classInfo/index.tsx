@@ -9,14 +9,12 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-// import echarts from '../../common/assets/js/echarts';
-// import Charts from '@/common/components/chart';
+import { CommentInfoType, Course } from '@/common/assets/types';
 import { Comment } from '@/common/components';
+import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get } from '@/common/utils/fetch';
-
-import { CommentInfoType, Course } from '../../common/assets/types';
 
 // import { useRef } from 'react';
 // import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
@@ -129,10 +127,12 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
+      {/*<>*/}
+      <View className="h-1/3 w-5/6">
+        <LineChart className="flex content-center justify-center"></LineChart>
+      </View>
+      {/*</>*/}
 
-      {/* <Demo></Demo> */}
-
-      {/* <Charts options={}></Charts> */}
       {comments &&
         comments.map((comment) => (
           <Comment
@@ -150,34 +150,3 @@ export default function Index() {
     </View>
   );
 }
-
-// function Demo() {
-//   const echartsRef = useRef<EchartsHandle>(null);
-//   const option: EChartOption = {
-//     legend: {
-//       top: 50,
-//       left: 'center',
-//       z: 100,
-//     },
-//     tooltip: {
-//       trigger: 'axis',
-//       show: true,
-//       confine: true,
-//     },
-//     xAxis: {
-//       type: 'category',
-//       data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-//     },
-//     yAxis: {
-//       type: 'value',
-//     },
-//     series: [
-//       {
-//         data: [150, 230, 224, 218, 135, 147, 260],
-//         type: 'line',
-//       },
-//     ],
-//   };
-
-//   return <Echarts echarts={echarts} option={option} ref={echartsRef}></Echarts>;
-// }

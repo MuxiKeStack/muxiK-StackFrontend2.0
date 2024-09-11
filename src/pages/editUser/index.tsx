@@ -105,7 +105,21 @@ const EditUser: React.FC = () => {
       setSelectedTitle(title);
     }
   };
-
+  // Taro.redirectTo({url:'pages/login/index'});
+  const handleLogout = () => {
+    void post('/users/logout', {}, true).then((res) => console.log(res));
+    void Taro.removeStorage({
+      key: 'shortToken',
+      success: (res) => console.log(res),
+      fail: (err) => console.log(err),
+    });
+    void Taro.removeStorage({
+      key: 'longToken',
+      success: (res) => console.log(res),
+      fail: (err) => console.log(err),
+    });
+    void Taro.redirectTo({ url: '/pages/login/index' });
+  };
   return (
     <View>
       <View className="avatar-container">
@@ -168,6 +182,9 @@ const EditUser: React.FC = () => {
           保存
         </Button>
       </View>
+      <Button className="mt-7 h-1/6 w-1/3" onClick={handleLogout}>
+        退出登陆
+      </Button>
     </View>
   );
 };
