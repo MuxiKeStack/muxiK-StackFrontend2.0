@@ -10,12 +10,12 @@ import { useEffect, useState } from 'react';
 import './index.scss';
 
 import { CommentInfoType, Course } from '@/common/assets/types';
-// import echarts from '../../common/assets/js/echarts';
-// import Charts from '@/common/components/chart';
 import { Comment } from '@/common/components';
+import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get } from '@/common/utils/fetch';
+
 
 // import { useRef } from 'react';
 // import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
@@ -128,10 +128,12 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
+      {/*<>*/}
+      <View className="h-1/3 w-5/6">
+        <LineChart className="flex content-center justify-center"></LineChart>
+      </View>
+      {/*</>*/}
 
-      {/* <Demo></Demo> */}
-
-      {/* <Charts options={}></Charts> */}
       {comments &&
         comments.map((comment) => (
           <Comment
