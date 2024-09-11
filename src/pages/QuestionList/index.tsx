@@ -1,10 +1,11 @@
 // import React from 'react';
+import { View } from '@tarojs/components';
+import { useEffect, useState } from 'react';
+
 import { Course } from '@/common/assets/types';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionListComponent from '@/common/components/QuestionListComponent/QuestionListComponent';
 import { get } from '@/common/utils/fetch';
-import { View } from '@tarojs/components';
-import { useEffect, useState } from 'react';
 
 interface IQuestion {
   id: number;

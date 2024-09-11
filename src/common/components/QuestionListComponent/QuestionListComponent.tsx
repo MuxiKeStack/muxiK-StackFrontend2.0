@@ -1,12 +1,14 @@
-import answericon from '@/common/assets/img/publishQuestion/answer.png';
-import askicon from '@/common/assets/img/publishQuestion/ask.png';
-import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
-import { useCourseStore } from '@/pages/main/store/store';
+/* eslint-disable import/first */
 import { Image, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 
 import './index.scss';
+
+import answericon from '@/common/assets/img/publishQuestion/answer.png';
+import askicon from '@/common/assets/img/publishQuestion/ask.png';
+import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
+import { useCourseStore } from '@/pages/main/store/store';
 
 interface IUser {
   avatar: string;
@@ -63,8 +65,8 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
           question.preview_answers && question.preview_answers.length > 0
             ? await Promise.all(
                 question.preview_answers.map(async (answer) => {
-                  const user = await dispatch.getPublishers(answer.publisher_id);
-                  return { ...answer, user };
+                  const newuser = await dispatch.getPublishers(answer.publisher_id);
+                  return { ...answer, newuser };
                 })
               )
             : [];
@@ -84,7 +86,7 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
   }, [question]);
 
   const handleQuestionDetailClick = () => {
-    Taro.navigateTo({
+    void Taro.navigateTo({
       url: `/pages/questionInfo/index?id=${questionDetail.id}`,
     });
   };
@@ -98,7 +100,10 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
           date={formatTime(questionDetail?.ctime)}
         />
         <View className="question-item">
-          <Image src={askicon} className="askicon" />
+          {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            <Image src={askicon} className="askicon" />
+          }
           <View className="question-value">{questionDetail.content}</View>
         </View>
       </View>
@@ -112,7 +117,10 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
                 date={formatTime(answer.ctime)}
               />
               <View className="question-item">
-                <Image src={answericon} className="askicon" />
+                {
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  <Image src={answericon} className="askicon" />
+                }
                 <View className="answer-content">{answer.content}</View>
               </View>
             </View>
