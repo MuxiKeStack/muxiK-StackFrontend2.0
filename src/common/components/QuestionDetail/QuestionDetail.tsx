@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
 import { useCourseStore } from '@/pages/main/store/store';
+import answericon from '@/common/assets/img/publishQuestion/answer.png'
+
 
 import IconFont from '../iconfont';
 import './index.scss';
@@ -50,7 +52,7 @@ interface IAnswer {
 
 interface IQuestionProps {
   question: IQuestion;
-  answers: IAnswer[];
+  answers: IAnswer[] | null;
 }
 
 const formatTime = (timestamp: number) => {
@@ -68,24 +70,37 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
   const dispatch = useCourseStore(({ getPublishers }) => ({ getPublishers }));
 
   const [questionDetail, setQuestion] = useState<IQuestion>(question);
-  const [answersDetail, setAnswers] = useState<IAnswer[]>(answers);
+  const [answersDetail, setAnswers] = useState<IAnswer[] | null>(answers);
+
+  
 
   useEffect(() => {
     const fetchAllPublishers = async () => {
       // 函数，用于获取每个答案的用户信息
       async function getAnswersWithUserInfo(ianswers: IAnswer[]) {
-        const answersWithUserInfo = await Promise.all(
-          ianswers.map(async (answer) => {
-            const user = await dispatch.getPublishers(answer.publisher_id);
-            return { ...answer, user };
-          })
-        );
-        return answersWithUserInfo;
+        try {
+          const answersWithUserInfo = await Promise.all(
+            ianswers.map(async (answer) => {
+              const user = await dispatch.getPublishers(answer.publisher_id);
+              return { ...answer, user };
+            })
+          );
+          return answersWithUserInfo;
+        } catch (error) {
+          // 处理错误，返回一个空数组或其他适当的默认值
+          console.error('Error fetching user info:', error);
+          return []; // 返回一个空数组
+        }
       }
 
-      // 调用函数并处理结果
-      const answersWithUserInfo = await getAnswersWithUserInfo(answers);
-      setAnswers(answersWithUserInfo);
+      // 确保 answers 不为 null
+      if (answers !== null) {
+        const answersWithUserInfo = await getAnswersWithUserInfo(answers);
+        setAnswers(answersWithUserInfo);
+      } else {
+        // 如果 answers 为 null，可以选择设置一个空数组或者执行其他逻辑
+        setAnswers([]);
+      }
 
       // 函数，用于获取问题的提问者用户信息
       async function getQuestionWithUserInfo(iquestion: IQuestion) {
@@ -105,7 +120,7 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
     };
 
     void fetchAllPublishers();
-  });
+  },[question,answers]);
   return (
     <View className="questionDetail">
       <View className="question-detail">
@@ -123,7 +138,7 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
         </View>
       </View>
       <View className="answer-list">
-        {answersDetail.map((answer, index) => (
+        {answersDetail && answersDetail.map((answer, index) => (
           <View key={index} className="answer-item">
             <PublishHeader
               avatarUrl={answer?.user?.avatar ?? ''}
@@ -133,10 +148,10 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
             <View className="question-item">
               {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                <Image src={askicon} className="askicon"></Image>
+                <Image src={answericon} className="askicon"></Image>
               }
               <View className="answer-content">
-                本网站使用cookies以提升您的使用体验及统计网站流量相关数据。继续使用本网站表示您同意我们使用cookies。我们的《隐私及Cookie政策》提供更多关于cookies使用及停用的相关信息。
+                {answer?.content}
               </View>
             </View>
             <View className="answer-statistics">
