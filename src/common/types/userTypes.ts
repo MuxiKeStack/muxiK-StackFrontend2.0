@@ -36,3 +36,30 @@ export type WebUserProfileVo = {
   using_title: string;
   utime?: number;
 };
+/**
+ * ginx.Result
+ */
+export interface GradeResponse {
+  /**
+   * 错误码，非 0 表示失败
+   */
+  code?: number;
+  data?: GradeChart[];
+  /**
+   * 错误或成功 描述
+   */
+  msg?: string;
+}
+
+/**
+ * web.GradeChartVo
+ */
+export interface GradeChart {
+  avg: number;
+  grades: Grade[];
+}
+
+export interface Grade {
+  percent?: number;
+  total_grades: number[];
+}
