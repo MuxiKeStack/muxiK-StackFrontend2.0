@@ -11,17 +11,12 @@ import './index.scss';
 
 import { CommentInfoType, Course } from '@/common/assets/types';
 import { Comment } from '@/common/components';
+import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get } from '@/common/utils/fetch';
 
-
-// import { useRef } from 'react';
-// import Echarts, { EChartOption, EchartsHandle } from 'taro-react-echarts';
-// 定义接口
-
-// 创建一个对象来存储英文描述和对应的中文描述
 const coursePropertyMap = {
   CoursePropertyGeneralCore: '通识核心课',
   CoursePropertyGeneralElective: '通识选修课',
@@ -129,21 +124,26 @@ export default function Index() {
         ))}
       </View>
       {/*<>*/}
-      <View className="h-1/3 w-5/6">
-        <LineChart className="flex content-center justify-center"></LineChart>
+      <View className="h-1/3 w-5/6 pt-1.5">
+        <LineChart className="text-center"></LineChart>
       </View>
       <View>
+        <View>
           <View className="line-container pt-2.5 text-center text-xl">问问同学</View>
         </View>
-        <View>wenti1:666666</View>
-        <View>wenti1:666666</View>
+        <>
+          <AnswerToStudent></AnswerToStudent>
+          <AnswerToStudent></AnswerToStudent>
+        </>
         <View
           onClick={() => {
             void Taro.navigateTo({ url: '/pages/questionInfo/index' });
           }}
+          className="text-right"
         >
-          全部
+          全部&gt;
         </View>
+      </View>
 
       {comments &&
         comments.map((comment) => (
