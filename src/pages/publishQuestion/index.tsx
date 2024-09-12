@@ -1,4 +1,3 @@
-/* eslint-disable-next-line import/first */
 import { Button, Image, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
