@@ -62,15 +62,22 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
 
         // 检查 preview_answers 是否存在并且是一个数组
         const previewAnswersWithUserInfo =
-          question.preview_answers && question.preview_answers.length > 0
+          Array.isArray(question.preview_answers) && question.preview_answers.length > 0
             ? await Promise.all(
                 question.preview_answers.map(async (answer) => {
-                  const newuser = await dispatch.getPublishers(answer.publisher_id);
-                  return { ...answer, newuser };
+                  try {
+                    const newuser = await dispatch.getPublishers(answer.publisher_id);
+                    return { ...answer, user: newuser };
+                  } catch (error) {
+                    console.error('Error fetching user for answer:', answer, error);
+                    // 可以选择返回原始答案
+                    return { ...answer };
+                  }
                 })
               )
             : [];
 
+        console.log('previewAnswersWithUserInfo:', previewAnswersWithUserInfo);
         // 更新问题状态，包括填充了用户信息的 preview_answers
         setQuestion((prev) => ({
           ...prev,

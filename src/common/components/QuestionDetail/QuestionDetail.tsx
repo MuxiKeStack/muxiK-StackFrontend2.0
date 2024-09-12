@@ -57,6 +57,7 @@ interface IAnswer {
 interface IQuestionProps {
   question: IQuestion;
   answers: IAnswer[] | null;
+  handleFloatLayoutChange: (answerId: number | null) => void;
 }
 
 const formatTime = (timestamp: number) => {
@@ -70,7 +71,11 @@ const formatTime = (timestamp: number) => {
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 };
 
-const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
+const QuestionDetail: React.FC<IQuestionProps> = ({
+  question,
+  answers,
+  handleFloatLayoutChange,
+}) => {
   const dispatch = useCourseStore(({ getPublishers }) => ({ getPublishers }));
 
   const [questionDetail, setQuestion] = useState<IQuestion>(question);
@@ -142,7 +147,11 @@ const QuestionDetail: React.FC<IQuestionProps> = ({ question, answers }) => {
       <View className="answer-list">
         {answersDetail &&
           answersDetail.map((answer, index) => (
-            <View key={index} className="answer-item">
+            <View
+              key={index}
+              className="answer-item"
+              onClick={() => handleFloatLayoutChange(answer.id)}
+            >
               <PublishHeader
                 avatarUrl={answer?.user?.avatar ?? ''}
                 nickName={answer?.user?.nickname ?? ''}
