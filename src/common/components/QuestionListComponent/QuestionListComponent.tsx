@@ -70,8 +70,8 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
                     return { ...answer, user: newuser };
                   } catch (error) {
                     console.error('Error fetching user for answer:', answer, error);
-                    // 可以选择返回原始答案或包含错误的信息
-                    return { ...answer, error: error.message };
+                    // 可以选择返回原始答案
+                    return { ...answer };
                   }
                 })
               )

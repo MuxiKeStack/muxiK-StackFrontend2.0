@@ -1,14 +1,18 @@
+/* eslint-disable import/first */
+import { Input, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import React, { useEffect, useState } from 'react';
+import { AtFloatLayout } from 'taro-ui';
+
+import './index.scss';
+
 import { Course } from '@/common/assets/types';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail';
 import { get, post } from '@/common/utils/fetch';
-import { Input, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import React, { useEffect, useState } from 'react';
-import { AtFloatLayout } from 'taro-ui';
+
 import { Comment as CommentType } from '../../common/assets/types';
-import './index.scss';
 
 interface IQuestion {
   id: number;
@@ -40,6 +44,12 @@ interface IAnswer {
   total_comment_count: number;
   utime: number;
   ctime: number;
+}
+
+interface ResponseType {
+  code: number;
+  data: number | CommentType[];
+  msg: string;
 }
 
 const Index: React.FC = () => {
@@ -188,9 +198,12 @@ const Index: React.FC = () => {
     const fetchCommentNum = async () => {
       // console.log(biz_id)
       try {
-        const res = await get(`/comments/count?biz=Answer&biz_id=${currentAnswerId}`);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const res: ResponseType = await get(
+          `/comments/count?biz=Answer&biz_id=${currentAnswerId}`
+        );
         // console.log(res.data);
-        setCommentNum(res.data);
+        setCommentNum(res?.data.toString());
       } catch (error) {
         console.error('加载评论数目失败', error);
       }
@@ -199,17 +212,16 @@ const Index: React.FC = () => {
     // 确保 biz_id 设置后再调用 fetchComments
     if (currentAnswerId !== null) {
       console.log(1);
-      fetchCommentNum();
+      void fetchCommentNum();
     }
 
     const fetchComments = async () => {
-      // console.log(biz_id)
       try {
-        const res = await get(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const res: ResponseType = await get(
           `/comments/list?biz=Answer&biz_id=${currentAnswerId}&cur_comment_id=0&limit=100`
         );
-        // console.log(res.data);
-        setAllComments(res.data);
+        setAllComments(res?.data as CommentType[]);
         setCommentsLoaded(true);
       } catch (error) {
         console.error('加载评论失败', error);
@@ -218,8 +230,7 @@ const Index: React.FC = () => {
 
     // 确保 biz_id 设置后再调用 fetchComments
     if (currentAnswerId !== null) {
-      console.log(1);
-      fetchComments();
+      void fetchComments();
     }
   }, [currentAnswerId, commentsLoaded]); // 依赖项中添加biz_id
 
@@ -229,8 +240,9 @@ const Index: React.FC = () => {
     setplaceholderContent(`回复给${comment.user?.nickname}: `); // 初始化回复内容
   };
 
-  const handleReplyChange = (e: any) => {
-    setReplyContent(e.target.value);
+  const handleReplyChange = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    setReplyContent(e.target.value as string);
   };
 
   const handleClearReply = () => {
@@ -263,10 +275,11 @@ const Index: React.FC = () => {
       setCommentsLoaded(false); // 先将commentsLoaded设为false，避免useEffect中的fetchComments不被调用
       const fetchComments = async () => {
         try {
-          const res = await get(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          const res: ResponseType = await get(
             `/comments/list?biz=Answer&biz_id=${currentAnswerId}&cur_comment_id=0&limit=100`
           );
-          setAllComments(res.data);
+          setAllComments(res.data as CommentType[]);
           setCommentsLoaded(true);
         } catch (error) {
           console.error('加载评论失败', error);
@@ -316,7 +329,7 @@ const Index: React.FC = () => {
                     e.stopPropagation();
                   }}
                   onInput={handleReplyChange}
-                  onConfirm={handleReplySubmit}
+                  onConfirm={void handleReplySubmit}
                 />
               </View>
             </View>
