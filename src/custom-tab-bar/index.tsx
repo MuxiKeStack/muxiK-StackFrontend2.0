@@ -1,7 +1,7 @@
 /* eslint-disable import/first */
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { AtIcon } from 'taro-ui';
 
 import './index.scss';
@@ -14,7 +14,7 @@ interface TabBarProps {}
 const TAB_LIST: Array<{ pagePath: string; name: string; icon?: string }> = [
   { pagePath: '/pages/main/index', name: 'Home', icon: 'streaming' },
   { pagePath: '/pages/main/index', name: 'Download', icon: 'download-cloud' },
-  { pagePath: '/pages/main/index', name: '+' },
+  { pagePath: '/pages/evaluate/evaluate', name: '+' },
   { pagePath: '/pages/notification/index', name: 'Massage', icon: 'message' },
   { pagePath: '/pages/profile/index', name: 'Profile', icon: 'user' },
 ];
