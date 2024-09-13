@@ -15,6 +15,7 @@ export default defineAppConfig({
     'pages/research/research',
     'pages/index/index',
     'pages/editUser/index',
+    'pages/guide/index',
   ],
   subpackages: [
     {
@@ -26,17 +27,21 @@ export default defineAppConfig({
   usingComponents: Object.assign({
     iconfont: './common/components/iconfont/weapp/weapp',
   }),
-  // tabBar: {
-  //   custom: true,
-  //   list: [
-  //     {
-  //       pagePath: 'pages/main/index',
-  //       text: 'Home',
-  //     },
-  //     { pagePath: 'pages/notification/index', text: 'Massage' },
-  //     { pagePath: 'pages/profile/index', text: 'Profile' },
-  //   ],
-  // },
+  tabBar: {
+    custom: true,
+    list: [
+      {
+        pagePath: 'pages/main/index',
+        text: 'Home',
+      },
+      {
+        pagePath: 'pages/guide/index',
+        text: 'Guide',
+      },
+      { pagePath: 'pages/notification/index', text: 'Massage' },
+      { pagePath: 'pages/profile/index', text: 'Profile' },
+    ],
+  },
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',

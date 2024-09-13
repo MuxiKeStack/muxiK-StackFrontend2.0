@@ -13,7 +13,7 @@ interface TabBarProps {}
 
 const TAB_LIST: Array<{ pagePath: string; name: string; icon?: string }> = [
   { pagePath: '/pages/main/index', name: 'Home', icon: 'streaming' },
-  { pagePath: '/pages/main/index', name: 'Download', icon: 'download-cloud' },
+  { pagePath: '/pages/guide/index', name: 'Guide', icon: 'download-cloud' },
   { pagePath: '/pages/evaluate/evaluate', name: '+' },
   { pagePath: '/pages/notification/index', name: 'Massage', icon: 'message' },
   { pagePath: '/pages/profile/index', name: 'Profile', icon: 'user' },
