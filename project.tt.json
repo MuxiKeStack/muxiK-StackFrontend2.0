@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "./",
   "projectname": "muxiK-StackFrontend2.0",
-  "description": "校友运动(小程序前端仓库)",
+  "description": "木犀课栈(小程序前端仓库)",
   "appid": "touristappid",
   "setting": {
     "urlCheck": true,
