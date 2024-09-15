@@ -28,7 +28,14 @@ const TabBar: React.FC<TabBarProps> = memo(() => {
         <>
           {item.name === '+' ? (
             <View className="add_button">
-              <View className="add_sign">+</View>
+              <View
+                className="add_sign"
+                onClick={() => {
+                  void Taro.navigateTo({ url: '/pages/evaluate/evaluate' });
+                }}
+              >
+                +
+              </View>
             </View>
           ) : (
             <AtIcon
