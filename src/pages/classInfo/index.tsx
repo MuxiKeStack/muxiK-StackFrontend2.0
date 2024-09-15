@@ -41,8 +41,8 @@ export default function Index() {
   const [course, setCourse] = useState<Course | null>(null);
   const [courseId, setCourseId] = useState<string | null>(null);
   const [comments, setComments] = useState<CommentInfoType[]>([]);
-  const [grade, setGrade] = useState<GradeChart>(); // 将 grade 的类型设置为 GradeChart | null
-
+  const [grade, setGrade] = useState<GradeChart>();
+  //const [Question, setQuestion] = useState();
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
@@ -87,7 +87,21 @@ export default function Index() {
 
     if (courseId) void getCommentData();
   }, [courseId]);
-
+  // useEffect(() => {
+  //   const fetchAnswer = async () => {
+  //     try {
+  //       await get(
+  //         `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=&limit=`,
+  //         true
+  //       ).then((res) => {
+  //         console.log(res);
+  //         setQuestion(res.data);
+  //       });
+  //     } catch (e) {
+  //       console.error('Failed to fetch course data:', e);
+  //     }
+  //   };
+  // }, []);
   useEffect(() => {
     const fetchGrades = async () => {
       try {
