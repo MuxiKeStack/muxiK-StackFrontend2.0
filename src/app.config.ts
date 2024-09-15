@@ -15,6 +15,7 @@ export default defineAppConfig({
     'pages/research/research',
     'pages/index/index',
     'pages/editUser/index',
+    'pages/guide/index',
   ],
   subpackages: [
     {
@@ -32,6 +33,10 @@ export default defineAppConfig({
       {
         pagePath: 'pages/main/index',
         text: 'Home',
+      },
+      {
+        pagePath: 'pages/guide/index',
+        text: 'Guide',
       },
       { pagePath: 'pages/notification/index', text: 'Massage' },
       { pagePath: 'pages/profile/index', text: 'Profile' },
