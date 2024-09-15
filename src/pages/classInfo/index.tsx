@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 /* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
@@ -112,7 +112,9 @@ export default function Index() {
   const avgScore = grade.avg;
   const heightLightIndex = Math.floor(avgScore / 10) - 4; // 假设 0-40 开始对应 index 0，每个区间跨度 10
   // 处理 y 轴的数据，确保它们在 0 到 100 之间
-  const yData = grade.grades.flatMap((g) => g.total_grades.map((score) => score ?? 0));
+  const yData = grade?.grades?.flatMap((g) =>
+    g?.total_grades?.map((score) => score ?? 0)
+  );
   // 计算高亮百分比
   const heightLightPercent = heightLightIndex / xLabels.length;
 
