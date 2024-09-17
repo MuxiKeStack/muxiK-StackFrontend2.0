@@ -103,6 +103,7 @@ export default function Index() {
   //   };
   // }, []);
   useEffect(() => {
+    console.log('test', courseId);
     const fetchGrades = async () => {
       try {
         await get(`/grades/courses/${courseId}`, true).then((res) => {

@@ -18,6 +18,7 @@ const ListItems: { title: string; icon: string; url: string }[] = [
     icon: ClockIcon as string,
     url: '/subpackages/profile/pages/history/index',
   },
+  { title: '成绩共享计划', icon: MailIcon as string, url: '/pages/shareGrades/index' },
   { title: '意见反馈', icon: MailIcon as string, url: '/pages/feedback/index' },
 ];
 
