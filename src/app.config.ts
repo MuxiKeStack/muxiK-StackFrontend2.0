@@ -16,6 +16,7 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/editUser/index',
     'pages/guide/index',
+    'pages/shareGrades/index',
   ],
   subpackages: [
     {

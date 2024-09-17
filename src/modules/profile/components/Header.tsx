@@ -35,7 +35,6 @@ const Header: React.FC = memo(() => {
     };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return (title: string) => titleMap[title] || title;
-    // todo 刷新方式
   }, []);
 
   useEffect(() => {
@@ -60,7 +59,7 @@ const Header: React.FC = memo(() => {
       }
     };
     void fetchUserData();
-  }, [translateTitle]);
+  }, []);
 
   if (user.newUser) {
     void Taro.navigateTo({ url: '/pages/editUser/index' });
