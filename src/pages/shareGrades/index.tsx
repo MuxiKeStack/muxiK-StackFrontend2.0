@@ -1,5 +1,4 @@
 import { Button, Text, View } from '@tarojs/components';
-// eslint-disable-next-line import/first
 import Taro from '@tarojs/taro';
 
 import './index.scss';

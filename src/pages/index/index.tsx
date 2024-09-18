@@ -1,6 +1,7 @@
 import { Navigator, View } from '@tarojs/components';
 import { useState } from 'react';
 import { AtFloatLayout } from 'taro-ui';
+
 import './index.scss';
 
 export default function Index() {

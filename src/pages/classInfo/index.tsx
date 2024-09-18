@@ -43,7 +43,7 @@ export default function Index() {
   const [comments, setComments] = useState<CommentInfoType[]>([]);
   const [grade, setGrade] = useState<GradeChart>();
   const [questionNum, setQuestionNum] = useState<number>(0);
-  //const [Question, setQuestion] = useState();
+  //const [questionlist,setQuestionlist] = useState<>([]);
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
@@ -116,9 +116,6 @@ export default function Index() {
         console.error('Failed to fetch grades data', err);
       }
     };
-    if (courseId) void fetchGrades();
-  }, [courseId]);
-  useEffect(() => {
     const getNumData = () => {
       try {
         console.log('test', courseId);
@@ -131,7 +128,10 @@ export default function Index() {
         console.error(e);
       }
     };
-    void getNumData();
+    if (courseId) {
+      void fetchGrades();
+      void getNumData();
+    }
   }, [courseId]);
   if (!course || !grade) {
     return <Text>请先确定已签约成绩共享计划</Text>; // 数据加载中
