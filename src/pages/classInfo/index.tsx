@@ -42,6 +42,7 @@ export default function Index() {
   const [courseId, setCourseId] = useState<string | null>(null);
   const [comments, setComments] = useState<CommentInfoType[]>([]);
   const [grade, setGrade] = useState<GradeChart>();
+  const [questionNum, setQuestionNum] = useState<number>(0);
   //const [Question, setQuestion] = useState();
   useEffect(() => {
     const getParams = () => {
@@ -53,7 +54,7 @@ export default function Index() {
 
     getParams();
   }, []);
-
+  //获取问题个数
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
@@ -117,9 +118,23 @@ export default function Index() {
     };
     if (courseId) void fetchGrades();
   }, [courseId]);
-
+  useEffect(() => {
+    const getNumData = () => {
+      try {
+        console.log('test', courseId);
+        void get(`/questions/count?biz=Course&biz_id=${courseId}`, true).then((res) => {
+          console.log(res);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setQuestionNum(res.data);
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    void getNumData();
+  }, [courseId]);
   if (!course || !grade) {
-    return <Text>Loading...</Text>; // 数据加载中
+    return <Text>请先确定已签约成绩共享计划</Text>; // 数据加载中
   }
 
   const xLabels = ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'];
@@ -155,7 +170,6 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
-      {/* 将 grade 数据传递给 LineChart */}
       <View className="h-1/3 w-5/6 pt-1.5">
         <LineChart
           className="text-center"
@@ -167,9 +181,12 @@ export default function Index() {
       </View>
       <View>
         <View>
-          <View className="line-container pt-2.5 text-center text-xl">问问同学</View>
+          <View className="line-container pt-2.5 text-center text-xl">
+            问问同学({questionNum})
+          </View>
         </View>
         <>
+          <AnswerToStudent></AnswerToStudent>
           <AnswerToStudent></AnswerToStudent>
           <AnswerToStudent></AnswerToStudent>
         </>
@@ -182,7 +199,9 @@ export default function Index() {
           全部&gt;
         </View>
       </View>
-
+      <View>
+        <View className="line-container pt-2.5 text-center text-xl">最新评论</View>
+      </View>
       {comments &&
         comments.map((comment) => (
           <Comment
