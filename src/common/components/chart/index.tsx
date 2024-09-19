@@ -84,14 +84,15 @@ const LineChart: React.FC<LineChartProps> = (props) => {
       ctx.scale(1, width / 2 / height);
     }
     const barWidth = (width - 2 * padding) / data.length;
+    const lines = 5;
     // 背景
     drawRoundedRectangle(ctx, 0, 0, width, height, 10, () => null, '#f9f9f2');
     // 标识线
     ctx.beginPath();
     ctx.strokeStyle = DEFAULT_MARK_LINE_COLOR;
     ctx.lineWidth = 1;
-    for (let i = 0; i <= data.length; i++) {
-      const y = padding + (i * (height - 2 * padding)) / data.length;
+    for (let i = 0; i <= lines; i++) {
+      const y = padding + (i * (height - 2 * padding)) / lines;
       ctx.beginPath();
       ctx.moveTo(padding, y);
       ctx.lineTo(width - padding, y);
@@ -101,9 +102,12 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     // 坐标轴标签
     ctx.fillStyle = DEFAULT_TEXT_COLOR;
     ctx.font = '10px sans-serif';
-    const step = Math.ceil(Math.max(...data) / data.length);
-    for (let i = 0; i <= data.length; i++) {
-      const y = height - padding - (i * (height - 2 * padding)) / data.length;
+    // 平均分配标签，比如五根标签，最大为94.4，那么标签最大为95，按19递增
+    const step = Math.floor(
+      ((Math.floor(Math.max(...data) / lines) + 1) * lines) / lines
+    );
+    for (let i = 0; i <= lines; i++) {
+      const y = height - padding - (i * (height - 2 * padding)) / lines;
       ctx.fillText((i * step).toString() + (subfix ? subfix : ''), 2, y + 3);
     }
     xLabels.forEach((value, index) => {
@@ -115,21 +119,24 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     ctx.strokeStyle = lineColor ?? DEFAULT_LINE_COLOR;
     ctx.lineWidth = 6;
     ctx.beginPath();
+    const dots: { x: number; y: number }[] = [];
     data.forEach((value, index) => {
       const x = padding + index * barWidth + BLANK;
-      const y =
-        height - padding - (value / (step * data.length)) * (height - 2 * padding);
+      const y = value
+        ? height - padding - (value / (step * lines)) * (height - 2 * padding)
+        : height - padding;
       if (index === 0) {
         ctx.moveTo(x, y);
       } else {
         const prevX = padding + (index - 1) * barWidth;
-        const prevY = height - padding - (data[index - 1] / 70) * (height - 2 * padding);
+        const prevY = dots.at(-1)!.y;
         const cp1x = (prevX + x) / 2;
         const cp1y = prevY;
         const cp2x = (prevX + x) / 2;
         const cp2y = y;
         ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
       }
+      dots.push({ x, y });
     });
     ctx.stroke();
 
