@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Canvas } from '@tarojs/components';
 import Taro, { CanvasContext, Canvas as CanvasInterface } from '@tarojs/taro';
-import React, { CSSProperties, useEffect } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 
 interface LineChartProps {
   data?: number[];
@@ -54,6 +54,10 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     style,
     subfix,
   } = props;
+  const [size, setSize] = useState<{ x: number; y: number }>({
+    x: propWidth ?? DEFAULT_WIDTH,
+    y: propHeight ?? DEFAULT_HEIGHT,
+  });
   useEffect(() => {
     drawLineChart();
   }, []);
@@ -63,8 +67,15 @@ const LineChart: React.FC<LineChartProps> = (props) => {
       .select(`#${id ?? DEFAULT_CHART_ID}`)
       .fields({ node: true, size: true })
       .exec((res) => {
+        const dpr = Taro.getSystemInfoSync().pixelRatio;
         const canvas = res[0].node as CanvasInterface;
+        const { width, height } = canvas;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        // 设置 canvas 组件的样式宽高
+        setSize({ x: width ?? 200, y: height ?? 200 });
         const ctx = canvas.getContext('2d') as CanvasContext;
+        ctx.scale(dpr, dpr);
         drawChart(ctx);
       });
   };
@@ -77,7 +88,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     const padding = propPadding ?? DEFAULT_PADDING;
     const xLabels = propX ?? DEFAULT_X_LABELS;
     ctx.clearRect(0, 0, width, height);
-    // 适配不同比例
+    // // 适配不同比例
     if (width / height > 2) {
       ctx.scale((height * 2) / width, 1);
     } else {
@@ -166,8 +177,8 @@ const LineChart: React.FC<LineChartProps> = (props) => {
   return (
     <Canvas
       id={id ?? DEFAULT_CHART_ID}
-      width={(propWidth ?? DEFAULT_WIDTH + 'px') as string}
-      height={(propHeight ?? DEFAULT_HEIGHT + 'px') as string}
+      width={(size?.x ?? DEFAULT_WIDTH + 'px') as string}
+      height={(size?.y ?? DEFAULT_HEIGHT + 'px') as string}
       className={className}
       style={{
         ...style,
