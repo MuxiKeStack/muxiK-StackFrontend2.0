@@ -39,10 +39,6 @@ export default function Index() {
     })
   );
 
-  // useDidShow(() => {
-  //   void dispatch.refershComments();
-  // });
-
   useEffect(() => {
     void dispatch.loadMoreComments();
   }, [dispatch.loadMoreComments]);
