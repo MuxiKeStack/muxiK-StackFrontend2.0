@@ -1,4 +1,4 @@
-import { Picker, Popup } from '@taroify/core';
+import { ConfigProvider, Picker, Popup } from '@taroify/core';
 import { ArrowDown } from '@taroify/icons';
 import { Text, View } from '@tarojs/components';
 import { memo, useState } from 'react';
@@ -7,7 +7,7 @@ interface SelectorProps {
   children: React.ReactNode;
 }
 
-const times = [
+const Times = [
   [
     { label: '全部', value: '全部' },
     { label: '2022', value: '2022' },
@@ -56,19 +56,25 @@ const Selector: React.FC<SelectorProps> = memo(({ children }) => {
         </View>
       </View>
       {children}
-      <Popup open={isOpen} placement="bottom">
-        <Popup.Close />
-        <Picker
-          style={{ marginBottom: '15vh' }}
-          defaultValue={['全部', '全部']}
-          title="选择学年和学期"
-          columns={times}
-          onConfirm={(value) => {
-            setSelection({ year: value[0], term: value[1] });
-            setIsOpen(false);
-          }}
-        ></Picker>
-      </Popup>
+      <ConfigProvider
+        theme={{
+          pickerConfirmActionColor: '#f18900',
+        }}
+      >
+        <Popup open={isOpen} placement="bottom">
+          <Popup.Close />
+          <Picker
+            style={{ marginBottom: '15vh' }}
+            defaultValue={['全部', '全部']}
+            title="选择学年和学期"
+            columns={Times}
+            onConfirm={(value) => {
+              setSelection({ year: value[0], term: value[1] });
+              setIsOpen(false);
+            }}
+          ></Picker>
+        </Popup>
+      </ConfigProvider>
     </>
   );
 });
