@@ -5,7 +5,7 @@
 /* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import './index.scss';
 
@@ -15,7 +15,7 @@ import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
-import { GradeChart } from '@/common/types/userTypes';
+import { GradeChart, WebQuestionVo } from '@/common/types/userTypes';
 import { get } from '@/common/utils/fetch';
 
 const coursePropertyMap = {
@@ -43,7 +43,7 @@ export default function Index() {
   const [comments, setComments] = useState<CommentInfoType[]>([]);
   const [grade, setGrade] = useState<GradeChart>();
   const [questionNum, setQuestionNum] = useState<number>(0);
-  //const [questionlist,setQuestionlist] = useState<>([]);
+  const [questionlist, setQuestionlist] = useState<WebQuestionVo[]>([]);
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
@@ -113,25 +113,40 @@ export default function Index() {
         console.error(e);
       }
     };
+    const fetchAnswer = async () => {
+      try {
+        await get(
+          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=&limit=`,
+          true
+        ).then((res) => {
+          console.log(res);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setQuestionlist(res.data);
+        });
+      } catch (e) {
+        console.error('Failed to fetch course data:', e);
+      }
+    };
     if (courseId) {
       void fetchGrades();
       void getNumData();
+      void fetchAnswer();
     }
   }, [courseId]);
-  const xLabels = useMemo(
-    () => ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'],
-    []
-  );
-  const { heightLightPercent, yData } = useMemo(() => {
-    const percent = (grade?.avg ?? 0) / 10;
-    return {
-      heightLightPercent: percent > 4 ? percent - 3 : 0,
-      yData: grade?.grades.map((item) => item.total_grades?.length ?? 0),
-    };
-  }, [grade]);
   if (!course || !grade) {
     return <Text>请先确定已签约成绩共享计划</Text>; // 数据加载中
   }
+
+  const xLabels = ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'];
+
+  const avgScore = grade.avg;
+  const heightLightIndex = Math.floor(avgScore / 10) - 4; // 假设 0-40 开始对应 index 0，每个区间跨度 10
+  // 处理 y 轴的数据，确保它们在 0 到 100 之间
+  const yData = grade?.grades?.flatMap((g) =>
+    g?.total_grades?.map((score) => score ?? 0)
+  );
+  // 计算高亮百分比
+  const heightLightPercent = heightLightIndex / xLabels.length;
 
   const featuresList =
     course.features && Array.isArray(course.features) ? course.features : [];
@@ -155,13 +170,13 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
-      <View className="h-1/3 pt-1.5">
+      <View className="h-1/3 w-5/6 pt-1.5">
         <LineChart
-          className="mx-auto text-center"
+          className="text-center"
           data={yData}
           xLabels={xLabels}
-          heightLightPercent={heightLightPercent ?? 0}
-          title={`平均分: ${grade?.avg.toFixed(1)}`}
+          heightLightPercent={heightLightPercent}
+          title={`平均分: ${avgScore}`}
         />
       </View>
       <View>
@@ -171,21 +186,28 @@ export default function Index() {
           </View>
         </View>
         <>
-          <AnswerToStudent></AnswerToStudent>
-          <AnswerToStudent></AnswerToStudent>
-          <AnswerToStudent></AnswerToStudent>
+          {questionlist &&
+            questionlist.map((question) => (
+              <AnswerToStudent
+                content={question.content}
+                key={question.id}
+                preview_answers={question.preview_answers}
+              />
+            ))}
         </>
-        <View
-          onClick={() => {
-            void Taro.navigateTo({ url: '/pages/questionInfo/index' });
-          }}
-          className="text-right"
-        >
-          全部&gt;
-        </View>
+        {questionlist.length > 0 && (
+          <View
+            onClick={() => {
+              void Taro.navigateTo({ url: '/pages/questionInfo/index' });
+            }}
+            className="text-right"
+          >
+            全部&gt;
+          </View>
+        )}
       </View>
       <View>
-        <View className="line-container pt-2.5 text-center text-xl">最新评论</View>
+        <View className="line-container pt-5 text-center text-xl">最新评论</View>
       </View>
       {comments &&
         comments.map((comment) => (
