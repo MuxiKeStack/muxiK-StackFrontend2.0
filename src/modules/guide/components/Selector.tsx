@@ -3,6 +3,16 @@ import { ArrowDown } from '@taroify/icons';
 import { Text, View } from '@tarojs/components';
 import { memo, useState } from 'react';
 
+import uniqueKeyUtil from '@/common/utils/keyGen';
+
+type SelectType = '学年' | '学期';
+
+interface SelectProps {
+  type: SelectType;
+  value: string;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 interface SelectorProps {
   children: React.ReactNode;
 }
@@ -24,6 +34,19 @@ const Times = [
   ],
 ];
 
+const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen }) => (
+  <View className="flex w-1/3 flex-col gap-2">
+    <Text className="pl-2 text-xs">选择{type}</Text>
+    <View
+      className="flex w-full justify-between rounded-lg bg-[#f9f9f2] px-2 py-1"
+      onClick={() => setIsOpen(true)}
+    >
+      <Text className="text-xs">{value}</Text>
+      <ArrowDown className="text-xs" style={{ color: '#f18900' }} />
+    </View>
+  </View>
+));
+
 const Selector: React.FC<SelectorProps> = memo(({ children }) => {
   const [selection, setSelection] = useState<{ year: string; term: string }>({
     year: '全部',
@@ -34,35 +57,19 @@ const Selector: React.FC<SelectorProps> = memo(({ children }) => {
   return (
     <>
       <View className="flex w-full items-center justify-between px-2">
-        <View className="flex w-1/3 flex-col gap-2">
-          <Text className="pl-2 text-xs">选择学年</Text>
-          <View
-            className="flex w-full justify-between rounded-lg bg-[#f9f9f2] px-2 py-1"
-            onClick={() => setIsOpen(true)}
-          >
-            <Text className="text-xs">{selection.year}</Text>
-            <ArrowDown className="text-xs" style={{ color: '#f18900' }} />
-          </View>
-        </View>
-        <View className="flex w-1/3 flex-col gap-2">
-          <Text className="pl-2 text-xs">选择学期</Text>
-          <View
-            className="flex w-full justify-between rounded-lg bg-[#f9f9f2] px-2 py-1"
-            onClick={() => setIsOpen(true)}
-          >
-            <Text className="text-xs">{selection.term}</Text>
-            <ArrowDown className="text-xs" style={{ color: '#f18900' }} />
-          </View>
-        </View>
+        {['学年', '学期'].map((item: SelectType) => (
+          <Select
+            key={uniqueKeyUtil.nextKey()}
+            type={item}
+            value={item === '学年' ? selection.year : selection.term}
+            setIsOpen={setIsOpen}
+          />
+        ))}
       </View>
       {children}
-      <ConfigProvider
-        theme={{
-          pickerConfirmActionColor: '#f18900',
-        }}
-      >
-        <Popup open={isOpen} placement="bottom">
-          <Popup.Close />
+      <Popup open={isOpen} placement="bottom">
+        <Popup.Close />
+        <ConfigProvider theme={{ pickerConfirmActionColor: '#f18900' }}>
           <Picker
             style={{ marginBottom: '15vh' }}
             defaultValue={['全部', '全部']}
@@ -72,9 +79,10 @@ const Selector: React.FC<SelectorProps> = memo(({ children }) => {
               setSelection({ year: value[0], term: value[1] });
               setIsOpen(false);
             }}
-          ></Picker>
-        </Popup>
-      </ConfigProvider>
+            onCancel={() => setIsOpen(false)}
+          />
+        </ConfigProvider>
+      </Popup>
     </>
   );
 });
