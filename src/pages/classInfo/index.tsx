@@ -5,7 +5,7 @@
 /* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
 
@@ -133,21 +133,20 @@ export default function Index() {
       void fetchAnswer();
     }
   }, [courseId]);
+  const xLabels = useMemo(
+    () => ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'],
+    []
+  );
+  const { heightLightPercent, yData } = useMemo(() => {
+    const percent = (grade?.avg ?? 0) / 10;
+    return {
+      heightLightPercent: percent > 4 ? percent - 3 : 0,
+      yData: grade?.grades.map((item) => item.total_grades?.length ?? 0),
+    };
+  }, [grade]);
   if (!course || !grade) {
     return <Text>请先确定已签约成绩共享计划</Text>; // 数据加载中
   }
-
-  const xLabels = ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'];
-
-  const avgScore = grade.avg;
-  const heightLightIndex = Math.floor(avgScore / 10) - 4; // 假设 0-40 开始对应 index 0，每个区间跨度 10
-  // 处理 y 轴的数据，确保它们在 0 到 100 之间
-  const yData = grade?.grades?.flatMap((g) =>
-    g?.total_grades?.map((score) => score ?? 0)
-  );
-  // 计算高亮百分比
-  const heightLightPercent = heightLightIndex / xLabels.length;
-
   const featuresList =
     course.features && Array.isArray(course.features) ? course.features : [];
 
@@ -170,13 +169,13 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
-      <View className="h-1/3 w-5/6 pt-1.5">
+      <View className="h-1/3 pt-1.5">
         <LineChart
-          className="text-center"
+          className="mx-auto text-center"
           data={yData}
           xLabels={xLabels}
-          heightLightPercent={heightLightPercent}
-          title={`平均分: ${avgScore}`}
+          heightLightPercent={heightLightPercent ?? 0}
+          title={`平均分: ${grade?.avg.toFixed(1)}`}
         />
       </View>
       <View>
@@ -204,6 +203,11 @@ export default function Index() {
           >
             全部&gt;
           </View>
+        )}
+        {questionlist.length === 0 && (
+          <Text className="mr-auto flex items-center justify-center">
+            暂无内容敬请期待
+          </Text>
         )}
       </View>
       <View>
