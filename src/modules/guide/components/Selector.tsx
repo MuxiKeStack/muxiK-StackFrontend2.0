@@ -17,22 +17,30 @@ interface SelectorProps {
   children: React.ReactNode;
 }
 
-const Times = [
-  [
-    { label: '全部', value: '全部' },
-    { label: '2022', value: '2022' },
-    { label: '2023', value: '2023' },
-    { label: '2024', value: '2024' },
-    { label: '2025', value: '2025' },
-    { label: '2026', value: '2026' },
-  ],
-  [
-    { label: '全部', value: '全部' },
-    { label: '第一学期', value: '第一学期' },
-    { label: '第二学期', value: '第二学期' },
-    { label: '第三学期', value: '第三学期' },
-  ],
-];
+const Times = () => {
+  const startYear = 2022;
+  const date = new Date();
+  const currentYear =
+    date.getMonth() + 1 > 8 ? date.getFullYear() : date.getFullYear() - 1;
+
+  return [
+    [
+      { label: '全部', value: '全部' },
+      ...Array(currentYear - startYear + 1)
+        .fill(null)
+        .map((_, index) => ({
+          label: `${startYear + index}`,
+          value: `${startYear + index}`,
+        })),
+    ],
+    [
+      { label: '全部', value: '全部' },
+      { label: '第一学期', value: '第一学期' },
+      { label: '第二学期', value: '第二学期' },
+      { label: '第三学期', value: '第三学期' },
+    ],
+  ];
+};
 
 const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen }) => (
   <View className="flex w-1/3 flex-col gap-2">
@@ -74,7 +82,7 @@ const Selector: React.FC<SelectorProps> = memo(({ children }) => {
             style={{ marginBottom: '15vh' }}
             defaultValue={['全部', '全部']}
             title="选择学年和学期"
-            columns={Times}
+            columns={Times()}
             onConfirm={(value) => {
               setSelection({ year: value[0], term: value[1] });
               setIsOpen(false);
