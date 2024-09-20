@@ -7,7 +7,7 @@ import './index.scss';
 interface FeedbackProps {}
 
 const Feedback: React.FC<FeedbackProps> = React.memo(() => {
-  const copyText = '799651462';
+  const copyText = '764752182';
 
   const handleCopy = () => {
     void Taro.setClipboardData({
@@ -37,7 +37,7 @@ const Feedback: React.FC<FeedbackProps> = React.memo(() => {
         maxlength={500}
       />
       <View className="flex w-[90%] items-center justify-between">
-        <View className="text-sm text-[#646464]">课栈交流群：799651462</View>
+        <View className="text-sm text-[#646464]">课栈交流群：764752182</View>
         <View className="text-sm text-orange-400 underline" onClick={handleCopy}>
           点击复制
         </View>
