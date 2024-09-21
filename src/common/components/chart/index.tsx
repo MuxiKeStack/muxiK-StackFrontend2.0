@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+// eslint-disable-next-line simple-import-sort/imports
 import { Canvas } from '@tarojs/components';
 import Taro, { CanvasContext, Canvas as CanvasInterface } from '@tarojs/taro';
 import React, { CSSProperties, useEffect, useState } from 'react';
