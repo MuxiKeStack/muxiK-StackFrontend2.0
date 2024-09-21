@@ -46,7 +46,7 @@
     "@taroify/core": "^0.4.0-alpha.0",
     "@tarojs/components": "4.0.5",
     "@tarojs/components-advanced": "^4.0.5",
-    "@tarojs/helper": "3.6.35",
+    "@tarojs/helper": "4.0.5",
     "@tarojs/plugin-framework-react": "3.6.35",
     "@tarojs/plugin-platform-alipay": "4.0.5",
     "@tarojs/plugin-platform-h5": "4.0.5",

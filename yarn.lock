@@ -11789,7 +11789,7 @@ __metadata:
     "@tarojs/cli": "npm:4.0.5"
     "@tarojs/components": "npm:4.0.5"
     "@tarojs/components-advanced": "npm:^4.0.5"
-    "@tarojs/helper": "npm:3.6.35"
+    "@tarojs/helper": "npm:4.0.5"
     "@tarojs/plugin-framework-react": "npm:3.6.35"
     "@tarojs/plugin-platform-alipay": "npm:4.0.5"
     "@tarojs/plugin-platform-h5": "npm:4.0.5"
