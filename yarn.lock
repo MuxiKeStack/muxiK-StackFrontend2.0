@@ -3292,6 +3292,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/plugin-platform-alipay@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/plugin-platform-alipay@npm:4.0.5"
+  peerDependencies:
+    "@tarojs/service": 4.0.5
+    "@tarojs/shared": 4.0.5
+  checksum: 10c0/c50a87119e03862e422ead47a3839289d97cac8b39fecb4efa57ba2a0478e5dfad5e259d65b33b373458e6bfd4e8d6d1e4e80cff9aedc5fea51e9ed19c236317
+  languageName: node
+  linkType: hard
+
 "@tarojs/plugin-platform-h5@npm:4.0.5":
   version: 4.0.5
   resolution: "@tarojs/plugin-platform-h5@npm:4.0.5"
@@ -3323,6 +3333,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/plugin-platform-jd@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/plugin-platform-jd@npm:4.0.5"
+  peerDependencies:
+    "@tarojs/service": 4.0.5
+    "@tarojs/shared": 4.0.5
+  checksum: 10c0/23fde2b3da52106f4b238e00b0a5848915f2f60942f9b2d4da3c742f2f89437f7bc200fc8764961b044622d20a00e28a1b0951cba621b26f9123ac4a8fef54df
+  languageName: node
+  linkType: hard
+
 "@tarojs/plugin-platform-qq@npm:3.6.35":
   version: 3.6.35
   resolution: "@tarojs/plugin-platform-qq@npm:3.6.35"
@@ -3332,6 +3352,18 @@ __metadata:
   peerDependencies:
     "@tarojs/shared": ~3.6.35
   checksum: 10c0/91aa12a4f1796d3310abdd179916d91a041bc64b746940e3019a230b413dc7d90154e8eb1e0864b8d5c80a8e1b5f3cc8e61aec82b95fdd8fbcf10aa79fd944ee
+  languageName: node
+  linkType: hard
+
+"@tarojs/plugin-platform-qq@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/plugin-platform-qq@npm:4.0.5"
+  dependencies:
+    "@tarojs/plugin-platform-weapp": "npm:4.0.5"
+  peerDependencies:
+    "@tarojs/plugin-platform-weapp": 4.0.5
+    "@tarojs/shared": 4.0.5
+  checksum: 10c0/5e2409e2dada11339c406cf8be8bb744af380caf84bc960868c42cc501a37220638a4fbb74b4db9aa749e0b9e2b739ff41511f99cfe86504807ef55f9fa2c5aa
   languageName: node
   linkType: hard
 
@@ -12684,10 +12716,10 @@ __metadata:
     "@tarojs/components-advanced": "npm:^4.0.5"
     "@tarojs/helper": "npm:3.6.35"
     "@tarojs/plugin-framework-react": "npm:3.6.35"
-    "@tarojs/plugin-platform-alipay": "npm:3.6.35"
+    "@tarojs/plugin-platform-alipay": "npm:4.0.5"
     "@tarojs/plugin-platform-h5": "npm:4.0.5"
-    "@tarojs/plugin-platform-jd": "npm:3.6.35"
-    "@tarojs/plugin-platform-qq": "npm:3.6.35"
+    "@tarojs/plugin-platform-jd": "npm:4.0.5"
+    "@tarojs/plugin-platform-qq": "npm:4.0.5"
     "@tarojs/plugin-platform-swan": "npm:4.0.5"
     "@tarojs/plugin-platform-tt": "npm:4.0.5"
     "@tarojs/plugin-platform-weapp": "npm:4.0.5"
