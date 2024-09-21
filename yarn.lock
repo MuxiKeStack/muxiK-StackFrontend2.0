@@ -3220,31 +3220,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/plugin-framework-react@npm:3.6.35":
-  version: 3.6.35
-  resolution: "@tarojs/plugin-framework-react@npm:3.6.35"
+"@tarojs/plugin-framework-react@npm:4.0.5":
+  version: 4.0.5
+  resolution: "@tarojs/plugin-framework-react@npm:4.0.5"
   dependencies:
-    "@tarojs/helper": "npm:3.6.35"
-    "@tarojs/service": "npm:3.6.35"
-    acorn: "npm:^8.0.4"
-    acorn-walk: "npm:^8.0.0"
+    acorn: "npm:^8.11.3"
+    acorn-walk: "npm:^8.3.2"
     lodash: "npm:^4.17.21"
+    tslib: "npm:^2.6.2"
   peerDependencies:
-    "@tarojs/runtime": ~3.6.35
-    "@tarojs/shared": ~3.6.35
-    react: ">=17"
+    "@pmmmwh/react-refresh-webpack-plugin": "*"
+    "@preact/preset-vite": ^2
+    "@prefresh/webpack": ^4
+    "@tarojs/helper": 4.0.5
+    "@tarojs/runtime": 4.0.5
+    "@tarojs/shared": 4.0.5
+    "@vitejs/plugin-react": ^4
+    preact: ^10
+    react: ^18
+    vite: ^4
+    webpack: ^5
   peerDependenciesMeta:
     "@pmmmwh/react-refresh-webpack-plugin":
       optional: true
+    "@preact/preset-vite":
+      optional: true
     "@prefresh/webpack":
+      optional: true
+    "@vitejs/plugin-react":
       optional: true
     preact:
       optional: true
     react:
       optional: true
-    react-refresh:
+    vite:
       optional: true
-  checksum: 10c0/0c14c3f95a93dfd671cb9179cc2794a66d4a66cc8e6d49a24b1538a871cc61bb4894824c0d02397d3b2b53ac10cbe56fa845bb2cea446bad0024663d35a5c39a
+    webpack:
+      optional: true
+  checksum: 10c0/c2bcd76485775dae0b4120b36753176d07d50bbf9c04c02cbcc2a13dff666dbb6a8e0f5f6d63bc1f1f844d00d340df7d2b49886fc745db5e2b8f0e6ca1158231
   languageName: node
   linkType: hard
 
@@ -4669,7 +4682,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.0.4, acorn@npm:^8.1.0, acorn@npm:^8.11.0, acorn@npm:^8.11.3, acorn@npm:^8.12.1, acorn@npm:^8.4.1, acorn@npm:^8.7.0, acorn@npm:^8.7.1, acorn@npm:^8.8.2, acorn@npm:^8.9.0":
+"acorn-walk@npm:^8.3.2":
+  version: 8.3.4
+  resolution: "acorn-walk@npm:8.3.4"
+  dependencies:
+    acorn: "npm:^8.11.0"
+  checksum: 10c0/76537ac5fb2c37a64560feaf3342023dadc086c46da57da363e64c6148dc21b57d49ace26f949e225063acb6fb441eabffd89f7a3066de5ad37ab3e328927c62
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^8.1.0, acorn@npm:^8.11.0, acorn@npm:^8.11.3, acorn@npm:^8.12.1, acorn@npm:^8.4.1, acorn@npm:^8.7.0, acorn@npm:^8.7.1, acorn@npm:^8.8.2, acorn@npm:^8.9.0":
   version: 8.12.1
   resolution: "acorn@npm:8.12.1"
   bin:
@@ -11790,7 +11812,7 @@ __metadata:
     "@tarojs/components": "npm:4.0.5"
     "@tarojs/components-advanced": "npm:^4.0.5"
     "@tarojs/helper": "npm:4.0.5"
-    "@tarojs/plugin-framework-react": "npm:3.6.35"
+    "@tarojs/plugin-framework-react": "npm:4.0.5"
     "@tarojs/plugin-platform-alipay": "npm:4.0.5"
     "@tarojs/plugin-platform-h5": "npm:4.0.5"
     "@tarojs/plugin-platform-jd": "npm:4.0.5"
