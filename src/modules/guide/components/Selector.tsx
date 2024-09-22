@@ -1,7 +1,7 @@
 import { ConfigProvider, Picker, Popup } from '@taroify/core';
 import { ArrowDown } from '@taroify/icons';
 import { Text, View } from '@tarojs/components';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 import uniqueKeyUtil from '@/common/utils/keyGen';
 
@@ -14,6 +14,10 @@ interface SelectProps {
 }
 
 interface SelectorProps {
+  selection: { year: string; term: string };
+  isOpen: boolean;
+  setSelection: React.Dispatch<React.SetStateAction<{ year: string; term: string }>>;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   children: React.ReactNode;
 }
 
@@ -55,14 +59,8 @@ const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen }) => (
   </View>
 ));
 
-const Selector: React.FC<SelectorProps> = memo(({ children }) => {
-  const [selection, setSelection] = useState<{ year: string; term: string }>({
-    year: '全部',
-    term: '全部',
-  });
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
+const Selector: React.FC<SelectorProps> = memo(
+  ({ selection, isOpen, setSelection, setIsOpen, children }) => (
     <>
       <View className="flex w-full items-center justify-between px-2">
         {['学年', '学期'].map((item: SelectType) => (
@@ -92,7 +90,7 @@ const Selector: React.FC<SelectorProps> = memo(({ children }) => {
         </ConfigProvider>
       </Popup>
     </>
-  );
-});
+  )
+);
 
 export default Selector;
