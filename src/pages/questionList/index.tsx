@@ -1,11 +1,12 @@
 // import React from 'react';
-import { View } from '@tarojs/components';
-import { useEffect, useState } from 'react';
-
 import { Course } from '@/common/assets/types';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionListComponent from '@/common/components/QuestionListComponent/QuestionListComponent';
 import { get } from '@/common/utils/fetch';
+import { Button, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { useEffect, useState } from 'react';
+import './index.scss';
 
 interface IQuestion {
   id: number;
@@ -29,7 +30,18 @@ interface IQuestion {
 const App = () => {
   const [course, setCourse] = useState<Course | null>(null);
   const [questions, setQuestions] = useState<IQuestion[] | null>(null);
-  const courseId = 2347; //先用概率统计A来调试吧
+  // const courseId = 2347; //先用概率统计A来调试吧
+  const [courseId, setCourseId] = useState<string | null>(null);
+  useEffect(() => {
+    const getParams = () => {
+      const instance = Taro.getCurrentInstance();
+      const params = instance?.router?.params || {};
+
+      if (params.course_id) setCourseId(params.course_id);
+    };
+
+    getParams();
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/require-await
@@ -70,6 +82,12 @@ const App = () => {
     if (courseId) void getQuestionList().then((r) => console.log(r));
   }, [courseId]);
 
+  const handleAsk = () => {
+    void Taro.navigateTo({
+      url: `/pages/publishQuestion/index?course_id=${courseId}`,
+    });
+  };
+
   return (
     <View>
       <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
@@ -77,6 +95,9 @@ const App = () => {
         questions.map((question, index) => (
           <QuestionListComponent key={index} question={question} />
         ))}
+      <Button className="btn" onClick={handleAsk}>
+        我也要提问
+      </Button>
     </View>
   );
 };

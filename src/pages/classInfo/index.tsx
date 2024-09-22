@@ -177,7 +177,9 @@ export default function Index() {
         </>
         <View
           onClick={() => {
-            void Taro.navigateTo({ url: '/pages/questionInfo/index' });
+            void Taro.navigateTo({
+              url: `/pages/questionList/index?course_id=${courseId}`,
+            });
           }}
           className="text-right"
         >
