@@ -15,7 +15,7 @@ import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
-import { GradeChart } from '@/common/types/userTypes';
+import { GradeChart, WebQuestionVo } from '@/common/types/userTypes';
 import { get } from '@/common/utils/fetch';
 
 const coursePropertyMap = {
@@ -43,7 +43,7 @@ export default function Index() {
   const [comments, setComments] = useState<CommentInfoType[]>([]);
   const [grade, setGrade] = useState<GradeChart>();
   const [questionNum, setQuestionNum] = useState<number>(0);
-  //const [questionlist,setQuestionlist] = useState<>([]);
+  const [questionlist, setQuestionlist] = useState<WebQuestionVo[]>([]);
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
@@ -113,9 +113,24 @@ export default function Index() {
         console.error(e);
       }
     };
+    const fetchAnswer = async () => {
+      try {
+        await get(
+          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=&limit=`,
+          true
+        ).then((res) => {
+          console.log(res);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setQuestionlist(res.data);
+        });
+      } catch (e) {
+        console.error('Failed to fetch course data:', e);
+      }
+    };
     if (courseId) {
       void fetchGrades();
       void getNumData();
+      void fetchAnswer();
     }
   }, [courseId]);
   const xLabels = useMemo(
@@ -132,7 +147,6 @@ export default function Index() {
   if (!course || !grade) {
     return <Text>请先确定已签约成绩共享计划</Text>; // 数据加载中
   }
-
   const featuresList =
     course.features && Array.isArray(course.features) ? course.features : [];
 
@@ -171,23 +185,33 @@ export default function Index() {
           </View>
         </View>
         <>
-          <AnswerToStudent></AnswerToStudent>
-          <AnswerToStudent></AnswerToStudent>
-          <AnswerToStudent></AnswerToStudent>
+          {questionlist &&
+            questionlist.map((question) => (
+              <AnswerToStudent
+                content={question.content}
+                key={question.id}
+                preview_answers={question.preview_answers}
+              />
+            ))}
         </>
-        <View
-          onClick={() => {
-            void Taro.navigateTo({
-              url: `/pages/questionList/index?course_id=${courseId}`,
-            });
-          }}
-          className="text-right"
-        >
-          全部&gt;
-        </View>
+        {questionlist.length > 0 && (
+          <View
+            onClick={() => {
+              void Taro.navigateTo({ url: '/pages/questionInfo/index' });
+            }}
+            className="text-right"
+          >
+            全部&gt;
+          </View>
+        )}
+        {questionlist.length === 0 && (
+          <Text className="mr-auto flex items-center justify-center">
+            暂无内容敬请期待
+          </Text>
+        )}
       </View>
       <View>
-        <View className="line-container pt-2.5 text-center text-xl">最新评论</View>
+        <View className="line-container pt-5 text-center text-xl">最新评论</View>
       </View>
       {comments &&
         comments.map((comment) => (
