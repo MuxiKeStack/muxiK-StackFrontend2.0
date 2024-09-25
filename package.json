@@ -46,19 +46,11 @@
     "@taroify/core": "^0.4.0-alpha.0",
     "@tarojs/components": "4.0.5",
     "@tarojs/components-advanced": "^4.0.5",
-<<<<<<< HEAD
-    "@tarojs/helper": "3.6.34",
-    "@tarojs/plugin-framework-react": "4.0.5",
-    "@tarojs/plugin-platform-alipay": "3.6.34",
-    "@tarojs/plugin-platform-h5": "4.0.5",
-    "@tarojs/plugin-platform-jd": "3.6.34",
-=======
     "@tarojs/helper": "4.0.5",
     "@tarojs/plugin-framework-react": "4.0.5",
     "@tarojs/plugin-platform-alipay": "4.0.5",
     "@tarojs/plugin-platform-h5": "4.0.5",
     "@tarojs/plugin-platform-jd": "4.0.5",
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
     "@tarojs/plugin-platform-qq": "4.0.5",
     "@tarojs/plugin-platform-swan": "4.0.5",
     "@tarojs/plugin-platform-tt": "4.0.5",
@@ -92,15 +84,9 @@
     "@types/react": "^18.3.8",
     "@types/sass": "1.45.0",
     "@types/webpack-env": "^1.18.5",
-<<<<<<< HEAD
-    "@typescript-eslint/eslint-plugin": "^7.17.0",
-    "@typescript-eslint/parser": "^8.6.0",
-    "autoprefixer": "^10.4.19",
-=======
     "@typescript-eslint/eslint-plugin": "^8.6.0",
     "@typescript-eslint/parser": "^8.6.0",
     "autoprefixer": "^10.4.20",
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
     "babel-plugin-import": "^1.13.8",
     "babel-preset-taro": "3.6.35",
     "cache-loader": "^4.1.0",

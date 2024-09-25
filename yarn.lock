@@ -3007,44 +3007,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tarojs/helper@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/helper@npm:3.6.34"
-  dependencies:
-    "@babel/core": "npm:^7.14.5"
-    "@babel/parser": "npm:^7.14.5"
-    "@babel/plugin-proposal-decorators": "npm:^7.14.5"
-    "@babel/plugin-proposal-object-rest-spread": "npm:^7.14.5"
-    "@babel/plugin-transform-runtime": "npm:^7.14.5"
-    "@babel/preset-env": "npm:^7.14.5"
-    "@babel/preset-typescript": "npm:^7.14.5"
-    "@babel/register": "npm:^7.14.5"
-    "@babel/runtime": "npm:^7.14.5"
-    "@babel/traverse": "npm:^7.14.5"
-    "@swc/core": "npm:1.3.96"
-    "@swc/register": "npm:0.1.10"
-    ansi-escapes: "npm:^4.3.2"
-    chalk: "npm:3.0.0"
-    chokidar: "npm:^3.3.1"
-    cross-spawn: "npm:^7.0.3"
-    debug: "npm:4.3.4"
-    dotenv: "npm:^16.0.3"
-    dotenv-expand: "npm:^9.0.0"
-    esbuild: "npm:~0.19.5"
-    find-yarn-workspace-root: "npm:2.0.0"
-    fs-extra: "npm:^8.0.1"
-    lodash: "npm:^4.17.21"
-    require-from-string: "npm:^2.0.2"
-    resolve: "npm:^1.22.0"
-    supports-hyperlinks: "npm:^2.2.0"
-    yauzl: "npm:2.10.0"
-  checksum: 10c0/0a24e9f772e5b9046367716c421ac29c675cdfec3f0efba3571e501318d8b30d30945ac458b5a97025fafa5d317c74d816bbf8cc200bbe655df9f92725728203
-  languageName: node
-  linkType: hard
-
-=======
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
 "@tarojs/helper@npm:3.6.35":
   version: 3.6.35
   resolution: "@tarojs/helper@npm:3.6.35"
@@ -3291,32 +3253,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tarojs/plugin-platform-jd@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/plugin-platform-jd@npm:3.6.34"
-  dependencies:
-    "@tarojs/service": "npm:3.6.34"
-    "@tarojs/shared": "npm:3.6.34"
-  checksum: 10c0/02b0cdc2d1f9829e5adbac6d121b050fada8c278cefc7670ad0d713f6c9fb35e0c36b114dabed93cab885441f9010632d03cfc9b2e1dfcc8ac6d2852918ee6e2
-  languageName: node
-  linkType: hard
-
-"@tarojs/plugin-platform-jd@npm:3.6.35":
-  version: 3.6.35
-  resolution: "@tarojs/plugin-platform-jd@npm:3.6.35"
-  dependencies:
-    "@tarojs/components": "npm:3.6.35"
-    "@tarojs/service": "npm:3.6.35"
-    "@tarojs/shared": "npm:3.6.35"
-  checksum: 10c0/21937b6a2fdc0dc15cb2c35fdc1a614a22b92b86512a773fa9a8023b1b519ef66a11e4840bfba4f9d4cc2c525a84c72fa82c17e8bf95e6a0e6f987e8b7e9498e
-  languageName: node
-  linkType: hard
-
-"@tarojs/plugin-platform-qq@npm:3.6.35":
-  version: 3.6.35
-  resolution: "@tarojs/plugin-platform-qq@npm:3.6.35"
-=======
 "@tarojs/plugin-platform-jd@npm:4.0.5":
   version: 4.0.5
   resolution: "@tarojs/plugin-platform-jd@npm:4.0.5"
@@ -3330,42 +3266,12 @@ __metadata:
 "@tarojs/plugin-platform-qq@npm:4.0.5":
   version: 4.0.5
   resolution: "@tarojs/plugin-platform-qq@npm:4.0.5"
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
-  dependencies:
-    "@tarojs/plugin-platform-weapp": "npm:4.0.5"
-  peerDependencies:
-<<<<<<< HEAD
-    "@tarojs/shared": ~3.6.35
-  checksum: 10c0/91aa12a4f1796d3310abdd179916d91a041bc64b746940e3019a230b413dc7d90154e8eb1e0864b8d5c80a8e1b5f3cc8e61aec82b95fdd8fbcf10aa79fd944ee
-  languageName: node
-  linkType: hard
-
-"@tarojs/plugin-platform-qq@npm:4.0.5":
-  version: 4.0.5
-  resolution: "@tarojs/plugin-platform-qq@npm:4.0.5"
   dependencies:
     "@tarojs/plugin-platform-weapp": "npm:4.0.5"
   peerDependencies:
     "@tarojs/plugin-platform-weapp": 4.0.5
     "@tarojs/shared": 4.0.5
   checksum: 10c0/5e2409e2dada11339c406cf8be8bb744af380caf84bc960868c42cc501a37220638a4fbb74b4db9aa749e0b9e2b739ff41511f99cfe86504807ef55f9fa2c5aa
-  languageName: node
-  linkType: hard
-
-"@tarojs/plugin-platform-swan@npm:3.6.35":
-  version: 3.6.35
-  resolution: "@tarojs/plugin-platform-swan@npm:3.6.35"
-  dependencies:
-    "@tarojs/service": "npm:3.6.35"
-  peerDependencies:
-    "@tarojs/components": ~3.6.35
-    "@tarojs/shared": ~3.6.35
-  checksum: 10c0/5aac8eebcb688ce8461c7e1efe97b890e5f2c9e81790d5a863419a0b4faf92f517c290b7fda9b9af4fe4c936189a7efb9c9484f088d9ec5f14eea621b0021467
-=======
-    "@tarojs/plugin-platform-weapp": 4.0.5
-    "@tarojs/shared": 4.0.5
-  checksum: 10c0/5e2409e2dada11339c406cf8be8bb744af380caf84bc960868c42cc501a37220638a4fbb74b4db9aa749e0b9e2b739ff41511f99cfe86504807ef55f9fa2c5aa
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
   languageName: node
   linkType: hard
 
@@ -3389,21 +3295,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tarojs/plugin-platform-weapp@npm:3.6.35":
-  version: 3.6.35
-  resolution: "@tarojs/plugin-platform-weapp@npm:3.6.35"
-  dependencies:
-    "@tarojs/service": "npm:3.6.35"
-  peerDependencies:
-    "@tarojs/components": ~3.6.35
-    "@tarojs/shared": ~3.6.35
-  checksum: 10c0/4bcef948f9402fb323156507baa1202f117f44669a91fc7d5df600fe755f880b93a9c3720dc705b28529f7b51210a7460f0361f85675047e9ad7fb690d7bbee0
-  languageName: node
-  linkType: hard
-
-=======
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
 "@tarojs/plugin-platform-weapp@npm:4.0.5":
   version: 4.0.5
   resolution: "@tarojs/plugin-platform-weapp@npm:4.0.5"
@@ -3466,45 +3357,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@tarojs/service@npm:3.6.34":
-  version: 3.6.34
-  resolution: "@tarojs/service@npm:3.6.34"
-  dependencies:
-    "@tarojs/helper": "npm:3.6.34"
-    joi: "npm:^17.6.0"
-    lodash: "npm:^4.17.21"
-    ora: "npm:^5.0.0"
-    resolve: "npm:^1.22.0"
-    tapable: "npm:^1.1.3"
-    webpack-merge: "npm:^4.2.2"
-  peerDependencies:
-    "@tarojs/shared": ~3.6.34
-    "@tarojs/taro": ~3.6.34
-  checksum: 10c0/31f5e22aa457ae2ad70ced5b8f1b4dba5073b5964c3b3e32528ceeea8c6d8f69939e5b66752b9842aad7fdf9383b7e777c4ce5fa1292522c1a85f0ac0ff49c49
-  languageName: node
-  linkType: hard
-
-"@tarojs/service@npm:3.6.35":
-  version: 3.6.35
-  resolution: "@tarojs/service@npm:3.6.35"
-  dependencies:
-    "@tarojs/helper": "npm:3.6.35"
-    joi: "npm:^17.6.0"
-    lodash: "npm:^4.17.21"
-    ora: "npm:^5.0.0"
-    resolve: "npm:^1.22.0"
-    tapable: "npm:^1.1.3"
-    webpack-merge: "npm:^4.2.2"
-  peerDependencies:
-    "@tarojs/shared": ~3.6.35
-    "@tarojs/taro": ~3.6.35
-  checksum: 10c0/89c3e77d6c4fb05ab3c4fea53fcf00176c7a1c6860ee5b96d9dde253593f6c05ecee891c5810873b546d06b6e90e9a2cf8426e3ef3159201d86a0943b4bb6b83
-  languageName: node
-  linkType: hard
-
-=======
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
 "@tarojs/service@npm:4.0.5":
   version: 4.0.5
   resolution: "@tarojs/service@npm:4.0.5"
@@ -4219,16 +4071,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/scope-manager@npm:8.6.0":
-  version: 8.6.0
-  resolution: "@typescript-eslint/scope-manager@npm:8.6.0"
-  dependencies:
-    "@typescript-eslint/types": "npm:8.6.0"
-    "@typescript-eslint/visitor-keys": "npm:8.6.0"
-  checksum: 10c0/37092ef70171c06854ac67ebfb2255063890c1c6133654e6b15b6adb6d2ab83de4feafd1599f4d02ed71a018226fcb3a389021758ec045e1904fb1798e90b4fe
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/type-utils@npm:6.21.0":
   version: 6.21.0
   resolution: "@typescript-eslint/type-utils@npm:6.21.0"
@@ -4275,13 +4117,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:8.6.0":
-  version: 8.6.0
-  resolution: "@typescript-eslint/types@npm:8.6.0"
-  checksum: 10c0/e7051d212252f7d1905b5527b211e335db4ec5bb1d3a52d73c8d2de6ddf5cbc981f2c92ca9ffcef35f7447bda635ea1ccce5f884ade7f243d14f2a254982c698
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/typescript-estree@npm:6.21.0":
   version: 6.21.0
   resolution: "@typescript-eslint/typescript-estree@npm:6.21.0"
@@ -4298,25 +4133,6 @@ __metadata:
     typescript:
       optional: true
   checksum: 10c0/af1438c60f080045ebb330155a8c9bb90db345d5069cdd5d01b67de502abb7449d6c75500519df829f913a6b3f490ade3e8215279b6bdc63d0fb0ae61034df5f
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/typescript-estree@npm:8.6.0":
-  version: 8.6.0
-  resolution: "@typescript-eslint/typescript-estree@npm:8.6.0"
-  dependencies:
-    "@typescript-eslint/types": "npm:8.6.0"
-    "@typescript-eslint/visitor-keys": "npm:8.6.0"
-    debug: "npm:^4.3.4"
-    fast-glob: "npm:^3.3.2"
-    is-glob: "npm:^4.0.3"
-    minimatch: "npm:^9.0.4"
-    semver: "npm:^7.6.0"
-    ts-api-utils: "npm:^1.3.0"
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 10c0/33ab8c03221a797865301f09d1d198c67f8b0e3dbf0d13e41f699dc2740242303a9fcfd7b38302cef318541fdedd832fd6e8ba34a5041a57e9114fa134045385
   languageName: node
   linkType: hard
 
@@ -4377,16 +4193,6 @@ __metadata:
     "@typescript-eslint/types": "npm:6.21.0"
     eslint-visitor-keys: "npm:^3.4.1"
   checksum: 10c0/7395f69739cfa1cb83c1fb2fad30afa2a814756367302fb4facd5893eff66abc807e8d8f63eba94ed3b0fe0c1c996ac9a1680bcbf0f83717acedc3f2bb724fbf
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/visitor-keys@npm:8.6.0":
-  version: 8.6.0
-  resolution: "@typescript-eslint/visitor-keys@npm:8.6.0"
-  dependencies:
-    "@typescript-eslint/types": "npm:8.6.0"
-    eslint-visitor-keys: "npm:^3.4.3"
-  checksum: 10c0/9bd5d5daee9de7e009fdd1b64b1eca685a699d1b2639373bc279c97e25e769fff56fffef708ef66a2b19bc8bb201d36daf9e7084f0e0872178bfcf9d923b41f3
   languageName: node
   linkType: hard
 
@@ -4653,11 +4459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"acorn@npm:^8.1.0, acorn@npm:^8.11.0, acorn@npm:^8.11.3, acorn@npm:^8.12.1, acorn@npm:^8.4.1, acorn@npm:^8.7.0, acorn@npm:^8.7.1, acorn@npm:^8.8.2, acorn@npm:^8.9.0":
-=======
 "acorn@npm:^8.11.0, acorn@npm:^8.11.3, acorn@npm:^8.12.1, acorn@npm:^8.4.1, acorn@npm:^8.7.0, acorn@npm:^8.7.1, acorn@npm:^8.8.2, acorn@npm:^8.9.0":
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
   version: 8.12.1
   resolution: "acorn@npm:8.12.1"
   bin:
@@ -11354,19 +11156,11 @@ __metadata:
     "@tarojs/cli": "npm:4.0.5"
     "@tarojs/components": "npm:4.0.5"
     "@tarojs/components-advanced": "npm:^4.0.5"
-<<<<<<< HEAD
-    "@tarojs/helper": "npm:3.6.34"
-    "@tarojs/plugin-framework-react": "npm:4.0.5"
-    "@tarojs/plugin-platform-alipay": "npm:3.6.34"
-    "@tarojs/plugin-platform-h5": "npm:4.0.5"
-    "@tarojs/plugin-platform-jd": "npm:3.6.34"
-=======
     "@tarojs/helper": "npm:4.0.5"
     "@tarojs/plugin-framework-react": "npm:4.0.5"
     "@tarojs/plugin-platform-alipay": "npm:4.0.5"
     "@tarojs/plugin-platform-h5": "npm:4.0.5"
     "@tarojs/plugin-platform-jd": "npm:4.0.5"
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
     "@tarojs/plugin-platform-qq": "npm:4.0.5"
     "@tarojs/plugin-platform-swan": "npm:4.0.5"
     "@tarojs/plugin-platform-tt": "npm:4.0.5"
@@ -11381,15 +11175,9 @@ __metadata:
     "@types/react": "npm:^18.3.8"
     "@types/sass": "npm:1.45.0"
     "@types/webpack-env": "npm:^1.18.5"
-<<<<<<< HEAD
-    "@typescript-eslint/eslint-plugin": "npm:^7.17.0"
-    "@typescript-eslint/parser": "npm:^8.6.0"
-    autoprefixer: "npm:^10.4.19"
-=======
     "@typescript-eslint/eslint-plugin": "npm:^8.6.0"
     "@typescript-eslint/parser": "npm:^8.6.0"
     autoprefixer: "npm:^10.4.20"
->>>>>>> 6711c00fb72d013457788d1ef4d78ce99c93bdb2
     babel-plugin-import: "npm:^1.13.8"
     babel-preset-taro: "npm:3.6.35"
     cache-loader: "npm:^4.1.0"
