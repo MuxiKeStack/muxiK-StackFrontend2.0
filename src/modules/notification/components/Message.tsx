@@ -3,7 +3,7 @@ import { memo } from 'react';
 
 import type { Message as MessageType } from './types';
 
-interface MessageProps extends MessageType {}
+type MessageProps = MessageType;
 
 const Message: React.FC<MessageProps> = memo(
   ({ username, avatar, eventType, description, comment, timestamp }) => (

@@ -51,6 +51,7 @@ export const fetchToQiniu = async (filepath) => {
           resolve(`https://${domain_name}/${JSON.parse(res.data)?.key}`);
         },
         fail: (err) => {
+          // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
           reject(err);
         },
       });

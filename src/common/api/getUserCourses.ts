@@ -10,6 +10,7 @@ export async function getUserCourses(year: string, term: string) {
           key: 'shortToken',
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           success: (res) => resolve(res.data),
+          // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
           fail: (err) => reject(err),
         });
       });

@@ -9,8 +9,6 @@ import './index.scss';
 import useActiveButtonStore, { ActiveButtonType } from '@/common/hooks/useActiveNav';
 import uniqueKeyUtil from '@/common/utils/keyGen';
 
-interface TabBarProps {}
-
 const TAB_LIST: Array<{ pagePath: string; name: string; icon?: string }> = [
   { pagePath: '/pages/main/index', name: 'Home', icon: 'streaming' },
   { pagePath: '/pages/guide/index', name: 'Guide', icon: 'download-cloud' },
@@ -19,7 +17,7 @@ const TAB_LIST: Array<{ pagePath: string; name: string; icon?: string }> = [
   { pagePath: '/pages/profile/index', name: 'Profile', icon: 'user' },
 ];
 
-const TabBar: React.FC<TabBarProps> = memo(() => {
+const TabBar: React.FC = memo(() => {
   const { activeButton, setActiveButton } = useActiveButtonStore();
 
   return (

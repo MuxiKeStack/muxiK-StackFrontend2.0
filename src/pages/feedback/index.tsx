@@ -4,9 +4,7 @@ import React from 'react';
 
 import './index.scss';
 
-interface FeedbackProps {}
-
-const Feedback: React.FC<FeedbackProps> = React.memo(() => {
+const Feedback: React.FC = React.memo(() => {
   const copyText = '764752182';
 
   const handleCopy = () => {
