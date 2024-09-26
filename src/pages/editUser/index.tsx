@@ -118,7 +118,7 @@ const EditUser: React.FC = () => {
       success: (res) => console.log(res),
       fail: (err) => console.log(err),
     });
-    void Taro.redirectTo({ url: '/pages/login/index' });
+    void Taro.reLaunch({ url: '/pages/login/index' });
   };
   return (
     <View>
