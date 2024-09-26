@@ -49,3 +49,7 @@ $ yarn dev:weapp
 上述文件皆以 ??? 许可授权
 
 > 详细之授权请参考 [LICENSE](LICENSE) 文件
+
+### 📄 内部文档
+
+项目进度和未来计划请参考 [飞书文档](https://muxi.feishu.cn/docx/Q1PwdIMH0opWwRxG8WccgeClnck?from=from_copylink)
