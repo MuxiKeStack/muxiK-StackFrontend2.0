@@ -60,7 +60,18 @@ const getCurrentDate = () => {
 export default function Index() {
   const [course, setCourse] = useState<Course | null>(null);
 
-  const courseId = 2347; //先用概率统计A来调试吧！
+  // const courseId = 2347; //先用概率统计A来调试吧！
+  const [courseId, setCourseId] = useState<string | null>(null);
+  useEffect(() => {
+    const getParams = () => {
+      const instance = Taro.getCurrentInstance();
+      const params = instance?.router?.params || {};
+
+      if (params.course_id) setCourseId(params.course_id);
+    };
+
+    getParams();
+  }, []);
 
   //用户个人身份信息
   const [avatarUrl, setAvatarUrl] = useState<string>('');
