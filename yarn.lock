@@ -3481,6 +3481,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/taro-loader@npm:4.0.6":
+  version: 4.0.6
+  resolution: "@tarojs/taro-loader@npm:4.0.6"
+  dependencies:
+    "@tarojs/helper": "npm:4.0.6"
+  peerDependencies:
+    webpack: 5.91.0
+  checksum: 10c0/cfddff492de3cd87d79210210ae6a1ee9049f8d1583de330c9b0fae3e6900caeaaba2ab8f5b9caae11a71b595cbae4c6dc0fad36e515c4e58249e0272b1ee8c0
+  languageName: node
+  linkType: hard
+
 "@tarojs/taro@npm:4.0.5":
   version: 4.0.5
   resolution: "@tarojs/taro@npm:4.0.5"
@@ -11281,7 +11292,7 @@ __metadata:
     "@tarojs/runtime": "npm:4.0.5"
     "@tarojs/shared": "npm:4.0.5"
     "@tarojs/taro": "npm:4.0.5"
-    "@tarojs/taro-loader": "npm:4.0.5"
+    "@tarojs/taro-loader": "npm:4.0.6"
     "@tarojs/webpack5-runner": "npm:4.0.5"
     "@types/node": "npm:^22.5.5"
     "@types/react": "npm:^18.3.8"
