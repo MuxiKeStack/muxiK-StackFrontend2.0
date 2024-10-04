@@ -92,7 +92,7 @@
     "cache-loader": "^4.1.0",
     "cssnano": "^7.0.6",
     "eslint": "^8.57.1",
-    "eslint-config-taro": "4.0.5",
+    "eslint-config-taro": "4.0.6",
     "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-react": "^7.36.1",
     "eslint-plugin-react-hooks": "^4.6.2",
