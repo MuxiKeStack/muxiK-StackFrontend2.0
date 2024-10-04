@@ -78,7 +78,7 @@
     "@babel/core": "^7.25.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@tarojs/cli": "4.0.6",
-    "@tarojs/taro-loader": "4.0.5",
+    "@tarojs/taro-loader": "4.0.6",
     "@tarojs/webpack5-runner": "4.0.5",
     "@types/node": "^22.5.5",
     "@types/react": "^18.3.8",
