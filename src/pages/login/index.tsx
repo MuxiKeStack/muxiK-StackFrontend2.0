@@ -1,110 +1,121 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
-/* eslint-disable no-console */
-/* eslint-disable import/first */
 import { Button, Checkbox, Image, Input, Text, View } from '@tarojs/components';
-import Taro, { useLoad } from '@tarojs/taro';
-import React, { useState } from 'react';
-
-import './index.scss';
+import Taro from '@tarojs/taro';
+import React, { useCallback, useState } from 'react';
 
 import handleLogin from '@/common/api/handleLogin';
-import iconLogo from '@/common/assets/img/login/logo.png';
-import top_background from '@/common/assets/img/login/top_background.png';
+import Icon from '@/common/assets/img/login/logo.png';
+import TopBackground from '@/common/assets/img/login/top_background.png';
 import { FloatingWindow } from '@/common/components';
 
-type LoginProps = object;
+type UserData = {
+  studentId: string;
+  password: string;
+  isAgreeTerms: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  userInfo: any;
+};
 
-const Login: React.FC<LoginProps> = () => {
-  useLoad(() => {
-    console.log('Page loaded.');
+const Login: React.FC = () => {
+  const [isPopperOpened, setIsPopperOpened] = useState<boolean>(false);
+  const [userData, setUserData] = useState<UserData>({
+    studentId: '',
+    password: '',
+    isAgreeTerms: false,
+    userInfo: null,
   });
 
-  const [floatingWindowOpenning, setFloatingWindowOpenning] = useState(false);
-  const [studentId, setStudentId] = useState('');
-  const [password, setPassword] = useState('');
-  const [agreeTerms, setAgreeTerms] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
-  const handleGetUserProfile = () => {
+  const handleGetUserProfile = useCallback(() => {
     void Taro.getUserProfile({
       desc: '用于完善用户资料',
       success: (res) => {
-        console.log('用户信息:', res.userInfo);
-
-        // @ts-expect-error
-        setUserInfo(res.userInfo);
+        setUserData({ ...userData, userInfo: res.userInfo });
         Taro.setStorageSync('userInfo', res.userInfo);
       },
       fail: (err) => {
+        // eslint-disable-next-line no-console
         console.error('获取用户信息失败:', err);
       },
     });
-  };
+  }, [userData]);
 
-  const handleLoginClick = () => {
-    if (agreeTerms) {
-      if (!userInfo) {
+  const handleLoginClick = useCallback(() => {
+    if (userData.isAgreeTerms) {
+      if (!userData.userInfo) {
         handleGetUserProfile();
       }
-      void handleLogin({ student_id: studentId, password: password }).then((r) =>
-        console.log(r)
-      );
+      void handleLogin({
+        student_id: userData.studentId,
+        password: userData.password,
+      });
     } else {
       void Taro.showToast({
         icon: 'error',
         title: '请确认隐私条例',
       });
     }
-  };
+  }, [handleGetUserProfile, userData]);
 
   return (
-    <View className="login">
-      <Image src={top_background} className="login_top_background"></Image>
-      <View className="login_content">
-        <Image src={iconLogo} className="logo"></Image>
-        <View className="login_main">
-          <View className="login_main_text">
+    <View className="h-screen w-full">
+      <Image
+        src={TopBackground as string}
+        className="relative left-[-3vh] top-[-13vh] h-[50vh] w-[120%]"
+      ></Image>
+      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
+        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
+          <Image src={Icon as string} className="h-full w-full"></Image>
+        </View>
+        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
+          木犀课栈
+        </Text>
+        <View className="flex flex-col items-center">
+          <View className="flex w-full flex-col items-center gap-3 px-[5%]">
             <Input
-              className="login_input"
+              className="h-12 w-full rounded-l-full rounded-r-full bg-gray-100 px-5"
               placeholder="学号/昵称"
-              value={studentId}
-              onInput={(e) => setStudentId(e.detail.value)}
+              value={userData.studentId}
+              onInput={(e) => setUserData({ ...userData, studentId: e.detail.value })}
             ></Input>
             <Input
-              className="login_input"
+              className="h-12 w-full rounded-l-full rounded-r-full bg-gray-100 px-5"
               placeholder="密码"
-              value={password}
+              value={userData.password}
               password
-              onInput={(e) => setPassword(e.detail.value)}
+              onInput={(e) => setUserData({ ...userData, password: e.detail.value })}
             ></Input>
-            <Text className="login_link">Forget your password?</Text>
+            <Text className="text-sm text-gray-500">Forget your password?</Text>
           </View>
-          <View className="login_main_button">
-            <Button className="login_button" onClick={handleLoginClick}>
+          <View className="my-16 flex flex-col gap-2">
+            <Button
+              className="text-bold h-12 w-[90vw] rounded-l-full rounded-r-full border-none bg-[#ffd777] text-white"
+              onClick={handleLoginClick}
+            >
               学号登录
             </Button>
           </View>
         </View>
-        <View className="login_terms">
+        <View className="flex items-center gap-2">
           <Checkbox
+            className="-m-1"
             value=""
-            checked={agreeTerms}
-            onClick={() => setAgreeTerms(!agreeTerms)}
-            className="login_checkbox"
+            checked={userData.isAgreeTerms}
+            onClick={() =>
+              setUserData({ ...userData, isAgreeTerms: !userData.isAgreeTerms })
+            }
           ></Checkbox>
-          <Text className="login_terms_text">我已同意</Text>
-          <View
-            className="floating_window_switch"
-            onClick={() => setFloatingWindowOpenning(true)}
-          >
-            《木犀课栈隐私条例》
+          <View className="flex w-full items-center">
+            <Text className="text-sm">我已同意</Text>
+            <View
+              className="text-sm text-blue-500"
+              onClick={() => setIsPopperOpened(true)}
+            >
+              《木犀课栈隐私条例》
+            </View>
+            <Text className="text-sm">内的所有内容</Text>
           </View>
-          <Text className="login_terms_text">内的所有内容</Text>
         </View>
       </View>
-      {floatingWindowOpenning && <FloatingWindow />}
+      {isPopperOpened && <FloatingWindow />}
     </View>
   );
 };
