@@ -17,7 +17,7 @@ export default defineAppConfig({
     'pages/editUser/index',
     'pages/guide/index',
     'pages/shareGrades/index',
-    'pages/questionList/index',
+    // 'pages/questionList/index',
   ],
   subpackages: [
     {
