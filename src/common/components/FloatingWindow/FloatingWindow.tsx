@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import { ScrollView, View } from '@tarojs/components';
 import React from 'react';
 
