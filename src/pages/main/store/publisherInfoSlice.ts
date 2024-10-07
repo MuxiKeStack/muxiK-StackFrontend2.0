@@ -11,9 +11,11 @@ export const CreatePublisherSlice: StateCreator<
   PublisherInfoSlice
 > = (set, get, api) => ({
   publishers: {},
-  getPublishers(publisherId) {
-    const local = get().publishers[publisherId];
-    return local ? Promise.resolve(local) : get().fetchPublishers(publisherId);
+  async getPublishers(publisherId) {
+    let local = await Promise.resolve(get().publishers[publisherId]);
+    if (!local?.avatar) local = await get().fetchPublishers(publisherId);
+    console.log('kkk', get().publishers);
+    return local;
   },
   fetchPublishers(publisherId) {
     return fetchGet(`/users/${publisherId}/profile`).then(

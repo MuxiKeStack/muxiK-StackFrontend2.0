@@ -36,6 +36,11 @@ export type PublisherDetailsType = {
   /** id */
   id: number;
 };
+/* 对 comment 操作类型 */
+export enum COMMENT_ACTIONS {
+  LIKE = 1,
+  COMMENT = 2,
+}
 /** 评论 */
 export interface CommentInfoSlice {
   /** 评论列表 */
@@ -52,10 +57,14 @@ export interface CommentInfoSlice {
   loadMoreComments: () => Promise<void>;
   /** 刷新评论 */
   refershComments: () => Promise<void>;
+  /** 更新单条评论信息 */
+  updateCommentInfo: (currentId: number, action: COMMENT_ACTIONS) => void;
   /** 更新评论 */
   updateComments: (currentId: number) => Promise<void>;
   /** 修改类型 */
   changeType: (type: classType) => void;
+  /** 根据 id 获取 comment */
+  getComment: (id: number) => CommentInfo | undefined;
 }
 /** 评课人 */
 export interface PublisherInfoSlice {

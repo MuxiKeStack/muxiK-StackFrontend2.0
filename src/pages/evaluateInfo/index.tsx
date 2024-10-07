@@ -21,6 +21,8 @@ import CommentComponent from '@/common/components/CommentComponent/CommentCompon
 import { get, post } from '@/common/utils/fetch';
 
 import { CommentInfoType, Comment as CommentType } from '../../common/assets/types';
+import { useCourseStore } from '../main/store/store';
+import { COMMENT_ACTIONS } from '../main/store/types';
 
 export default function Index() {
   const [allComments, setAllComments] = useState<CommentType[]>([]);
@@ -32,7 +34,7 @@ export default function Index() {
   const [comment, setComment] = useState<CommentInfoType | null>(null); //获取课评信息
   // const biz_id = 1;
   const [biz_id, setBiz_id] = useState<number | null>(null);
-
+  const updateInfo = useCourseStore((state) => state.updateCommentInfo);
   useEffect(() => {
     const handleQuery = () => {
       const query = Taro.getCurrentInstance()?.router?.params; // 获取查询参数
@@ -102,13 +104,14 @@ export default function Index() {
           replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
       });
       console.log('评论发布成功');
-
+      updateInfo(biz_id ?? 1, COMMENT_ACTIONS.COMMENT);
       // 清空回复目标和输入框
       setReplyTo(null);
       setReplyContent('');
       setplaceholderContent('写下你的评论...');
-
       // 评论发布成功后，重新加载评论
+      //@ts-expect-error dont
+      setComment({ ...comment, total_oppose_count: comment?.total_oppose_count + 1 });
       setCommentsLoaded(false); // 先将commentsLoaded设为false，避免useEffect中的fetchComments不被调用
       const fetchComments = async () => {
         try {

@@ -5,7 +5,7 @@ import { StateCreator } from 'zustand';
 import { get as fetchGet } from '@/common/api/get';
 import { CommentInfo } from '@/common/assets/types';
 
-import { CommentInfoSlice, COURSE_TYPE, CourseInfoStore } from './types';
+import { COMMENT_ACTIONS, CommentInfoSlice, COURSE_TYPE, CourseInfoStore } from './types';
 
 export const CreateCommentInfo: StateCreator<
   CourseInfoStore,
@@ -26,9 +26,34 @@ export const CreateCommentInfo: StateCreator<
   async refershComments() {
     return await get().updateComments(0);
   },
+  getComment(id) {
+    const { classType, comments } = get();
+    console.log('comments', comments);
+    return comments[classType].find((item) => item.id === id);
+  },
   async loadMoreComments() {
     const { currentId, updateComments } = get();
     return await updateComments(currentId);
+  },
+  updateCommentInfo(currentId: number, action) {
+    const { comments, classType } = get();
+    const currentCourses = JSON.parse(
+      JSON.stringify(comments[classType])
+    ) as CommentInfo[];
+    const currentSelect = currentCourses.find((course) => course.id === currentId);
+    if (currentSelect) {
+      switch (action) {
+        case COMMENT_ACTIONS.COMMENT:
+          currentSelect.total_comment_count! += 1;
+          break;
+        case COMMENT_ACTIONS.LIKE:
+          currentSelect.total_support_count! += 1;
+          break;
+      }
+    }
+    set((state) => ({
+      comments: { ...state.comments, [classType]: currentCourses },
+    }));
   },
   async updateComments(currentId: number) {
     const { pageSize, classType, comments } = get();

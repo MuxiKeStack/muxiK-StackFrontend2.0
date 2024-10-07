@@ -1,12 +1,14 @@
 // import React from 'react';
-import { Course } from '@/common/assets/types';
-import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
-import QuestionListComponent from '@/common/components/QuestionListComponent/QuestionListComponent';
-import { get } from '@/common/utils/fetch';
 import { Button, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
+
 import './index.scss';
+
+import { Course } from '../../common/assets/types';
+import CourseInfo from '../../common/components/CourseInfo/CourseInfo';
+import QuestionListComponent from '../../common/components/QuestionListComponent/QuestionListComponent';
+import { get } from '../../common/utils/fetch';
 
 interface IQuestion {
   id: number;
