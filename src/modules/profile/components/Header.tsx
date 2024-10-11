@@ -6,7 +6,6 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 import { get } from '@/common/api/get';
 import { TopBackground } from '@/common/assets/img/personalPage';
 import { TitleButton } from '@/common/components';
-import type { ResponseLevel, ResponseUser } from '@/common/types/userTypes';
 
 const Header: React.FC = memo(() => {
   const [user, setUser] = useState<{

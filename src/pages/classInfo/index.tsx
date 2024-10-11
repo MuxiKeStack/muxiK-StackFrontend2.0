@@ -13,7 +13,6 @@ import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
-import { GradeChart, WebQuestionVo } from '@/common/types/userTypes';
 import { get } from '@/common/utils/fetch';
 
 const coursePropertyMap = {
