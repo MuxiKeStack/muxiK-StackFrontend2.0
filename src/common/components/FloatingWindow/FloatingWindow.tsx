@@ -1,84 +1,100 @@
-import { ScrollView, View } from '@tarojs/components';
+import { ScrollView, Text, View } from '@tarojs/components';
 import React from 'react';
 
 import './index.scss';
 
-type FloatingWindowProps = object;
-
-const FloatingWindow: React.FC<FloatingWindowProps> = () => {
+const FloatingWindow: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
     <View className="floating_window_background">
-      <ScrollView
-        className="floating_window_content"
-        scrollY
-        style={{ height: '70vh' }} // 确保内容可以滚动
-      >
-        <Page1 />
-        <Page2 />
-        <Page3 />
-        <Page4 />
+      <ScrollView className="floating_window_content" scrollY style={{ height: '70vh' }}>
+        <Content onClose={onClose} />
       </ScrollView>
     </View>
   );
 };
 
-const Page1 = () => {
+function Content({ onClose }: { onClose: () => void }) {
   return (
-    <View className="page">
-      <View>木犀课栈隐私条例</View>
-      作为华中师范大学学生自主运营的互联网技术团队，木犀一直高度重
-      视隐私保护、郑重对待相应责任，并已将隐私保护的要求融入日常业务活动流程。
-      希望您仔细阅读本条例，详细了解我们对信息的收集、使用方式，以便您更好地
-      了解我们的服务并作出适当的选择。若您使用木犀课栈的服务，即表示您认同我
-      们在本条例中所述内容。
-    </View>
-  );
-};
+    <>
+      <View className="mx-auto max-w-3xl rounded-md bg-white p-4 shadow-md">
+        {/* 头部区域 */}
+        <View className="relative mb-4 flex w-full items-center justify-center">
+          <Text
+            className="absolute right-0 m-1 border-none bg-transparent p-2 text-2xl font-bold text-gray-500 focus:outline-none"
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            onClick={onClose}
+          >
+            x
+          </Text>
+          <View className="text-center text-2xl font-bold text-gray-700">
+            木犀课栈隐私条例
+          </View>
+        </View>
 
-const Page2 = () => {
-  return (
-    <View className="page">
-      我们收集的信息
-      我们根据合法、正当、必要的原则，仅收集实现产品功能所必要的信息，并将竭力通过有效的信息安全技术及管理流程，防止您的信息泄露、损毁、丢失。
-      1、您在使用我们服务时主动提供的信息
-      （1）您在登录时填写的信息。木犀课栈将采用华中师范大学一站式门户的账号密码进行登录，以此获取您的课程信息。
-      （2）您在使用服务时填写的信息。例如您上传的头像。
-      （3）我们的部分服务可能需要您提供特定的个人敏感信息来实现特定功能。若您选择不提供该类信息，则可能无法正常使用服务中的特定功能，但不影响您使用服务中的其他功能。若您主动提供您的个人敏感信息，即表示您同意我们按本条例所述目的和方式来处理您的个人敏感信息。
-      2、我们在您使用服务时获取的信息
-      当您使用我们的服务时，我们可能会存储服务日志信息。例如搜索、查看的信息、服务故障信息等。
-    </View>
-  );
-};
+        {/* 内容部分 */}
+        <View className="bg-slate-0">
+          <p>
+            作为华中师范大学学生自主运营的互联网技术团队，木犀一直高度重视隐私保护、郑重对待相应责任，并已将隐私保护的要求融入日常业务活动流程。
+          </p>
 
-const Page3 = () => {
-  return (
-    <View className="page">
-      3、其他相关信息
-      （1）其他用户分享的信息中含有您的信息。例如，其他用户分享的截图中可能包含您的信息。
-      （2）从第三方合作伙伴获取的信息。例如，您使用QQ授权登录时，我们会获得您登录的名称、登录时间，方便您进行授权管理。请您仔细阅读第三方合作伙伴服务的用户协议或隐私政策。
-      我们如何使用收集的信息
-      我们严格遵守法律法规的规定及与用户的约定，将收集的信息用于以下用途。若我们超出以下用途使用您的信息，我们将再次向您进行说明，并征得您的同意。
-      1、向您提供服务
-      2、产品开发和服务优化。例如，当我们的系统发生故障时，我们会记录和分析系统故障时产生的信息，优化我们的服务。
-      3、为了确保服务的安全，帮助我们更好地了解我们应用程序的运行情况，我们可能记录相关信息，例如，您使用应用程序的频率、故障信息、总体使用情况、性能数据以及应用程序的来源。我们不会将我们存储在分析软件中的信息与您在应用程序中提供的个人身份信息相结合。
-      您分享的信息
-      您可以通过我们的服务与好友分享相关课程或评价信息。例如，在空间中公开分享课程评价和课表。
-      请注意，这其中可能包含您的个人身份信息、个人课程信息等敏感信息，请您谨慎考虑披露您的相关个人敏感信息，这些信息可能由其他用户或不受我们控制的非关联第三方独立保存。
-      我们可能向您发送的信息
-    </View>
-  );
-};
+          <p>
+            希望您仔细阅读本条例，详细了解我们对信息的收集、使用方式，以便您更好地了解我们的服务并作出适当的选择。若您使用木犀课栈的服务，即表示您认同我们在本条例中所述内容。
+          </p>
 
-const Page4 = () => {
-  return (
-    <View className="page">
-      1、信息推送：您在使用我们的服务时，我们会向您发送通知信息。
-      2、与服务有关的公告：我们可能在必要时（例如，因系统维护而暂停某一项服务时）向您发出与服务有关的公告。
-      联系我们 如您对本条例或其他相关事宜有疑问， 请通过QQ群：799651462与我们联系。
-      您也可以将问题发送至邮箱：i@muxistudio.com
-      我们将在验证您的用户身份后，尽快审核所涉问题并予以回复。
-    </View>
+          <h3 className="text-lg font-semibold text-gray-700">我们收集的信息</h3>
+
+          <p>
+            我们根据合法、正当、必要的原则，仅收集实现产品功能所必要的信息，并将竭力通过有效的信息安全技术及管理流程，防止您的信息泄露、损毁、丢失。
+          </p>
+
+          <h4 className="font-semibold text-gray-700">
+            1. 您在使用我们服务时主动提供的信息
+          </h4>
+          <ul className="ml-5 list-disc">
+            <li>
+              您在登录时填写的信息。木犀课栈将采用华中师范大学一站式门户的账号密码进行登录，以此获取您的课程信息。
+            </li>
+            <li>您在使用服务时填写的信息。例如您上传的头像。</li>
+            <li>
+              我们的部分服务可能需要您提供特定的个人敏感信息来实现特定功能。若您选择不提供该类信息，则可能无法正常使用服务中的特定功能，但不影响您使用服务中的其他功能。
+            </li>
+          </ul>
+
+          <h4 className="font-semibold text-gray-700">2. 我们在您使用服务时获取的信息</h4>
+          <p>
+            当您使用我们的服务时，我们可能会存储服务日志信息。例如搜索、查看的信息、服务故障信息等。
+          </p>
+
+          <h4 className="font-semibold text-gray-700">3. 其他相关信息</h4>
+          <ul className="ml-5 list-disc">
+            <li>
+              其他用户分享的信息中含有您的信息。例如，其他用户分享的截图中可能包含您的信息。
+            </li>
+            <li>
+              从第三方合作伙伴获取的信息。例如，您使用QQ授权登录时，我们会获得您登录的名称、登录时间，方便您进行授权管理。
+            </li>
+          </ul>
+
+          <h3 className="text-lg font-semibold text-gray-700">我们如何使用收集的信息</h3>
+          <ul className="ml-5 list-disc">
+            <li>向您提供服务。</li>
+            <li>产品开发和服务优化。</li>
+            <li>确保服务的安全，帮助我们更好地了解应用程序的运行情况。</li>
+          </ul>
+
+          <h3 className="text-lg font-semibold text-gray-700">您分享的信息</h3>
+          <p>
+            您可以通过我们的服务与好友分享相关课程或评价信息。请注意，这其中可能包含您的个人身份信息，请谨慎考虑披露。
+          </p>
+
+          <h3 className="text-lg font-semibold text-gray-700">联系我们</h3>
+          <p>
+            如您对本条例或其他相关事宜有疑问，请通过QQ群：799651462与我们联系，或发送邮件至：i@muxistudio.com。
+          </p>
+        </View>
+      </View>
+    </>
   );
-};
+}
 
 export default FloatingWindow;

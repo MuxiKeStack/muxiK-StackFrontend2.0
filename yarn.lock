@@ -3252,6 +3252,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/plugin-html@npm:^4.0.6":
+  version: 4.0.6
+  resolution: "@tarojs/plugin-html@npm:4.0.6"
+  peerDependencies:
+    "@tarojs/helper": 4.0.6
+    "@tarojs/runtime": 4.0.6
+    "@tarojs/shared": 4.0.6
+  checksum: 10c0/4b1e7b8135b9c3dfaa1d9472f60d6a95ac8ed5249c6860275a088b0f41c38b0cf4d247d3e9e68983dc236a5828d6b07043094fedadddba80a80dbd9fd2ccfc43
+  languageName: node
+  linkType: hard
+
 "@tarojs/plugin-platform-alipay@npm:4.0.5":
   version: 4.0.5
   resolution: "@tarojs/plugin-platform-alipay@npm:4.0.5"
@@ -11280,6 +11291,7 @@ __metadata:
     "@tarojs/components-advanced": "npm:^4.0.5"
     "@tarojs/helper": "npm:4.0.5"
     "@tarojs/plugin-framework-react": "npm:4.0.5"
+    "@tarojs/plugin-html": "npm:^4.0.6"
     "@tarojs/plugin-platform-alipay": "npm:4.0.5"
     "@tarojs/plugin-platform-h5": "npm:4.0.5"
     "@tarojs/plugin-platform-jd": "npm:4.0.5"

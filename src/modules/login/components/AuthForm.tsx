@@ -53,7 +53,30 @@ const AuthForm: React.FC = memo(() => {
       });
     }
   }, [handleGetUserProfile, userData]);
+  const handleLoginYouke = useCallback(() => {
+    if (userData.isAgreeTerms) {
+      void Taro.switchTab({
+        url: '/pages/main/index',
+      });
+      void Taro.setStorage({
+        key: 'shortToken',
+        data: ' ',
+      });
 
+      void Taro.setStorage({
+        key: 'longToken',
+        data: ' ',
+      });
+    } else {
+      void Taro.showToast({
+        icon: 'error',
+        title: '请确认隐私条例',
+      });
+    }
+  }, [userData.isAgreeTerms]);
+  const handleClosePopper = () => {
+    setIsPopperOpened(false); // 关闭浮动窗口
+  };
   return (
     <>
       <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
@@ -80,12 +103,18 @@ const AuthForm: React.FC = memo(() => {
             ></Input>
             <Text className="text-sm text-gray-500">Forget your password?</Text>
           </View>
-          <View className="my-16 flex flex-col gap-2">
+          <View className="my-12 flex flex-col gap-2">
             <Button
               className="text-bold h-12 w-[90vw] rounded-l-full rounded-r-full border-none bg-[#ffd777] text-white"
               onClick={handleLoginClick}
             >
               学号登录
+            </Button>
+            <Button
+              className="text-bold h-12 w-[90vw] rounded-l-full rounded-r-full bg-[white] text-gray-500"
+              onClick={handleLoginYouke}
+            >
+              游客登录
             </Button>
           </View>
         </View>
@@ -110,7 +139,7 @@ const AuthForm: React.FC = memo(() => {
           </View>
         </View>
       </View>
-      {isPopperOpened && <FloatingWindow />}
+      {isPopperOpened && <FloatingWindow onClose={handleClosePopper} />}
     </>
   );
 });

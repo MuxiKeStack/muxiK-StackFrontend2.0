@@ -15,6 +15,7 @@ const config = {
   plugins: [
     '@taro-hooks/plugin-react',
     '@taro-hooks/plugin-auto-import',
+    '@tarojs/plugin-html',
     // [
     //   'taro-plugin-compiler-optimization',
     //   {
