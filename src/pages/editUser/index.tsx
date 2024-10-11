@@ -124,7 +124,7 @@ const EditUser: React.FC = () => {
     <View>
       <View className="avatar-container">
         <View className="avatar-text">修改头像</View>
-        <Image src={avatarUrl} onClick={chooseAvatar} className="avatar"></Image>
+        <Image src={avatarUrl} onClick={chooseAvatar} className="avatar1"></Image>
       </View>
       <View className="divide-line"></View>
       <View className="nickname-container">

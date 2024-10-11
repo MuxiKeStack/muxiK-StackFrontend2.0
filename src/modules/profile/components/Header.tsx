@@ -71,7 +71,7 @@ const Header: React.FC = memo(() => {
         src={TopBackground}
         className="relative top-[-35vh] h-[70vh] w-[115%]"
       ></Image>
-      <View className="absolute top-[12vh] flex w-full items-center gap-4 px-[10%]">
+      <View className="absolute top-[12vh] flex w-full items-center gap-4 pl-12">
         <View className="aspect-square h-[20vw] w-[20vw] rounded-full bg-white">
           <Image
             src={user.avatarUrl}
