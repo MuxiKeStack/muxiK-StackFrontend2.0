@@ -13,7 +13,7 @@ import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
-import { get } from '@/common/utils/fetch';
+import { get } from '@/common/utils';
 
 const coursePropertyMap = {
   CoursePropertyGeneralCore: '通识核心课',

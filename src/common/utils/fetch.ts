@@ -3,223 +3,101 @@ import Taro from '@tarojs/taro';
 
 const preUrl = 'https://kstack.muxixyz.com';
 
-export async function post(url = '', data = {}, isToken = true) {
-  const header = {
-    'Content-Type': 'application/json;charset=utf-8',
-  };
+const header = {
+  'Content-Type': 'application/json;charset=utf-8',
+};
 
-  const getToken = () => {
-    return new Promise((resolve, reject) => {
-      void Taro.getStorage({
-        key: 'shortToken',
-        success: (res) => {
-          const token = res.data as string;
-          if (token) {
-            resolve(token); // 如果token存在，解析Promise
-          } else {
-            reject(new Error('No token found')); // 如果没有token，拒绝Promise
-            void Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
-          }
-        },
-        fail: (err) => {
-          reject(new Error(`Failed to get token: ${err as unknown as string}`)); // 存储操作失败时拒绝Promise
-        },
-      });
-    });
-  };
+const getToken = async () => {
+  const res = await Taro.getStorage({ key: 'shortToken' });
+  if (res.data) return res.data;
+  void Taro.navigateTo({ url: '/pages/login/index' });
+  throw new Error(`Failed to get token: ${res.errMsg as unknown as string}`);
+};
 
-  if (isToken) header['Authorization'] = `Bearer ${(await getToken()) as string}`;
+const request = async (
+  url = '',
+  method: 'GET' | 'POST' = 'GET',
+  data = {},
+  isToken = true
+) => {
+  const token = isToken ? `Bearer ${await getToken()}` : '';
+  header['Authorization'] = token ? `${token}` : '';
 
   try {
     const response = await Taro.request({
       url: `${preUrl}${url}`,
-      method: 'POST',
+      method,
       header,
-      data: JSON.stringify(data),
+      data: method === 'POST' ? JSON.stringify(data) : data,
     });
 
-    if (!response.statusCode.toString().startsWith('2')) {
-      if (response.statusCode === 401) {
-        throw new Error('401');
-      } else if (response.statusCode === 400) {
-        const errorData = response.data as { code: number; msg: string };
-        throw new Error(`${errorData.code}`);
-      }
+    if (response.statusCode.toString().startsWith('2')) {
+      return response.data;
+    } else {
+      const errorData = response.data as { code: number; msg: string };
+      throw new Error(response.statusCode === 401 ? '401' : `${errorData.code}`);
     }
-
-    return response.data;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log('error', error);
+    console.error('error', error);
     throw error;
   }
-}
+};
 
-export async function get(url = '', isToken = true) {
-  const header = {
-    'Content-Type': 'application/json;charset=utf-8',
-  };
+export const post = (url = '', data = {}) => request(url, 'POST', data, true);
+export const get = (url = '') => request(url, 'GET', {}, true);
 
-  const getToken = () => {
-    return new Promise((resolve, reject) => {
-      void Taro.getStorage({
-        key: 'shortToken',
-        success: (res) => {
-          const token = res.data as string;
+// export const post = async (url = '', data = {}, isToken = true) => {
+//   if (isToken) header['Authorization'] = `Bearer ${(await getToken()) as string}`;
 
-          if (token) {
-            resolve(token); // 如果token存在，解析Promise
-          } else {
-            reject(new Error('No token found')); // 如果没有token，拒绝Promise
-            void Taro.navigateTo({ url: '/pages/login/index' }); // 导航到登录页面
-          }
-        },
-        fail: (err) => {
-          reject(new Error(`Failed to get token: ${err as unknown as string}`)); // 存储操作失败时拒绝Promise
-        },
-      });
-    });
-  };
+//   try {
+//     const response = await Taro.request({
+//       url: `${preUrl}${url}`,
+//       method: 'POST',
+//       header,
+//       data: JSON.stringify(data),
+//     });
 
-  if (isToken) header['Authorization'] = `Bearer ${(await getToken()) as string}`;
+//     if (!response.statusCode.toString().startsWith('2')) {
+//       if (response.statusCode === 401) {
+//         throw new Error('401');
+//       } else if (response.statusCode === 400) {
+//         const errorData = response.data as { code: number; msg: string };
+//         throw new Error(`${errorData.code}`);
+//       }
+//     }
 
-  try {
-    const response = await Taro.request({
-      url: `${preUrl}${url}`,
-      method: 'GET',
-      header,
-    });
+//     return response.data;
+//   } catch (error) {
+//     // eslint-disable-next-line no-console
+//     console.log('error', error);
+//     throw error;
+//   }
+// };
 
-    if (!response.statusCode.toString().startsWith('2')) {
-      if (response.statusCode === 401) {
-        throw new Error('401');
-      } else if (response.statusCode === 400) {
-        const errorData = response.data as { code: number; msg: string };
-        throw new Error(`${errorData.code}`);
-      }
-    }
+// export const get = async (url = '', isToken = true) => {
+//   if (isToken) header['Authorization'] = `Bearer ${(await getToken()) as string}`;
 
-    return response.data;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error', error);
-    throw error;
-  }
-}
+//   try {
+//     const response = await Taro.request({
+//       url: `${preUrl}${url}`,
+//       method: 'GET',
+//       header,
+//     });
 
-export async function put(url = '', data = {}, isToken = true) {
-  const header = {
-    'Content-Type': 'application/json;charset=utf-8',
-  };
+//     if (!response.statusCode.toString().startsWith('2')) {
+//       if (response.statusCode === 401) {
+//         throw new Error('401');
+//       } else if (response.statusCode === 400) {
+//         const errorData = response.data as { code: number; msg: string };
+//         throw new Error(`${errorData.code}`);
+//       }
+//     }
 
-  if (isToken) {
-    void Taro.getStorage({
-      key: 'shortToken',
-      success: (res) => {
-        const token = res.data as string;
-
-        if (token) header['Authorization'] = token;
-        else {
-          void Taro.navigateTo({ url: '/pages/login/index' });
-        }
-      },
-    });
-  }
-
-  try {
-    const response = await Taro.request({
-      url: `${preUrl}${url}`,
-      method: 'PUT',
-      header,
-      data: JSON.stringify(data),
-    });
-
-    if (!response.statusCode.toString().startsWith('2')) {
-      if (response.statusCode === 401) {
-        throw new Error('401');
-      } else if (response.statusCode === 400) {
-        const errorData = response.data as { code: number; msg: string };
-        throw new Error(`${errorData.code}`);
-      }
-    }
-
-    return response.data;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error', error);
-    throw error;
-  }
-}
-
-export async function postPwd(url = '', data = {}, token: string) {
-  const header = {
-    'Content-Type': 'application/json;charset=utf-8',
-  };
-
-  if (token) header['Authorization'] = token;
-  else {
-    void Taro.navigateTo({ url: '/pages/login/index' });
-  }
-
-  try {
-    const response = await Taro.request({
-      url: `${preUrl}${url}`,
-      method: 'POST',
-      header,
-      data: JSON.stringify(data),
-    });
-
-    if (!response.statusCode.toString().startsWith('2')) {
-      throw new Error(`${response.statusCode}`);
-    }
-
-    return response.data;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error', error);
-    throw error;
-  }
-}
-
-export async function postLogin(url = '', data = {}, isToken = true) {
-  const header = {
-    'Content-Type': 'application/json;charset=utf-8',
-  };
-
-  if (isToken) {
-    void Taro.getStorage({
-      key: 'token',
-      success: (res) => {
-        const token = res.data as string;
-        if (token) header['Authorization'] = token;
-        else {
-          void Taro.navigateTo({ url: '/pages/login/index' });
-        }
-      },
-    });
-  }
-
-  try {
-    const response = await Taro.request({
-      url: `${preUrl}${url}`,
-      method: 'POST',
-      header,
-      data: JSON.stringify(data),
-    });
-
-    if (!response.statusCode.toString().startsWith('2')) {
-      if (response.statusCode === 401) {
-        throw new Error('401');
-      } else if (response.statusCode === 400) {
-        const errorData = response.data as { code: number; msg: string };
-        throw new Error(`${errorData.code}`);
-      }
-    }
-
-    return response.header; //返回相应体头部
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error', error);
-    throw error;
-  }
-}
+//     return response.data;
+//   } catch (error) {
+//     // eslint-disable-next-line no-console
+//     console.log('error', error);
+//     throw error;
+//   }
+// };

@@ -8,7 +8,7 @@ import './index.scss';
 
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionListComponent from '@/common/components/QuestionListComponent/QuestionListComponent';
-import { get } from '@/common/utils/fetch';
+import { get } from '@/common/utils';
 
 interface IQuestion {
   id: number;

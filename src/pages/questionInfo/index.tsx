@@ -10,7 +10,7 @@ import './index.scss';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail';
-import { get, post } from '@/common/utils/fetch';
+import { get, post } from '@/common/utils';
 
 interface IQuestion {
   id: number;

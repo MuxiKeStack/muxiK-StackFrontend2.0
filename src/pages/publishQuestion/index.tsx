@@ -8,7 +8,7 @@ import './index.scss';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
-import { get, post } from '@/common/utils/fetch';
+import { get, post } from '@/common/utils';
 
 export interface UserInfo {
   avatarUrl: string; // 用户头像的URL

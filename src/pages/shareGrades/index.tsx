@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 
 // eslint-disable-next-line import/first
-import { post } from '@/common/utils/fetch';
+import { post } from '@/common/utils';
 
 const ShareGrades = () => {
   const handleSubmit = () => {

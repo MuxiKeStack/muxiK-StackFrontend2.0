@@ -15,7 +15,7 @@ import './research.scss';
 import Label1 from '@/common/components/label1/label1';
 import Label2 from '@/common/components/label2/label2';
 import SearchInput from '@/common/components/SearchInput/SearchInput';
-import { get } from '@/common/utils/fetch';
+import { get } from '@/common/utils';
 
 export interface Course {
   id: number;

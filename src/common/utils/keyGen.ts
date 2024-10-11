@@ -5,11 +5,11 @@ const keyGen = function* () {
   }
 };
 
-const uniqueKeyUtil = (() => {
+const uniqueKey = (() => {
   const generator = keyGen();
   return {
     nextKey: () => generator.next().value,
   };
 })();
 
-export default uniqueKeyUtil;
+export default uniqueKey;

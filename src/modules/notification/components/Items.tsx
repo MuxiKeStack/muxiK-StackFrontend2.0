@@ -1,7 +1,7 @@
 import { Text, View } from '@tarojs/components';
 import { memo } from 'react';
 
-import uniqueKeyUtil from '@/common/utils/keyGen';
+import { uniqueKey } from '@/common/utils';
 
 import Message from './Message';
 import type { Message as MessageType } from './types';
@@ -32,7 +32,7 @@ export const MessageItem = memo(
     const message = data[index];
     return (
       <Message
-        key={uniqueKeyUtil.nextKey()}
+        key={uniqueKey.nextKey()}
         username={message.username}
         avatar={message.avatar}
         eventType={message.eventType}
