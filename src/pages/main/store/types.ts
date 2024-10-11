@@ -1,4 +1,4 @@
-import { CommentInfo } from '@/common/assets/types';
+import { CommentInfo } from '@/common/types/commentTypes';
 
 type CourseType = {
   MAJOR: 'CoursePropertyMajorCore';

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { Course } from '../../common/assets/types';
+import { Course } from '../../common/types/commentTypes';
 import CourseInfo from '../../common/components/CourseInfo/CourseInfo';
 import QuestionListComponent from '../../common/components/QuestionListComponent/QuestionListComponent';
 import { get } from '../../common/utils/fetch';

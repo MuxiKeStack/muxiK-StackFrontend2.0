@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-// userService.ts
-import { get } from '@/common/utils/fetch'; // 确保这个路径正确
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { get } from '@/common/utils/fetch';
 
-import { User } from './types';
+import { User } from '../types/commentTypes';
 
 export const getUserInfo = (userId: number): Promise<User> => {
   return get(`/users/${userId}/profile`).then((res) => {

@@ -7,7 +7,7 @@ import './index.scss';
 // eslint-disable-next-line import/first
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 // eslint-disable-next-line import/first
-import { Course } from '@/common/assets/types';
+import { Course } from '@/common/types/commentTypes';
 // eslint-disable-next-line import/first
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 // eslint-disable-next-line import/first

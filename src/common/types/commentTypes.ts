@@ -1,4 +1,3 @@
-// types.ts
 export interface Comment {
   id: number;
   commentator_id: number;

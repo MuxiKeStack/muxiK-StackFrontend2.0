@@ -8,7 +8,7 @@ import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect, useState } from 'react';
 
-import { getUserInfo } from '@/common/assets/userService';
+import { getUserInfo } from '@/common/utils/userService';
 import { VirtualList } from '@/common/components';
 import { get } from '@/common/utils/fetch';
 import { formatIsoDate } from '@/common/utils/timeFormat';

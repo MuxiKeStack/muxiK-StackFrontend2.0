@@ -6,7 +6,7 @@ import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect, useState } from 'react';
 
 import { get } from '@/common/api/get';
-import { CommentInfo } from '@/common/assets/types';
+import { CommentInfo } from '@/common/types/commentTypes';
 import { VirtualList } from '@/common/components';
 
 import CommentItem from './CommentItem';

@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
 
-import { CommentInfoType, Course } from '@/common/assets/types';
+import { CommentInfoType, Course } from '@/common/types/commentTypes';
 import { Comment } from '@/common/components';
 import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';

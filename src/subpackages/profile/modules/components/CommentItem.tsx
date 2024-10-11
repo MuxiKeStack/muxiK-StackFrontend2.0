@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro';
 import { memo } from 'react';
 
-import { CommentInfo } from '@/common/assets/types';
+import { CommentInfo } from '@/common/types/commentTypes';
 import { Comment } from '@/common/components';
 
 const CommentItem = memo(
