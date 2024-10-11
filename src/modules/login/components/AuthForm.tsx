@@ -4,14 +4,14 @@ import { memo, useCallback, useState } from 'react';
 
 import handleLogin from '@/common/api/handleLogin';
 import Icon from '@/common/assets/img/login/logo.png';
-import { FloatingWindow } from '@/common/components';
+
+import Popper from './Popper';
 
 type UserData = {
   studentId: string;
   password: string;
   isAgreeTerms: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  userInfo: any;
+  userInfo: unknown;
 };
 
 const AuthForm: React.FC = memo(() => {
@@ -87,7 +87,7 @@ const AuthForm: React.FC = memo(() => {
           木犀课栈
         </Text>
         <View className="flex flex-col items-center">
-          <View className="flex w-full flex-col items-center gap-3 px-[5%]">
+          <View className="flex w-[80vw] flex-col items-center gap-3">
             <Input
               className="h-12 w-full rounded-l-full rounded-r-full bg-gray-100 px-5"
               placeholder="学号/昵称"
@@ -103,15 +103,15 @@ const AuthForm: React.FC = memo(() => {
             ></Input>
             <Text className="text-sm text-gray-500">Forget your password?</Text>
           </View>
-          <View className="my-12 flex flex-col gap-2">
+          <View className="mb-12 mt-8 flex w-[90vw] flex-col gap-2">
             <Button
-              className="text-bold h-12 w-[90vw] rounded-l-full rounded-r-full border-none bg-[#ffd777] text-white"
+              className="text-bold h-12 w-full rounded-l-full rounded-r-full border-none bg-[#ffd777] text-white"
               onClick={handleLoginClick}
             >
               学号登录
             </Button>
             <Button
-              className="text-bold h-12 w-[90vw] rounded-l-full rounded-r-full bg-[white] text-gray-500"
+              className="text-bold h-12 w-full rounded-l-full rounded-r-full border bg-[white] text-gray-500"
               onClick={handleLoginYouke}
             >
               游客登录
@@ -139,7 +139,7 @@ const AuthForm: React.FC = memo(() => {
           </View>
         </View>
       </View>
-      {isPopperOpened && <FloatingWindow onClose={handleClosePopper} />}
+      {isPopperOpened && <Popper onClose={handleClosePopper} />}
     </>
   );
 });
