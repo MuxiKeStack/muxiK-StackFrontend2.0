@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable import/first */
 import { Input, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
@@ -6,13 +7,10 @@ import { AtFloatLayout } from 'taro-ui';
 
 import './index.scss';
 
-import { Course } from '@/common/types/commentTypes';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail';
 import { get, post } from '@/common/utils/fetch';
-
-import { Comment as CommentType } from '../../common/types/commentTypes';
 
 interface IQuestion {
   id: number;

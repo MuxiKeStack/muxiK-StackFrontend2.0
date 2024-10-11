@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { get } from '@/common/utils/fetch';
 
-import { User } from '../types/commentTypes';
-
 export const getUserInfo = (userId: number): Promise<User> => {
   return get(`/users/${userId}/profile`).then((res) => {
     if (res.code === 0 && res.data) {

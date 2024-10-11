@@ -1,7 +1,6 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 /* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
@@ -9,7 +8,6 @@ import { useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
 
-import { CommentInfoType, Course } from '@/common/types/commentTypes';
 import { Comment } from '@/common/components';
 import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';

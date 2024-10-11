@@ -9,7 +9,6 @@ import './style.scss';
 import { useCourseStore } from '@/pages/main/store/store';
 
 import { CourseDetailsType, PublisherDetailsType } from '@/pages/main/store/types';
-import { CommentInfo } from '../../types/commentTypes';
 import IconFont from '../iconfont';
 import ShowStar from '../showStar/showStar';
 

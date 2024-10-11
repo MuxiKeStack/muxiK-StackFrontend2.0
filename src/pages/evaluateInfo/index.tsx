@@ -20,7 +20,6 @@ import { Comment } from '@/common/components';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
 import { get, post } from '@/common/utils/fetch';
 
-import { CommentInfoType, Comment as CommentType } from '../../common/types/commentTypes';
 import { useCourseStore } from '../main/store/store';
 import { COMMENT_ACTIONS } from '../main/store/types';
 

@@ -1,14 +1,14 @@
-// import React from 'react';
+/* eslint-disable import/first */
+/* eslint-disable no-console */
 import { Button, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { Course } from '../../common/types/commentTypes';
-import CourseInfo from '../../common/components/CourseInfo/CourseInfo';
-import QuestionListComponent from '../../common/components/QuestionListComponent/QuestionListComponent';
-import { get } from '../../common/utils/fetch';
+import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
+import QuestionListComponent from '@/common/components/QuestionListComponent/QuestionListComponent';
+import { get } from '@/common/utils/fetch';
 
 interface IQuestion {
   id: number;
