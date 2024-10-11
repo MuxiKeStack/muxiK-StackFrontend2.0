@@ -11,19 +11,17 @@ import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { get } from '@/common/utils/fetch';
+import { get } from '@/common/utils';
 import { useCourseStore } from '@/pages/main/store/store';
 
-import { Comment } from '../../assets/types';
-
 interface CommentProps {
-  comments: Comment[];
-  onCommentClick: (comment: Comment) => void;
+  comments: CommentType[];
+  onCommentClick: (comment: CommentType) => void;
 }
 
 const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) => {
   // console.log(comments);
-  const [allComments, setAllComments] = useState<Comment[]>(comments);
+  const [allComments, setAllComments] = useState<CommentType[]>(comments);
   const dispatch = useCourseStore(({ getPublishers }) => ({ getPublishers }));
   useEffect(() => {
     const fetchAllReplies = async () => {

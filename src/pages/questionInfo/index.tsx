@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable import/first */
 import { Input, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
@@ -6,13 +7,10 @@ import { AtFloatLayout } from 'taro-ui';
 
 import './index.scss';
 
-import { Course } from '@/common/assets/types';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail';
-import { get, post } from '@/common/utils/fetch';
-
-import { Comment as CommentType } from '../../common/assets/types';
+import { get, post } from '@/common/utils';
 
 interface IQuestion {
   id: number;
@@ -107,7 +105,7 @@ const Index: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
       try {
-        void get(`/courses/${courseId}/detail`, true).then((res) => {
+        void get(`/courses/${courseId}/detail`).then((res) => {
           console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -124,7 +122,7 @@ const Index: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getQuestionDetail = async () => {
       try {
-        void get(`/questions/${questionId}/detail`, true).then((res) => {
+        void get(`/questions/${questionId}/detail`).then((res) => {
           console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -141,15 +139,14 @@ const Index: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getAnswersList = async () => {
       try {
-        void get(
-          `/answers/list/questions/${questionId}?cur_answer_id=0&limit=100`,
-          true
-        ).then((res) => {
-          console.log(res);
-          // 检查 res 是否有 data 属性，并且断言其类型
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          setAnswers(res?.data as IAnswer[]);
-        });
+        void get(`/answers/list/questions/${questionId}?cur_answer_id=0&limit=100`).then(
+          (res) => {
+            console.log(res);
+            // 检查 res 是否有 data 属性，并且断言其类型
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            setAnswers(res?.data as IAnswer[]);
+          }
+        );
       } catch (error) {
         // 错误处理，例如弹出提示
         console.error('Failed to fetch course data:', error);

@@ -1,14 +1,14 @@
-// import React from 'react';
+/* eslint-disable import/first */
+/* eslint-disable no-console */
 import { Button, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { Course } from '../../common/assets/types';
-import CourseInfo from '../../common/components/CourseInfo/CourseInfo';
-import QuestionListComponent from '../../common/components/QuestionListComponent/QuestionListComponent';
-import { get } from '../../common/utils/fetch';
+import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
+import QuestionListComponent from '@/common/components/QuestionListComponent/QuestionListComponent';
+import { get } from '@/common/utils';
 
 interface IQuestion {
   id: number;
@@ -49,7 +49,7 @@ const App = () => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
       try {
-        void get(`/courses/${courseId}/detail`, true).then((res) => {
+        void get(`/courses/${courseId}/detail`).then((res) => {
           console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -67,8 +67,7 @@ const App = () => {
     const getQuestionList = async () => {
       try {
         void get(
-          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=0&limit=100`,
-          true
+          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=0&limit=100`
         ).then((res) => {
           console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型

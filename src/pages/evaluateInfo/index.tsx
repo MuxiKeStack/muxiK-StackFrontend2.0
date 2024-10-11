@@ -18,9 +18,8 @@ import './index.scss';
 
 import { Comment } from '@/common/components';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
-import { get, post } from '@/common/utils/fetch';
+import { get, post } from '@/common/utils';
 
-import { CommentInfoType, Comment as CommentType } from '../../common/assets/types';
 import { useCourseStore } from '../main/store/store';
 import { COMMENT_ACTIONS } from '../main/store/types';
 

@@ -11,7 +11,7 @@ import './evaluate.scss';
 
 import Label3 from '@/common/components/label3/label3';
 import Star from '@/common/components/star/star';
-import { post } from '@/common/utils/fetch';
+import { post } from '@/common/utils';
 
 export default function evaluate() {
   // function generateUniqueID() {
