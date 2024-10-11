@@ -87,11 +87,11 @@ const EditUser: React.FC = () => {
     setIsEditingNickname(false);
   };
   const handleSave = () => {
-    void post(
-      '/users/edit',
-      { avatar: avatarUrl, nickname: nickName, using_title: selectedTitle },
-      true
-    ).then((res) => {
+    void post('/users/edit', {
+      avatar: avatarUrl,
+      nickname: nickName,
+      using_title: selectedTitle,
+    }).then((res) => {
       console.log(res);
       void Taro.showToast({ icon: 'success', title: '保存成功' });
       setTimeout(() => {
@@ -106,7 +106,7 @@ const EditUser: React.FC = () => {
   };
   // Taro.redirectTo({url:'pages/login/index'});
   const handleLogout = () => {
-    void post('/users/logout', {}, true).then((res) => console.log(res));
+    void post('/users/logout', {}).then((res) => console.log(res));
     void Taro.removeStorage({
       key: 'shortToken',
       success: (res) => console.log(res),

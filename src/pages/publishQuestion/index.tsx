@@ -76,7 +76,7 @@ export default function Index() {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
       try {
-        void get(`/courses/${courseId}/detail`, true).then((res) => {
+        void get(`/courses/${courseId}/detail`).then((res) => {
           console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
