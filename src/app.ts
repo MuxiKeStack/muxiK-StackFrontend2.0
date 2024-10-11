@@ -1,6 +1,6 @@
 import { Component, PropsWithChildren } from 'react';
 
-import '@/common/styles/app.scss';
+import '@/common/styles/globals.scss';
 
 import checkToken from '@/common/utils/checkToken';
 
