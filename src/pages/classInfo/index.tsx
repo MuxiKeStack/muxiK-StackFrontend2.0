@@ -1,7 +1,6 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 /* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
@@ -9,14 +8,12 @@ import { useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
 
-import { CommentInfoType, Course } from '@/common/assets/types';
 import { Comment } from '@/common/components';
 import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
-import { GradeChart, WebQuestionVo } from '@/common/types/userTypes';
-import { get } from '@/common/utils/fetch';
+import { get } from '@/common/utils';
 
 const coursePropertyMap = {
   CoursePropertyGeneralCore: '通识核心课',
@@ -59,7 +56,7 @@ export default function Index() {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
       try {
-        void get(`/courses/${courseId}/detail`, true).then((res) => {
+        void get(`/courses/${courseId}/detail`).then((res) => {
           console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setCourse(res.data);
@@ -75,8 +72,7 @@ export default function Index() {
     const getCommentData = async () => {
       try {
         void get(
-          `/evaluations/list/courses/${courseId}?cur_evaluation_id=0&limit=100`,
-          true
+          `/evaluations/list/courses/${courseId}?cur_evaluation_id=0&limit=100`
         ).then((res) => {
           console.log(res);
           setComments(res.data as CommentInfoType[]);
@@ -92,7 +88,7 @@ export default function Index() {
     console.log('test', courseId);
     const fetchGrades = async () => {
       try {
-        await get(`/grades/courses/${courseId}`, true).then((res) => {
+        await get(`/grades/courses/${courseId}`).then((res) => {
           console.log(res.data);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setGrade(res.data); // 设置 grade 数据
@@ -104,7 +100,7 @@ export default function Index() {
     const getNumData = () => {
       try {
         console.log('test', courseId);
-        void get(`/questions/count?biz=Course&biz_id=${courseId}`, true).then((res) => {
+        void get(`/questions/count?biz=Course&biz_id=${courseId}`).then((res) => {
           console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setQuestionNum(res.data);
@@ -116,8 +112,7 @@ export default function Index() {
     const fetchAnswer = async () => {
       try {
         await get(
-          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=&limit=`,
-          true
+          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=&limit=`
         ).then((res) => {
           console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

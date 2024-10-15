@@ -3,7 +3,6 @@ import Taro from '@tarojs/taro';
 import { StateCreator } from 'zustand';
 
 import { get as fetchGet } from '@/common/api/get';
-import { CommentInfo } from '@/common/assets/types';
 
 import { COMMENT_ACTIONS, CommentInfoSlice, COURSE_TYPE, CourseInfoStore } from './types';
 

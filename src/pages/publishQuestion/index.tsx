@@ -1,19 +1,14 @@
+/* eslint-disable import/first */
 import { Button, Image, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
-// eslint-disable-next-line import/first
-import { Course } from '@/common/assets/types';
-// eslint-disable-next-line import/first
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
-// eslint-disable-next-line import/first
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
-// eslint-disable-next-line import/first
-import { get, post } from '@/common/utils/fetch';
+import { get, post } from '@/common/utils';
 
 export interface UserInfo {
   avatarUrl: string; // 用户头像的URL
@@ -81,7 +76,7 @@ export default function Index() {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
       try {
-        void get(`/courses/${courseId}/detail`, true).then((res) => {
+        void get(`/courses/${courseId}/detail`).then((res) => {
           console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

@@ -3,7 +3,7 @@ import { ArrowDown } from '@taroify/icons';
 import { Text, View } from '@tarojs/components';
 import { memo } from 'react';
 
-import uniqueKeyUtil from '@/common/utils/keyGen';
+import { uniqueKey } from '@/common/utils';
 
 type SelectType = '学年' | '学期';
 
@@ -65,7 +65,7 @@ const Selector: React.FC<SelectorProps> = memo(
       <View className="flex w-full items-center justify-between px-2">
         {['学年', '学期'].map((item: SelectType) => (
           <Select
-            key={uniqueKeyUtil.nextKey()}
+            key={uniqueKey.nextKey()}
             type={item}
             value={item === '学年' ? selection.year : selection.term}
             setIsOpen={setIsOpen}

@@ -15,7 +15,7 @@ import './research.scss';
 import Label1 from '@/common/components/label1/label1';
 import Label2 from '@/common/components/label2/label2';
 import SearchInput from '@/common/components/SearchInput/SearchInput';
-import { get } from '@/common/utils/fetch';
+import { get } from '@/common/utils';
 
 export interface Course {
   id: number;
@@ -38,7 +38,7 @@ const Research: React.FC = () => {
 
   useLoad(() => {
     console.log('Page loaded.');
-    get('/search/history?search_location=Home', true).then((res) => {
+    get('/search/history?search_location=Home').then((res) => {
       console.log('获取到历史搜索信息');
       // console.log(res);
       setHrs(res.data);
@@ -65,12 +65,10 @@ const Research: React.FC = () => {
     console.log('搜索文本:', searchText);
     setSpread(true);
     // 这里可以添加发送API请求的代码
-    get(`/search?biz=Course&keyword=${searchText}&search_location=Home`, true).then(
-      (res) => {
-        console.log(res);
-        setClasses(res.data);
-      }
-    );
+    get(`/search?biz=Course&keyword=${searchText}&search_location=Home`).then((res) => {
+      console.log(res);
+      setClasses(res.data);
+    });
   };
 
   useEffect(() => {

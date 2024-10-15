@@ -2,7 +2,7 @@ import { Text, View } from '@tarojs/components';
 import { memo } from 'react';
 import { AtIcon } from 'taro-ui';
 
-import uniqueKeyUtil from '@/common/utils/keyGen';
+import { uniqueKey } from '@/common/utils';
 
 interface TabBarProps {
   tab: string;
@@ -27,7 +27,7 @@ const Tabs: { name: string; icon: string }[] = [
 const TabBar: React.FC<TabBarProps> = memo(({ tab, setTab }) => (
   <View className="mb-2 flex w-full justify-evenly">
     {Tabs.map((item) => (
-      <View key={uniqueKeyUtil.nextKey()} className="flex flex-col items-center gap-2">
+      <View key={uniqueKey.nextKey()} className="flex flex-col items-center gap-2">
         <View className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f9f9f2] shadow-lg">
           <AtIcon
             value={item.icon}

@@ -1,27 +1,27 @@
-export type UserInfo = {
+declare type UserInfo = {
   avatarUrl: string; // 用户头像的URL
   nickName: string; // 用户昵称
 };
 
-export type ResponseLevel = {
+declare type ResponseLevel = {
   code?: number;
   data: WebPointInfoVo;
   msg?: string;
 };
 
-export type WebPointInfoVo = {
+declare type WebPointInfoVo = {
   level: number;
   next_level_points: number;
   points: number;
 };
 
-export type ResponseUser = {
+declare type ResponseUser = {
   code?: number;
   data: WebUserProfileVo;
   msg?: string;
 };
 
-export type WebUserProfileVo = {
+declare type WebUserProfileVo = {
   avatar: string;
   ctime: number;
   grade_sharing_is_signed?: boolean;
@@ -39,7 +39,7 @@ export type WebUserProfileVo = {
 /**
  * ginx.Result
  */
-export interface GradeResponse {
+declare interface GradeResponse {
   /**
    * 错误码，非 0 表示失败
    */
@@ -54,19 +54,19 @@ export interface GradeResponse {
 /**
  * web.GradeChartVo
  */
-export interface GradeChart {
+declare interface GradeChart {
   avg: number;
   grades: Grade[];
 }
 
-export interface Grade {
+declare interface Grade {
   percent?: number;
   total_grades: number[];
 }
 /**
  * ginx.Result
  */
-export interface ResponseQuestion {
+declare interface ResponseQuestion {
   /**
    * 错误码，非 0 表示失败
    */
@@ -81,7 +81,7 @@ export interface ResponseQuestion {
 /**
  * web.QuestionVo
  */
-export interface WebQuestionVo {
+declare interface WebQuestionVo {
   answer_cnt?: number;
   /**
    * 具体针对那种业务的提问，如 Course
@@ -102,7 +102,7 @@ export interface WebQuestionVo {
 /**
  * answerv1.Answer
  */
-export interface Answerv1Answer {
+declare interface Answerv1Answer {
   content?: string;
   ctime?: number;
   id?: number;

@@ -4,12 +4,12 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 
 // eslint-disable-next-line import/first
-import { post } from '@/common/utils/fetch';
+import { post } from '@/common/utils';
 
 const ShareGrades = () => {
   const handleSubmit = () => {
     try {
-      void post('/grades/sign', { wants_to_sign: true }, true).then((r) => {
+      void post('/grades/sign', { wants_to_sign: true }).then((r) => {
         console.log(r);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (r.msg === '重复签约') {

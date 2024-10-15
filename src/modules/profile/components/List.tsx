@@ -8,7 +8,7 @@ import {
   MailIcon,
   StarIcon,
 } from '@/common/assets/img/personalPage';
-import uniqueKeyUtil from '@/common/utils/keyGen';
+import { uniqueKey } from '@/common/utils';
 
 const ListItems: { title: string; icon: string; url: string }[] = [
   { title: '我的课程', icon: BookIcon as string, url: '/pages/myclass/myclass' },
@@ -29,7 +29,7 @@ const List: React.FC = memo(() => {
     <AtList className="relative bottom-[30vh] w-full px-[5%]">
       {ListItems.map((item) => (
         <AtListItem
-          key={uniqueKeyUtil.nextKey()}
+          key={uniqueKey.nextKey()}
           title={item.title}
           arrow="right"
           thumb={item.icon}

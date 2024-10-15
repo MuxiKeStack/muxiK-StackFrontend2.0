@@ -7,7 +7,7 @@ import { AtIcon } from 'taro-ui';
 import './index.scss';
 
 import useActiveButtonStore, { ActiveButtonType } from '@/common/hooks/useActiveNav';
-import uniqueKeyUtil from '@/common/utils/keyGen';
+import { uniqueKey } from '@/common/utils';
 
 const TAB_LIST: Array<{ pagePath: string; name: string; icon?: string }> = [
   { pagePath: '/pages/main/index', name: 'Home', icon: 'streaming' },
@@ -37,7 +37,7 @@ const TabBar: React.FC = memo(() => {
             </View>
           ) : (
             <AtIcon
-              key={uniqueKeyUtil.nextKey()}
+              key={uniqueKey.nextKey()}
               value={item.icon as string}
               size="35"
               color={activeButton === item.name ? '#f18900' : '#FFD777'}

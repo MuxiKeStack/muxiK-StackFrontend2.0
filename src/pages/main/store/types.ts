@@ -1,5 +1,3 @@
-import { CommentInfo } from '@/common/assets/types';
-
 type CourseType = {
   MAJOR: 'CoursePropertyMajorCore';
   GENERAL_ELECT: 'CoursePropertyGeneralElective';

@@ -1,5 +1,4 @@
-// types.ts
-export interface Comment {
+declare type CommentType = {
   id: number;
   commentator_id: number;
   biz: string;
@@ -11,11 +10,11 @@ export interface Comment {
   utime: number;
   ctime: number;
   user?: User; // 存储用户信息
-  replies?: Comment[]; // 存储二级评论
-}
+  replies?: CommentType[]; // 存储二级评论
+};
 
 // 定义评论详情的类型
-export type CommentInfoType = {
+declare type CommentInfoType = {
   nickname: string;
   avatar: string;
   id: number;
@@ -30,14 +29,14 @@ export type CommentInfoType = {
   ctime: number;
 };
 
-export interface User {
+declare type User = {
   id: number;
   avatar: string;
   nickname: string;
-}
+};
 
 /** 评论详情 */
-export interface CommentInfo {
+declare type CommentInfo = {
   /**
    * 考核方式，支持多选
    */
@@ -61,9 +60,9 @@ export interface CommentInfo {
   total_oppose_count?: number;
   total_support_count?: number;
   utime?: number;
-}
+};
 
-export interface Course {
+declare type Course = {
   id: number;
   name: string;
   teacher: string;
@@ -76,4 +75,4 @@ export interface Course {
   features: Record<string, never>;
   is_collected: boolean;
   is_subscribed: boolean;
-}
+};
