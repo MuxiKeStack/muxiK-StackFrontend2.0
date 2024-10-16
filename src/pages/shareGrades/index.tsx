@@ -32,15 +32,22 @@ const ShareGrades = () => {
   };
 
   return (
-    <View>
-      <Text className="title">成绩共享计划</Text>
-      <View className="card">
-        该部分的课程成绩信息是我们在征得用户同意后，
-        <Text className="font-extrabold">匿名</Text>
-        收集用户成绩数据所得到的统计结果。查看该信息需要您加入我们的 课程成绩共享计划
-        ，提供自己的过往成绩信息作为数据分析的一部分。我们将根据隐私条例中的内容，保证您的个人信息受到安全保护。
+    <View className="flex min-h-screen flex-col items-center bg-gray-50 p-6">
+      <Text className="mb-4 text-2xl font-bold text-gray-800">成绩共享计划</Text>
+      <View className="card mb-6 max-w-md rounded-lg bg-white p-4 text-center text-gray-600 shadow-lg">
+        <Text>该部分的课程成绩信息是我们在征得用户同意后，</Text>
+        <Text className="font-extrabold text-black">匿名</Text>
+        <Text>
+          收集用户成绩数据所得到的统计结果。查看该信息需要您加入我们的课程成绩共享计划，
+          提供自己的过往成绩信息作为数据分析的一部分。我们将根据隐私条例中的内容，保证您的个人信息受到安全保护。
+        </Text>
       </View>
-      <Button onClick={handleSubmit}>我同意成绩共享计划</Button>
+      <Button
+        className="rounded-md bg-[#ffd777] px-4 py-2 font-semibold text-white transition-all"
+        onClick={handleSubmit}
+      >
+        我同意成绩共享计划
+      </Button>
     </View>
   );
 };
