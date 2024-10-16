@@ -34,7 +34,7 @@ const ShareGrades = () => {
   return (
     <View className="flex min-h-screen flex-col items-center bg-gray-50 p-6">
       <Text className="mb-4 text-2xl font-bold text-gray-800">成绩共享计划</Text>
-      <View className="card mb-6 max-w-md rounded-lg bg-white p-4 text-center text-gray-600 shadow-lg">
+      <View className="fontSize-[35rpx] m-[10vh] mb-6 w-[80vw] rounded-lg bg-white p-4 text-center text-gray-600 shadow-lg">
         <Text>该部分的课程成绩信息是我们在征得用户同意后，</Text>
         <Text className="font-extrabold text-black">匿名</Text>
         <Text>
@@ -43,7 +43,7 @@ const ShareGrades = () => {
         </Text>
       </View>
       <Button
-        className="rounded-md bg-[#ffd777] px-4 py-2 font-semibold text-white transition-all"
+        className="rounded-md bg-[#ffd777] px-4 py-4 font-semibold text-white transition-all"
         onClick={handleSubmit}
       >
         我同意成绩共享计划
