@@ -12,15 +12,15 @@ interface TabBarProps {
 const Tabs: { name: string; icon: string }[] = [
   {
     name: '提问',
-    icon: 'clock',
+    icon: 'icon-tiwen',
   },
   {
     name: '点赞',
-    icon: 'clock',
+    icon: 'icon-like',
   },
   {
     name: '官方',
-    icon: 'clock',
+    icon: 'icon-guanfangbanben',
   },
 ];
 

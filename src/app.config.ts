@@ -27,7 +27,7 @@ export default defineAppConfig({
   ],
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   usingComponents: Object.assign({
-    iconfont: './common/components/iconfont/weapp/weapp',
+    iconfont: '/src/common/components/iconfont',
   }),
   tabBar: {
     custom: true,
