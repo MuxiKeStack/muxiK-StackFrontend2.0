@@ -132,7 +132,7 @@ const Notification: React.FC = memo(() => {
   }, [tab]);
 
   return (
-    <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll px-4 pb-[13vh] pt-2">
+    <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll pb-[13vh]">
       <TabBar tab={tab} setTab={setTab} />
       <VirtualList
         height="100%"
