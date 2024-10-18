@@ -2,7 +2,15 @@
 import React, { FunctionComponent } from 'react';
 
 interface Props {
-  name: 'guanfangbanben' | 'tiwen' | 'comment' | 'like' | 'wechat' | 'yanjing' | 'yanjing1' | 'xiaxue';
+  name:
+    | 'guanfangbanben'
+    | 'tiwen'
+    | 'comment'
+    | 'like'
+    | 'wechat'
+    | 'yanjing'
+    | 'yanjing1'
+    | 'xiaxue';
   size?: number;
   color?: string | string[];
   style?: React.CSSProperties;
