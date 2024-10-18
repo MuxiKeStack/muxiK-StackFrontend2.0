@@ -22,7 +22,7 @@ const ImageOfficial: React.FC<OfficialProps> = memo(({ title, description }) => 
 ));
 
 const AlertOfficial: React.FC<OfficialProps> = memo(({ title }) => (
-  <View className="flex w-full items-center rounded-l-full rounded-r-full bg-[#f9f9f2] px-4 py-2 text-sm shadow-lg">
+  <View className="flex w-[85vw] items-center rounded-l-full rounded-r-full bg-[#f9f9f2] px-4 py-2 text-sm shadow-lg">
     <Text className="text-sm text-[#f18900]">{title}</Text>
   </View>
 ));

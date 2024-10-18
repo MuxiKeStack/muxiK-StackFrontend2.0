@@ -27,15 +27,19 @@ const Tabs: { name: string; icon: string }[] = [
 const TabBar: React.FC<TabBarProps> = memo(({ tab, setTab }) => (
   <View className="mb-2 flex w-full justify-evenly">
     {Tabs.map((item) => (
-      <View key={uniqueKey.nextKey()} className="flex flex-col items-center gap-2">
+      <View
+        key={uniqueKey.nextKey()}
+        className="flex flex-col items-center gap-2"
+        onClick={() => {
+          setTab(item.name);
+        }}
+      >
         <View className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f9f9f2] shadow-lg">
           <IconFont
             /* @ts-expect-error 轮子问题 */
             name={item.icon}
             size={35}
-            onClick={() => {
-              setTab(item.name);
-            }}
+            color={tab === item.name ? '#f18900' : '#FFD777'}
           ></IconFont>
         </View>
         <Text>{item.name}</Text>

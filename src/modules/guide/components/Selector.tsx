@@ -62,7 +62,7 @@ const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen }) => (
 const Selector: React.FC<SelectorProps> = memo(
   ({ selection, isOpen, setSelection, setIsOpen, children }) => (
     <>
-      <View className="flex w-full items-center justify-between px-2">
+      <View className="-ml-4 flex w-[85vw] items-center justify-between pt-2">
         {['学年', '学期'].map((item: SelectType) => (
           <Select
             key={uniqueKey.nextKey()}
