@@ -1,3 +1,5 @@
+import { useGlobalIconFont } from './common/components/iconfont/helper';
+
 export default defineAppConfig({
   pages: [
     'pages/login/index',
@@ -25,10 +27,7 @@ export default defineAppConfig({
       pages: ['pages/history/index'],
     },
   ],
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  usingComponents: Object.assign({
-    iconfont: '/src/common/components/iconfont',
-  }),
+  usingComponents: Object.assign(useGlobalIconFont()),
   tabBar: {
     custom: true,
     list: [

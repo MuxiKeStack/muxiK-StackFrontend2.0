@@ -8,8 +8,8 @@ import './style.scss';
 
 import { useCourseStore } from '@/pages/main/store/store';
 
+import IconFont from '@/common/components/iconfont';
 import { CourseDetailsType, PublisherDetailsType } from '@/pages/main/store/types';
-import IconFont from '../iconfont';
 import ShowStar from '../showStar/showStar';
 
 interface CommentProps extends CommentInfo {

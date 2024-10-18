@@ -2,4 +2,4 @@
 export GIT_TERMINAL_PROMPT=0
 . "$(dirname -- "$0")/common.sh"
 
-yarn lint
+yarn lint --fix

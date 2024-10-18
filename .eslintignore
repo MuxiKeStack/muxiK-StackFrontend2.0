@@ -6,7 +6,9 @@ dist-ssr
 *.local
 weapp.js
 babel.config.js
+app.config.ts
 ec-canvas
 
 *.js
 VirtualList.tsx
+src/common/components/iconfont

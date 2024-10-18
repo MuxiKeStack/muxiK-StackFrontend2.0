@@ -1,4 +1,3 @@
-/* eslint-disable simple-import-sort/imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

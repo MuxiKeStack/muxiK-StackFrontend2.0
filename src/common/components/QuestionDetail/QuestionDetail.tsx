@@ -1,18 +1,12 @@
+import '@/common/components/QuestionDetail/QuestionDetail';
 import { Image, Text, View } from '@tarojs/components';
 import React, { useEffect, useState } from 'react';
 
-import './index.scss';
-
-// eslint-disable-next-line import/first
 import answericon from '@/common/assets/img/publishQuestion/answer.png';
-// eslint-disable-next-line import/first
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
-// eslint-disable-next-line import/first
+import IconFont from '@/common/components/iconfont';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
-// eslint-disable-next-line import/first
 import { useCourseStore } from '@/pages/main/store/store';
-
-import IconFont from '../iconfont';
 
 interface IUser {
   avatar: string;

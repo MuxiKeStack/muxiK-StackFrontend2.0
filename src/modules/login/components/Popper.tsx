@@ -20,7 +20,6 @@ const Content: React.FC<{ onClose: () => void }> = memo(({ onClose }) => (
       <View className="relative mb-4 flex w-full items-center justify-center">
         <Text
           className="absolute right-0 m-1 border-none bg-transparent p-2 text-2xl font-bold text-gray-500 focus:outline-none"
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           onClick={onClose}
         >
           x

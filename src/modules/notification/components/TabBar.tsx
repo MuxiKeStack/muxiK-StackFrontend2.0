@@ -1,7 +1,7 @@
 import { Text, View } from '@tarojs/components';
 import { memo } from 'react';
-import { AtIcon } from 'taro-ui';
 
+import IconFont from '@/common/components/iconfont';
 import { uniqueKey } from '@/common/utils';
 
 interface TabBarProps {
@@ -12,15 +12,15 @@ interface TabBarProps {
 const Tabs: { name: string; icon: string }[] = [
   {
     name: '提问',
-    icon: 'icon-tiwen',
+    icon: 'tiwen',
   },
   {
     name: '点赞',
-    icon: 'icon-like',
+    icon: 'like',
   },
   {
     name: '官方',
-    icon: 'icon-guanfangbanben',
+    icon: 'guanfangbanben',
   },
 ];
 
@@ -29,14 +29,14 @@ const TabBar: React.FC<TabBarProps> = memo(({ tab, setTab }) => (
     {Tabs.map((item) => (
       <View key={uniqueKey.nextKey()} className="flex flex-col items-center gap-2">
         <View className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f9f9f2] shadow-lg">
-          <AtIcon
-            value={item.icon}
-            size="35"
-            color={tab === item.name ? '#f18900' : '#FFD777'}
+          <IconFont
+            /* @ts-expect-error 轮子问题 */
+            name={item.icon}
+            size={35}
             onClick={() => {
               setTab(item.name);
             }}
-          ></AtIcon>
+          ></IconFont>
         </View>
         <Text>{item.name}</Text>
       </View>
