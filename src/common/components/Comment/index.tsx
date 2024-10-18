@@ -2,7 +2,7 @@
 /* eslint-disable import/first */
 import { Image, Navigator, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
 import './style.scss';
 
@@ -19,8 +19,9 @@ interface CommentProps extends CommentInfo {
   onClick?: (comment: CommentInfo) => void;
 }
 
-const CommentHeader: React.FC<CommentProps> = memo(
-  ({ course_id, publisher_id, ctime, isHot, star_rating }) => {
+const CommentHeader: React.FC<CommentProps> =
+  memo((props) => {
+    const { course_id, publisher_id, ctime, isHot, star_rating } = props;
     const [publisher_info, setPublisherInfo] = useState<PublisherDetailsType>();
     const [course_info, setCourseInfo] = useState<CourseDetailsType>();
     useEffect(() => {
@@ -36,7 +37,7 @@ const CommentHeader: React.FC<CommentProps> = memo(
         .then((res) => {
           setPublisherInfo(res);
         });
-    }, []);
+    }, [props.course_id, props.publisher_id]);
     const navigateToPage = async () => {
       await Taro.navigateTo({
         url: `/pages/classInfo/index?course_id=${course_id}`, // 传递 course_id 参数
@@ -86,16 +87,16 @@ const CommentHeader: React.FC<CommentProps> = memo(
         </View>
       </>
     );
-  }
-);
+  })
+;
 
-const Comment: React.FC<CommentProps> = memo(({ onClick, ...props }) => {
-  const { showAll, type, content, id } = props;
+const Comment: React.FC<CommentProps> = memo((props) => {
+  const { showAll, type, content, id, onClick } = props;
   const getComment = useCourseStore((state) => state.getComment);
   const father_record = getComment(id ?? 0);
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     onClick && onClick(props);
-  };
+  }, [onClick]);
 
   return (
     <View className="bigcomment" onClick={handleClick}>

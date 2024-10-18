@@ -21,6 +21,6 @@ export const CreateCourseDetail: StateCreator<
   },
   getCourseDetail(courseId) {
     const local = get().courseDetail[courseId];
-    return local ? Promise.resolve(local) : get().fetchCouseDetail(courseId);
+    return local ? Promise.resolve(local) : courseId ? get().fetchCouseDetail(courseId) : Promise.resolve({} as CourseDetailsType);
   },
 });

@@ -50,6 +50,8 @@ export default function Index() {
     };
 
     handleQuery();
+  }, [])
+  useEffect(() => {
 
     const fetchComments = async () => {
       // console.log(biz_id)
@@ -73,7 +75,6 @@ export default function Index() {
   }, [biz_id, commentsLoaded]); // 依赖项中添加biz_id
 
   const handleCommentClick = (comment: CommentType) => {
-    console.log(comment);
     setReplyTo(comment); // 设置回复目标
     setplaceholderContent(`回复给${comment.user?.nickname}: `); // 初始化回复内容
   };
@@ -83,7 +84,6 @@ export default function Index() {
   };
 
   const handleClearReply = () => {
-    console.log(2);
     setReplyTo(null);
     setReplyContent('');
     setplaceholderContent('写下你的评论...');
