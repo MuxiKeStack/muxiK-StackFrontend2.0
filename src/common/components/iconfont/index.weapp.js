@@ -1,8 +1,5 @@
 /* eslint-disable */
 
-import React from 'react';
-
-
 const IconFont = (props) => {
   const { name, size, color, style } = props;
 
