@@ -13,7 +13,7 @@ const Guide: React.FC = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll px-4 pb-[13vh] pt-2">
+    <View className="flex h-[87vh] w-full flex-col items-center gap-4">
       <Selector
         selection={selection}
         isOpen={isOpen}
