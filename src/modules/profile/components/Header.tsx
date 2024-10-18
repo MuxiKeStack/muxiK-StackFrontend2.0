@@ -66,7 +66,7 @@ const Header: React.FC = memo(() => {
 
   return (
     <>
-      <Image src={TopBackground} className="h-[35vh] w-full"></Image>
+      <Image src={TopBackground as string} className="h-[35vh] w-full"></Image>
       <View className="absolute top-[12vh] flex w-full items-center gap-4 pl-14">
         <View className="aspect-square h-[20vw] w-[20vw] rounded-full bg-white">
           <Image

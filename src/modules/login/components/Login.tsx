@@ -1,7 +1,7 @@
 import { Image, View } from '@tarojs/components';
 import { memo } from 'react';
 
-import TopBackground from '@/common/assets/img/login/background.png';
+import { TopBackground } from '@/common/assets/img/login';
 
 import AuthForm from './AuthForm';
 
