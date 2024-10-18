@@ -50,9 +50,8 @@ export default function Index() {
     };
 
     handleQuery();
-  }, [])
+  }, []);
   useEffect(() => {
-
     const fetchComments = async () => {
       // console.log(biz_id)
       try {
