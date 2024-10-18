@@ -7,7 +7,7 @@ import AuthForm from './AuthForm';
 
 const Login: React.FC = memo(() => (
   <View className="h-screen w-full">
-    <Image src={TopBackground as string} className="relative w-[100%]"></Image>
+    <Image src={TopBackground as string} className="w-full"></Image>
     <AuthForm />
   </View>
 ));
