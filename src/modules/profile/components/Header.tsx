@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro';
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
 import { get } from '@/common/api/get';
-import { TopBackground } from '@/common/assets/img/personalPage';
+import { TopBackground } from '@/common/assets/img/profile';
 import { TitleButton } from '@/common/components';
 
 const Header: React.FC = memo(() => {
@@ -66,11 +66,8 @@ const Header: React.FC = memo(() => {
 
   return (
     <>
-      <Image
-        src={TopBackground}
-        className="relative top-[-35vh] h-[70vh] w-[115%]"
-      ></Image>
-      <View className="absolute top-[12vh] flex w-full items-center gap-4 pl-12">
+      <Image src={TopBackground} className="h-[35vh] w-full"></Image>
+      <View className="absolute top-[12vh] flex w-full items-center gap-4 pl-14">
         <View className="aspect-square h-[20vw] w-[20vw] rounded-full bg-white">
           <Image
             src={user.avatarUrl}
