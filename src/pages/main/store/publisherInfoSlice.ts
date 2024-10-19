@@ -13,8 +13,7 @@ export const CreatePublisherSlice: StateCreator<
   publishers: {},
   async getPublishers(publisherId) {
     let local = await Promise.resolve(get().publishers[publisherId]);
-    if (!local?.avatar) local = await get().fetchPublishers(publisherId);
-    console.log('kkk', get().publishers);
+    if (!local?.avatar && publisherId) local = await get().fetchPublishers(publisherId);
     return local;
   },
   fetchPublishers(publisherId) {

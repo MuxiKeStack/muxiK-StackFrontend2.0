@@ -182,7 +182,7 @@ const EditUser: React.FC = () => {
         </Button>
       </View>
       <Button className="mt-7 h-1/6 w-1/3" onClick={handleLogout}>
-        退出登陆
+        退出登录
       </Button>
     </View>
   );

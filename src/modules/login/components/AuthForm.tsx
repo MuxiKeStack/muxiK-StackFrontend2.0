@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro';
 import { memo, useCallback, useState } from 'react';
 
 import handleLogin from '@/common/api/handleLogin';
-import Icon from '@/common/assets/img/login/logo.png';
+import { Icon } from '@/common/assets/img/login';
 
 import Popper from './Popper';
 

@@ -5,7 +5,7 @@ import Header from './Header';
 import List from './List';
 
 const Profile: React.FC = memo(() => (
-  <View className="flex flex-col items-center">
+  <View className="flex h-screen w-full flex-col items-center gap-10">
     <Header />
     <List />
   </View>

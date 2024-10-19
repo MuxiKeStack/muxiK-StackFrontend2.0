@@ -7,7 +7,7 @@ type MessageProps = MessageType;
 
 const Message: React.FC<MessageProps> = memo(
   ({ username, avatar, eventType, description, comment, timestamp }) => (
-    <View className="flex w-full gap-4">
+    <View className="flex w-[85vw] gap-4 px-4">
       <View className="flex aspect-square h-12 w-12 items-center justify-center rounded-full border-4 border-gray-300 bg-[#f9f9f2]">
         <Image src={avatar} className="h-full w-full rounded-full" />
       </View>

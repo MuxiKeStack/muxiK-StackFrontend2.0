@@ -2,12 +2,7 @@ import Taro from '@tarojs/taro';
 import React, { memo, useCallback } from 'react';
 import { AtList, AtListItem } from 'taro-ui';
 
-import {
-  BookIcon,
-  ClockIcon,
-  MailIcon,
-  StarIcon,
-} from '@/common/assets/img/personalPage';
+import { BookIcon, ClockIcon, MailIcon, StarIcon } from '@/common/assets/img/profile';
 import { uniqueKey } from '@/common/utils';
 
 const ListItems: { title: string; icon: string; url: string }[] = [
@@ -26,7 +21,7 @@ const List: React.FC = memo(() => {
   const navigate = useCallback((url: string) => void Taro.navigateTo({ url }), []);
 
   return (
-    <AtList className="relative bottom-[30vh] w-full px-[5%]">
+    <AtList className="w-[95vw] px-[10%]">
       {ListItems.map((item) => (
         <AtListItem
           key={uniqueKey.nextKey()}
