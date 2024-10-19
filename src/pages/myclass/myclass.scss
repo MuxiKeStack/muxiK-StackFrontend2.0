@@ -2,7 +2,9 @@
   width: 100%;
   height: 3vh;
   display: flex;
+  position: relative;
 }
+
 .text {
   left: 50%;
   transform: translate(-50%);
@@ -12,74 +14,69 @@
     Segoe UI,
     serif;
   font-weight: bold;
+  font-size: 5vw;
+  white-space: nowrap;
 }
+
 .sjx {
-  width: 0rpx;
-  height: 0rpx;
-  border-top: 21.74rpx solid #f18900;
-  border-left: 12.68rpx solid transparent;
-  border-right: 12.68rpx solid transparent;
-  border-bottom: 21.74rpx solid transparent;
-  position: absolute; /* 绝对定位 */
-  right: 0; /* 右对齐 */
-  //top: 50%; /* 垂直居中 */
-  //transform: translateY(-50%); /* 垂直居中调整 */
+  width: 0;
+  height: 0;
+  border-top: 4vw solid #f18900;
+  border-left: 2vw solid transparent;
+  border-right: 2vw solid transparent;
+  border-bottom: 4vw solid transparent;
+  position: absolute;
+  right: 0;
 }
 .classes {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10rpx;
+  margin-top: 2.5vw;
 }
 
 .eachClass {
-  border-bottom: 1rpx solid #ffd777;
-  height: 118rpx;
-  width: 659rpx;
+  border-bottom: 1px solid #ffd777;
+  height: 20vw;
+  width: 100vw;
   position: relative;
-  font-weight: 400;
-  font-size: 29rpx;
+  font-size: 4.5vw;
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
-// .classteacher {
-//   position: relative;
-//   top: 20rpx;
-//   left: 65rpx;
-// }
-.eachClass .circle {
-  width: 27rpx;
-  height: 27rpx;
+.circle {
+  width: 3vw;
+  height: 3vw;
   background-color: #ffd777;
-  border-radius: 100%;
-  margin-right: 10rpx;
+  border-radius: 50%;
+  margin: 3vw;
+}
+
+.classInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.classname {
+  font-weight: 500;
+}
+
+.classteacher {
+  font-size: 4vw;
+  color: #777;
 }
 
 .classstatus {
   color: #f18900;
   position: absolute;
-  right: 70rpx;
+  right: 15vw;
 }
-
-// .classstatus {
-//   color: #f18900;
-//   position: relative;
-//   left: 180rpx;
-//   top: -15rpx;
-// }
-
-// .jt {
-//   color: #f18900;
-//   font-size: 60rpx;
-//   position: relative;
-//   left: 200rpx;
-//   top: -5rpx;
-// }
 
 .jt {
   color: #f18900;
   position: absolute;
   right: 0;
-  font-size: 50rpx;
+  font-size: 10vw;
 }
