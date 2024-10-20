@@ -54,8 +54,6 @@ export default function Index() {
 
   const handleSearch = (searchText: string) => {
     console.log('搜索文本:', searchText);
-    // 这里可以添加发送API请求的代码
-    // 例如: fetchSearchResults(searchText);
   };
 
   const geneHandler = () => {
