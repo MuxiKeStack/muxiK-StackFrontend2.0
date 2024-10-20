@@ -64,7 +64,6 @@ const Research: React.FC = () => {
   const handleSearch = (searchText: string) => {
     console.log('搜索文本:', searchText);
     setSpread(true);
-    // 这里可以添加发送API请求的代码
     get(`/search?biz=Course&keyword=${searchText}&search_location=Home`).then((res) => {
       console.log(res);
       setClasses(res.data);
