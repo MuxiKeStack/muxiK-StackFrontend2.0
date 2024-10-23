@@ -6,10 +6,11 @@ import { View } from '@tarojs/components';
 import './label3.scss';
 
 export default function Label3(props) {
-  const { handleChecked } = props;
+  const { handleChecked, handleClick } = props;
 
   const label3Checked = (id) => {
-    handleChecked(id);
+    if (id) handleChecked(id);
+    handleClick();
     // console.log("已点击")
   };
 
