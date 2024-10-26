@@ -26,20 +26,6 @@ const SearchInput: React.FC<SearchInputProps> = ({
   // const [isSearchActive, setIsSearchActive] = useState(true);
   const [searchText, setSearchText] = useState(''); // 添加状态来存储搜索文本
 
-  // const handleClick = () => {
-  //   // if (!isSearchActive) {
-  //     // setIsSearchActive(true);
-  //     onSearchToggle();
-  //   // }
-  // };
-
-  // const handleBlur = () => {
-  //   // if (isSearchActive) {
-  //   //   setIsSearchActive(false);
-  //     onSearchToggle();
-  //   // }
-  // };
-
   // 添加点击图片时的搜索逻辑
   const handleImageClick = (e: any) => {
     // 阻止事件冒泡

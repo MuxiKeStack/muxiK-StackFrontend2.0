@@ -9,10 +9,9 @@
 import { Image, Text, View } from '@tarojs/components';
 import React, { useEffect, useState } from 'react';
 
-import './index.scss';
-
-import { get } from '@/common/utils';
+import { formatIsoDate, get } from '@/common/utils';
 import { useCourseStore } from '@/pages/main/store/store';
+import './index.scss';
 
 interface CommentProps {
   comments: CommentType[];
@@ -72,10 +71,11 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
     void fetchAllReplies();
   }, []);
 
-  const ctimeToString = (ctime: number) => {
-    const ctimeDate = new Date(ctime);
-    return <Text className="time">{ctimeDate.toLocaleString()}</Text>;
-  };
+  // const ctimeToString = (ctime: number) => {
+  //   return (
+  //     <Text className="time">formatIsoDate(new Date(ctime as number).toISOString())</Text>
+  //   );
+  // };
 
   // 辅助函数：获取回复者的昵称
   const getReplyToNickname = (replyToUid: number): string => {
@@ -103,7 +103,9 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
           <View className="comment-header">
             <Image src={comment.user?.avatar ?? ''} className="avatar" />
             <Text className="nickname">{comment.user?.nickname}</Text>
-            {ctimeToString(comment.ctime)}
+            <View className="time">
+              {formatIsoDate(new Date(comment.ctime).toISOString())}
+            </View>
           </View>
           <View className="comment-content">
             <Text>{comment.content}</Text>
@@ -128,7 +130,9 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
                       </Text>
                     ) : null}
                   </Text>
-                  {ctimeToString(reply.ctime)}
+                  <View className="time">
+                    {formatIsoDate(new Date(comment.ctime).toISOString())}
+                  </View>
                 </View>
                 <View className="reply-content">
                   <Text>{reply.content}</Text>
