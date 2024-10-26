@@ -169,11 +169,19 @@ export default function evaluate() {
     // 执行其他需要的逻辑
   };
 
+  const onLableClick = () => {
+    if (courseName == '只能评价自己学过的课程哦') {
+      void Taro.navigateTo({
+        url: '/pages/myclass/myclass',
+      });
+    }
+  };
+
   return (
     <Form className="view">
       <View className="p">
         <Text> 选择课程 : </Text>
-        <Label3 content={courseName}></Label3>
+        <Label3 handleClick={onLableClick} content={courseName}></Label3>
       </View>
       <View className="p">
         <Text>评价星级 :</Text>
