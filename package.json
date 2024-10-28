@@ -53,7 +53,7 @@
     "@tarojs/plugin-platform-h5": "4.0.5",
     "@tarojs/plugin-platform-jd": "4.0.5",
     "@tarojs/plugin-platform-qq": "4.0.5",
-    "@tarojs/plugin-platform-swan": "4.0.5",
+    "@tarojs/plugin-platform-swan": "4.0.7",
     "@tarojs/plugin-platform-tt": "4.0.5",
     "@tarojs/plugin-platform-weapp": "4.0.6",
     "@tarojs/react": "4.0.5",
