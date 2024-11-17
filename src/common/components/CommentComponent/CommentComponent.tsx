@@ -4,14 +4,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable import/first */
+
 // Comment.tsx
 import { Image, Text, View } from '@tarojs/components';
 import React, { useEffect, useState } from 'react';
 
-import { formatIsoDate, get } from '@/common/utils';
-import { useCourseStore } from '@/pages/main/store/store';
 import './index.scss';
+
+// eslint-disable-next-line import/first
+import { formatIsoDate, get } from '@/common/utils';
+// eslint-disable-next-line import/first
+import { useCourseStore } from '@/pages/main/store/store';
 
 interface CommentProps {
   comments: CommentType[];
