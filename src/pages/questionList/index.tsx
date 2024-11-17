@@ -1,11 +1,9 @@
-/* eslint-disable import/first */
 /* eslint-disable no-console */
 import { Button, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 // import './index.scss';
-
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionListComponent from '@/common/components/QuestionListComponent/QuestionListComponent';
 import { get } from '@/common/utils';

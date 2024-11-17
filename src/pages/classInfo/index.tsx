@@ -202,7 +202,7 @@ export default function Index() {
           </View>
         )}
         {questionlist.length === 0 && (
-          <Text className="mr-auto flex items-center justify-center">
+          <Text className="mb-2 mr-auto mt-2 flex items-center justify-center">
             暂无内容敬请期待
           </Text>
         )}

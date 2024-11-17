@@ -1,4 +1,5 @@
 import { Navigator, View } from '@tarojs/components';
+// import Taro from '@tarojs/taro';
 import { useState } from 'react';
 import { AtFloatLayout } from 'taro-ui';
 
@@ -6,8 +7,8 @@ import './index.scss';
 
 export default function Index() {
   const [isFloatLayoutVisible, setIsFloatLayoutVisible] = useState(false); // 控制 AtFloatLayout 显示的状态
-
   // 处理打开 FloatLayout 的方法
+
   const handleFloatLayoutChange = (isVisible: boolean) => {
     console.log(1);
     setIsFloatLayoutVisible(isVisible);

@@ -14,17 +14,7 @@ import Star from '@/common/components/star/star';
 import { post } from '@/common/utils';
 
 export default function evaluate() {
-  // function generateUniqueID() {
-  //   const timestamp = Date.now().toString(36); // 时间戳转换为36进制
-  //   const randomString = Math.random().toString(36).substr(2, 5); // 随机数转换为36进制并截取部分字符
-
-  //   const uniqueID = timestamp + randomString;
-  //   return uniqueID;
-  // }
-
-  // 示例用法
-  //const uniqueID = generateUniqueID();
-
+  const accoutInfo = Taro.getStorageSync('accountInfo');
   // 初始化状态，存储所有选中的 Radio 项的值
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
@@ -50,20 +40,6 @@ export default function evaluate() {
     { value: 'GroupReporting', text: '小组汇报' },
     { value: 'NoAssessment', text: '无考核' },
   ];
-
-  // const [checkedClass,setCheckedClass] = useState([{ content: '只能评价自己学过的课程哦' }]);
-
-  // enum FeatureTag {
-  //   EasyToLearn = '课程简单易学',
-  //   RichInContent = '课程干货满满',
-  //   Challenging = '课程很有挑战',
-  //   RigorousAndResponsible = '老师严谨负责',
-  //   KindAndEasygoing = '老师温柔随和',
-  //   Humorous = '老师风趣幽默',
-  //   LessHomework = '平时作业少',
-  //   KeyPointsForFinal = '期末划重点',
-  //   ComprehensiveOnlineMaterials = '云课堂资料全',
-  // }
 
   const features = [
     { value: 'EasyToLearn', content: '课程简单易学' },
@@ -177,7 +153,9 @@ export default function evaluate() {
     }
   };
 
-  return (
+  return accoutInfo.miniProgram.envVersion !== 'develop' ? (
+    <>因为政策原因，暂时无法评价课程</>
+  ) : (
     <Form className="view">
       <View className="p">
         <Text> 选择课程 : </Text>

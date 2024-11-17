@@ -9,6 +9,7 @@ import './style.scss';
 import { useCourseStore } from '@/pages/main/store/store';
 
 import IconFont from '@/common/components/iconfont';
+import { formatIsoDate } from '@/common/utils';
 import { CourseDetailsType, PublisherDetailsType } from '@/pages/main/store/types';
 import ShowStar from '../showStar/showStar';
 
@@ -72,7 +73,10 @@ const CommentHeader: React.FC<CommentProps> = memo((props) => {
               style={`background-image: url(${publisher_info?.avatar});`}
             ></View>
             <View className="userName">{publisher_info?.nickname}</View>
-            <View className="time">{new Date(ctime as number).toLocaleString()}</View>
+            <View className="time">
+              {' '}
+              {formatIsoDate(new Date(ctime as number).toISOString())}
+            </View>
             <View className="stars">
               <ShowStar score={star_rating}></ShowStar>
             </View>
