@@ -153,7 +153,7 @@ export default function evaluate() {
     }
   };
 
-  return accoutInfo.miniProgram.envVersion !== 'develop' ? (
+  return accoutInfo.miniProgram.envVersion === 'develop' ? (
     <>因为政策原因，暂时无法评价课程</>
   ) : (
     <Form className="view">

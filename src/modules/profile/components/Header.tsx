@@ -67,7 +67,12 @@ const Header: React.FC = memo(() => {
   return (
     <>
       <Image src={TopBackground as string} className="h-[35vh] w-full"></Image>
-      <View className="absolute top-[12vh] flex w-full items-center gap-4 pl-14">
+      <View
+        className="absolute top-[12vh] flex w-full items-center gap-4 pl-14"
+        onClick={() => {
+          void Taro.navigateTo({ url: '/pages/editUser/index' });
+        }}
+      >
         <View className="aspect-square h-[20vw] w-[20vw] rounded-full bg-white">
           <Image
             src={user.avatarUrl}
@@ -80,14 +85,7 @@ const Header: React.FC = memo(() => {
             {user.selectedTitle !== 'None' && (
               <TitleButton title={user.selectedTitle} isSelected></TitleButton>
             )}
-            <Text
-              className="text-md font-bold text-white"
-              onClick={() => {
-                void Taro.navigateTo({ url: '/pages/editUser/index' });
-              }}
-            >
-              &gt;
-            </Text>
+            <Text className="text-md font-bold text-white">&gt;</Text>
           </View>
           <Text className="flex w-full justify-end text-xs font-bold text-orange-400">
             {user.points}/{user.nextLevel}
