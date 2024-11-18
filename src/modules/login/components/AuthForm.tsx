@@ -101,7 +101,7 @@ const AuthForm: React.FC = memo(() => {
               password
               onInput={(e) => setUserData({ ...userData, password: e.detail.value })}
             ></Input>
-            <Text className="text-sm text-gray-500">Forget your password?</Text>
+            <Text className="text-sm text-gray-500">请使用一站式账号密码登录</Text>
           </View>
           <View className="mb-12 mt-8 flex w-[90vw] flex-col gap-2">
             <Button
