@@ -64,21 +64,23 @@ const LineChart: React.FC<LineChartProps> = (props) => {
   }, []);
   const drawLineChart = () => {
     const query = Taro.createSelectorQuery();
-    query
-      .select(`#${id ?? DEFAULT_CHART_ID}`)
-      .fields({ node: true, size: true })
-      .exec((res) => {
-        const dpr = Taro.getSystemInfoSync().pixelRatio;
-        const canvas = res[0].node as CanvasInterface;
-        const { width, height } = canvas;
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        // 设置 canvas 组件的样式宽高
-        setSize({ x: width ?? 200, y: height ?? 200 });
-        const ctx = canvas.getContext('2d') as CanvasContext;
-        ctx.scale(dpr, dpr);
-        drawChart(ctx);
-      });
+    setTimeout(() => {
+      query
+        .select(`#${id ?? DEFAULT_CHART_ID}`)
+        .fields({ node: true, size: true })
+        .exec((res) => {
+          const dpr = Taro.getSystemInfoSync().pixelRatio;
+          const canvas = res[0].node as CanvasInterface;
+          const { width, height } = canvas;
+          canvas.width = width * dpr;
+          canvas.height = height * dpr;
+          // 设置 canvas 组件的样式宽高
+          setSize({ x: width ?? 200, y: height ?? 200 });
+          const ctx = canvas.getContext('2d') as CanvasContext;
+          ctx.scale(dpr, dpr);
+          drawChart(ctx);
+        });
+    }, 200);
   };
 
   const drawChart = (ctx: CanvasContext) => {
@@ -178,14 +180,15 @@ const LineChart: React.FC<LineChartProps> = (props) => {
   return (
     <Canvas
       id={id ?? DEFAULT_CHART_ID}
-      width={(size?.x ?? DEFAULT_WIDTH + 'px') as string}
-      height={(size?.y ?? DEFAULT_HEIGHT + 'px') as string}
+      // width={(size?.x ?? DEFAULT_WIDTH + 'px') as string}
+      // height={(size?.y ?? DEFAULT_HEIGHT + 'px') as string}
       className={className}
       style={{
         ...style,
         ...{
           width: `${propWidth ?? DEFAULT_WIDTH}px`,
           height: `${propHeight ?? DEFAULT_HEIGHT}px`,
+          flex: 1,
         },
       }}
       type="2d"
