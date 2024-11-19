@@ -164,7 +164,7 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
-      <View className="h-1/3 pt-1.5">
+      <View className="mx-auto flex w-[90%] pt-1.5">
         <LineChart
           className="mx-auto text-center"
           data={yData}

@@ -46,6 +46,7 @@ export default function Index() {
   const handleChangeType = (type) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     dispatch.changeType(type);
+    void dispatch.refershComments();
   };
 
   useEffect(() => {
