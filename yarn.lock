@@ -3303,15 +3303,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/plugin-platform-qq@npm:4.0.5":
-  version: 4.0.5
-  resolution: "@tarojs/plugin-platform-qq@npm:4.0.5"
+"@tarojs/plugin-platform-qq@npm:4.0.8":
+  version: 4.0.8
+  resolution: "@tarojs/plugin-platform-qq@npm:4.0.8"
   dependencies:
-    "@tarojs/plugin-platform-weapp": "npm:4.0.5"
+    "@tarojs/plugin-platform-weapp": "npm:4.0.8"
   peerDependencies:
-    "@tarojs/plugin-platform-weapp": 4.0.5
-    "@tarojs/shared": 4.0.5
-  checksum: 10c0/5e2409e2dada11339c406cf8be8bb744af380caf84bc960868c42cc501a37220638a4fbb74b4db9aa749e0b9e2b739ff41511f99cfe86504807ef55f9fa2c5aa
+    "@tarojs/plugin-platform-weapp": 4.0.8
+    "@tarojs/shared": 4.0.8
+  checksum: 10c0/a59f59c6c047a5eee8885ab9646ed80629a82dc9f5937965cc92ce68cbe9e401ac415314a2d1bd4d9affa551eb990ea3175cea3a146210146c31d6c3bdf7f4ff
   languageName: node
   linkType: hard
 
@@ -3335,16 +3335,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tarojs/plugin-platform-weapp@npm:4.0.5":
-  version: 4.0.5
-  resolution: "@tarojs/plugin-platform-weapp@npm:4.0.5"
-  peerDependencies:
-    "@tarojs/service": 4.0.5
-    "@tarojs/shared": 4.0.5
-  checksum: 10c0/2f5f5dd404f43c9d08a358bf722119e619e70687a97cb7b4a126074bc389b367accbdf8354d33fd5aad2a30eabb679f3f4aa3ef40d3123fc590d5296dd1c656b
-  languageName: node
-  linkType: hard
-
 "@tarojs/plugin-platform-weapp@npm:4.0.6":
   version: 4.0.6
   resolution: "@tarojs/plugin-platform-weapp@npm:4.0.6"
@@ -3352,6 +3342,16 @@ __metadata:
     "@tarojs/service": 4.0.6
     "@tarojs/shared": 4.0.6
   checksum: 10c0/51fa101a17120eba010927141252a82ef7f99c4a0382cce5a4d43e731bf1240e8d8de6f9aff2cfd3ea1863e75b076948094a3a4ec2767aca13a6986221801218
+  languageName: node
+  linkType: hard
+
+"@tarojs/plugin-platform-weapp@npm:4.0.8":
+  version: 4.0.8
+  resolution: "@tarojs/plugin-platform-weapp@npm:4.0.8"
+  peerDependencies:
+    "@tarojs/service": 4.0.8
+    "@tarojs/shared": 4.0.8
+  checksum: 10c0/fbbad2e94e5cfc759d77aa72fe4fe901f7d3b5ddf00f811ca63b49d34ab24756900e33ebb5c7375b93b0fd1a01a53683f75abb7c91d881705adb0277d6a4e9c9
   languageName: node
   linkType: hard
 
@@ -11435,7 +11435,7 @@ __metadata:
     "@tarojs/plugin-platform-alipay": "npm:4.0.5"
     "@tarojs/plugin-platform-h5": "npm:4.0.5"
     "@tarojs/plugin-platform-jd": "npm:4.0.5"
-    "@tarojs/plugin-platform-qq": "npm:4.0.5"
+    "@tarojs/plugin-platform-qq": "npm:4.0.8"
     "@tarojs/plugin-platform-swan": "npm:4.0.5"
     "@tarojs/plugin-platform-tt": "npm:4.0.5"
     "@tarojs/plugin-platform-weapp": "npm:4.0.6"
