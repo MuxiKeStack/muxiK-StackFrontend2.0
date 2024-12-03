@@ -3100,6 +3100,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/helper@npm:4.0.8":
+  version: 4.0.8
+  resolution: "@tarojs/helper@npm:4.0.8"
+  dependencies:
+    "@babel/core": "npm:^7.24.4"
+    "@babel/generator": "npm:^7.24.4"
+    "@babel/parser": "npm:^7.24.4"
+    "@babel/traverse": "npm:^7.24.1"
+    "@babel/types": "npm:^7.24.0"
+    "@swc/core": "npm:1.3.96"
+    "@swc/register": "npm:0.1.10"
+    ansi-escapes: "npm:^4.3.2"
+    chalk: "npm:^4.1.2"
+    chokidar: "npm:^3.6.0"
+    cross-spawn: "npm:^7.0.3"
+    debug: "npm:^4.3.4"
+    dotenv: "npm:^16.4.5"
+    dotenv-expand: "npm:^11.0.6"
+    esbuild: "npm:~0.21.0"
+    find-yarn-workspace-root: "npm:^2.0.0"
+    fs-extra: "npm:^11.2.0"
+    lodash: "npm:^4.17.21"
+    require-from-string: "npm:^2.0.2"
+    resolve: "npm:^1.22.8"
+    supports-hyperlinks: "npm:^3.0.0"
+  checksum: 10c0/c7de44f65805a95f3fac11bbb719b3f572937479aac0336e3123f8f70db6d45d91d9ee5ebfd21957c2ec5ea42adef75e26379817498855f389451b62a7e497a1
+  languageName: node
+  linkType: hard
+
 "@tarojs/plugin-doctor-darwin-arm64@npm:0.0.13":
   version: 0.0.13
   resolution: "@tarojs/plugin-doctor-darwin-arm64@npm:0.0.13"
@@ -3466,6 +3495,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/shared@npm:4.0.8":
+  version: 4.0.8
+  resolution: "@tarojs/shared@npm:4.0.8"
+  checksum: 10c0/05e7476ed18abe9048ce0a10364442325dfa885a8c7ec682e1665954b56dc17c3705917562172ac37d2cdd0713100fc899ed2ea8fe2ddfcb787b7ca30bf3bcb7
+  languageName: node
+  linkType: hard
+
 "@tarojs/taro-h5@npm:4.0.5":
   version: 4.0.5
   resolution: "@tarojs/taro-h5@npm:4.0.5"
@@ -3499,6 +3535,18 @@ __metadata:
   peerDependencies:
     webpack: 5.91.0
   checksum: 10c0/07813c45f4e97059459ab51c828039c00c17f47e46184330871ab52f3432cb02dd4c3d595f35e5f17326066185a7bc527049d7c75e1649b8406ed2ef0787a0bf
+  languageName: node
+  linkType: hard
+
+"@tarojs/taro-loader@npm:4.0.8":
+  version: 4.0.8
+  resolution: "@tarojs/taro-loader@npm:4.0.8"
+  dependencies:
+    "@tarojs/helper": "npm:4.0.8"
+    "@tarojs/shared": "npm:4.0.8"
+  peerDependencies:
+    webpack: 5.91.0
+  checksum: 10c0/1706a1fa39e803f8b56c728ab1ed7e2ad771ee76264feab766b7b12ddb661c5914183a0df27eefcdd3ad63403c1a8b7109d797351fb706c8e903a626d155abab
   languageName: node
   linkType: hard
 
@@ -11443,7 +11491,7 @@ __metadata:
     "@tarojs/runtime": "npm:4.0.5"
     "@tarojs/shared": "npm:4.0.5"
     "@tarojs/taro": "npm:4.0.5"
-    "@tarojs/taro-loader": "npm:4.0.5"
+    "@tarojs/taro-loader": "npm:4.0.8"
     "@tarojs/webpack5-runner": "npm:4.0.5"
     "@types/node": "npm:^22.5.5"
     "@types/react": "npm:^18.3.8"
