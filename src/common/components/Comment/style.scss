@@ -104,7 +104,7 @@ $content-line-height: 30;
     }
     .content {
       // clear: both;
-      font-size: 22rpx;
+      font-size: 28rpx;
       font-family:
         Segoe UI-Regular,
         Segoe UI;
@@ -124,8 +124,9 @@ $content-line-height: 30;
     }
   }
   .icon {
-    width: 40rpx;
-    height: 40rpx;
+    position: relative;
+    width: 50rpx;
+    height: 50rpx;
     box-shadow: 0rpx 5rpx 11rpx 2rpx rgba(0, 0, 0, 0.16);
     opacity: 1;
     border-radius: 50%;
@@ -133,15 +134,19 @@ $content-line-height: 30;
     text-align: center;
     line-height: 40rpx;
     margin-left: 15rpx;
-    Image {
-      width: 100%;
-      height: 100%;
+    margin-right: 15rpx;
+    > Iconfont {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
   }
   .text1 {
-    font-size: 22rpx;
+    font-size: 28rpx;
     font-weight: bold;
     color: black;
+    line-height: 50rpx;
   }
 }
 .text-overflow {
