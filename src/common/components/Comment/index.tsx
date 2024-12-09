@@ -13,6 +13,8 @@ import { formatIsoDate } from '@/common/utils';
 import { CourseDetailsType, PublisherDetailsType } from '@/pages/main/store/types';
 import ShowStar from '../showStar/showStar';
 
+import { post } from '@/common/utils';
+
 interface CommentProps extends CommentInfo {
   type?: string;
   isHot?: boolean;
@@ -99,6 +101,12 @@ const Comment: React.FC<CommentProps> = memo((props) => {
     onClick && onClick(props);
   }, [onClick]);
 
+  const handlEndorse = (a: number) => {
+    void post(`/evaluations/${id}/endorse`, { stance: a }).then((res) => {
+      console.log(res);
+    });
+  };
+
   return (
     <View className="bigcomment" onClick={handleClick}>
       <View className="commentplus">
@@ -110,7 +118,7 @@ const Comment: React.FC<CommentProps> = memo((props) => {
 
         {type === 'inner' && (
           <View className="likes">
-            <View className="icon">
+            <View className="icon" onClick={() => handlEndorse(1)}>
               <IconFont name="like" />
               {/* <Navigator className="iconfont">&#xe786;</Navigator> */}
             </View>
