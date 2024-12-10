@@ -154,6 +154,7 @@ export default function Index() {
       <View className="p">
         综合评分: <ShowStar score={course.composite_score} />
         <Text>（共{course.rater_count}人评价）</Text>
+        {/* <Text> 收藏该课程</Text> */}
       </View>
       <View className="p">
         课程分类: <Label3 content={translateCourseProperty(course.type)} />
@@ -164,6 +165,11 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
+      {/* <View className="p">
+        <Label3 content="收藏该课程" handleClick={
+
+        }/>
+      </View> */}
       <View className="mx-auto flex w-[90%] pt-1.5">
         <LineChart
           className="mx-auto text-center"

@@ -74,12 +74,13 @@ const Selector: React.FC<SelectorProps> = memo(
       </View>
       {children}
       <Popup open={isOpen} placement="bottom">
-        <Popup.Close />
         <ConfigProvider theme={{ pickerConfirmActionColor: '#f18900' }}>
           <Picker
             style={{ marginBottom: '15vh' }}
             defaultValue={['全部', '全部']}
             title="选择学年和学期"
+            cancelText="取消"
+            confirmText="确定"
             columns={Times()}
             onConfirm={(value) => {
               setSelection({ year: value[0], term: value[1] });

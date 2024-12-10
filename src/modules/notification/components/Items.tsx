@@ -50,7 +50,7 @@ export const OfficialItem = memo(
     return (
       <>
         <View className="flex w-full flex-col items-center gap-4">
-          <AlertOfficial title="此版块暫未开放，未来将会有更多精彩内容" />
+          <AlertOfficial title="此版块暂未开放，未来将会有更多精彩内容" />
         </View>
         {/* <View className="flex w-full flex-col items-center gap-4">
           <View className="text-xs text-gray-500">07:25</View>
