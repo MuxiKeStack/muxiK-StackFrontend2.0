@@ -9,11 +9,9 @@ import './style.scss';
 import { useCourseStore } from '@/pages/main/store/store';
 
 import IconFont from '@/common/components/iconfont';
-import { formatIsoDate } from '@/common/utils';
+import { formatIsoDate, post } from '@/common/utils';
 import { CourseDetailsType, PublisherDetailsType } from '@/pages/main/store/types';
 import ShowStar from '../showStar/showStar';
-
-import { post } from '@/common/utils';
 
 interface CommentProps extends CommentInfo {
   type?: string;
