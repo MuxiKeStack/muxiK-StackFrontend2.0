@@ -9,9 +9,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 /* eslint-disable import/first */
-import { Input, View } from '@tarojs/components';
+import { Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
@@ -28,6 +28,7 @@ export default function Index() {
   const [replyTo, setReplyTo] = useState<CommentType | null>(null); // 新增状态，存储被回复的评论
   const [replyContent, setReplyContent] = useState(''); // 存储回复内容
   const [placeholderContent, setplaceholderContent] = useState('写下你的评论...'); // 存储占位内容
+  const inputRef = useRef<typeof Textarea | null>(null);
 
   const [comment, setComment] = useState<CommentInfoType | null>(null); //获取课评信息
   // const biz_id = 1;
@@ -52,6 +53,9 @@ export default function Index() {
     handleQuery();
   }, []);
   useEffect(() => {
+    Taro.showLoading({
+      title: '加载中',
+    });
     const fetchComments = async () => {
       // console.log(biz_id)
       try {
@@ -64,6 +68,7 @@ export default function Index() {
       } catch (error) {
         console.error('加载评论失败', error);
       }
+      Taro.hideLoading();
     };
 
     // 确保 biz_id 设置后再调用 fetchComments
@@ -74,6 +79,10 @@ export default function Index() {
   }, [biz_id, commentsLoaded]); // 依赖项中添加biz_id
 
   const handleCommentClick = (comment: CommentType) => {
+    if (inputRef.current && !comment) {
+      (inputRef.current as unknown as { focus: () => void }).focus();
+      return;
+    }
     setReplyTo(comment); // 设置回复目标
     setplaceholderContent(`回复给${comment.user?.nickname}: `); // 初始化回复内容
   };
@@ -92,6 +101,9 @@ export default function Index() {
     if (!replyContent.trim()) return; // 忽略空内容
 
     try {
+      Taro.showLoading({
+        title: '发布课评中',
+      });
       await post('/comments/publish', {
         biz: 'Evaluation',
         biz_id,
@@ -99,8 +111,19 @@ export default function Index() {
         parent_id: replyTo?.id || 0,
         root_id:
           replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
+      }).catch(() => {
+        Taro.hideLoading();
+        Taro.showToast({
+          title: '课评发布失败',
+          icon: 'error',
+        });
+        return;
       });
-      console.log('评论发布成功');
+      Taro.hideLoading();
+      Taro.showToast({
+        title: '课评发布成功',
+        icon: 'success',
+      });
       updateInfo(biz_id ?? 1, COMMENT_ACTIONS.COMMENT);
       // 清空回复目标和输入框
       setReplyTo(null);
@@ -130,13 +153,15 @@ export default function Index() {
   // 仅当评论数据加载完成时渲染CommentComponent
   return (
     <View className="evaluateInfo" onClick={handleClearReply}>
-      <Comment showAll {...comment} />
+      <Comment showAll {...comment} onCommentClick={handleCommentClick} />
       {commentsLoaded && (
         <CommentComponent comments={allComments} onCommentClick={handleCommentClick} />
       )}
-      <View className="reply-input">
-        <Input
-          type="text"
+      <View className="absolute bottom-0 flex h-[10vh] w-full justify-center bg-[#f9f9f2] p-2 pb-0 text-sm">
+        <Textarea
+          className="ml-4 mr-4 flex-1"
+          ref={inputRef}
+          placeholderClass="flex-1 justify-center text-sm text-gray-500"
           placeholder={placeholderContent}
           value={replyContent}
           onClick={(e) => {

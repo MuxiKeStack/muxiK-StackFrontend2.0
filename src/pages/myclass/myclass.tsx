@@ -40,6 +40,9 @@ export default function Myclass() {
   };
 
   useEffect(() => {
+    void Taro.showLoading({
+      title: '加载中',
+    });
     async function fetchClasses() {
       try {
         const yearValue = year.split('-')[0];
@@ -57,7 +60,17 @@ export default function Myclass() {
         console.error('Error fetching user courses:', error);
       }
     }
-    void fetchClasses();
+    void fetchClasses()
+      .then(() => {
+        Taro.hideLoading();
+      })
+      .catch(() => {
+        Taro.hideLoading();
+        void Taro.showToast({
+          icon: 'error',
+          title: '加载失败',
+        });
+      });
   }, [year, sem]);
 
   const handleClassClick = (id: number, name: string) => {
@@ -66,6 +79,11 @@ export default function Myclass() {
     // 使用 navigateTo 跳转到 evaluate 页面，并传递参数
     void Taro.navigateTo({
       url: `/pages/evaluate/evaluate${query}`,
+    });
+  };
+  const handleNavToCourseInfo = () => {
+    void Taro.navigateTo({
+      url: '/pages/classInfo/index',
     });
   };
 
@@ -94,7 +112,7 @@ export default function Myclass() {
             onClick={() => handleClassClick(each.id, each.name)}
           >
             <View className="circle"></View>
-            <View className="flex flex-col">
+            <View className="flex flex-col" onClick={handleNavToCourseInfo}>
               <Text className="classname">{each.name}</Text>
               <Text className="classteacher">{'（' + each.teacher + '）'}</Text>
             </View>

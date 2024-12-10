@@ -2,7 +2,7 @@
 /* eslint-disable import/first */
 import { ScrollView, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
 
@@ -26,6 +26,7 @@ export default function Index() {
       url: '/pages/research/research',
     });
   };
+  const [refresherTriggered, setRefresherTriggered] = useState(false);
 
   // const [comments, setComments] = useState<CommentInfoType[]>([]);
   const comments = useCourseStore((state) => state.comments);
@@ -120,16 +121,24 @@ export default function Index() {
         })}
       </View>
       <ScrollView
+        refresherEnabled
         style={{ height: '100%' }}
+        refresherTriggered={refresherTriggered}
         scrollY
         onScroll={(e) => loadMoreHandler(e)}
-        // onScroll={handleScroll}
+        onRefresherRefresh={() => {
+          setRefresherTriggered(true);
+          void dispatch.refershComments().then(() => {
+            setRefresherTriggered(false);
+          });
+        }}
       >
         {comments[classType] &&
           comments[classType].map((comment) => (
             <>
               <Comment
-                onClick={handleComment}
+                onCommentClick={() => handleComment({ ...comment, type: 'inner' })}
+                onClick={() => handleComment({ ...comment, type: 'inner' })}
                 key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的
                 {...comment} // 展开comment对象，将属性传递给Comment组件
                 type="inner" // 固定属性，不需要从数组中获取

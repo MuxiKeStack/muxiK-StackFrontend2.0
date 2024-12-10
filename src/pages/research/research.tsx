@@ -62,12 +62,30 @@ const Research: React.FC = () => {
   };
 
   const handleSearch = (searchText: string) => {
+    Taro.showLoading({
+      title: '搜索中',
+    });
     console.log('搜索文本:', searchText);
     setSpread(true);
-    get(`/search?biz=Course&keyword=${searchText}&search_location=Home`).then((res) => {
-      console.log(res);
-      setClasses(res.data);
-    });
+    get(`/search?biz=Course&keyword=${searchText}&search_location=Home`)
+      .then((res) => {
+        console.log(res);
+        setClasses(res.data);
+        Taro.hideLoading();
+        if (res.data.length === 0) {
+          Taro.showToast({
+            title: '暂无内容',
+            icon: 'error',
+          });
+        }
+      })
+      .catch((err) => {
+        Taro.hideLoading();
+        Taro.showToast({
+          title: '搜索失败',
+          icon: 'error',
+        });
+      });
   };
 
   useEffect(() => {
@@ -82,6 +100,7 @@ const Research: React.FC = () => {
       }}
     >
       <SearchInput
+        autoFocus
         onSearch={handleSearch} // 传递搜索逻辑
         onSearchToggle={handleSearchToggle}
         searchPlaceholder="搜索课程名/老师名"

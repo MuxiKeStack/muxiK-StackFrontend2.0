@@ -38,6 +38,8 @@ export type PublisherDetailsType = {
 export enum COMMENT_ACTIONS {
   LIKE = 1,
   COMMENT = 2,
+  DISLIKE = 3,
+  REMOVE_COMMENT = 4,
 }
 /** 评论 */
 export interface CommentInfoSlice {

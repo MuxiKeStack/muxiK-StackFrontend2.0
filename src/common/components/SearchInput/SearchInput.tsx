@@ -14,6 +14,7 @@ type SearchInputProps = {
   searchPlaceholder: string;
   searchPlaceholderStyle: string;
   searchIconSrc: string;
+  autoFocus?: boolean;
 };
 
 const SearchInput: React.FC<SearchInputProps> = ({
@@ -22,6 +23,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   searchPlaceholder,
   searchPlaceholderStyle,
   searchIconSrc,
+  autoFocus,
 }) => {
   // const [isSearchActive, setIsSearchActive] = useState(true);
   const [searchText, setSearchText] = useState(''); // 添加状态来存储搜索文本
