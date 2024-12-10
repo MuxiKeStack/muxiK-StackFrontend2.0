@@ -27,7 +27,6 @@ export const CreateCommentInfo: StateCreator<
   },
   getComment(id) {
     const { classType, comments } = get();
-    console.log('comments', comments);
     return comments[classType].find((item) => item.id === id);
   },
   async loadMoreComments() {
@@ -47,6 +46,14 @@ export const CreateCommentInfo: StateCreator<
           break;
         case COMMENT_ACTIONS.LIKE:
           currentSelect.total_support_count! += 1;
+          currentSelect.stance = 1;
+          break;
+        case COMMENT_ACTIONS.DISLIKE:
+          currentSelect.total_support_count! -= 1;
+          currentSelect.stance = 0;
+          break;
+        case COMMENT_ACTIONS.REMOVE_COMMENT:
+          currentSelect.total_comment_count! -= 1;
           break;
       }
     }

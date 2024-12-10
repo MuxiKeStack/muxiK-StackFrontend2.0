@@ -13,13 +13,17 @@ const handleLogin = async (data: Record<string, unknown> = {}) => {
   };
 
   try {
+    void Taro.showLoading({
+      title: '登录中...',
+      mask: true,
+    });
     const response = await Taro.request({
       method: 'POST',
       url: `${preUrl}/users/login_ccnu`,
       header,
       data: JSON.stringify(data),
     });
-
+    Taro.hideLoading();
     const headers: LoginResponseHeaders = response.header || {};
     const shortToken = headers['X-Jwt-Token'];
     const longToken = headers['X-Refresh-Token'];

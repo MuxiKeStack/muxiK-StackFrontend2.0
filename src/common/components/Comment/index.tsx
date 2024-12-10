@@ -10,7 +10,12 @@ import { useCourseStore } from '@/pages/main/store/store';
 
 import IconFont from '@/common/components/iconfont';
 import { formatIsoDate, post } from '@/common/utils';
-import { CourseDetailsType, PublisherDetailsType } from '@/pages/main/store/types';
+
+import {
+  COMMENT_ACTIONS,
+  CourseDetailsType,
+  PublisherDetailsType,
+} from '@/pages/main/store/types';
 import ShowStar from '../showStar/showStar';
 
 interface CommentProps extends CommentInfo {
@@ -18,6 +23,9 @@ interface CommentProps extends CommentInfo {
   isHot?: boolean;
   showAll?: boolean;
   onClick?: (comment: CommentInfo) => void;
+  onCommentClick?: (comment: CommentInfo) => void;
+  onLikeClick?: (comment: CommentInfo) => void;
+  classNames?: string;
 }
 
 const CommentHeader: React.FC<CommentProps> = memo((props) => {
@@ -92,38 +100,80 @@ const CommentHeader: React.FC<CommentProps> = memo((props) => {
   );
 });
 const Comment: React.FC<CommentProps> = memo((props) => {
-  const { showAll, type, content, id, onClick } = props;
-  const getComment = useCourseStore((state) => state.getComment);
+  const {
+    showAll,
+    type,
+    content,
+    id,
+    onClick,
+    stance,
+    onCommentClick,
+    onLikeClick,
+    features,
+  } = props;
+  const [shouldSupport, setShouldSupport] = useState(stance === 1);
+  const { getComment, updateCommentInfo } = useCourseStore((state) => ({
+    getComment: state.getComment,
+    updateCommentInfo: state.updateCommentInfo,
+  }));
+  useEffect(() => {
+    setShouldSupport(stance === 1);
+  }, [stance]);
   const father_record = getComment(id ?? 0);
   const handleClick = useCallback(() => {
     onClick && onClick(props);
   }, [onClick]);
 
   const handlEndorse = (a: number) => {
-    void post(`/evaluations/${id}/endorse`, { stance: a }).then((res) => {
-      console.log(res);
-    });
+    setShouldSupport(!shouldSupport);
+    onLikeClick && onLikeClick(props);
+    void post(`/evaluations/${id}/endorse`, { stance: shouldSupport ? 0 : a }).then(
+      (res) => {
+        updateCommentInfo(
+          id ?? -1,
+          shouldSupport ? COMMENT_ACTIONS.DISLIKE : COMMENT_ACTIONS.LIKE
+        );
+      }
+    );
   };
 
   return (
-    <View className="bigcomment" onClick={handleClick}>
+    <View
+      className={`bigcomment ${props.classNames}`}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleClick();
+      }}
+    >
       <View className="commentplus">
         <CommentHeader {...props}></CommentHeader>
+        {features?.map((item, index) => {
+          console.log(features);
+          return <Text key={index}>{item}</Text>;
+        })}
         <View className={`content ${!showAll ? 'text-overflow' : 'text-showAll'}`}>
           {content}
           {/* {!showAll && <Text>...</Text>} */}
         </View>
 
         {type === 'inner' && (
-          <View className="likes">
-            <View className="icon" onClick={() => handlEndorse(1)}>
+          <View className="likes" onClick={(e) => e.stopPropagation()}>
+            <View
+              className={`icon ${shouldSupport && 'bg-orange-200'}`}
+              onClick={() => handlEndorse(1)}
+            >
               <IconFont name="like" />
               {/* <Navigator className="iconfont">&#xe786;</Navigator> */}
             </View>
             <Text className="text1">
               {father_record?.total_support_count ?? props.total_support_count}
             </Text>
-            <View className="icon">
+            <View
+              className="icon"
+              onClick={() =>
+                onCommentClick && father_record && onCommentClick(father_record)
+              }
+            >
               <IconFont name="comment" />
               {/* <Navigator className="iconfont">&#xe769;</Navigator> */}
             </View>

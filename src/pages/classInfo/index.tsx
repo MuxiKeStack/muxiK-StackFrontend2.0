@@ -4,7 +4,7 @@
 /* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
 
@@ -60,6 +60,7 @@ export default function Index() {
           console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setCourse(res.data);
+          !res.data && bailout();
         });
       } catch (error) {
         console.error('Failed to fetch course data:', error);
@@ -92,6 +93,8 @@ export default function Index() {
           console.log(res.data);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setGrade(res.data); // 设置 grade 数据
+          !res.data && bailout();
+          Taro.hideLoading();
         });
       } catch (err) {
         console.error('Failed to fetch grades data', err);
@@ -104,6 +107,7 @@ export default function Index() {
           console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setQuestionNum(res.data);
+          Taro.hideLoading();
         });
       } catch (e) {
         console.error(e);
@@ -117,12 +121,16 @@ export default function Index() {
           console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setQuestionlist(res.data);
+          Taro.hideLoading();
         });
       } catch (e) {
         console.error('Failed to fetch course data:', e);
       }
     };
     if (courseId) {
+      void Taro.showLoading({
+        title: '加载中',
+      });
       void fetchGrades();
       void getNumData();
       void fetchAnswer();
@@ -139,25 +147,33 @@ export default function Index() {
       yData: grade?.grades.map((item) => item.total_grades?.length ?? 0),
     };
   }, [grade]);
-  if (!course || !grade) {
-    return <Text>请先确定已签约成绩共享计划</Text>; // 数据加载中
-  }
-  const featuresList =
-    course.features && Array.isArray(course.features) ? course.features : [];
-
+  const bailout = useCallback(() => {
+    void Taro.showToast({
+      title: '请先确定已签约成绩共享计划',
+      icon: 'none',
+    });
+    setTimeout(() => {
+      void Taro.navigateBack();
+    }, 1000);
+  }, []);
+  const featuresList = useMemo(() => {
+    if (course?.features && Array.isArray(course?.features)) {
+      return course?.features;
+    }
+    return [];
+  }, [course?.features]);
   return (
     <View className="classInfo">
       <View className="theClassnme">{course?.name}</View>
       <View className="teacherName">
-        {course.school} {course.teacher}
+        {course?.school} {course?.teacher}
       </View>
       <View className="p">
-        综合评分: <ShowStar score={course.composite_score} />
-        <Text>（共{course.rater_count}人评价）</Text>
-        {/* <Text> 收藏该课程</Text> */}
+        综合评分: <ShowStar score={course?.composite_score} />
+        <Text>（共{course?.rater_count}人评价）</Text>
       </View>
       <View className="p">
-        课程分类: <Label3 content={translateCourseProperty(course.type)} />
+        课程分类: <Label3 content={translateCourseProperty(course?.type)} />
       </View>
       <View className="p">
         课程特点: {}
@@ -176,7 +192,7 @@ export default function Index() {
           data={yData}
           xLabels={xLabels}
           heightLightPercent={heightLightPercent ?? 0}
-          title={`平均分: ${grade?.avg.toFixed(1)}`}
+          title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
         />
       </View>
       <View>
@@ -219,6 +235,7 @@ export default function Index() {
       {comments &&
         comments.map((comment) => (
           <Comment
+            classNames="mt-2"
             onClick={(props) => {
               const serializedComment = encodeURIComponent(JSON.stringify(props));
               void Taro.navigateTo({
