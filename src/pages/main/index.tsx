@@ -50,7 +50,18 @@ export default function Index() {
   };
 
   useEffect(() => {
-    void (!comments[classType].length && dispatch.refershComments());
+    if (!comments[classType].length) {
+      void Taro.showLoading({ title: '加载中' });
+      void dispatch
+        .refershComments()
+        .then(() => {
+          Taro.hideLoading();
+        })
+        .catch(() => {
+          Taro.hideLoading();
+          void Taro.showToast({ title: '加载失败', icon: 'none' });
+        });
+    }
   }, [classType]);
 
   const handleSearch = (searchText: string) => {
