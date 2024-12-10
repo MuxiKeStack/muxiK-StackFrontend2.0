@@ -96,10 +96,8 @@ const Notification: React.FC = memo(() => {
       } else {
         console.log('官方');
       }
-
       Taro.hideLoading();
       setLoading(false);
-      // console.log('最终 ' + JSON.stringify(message));
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error fetching data:', error);

@@ -103,6 +103,13 @@ export default function evaluate() {
   }, []); // 这个 effect 仅在组件挂载时运行一次
 
   const postEvaluation = () => {
+    if (selectedStarIndex === -1) {
+      void Taro.showToast({
+        title: '请为课程选择星级',
+        icon: 'none',
+      });
+      return;
+    }
     const evaluationobj = {
       star_rating: selectedStarIndex,
       content: comment,
@@ -153,9 +160,7 @@ export default function evaluate() {
     }
   };
 
-  return accoutInfo.miniProgram.envVersion === 'develop' ? (
-    <>因为政策原因，暂时无法评价课程</>
-  ) : (
+  return (
     <Form className="view">
       <View className="p">
         <Text> 选择课程 : </Text>
@@ -172,7 +177,7 @@ export default function evaluate() {
             <Radio
               key={item.value}
               className="myradio"
-              checked={selectedValues.includes(item.value)} // 判断是否包含该项的 value
+              checked={selectedValues.includes(item.value)}
               value={item.value}
               color="transparent"
               onClick={() => handleRadioChange(item.value)}

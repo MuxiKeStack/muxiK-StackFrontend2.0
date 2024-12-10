@@ -15,7 +15,6 @@ import { post } from '@/common/utils';
 
 const EditUser: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
-  // const [editing, setEditing] = useState(false);
   const [nickName, setNickName] = useState('请修改昵称');
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [editableNickName, setEditableNickName] = useState(nickName);
