@@ -9,8 +9,8 @@ export default function Label3(props) {
   const { handleChecked, handleClick } = props;
 
   const label3Checked = (id) => {
-    if (id) handleChecked(id);
-    handleClick();
+    id && handleChecked && handleChecked(id);
+    handleClick && handleClick();
     // console.log("已点击")
   };
 

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect, useState } from 'react';
 
@@ -47,24 +46,22 @@ const History: React.FC = memo(() => {
   }, [fetchData]);
 
   return (
-    <View className="flex h-screen flex-col items-center gap-4 overflow-y-scroll py-4">
-      <VirtualList
-        height="100%"
-        width="100%"
-        item={CommentItem}
-        itemData={comments}
-        itemCount={comments.length}
-        itemSize={220}
-        onScroll={({ scrollDirection, scrollOffset }) => {
-          if (
-            !loading &&
-            scrollDirection === 'forward' &&
-            scrollOffset > (comments.length - 5) * 220 + 100
-          )
-            listReachBottom();
-        }}
-      />
-    </View>
+    <VirtualList
+      height="100%"
+      width="100%"
+      item={CommentItem}
+      itemData={comments}
+      itemCount={comments.length}
+      itemSize={220}
+      onScroll={({ scrollDirection, scrollOffset }) => {
+        if (
+          !loading &&
+          scrollDirection === 'forward' &&
+          scrollOffset > (comments.length - 5) * 220 + 100
+        )
+          listReachBottom();
+      }}
+    />
   );
 });
 

@@ -120,6 +120,9 @@ export default function evaluate() {
       status: 'Public',
     };
     console.log(evaluationobj);
+    void Taro.showLoading({
+      title: '发布中',
+    });
     post(`/evaluations/save`, evaluationobj)
       .then((res) => {
         if (res.code === 0) {
@@ -128,18 +131,25 @@ export default function evaluate() {
           // 或者使用 Taro 的日志记录方式：Taro.showToast({ title: '发布课评成功', icon: 'success' });
           // console.log('发布课评成功');
           // 使用 redirectTo 跳转
-          void Taro.switchTab({
-            url: '/pages/main/index', // 页面路径
+          void Taro.showToast({ title: '发布课评成功', icon: 'success' }).then(() => {
+            void Taro.switchTab({
+              url: '/pages/main/index', // 页面路径
+            });
           });
         } else {
           // 处理其他响应代码，可能需要给用户一些反馈
           // 例如：Taro.showToast({ title: '发布课评失败', icon: 'none' });
+          void Taro.showToast({ title: '发布课评失败', icon: 'none' });
         }
       })
       .catch((error) => {
         // 处理可能出现的错误情况
         // 例如：Taro.showToast({ title: '发布失败，请稍后重试', icon: 'none' });
+        void Taro.showToast({ title: '发布失败，请稍后重试', icon: 'none' });
         console.error('发布课评请求失败:', error);
+      })
+      .finally(() => {
+        Taro.hideLoading();
       });
   };
 
@@ -211,7 +221,14 @@ export default function evaluate() {
         className="myComment"
       ></Textarea>
       <Text className="zsxz">字数限制{textLength}/450</Text>
-      <Button onClick={postEvaluation}>发布</Button>
+      {/* 按钮样式采用 style 强制覆盖 */}
+      <Button
+        style={{ marginTop: 0, height: 30 }}
+        className="h-30 w-4/5 rounded-full bg-[#FFD777]"
+        onClick={postEvaluation}
+      >
+        发布
+      </Button>
     </Form>
   );
 }
