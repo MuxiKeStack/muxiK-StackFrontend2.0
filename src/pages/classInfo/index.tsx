@@ -13,7 +13,8 @@ import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
-import { get } from '@/common/utils';
+import { get, post } from '@/common/utils';
+import { AtIcon } from 'taro-ui';
 
 const coursePropertyMap = {
   CoursePropertyGeneralCore: '通识核心课',
@@ -41,6 +42,7 @@ export default function Index() {
   const [grade, setGrade] = useState<GradeChart>();
   const [questionNum, setQuestionNum] = useState<number>(0);
   const [questionlist, setQuestionlist] = useState<WebQuestionVo[]>([]);
+  const [collect, setCollect] = useState<boolean | undefined>(course?.is_collected);
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
@@ -57,9 +59,15 @@ export default function Index() {
     const getCourseData = async () => {
       try {
         void get(`/courses/${courseId}/detail`).then((res) => {
-          console.log(res);
+          console.log('res', res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setCourse(res.data);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          console.log('course', course);
+          console.log('collect1', res.data.is_collected);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setCollect(res.data.is_collected);
+          console.log('collect', collect);
         });
       } catch (error) {
         console.error('Failed to fetch course data:', error);
@@ -128,6 +136,18 @@ export default function Index() {
       void fetchAnswer();
     }
   }, [courseId]);
+  // 监听 collect 状态更新
+  useEffect(() => {
+    if (collect !== undefined) {
+      console.log('Updated collect:', collect); // 打印最新的 collect 值
+    }
+  }, [collect]);
+  function handleCollect() {
+    void post(`/courses/${courseId}/collect`, { collect: !collect }).then((res) => {
+      console.log(res);
+      setCollect(!collect);
+    });
+  }
   const xLabels = useMemo(
     () => ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'],
     []
@@ -154,7 +174,6 @@ export default function Index() {
       <View className="p">
         综合评分: <ShowStar score={course.composite_score} />
         <Text>（共{course.rater_count}人评价）</Text>
-        {/* <Text> 收藏该课程</Text> */}
       </View>
       <View className="p">
         课程分类: <Label3 content={translateCourseProperty(course.type)} />
@@ -165,11 +184,6 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
-      {/* <View className="p">
-        <Label3 content="收藏该课程" handleClick={
-
-        }/>
-      </View> */}
       <View className="mx-auto flex w-[90%] pt-1.5">
         <LineChart
           className="mx-auto text-center"
@@ -230,6 +244,18 @@ export default function Index() {
             type="inner"
           />
         ))}
+      <View
+        className="fixed bottom-[12vh] right-8 flex flex-col items-center gap-2"
+        onClick={handleCollect}
+      >
+        <View className="flex aspect-square w-14 items-center justify-center rounded-full bg-[#f9f9f2] shadow-xl">
+          {collect ? (
+            <AtIcon value="star-2" size={30} color="#f18900" />
+          ) : (
+            <AtIcon value="star" size={30} color="#f18900" />
+          )}
+        </View>
+      </View>
     </View>
   );
 }
