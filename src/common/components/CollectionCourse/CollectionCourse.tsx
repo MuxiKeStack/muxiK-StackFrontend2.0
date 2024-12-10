@@ -1,4 +1,5 @@
 import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import React from 'react';
 import { AtRate } from 'taro-ui';
 
@@ -10,6 +11,7 @@ interface CollectionCourseProps {
   courseRate?: number;
   courseTeacher?: string;
   isCollected?: boolean;
+  courseId?: number;
 }
 
 const CollectionCourse: React.FC<CollectionCourseProps> = ({
@@ -18,11 +20,21 @@ const CollectionCourse: React.FC<CollectionCourseProps> = ({
   courseRate,
   courseTeacher,
   isCollected,
+  courseId,
 }) => {
   if (!isCollected) {
     return null;
   }
-  console.log(courseType);
+  const navigateToPage = async () => {
+    await Taro.navigateTo({
+      url: `/pages/classInfo/index?course_id=${courseId}`, // 传递 course_id 参数
+    });
+  };
+
+  const handleClickToClass = () => {
+    console.log('Clicked on course:');
+    void navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise
+  };
   let courseIcon: string = '';
   // CoursePropertyGeneralCore = 通识核心课
   // CoursePropertyGeneralElective = 通识选修课
@@ -47,7 +59,7 @@ const CollectionCourse: React.FC<CollectionCourseProps> = ({
       break;
   }
   return (
-    <View className="collection_course">
+    <View className="collection_course" onClick={handleClickToClass}>
       <View className="collection_course_type">{courseIcon}</View>
       <View className="collection_course_detail">
         <View className="collection_course_name">{courseName}</View>
@@ -56,7 +68,6 @@ const CollectionCourse: React.FC<CollectionCourseProps> = ({
           <AtRate className="collection_course_rate" value={courseRate} size={15} />
         </View>
       </View>
-      {/*<View className="collection_course_collected">已收藏</View>*/}
     </View>
   );
 };
