@@ -45,7 +45,7 @@ const CommentHeader: React.FC<CommentProps> = memo((props) => {
   };
 
   const handleClickToClass = () => {
-    void navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise
+    void navigateToPage().then((r) => console.log(r));
   };
 
   return (
