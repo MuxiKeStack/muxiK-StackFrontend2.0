@@ -11,7 +11,6 @@ const Guide: React.FC = memo(() => {
     term: '全部',
   });
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <View className="flex h-[87vh] w-full flex-col items-center gap-4">
       <Selector

@@ -16,7 +16,6 @@ const Popper: React.FC<{ onClose: () => void }> = memo(({ onClose }) => (
 const Content: React.FC<{ onClose: () => void }> = memo(({ onClose }) => (
   <>
     <View className="mx-auto max-w-3xl rounded-md bg-white p-4 shadow-md">
-      {/* 头部区域 */}
       <View className="relative mb-4 flex w-full items-center justify-center">
         <Text
           className="absolute right-0 m-1 border-none bg-transparent p-2 text-2xl font-bold text-gray-500 focus:outline-none"
