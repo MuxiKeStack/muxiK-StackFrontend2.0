@@ -73,17 +73,19 @@ export default function Myclass() {
       });
   }, [year, sem]);
 
-  const handleClassClick = (id: number, name: string) => {
+  const handleClassClick = (item: CouresProps) => {
     // 拼接查询字符串参数
-    const query = `?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}`;
+    const query = `?id=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}`;
     // 使用 navigateTo 跳转到 evaluate 页面，并传递参数
-    void Taro.navigateTo({
-      url: `/pages/evaluate/evaluate${query}`,
-    });
+    if (item.evaluated) handleNavToCourseInfo(item);
+    else
+      void Taro.navigateTo({
+        url: `/pages/evaluate/evaluate${query}`,
+      });
   };
-  const handleNavToCourseInfo = () => {
+  const handleNavToCourseInfo = (each) => {
     void Taro.navigateTo({
-      url: '/pages/classInfo/index',
+      url: `/pages/classInfo/index?course_id=${each.id}`,
     });
   };
 
@@ -106,13 +108,9 @@ export default function Myclass() {
       </View>
       <View className="classes">
         {myclasses.map((each, index) => (
-          <View
-            key={index}
-            className="eachClass"
-            onClick={() => handleClassClick(each.id, each.name)}
-          >
+          <View key={index} className="eachClass" onClick={() => handleClassClick(each)}>
             <View className="circle"></View>
-            <View className="flex flex-col" onClick={handleNavToCourseInfo}>
+            <View className="flex flex-col" onClick={() => handleNavToCourseInfo(each)}>
               <Text className="classname">{each.name}</Text>
               <Text className="classteacher">{'（' + each.teacher + '）'}</Text>
             </View>

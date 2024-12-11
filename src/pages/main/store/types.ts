@@ -58,13 +58,24 @@ export interface CommentInfoSlice {
   /** 刷新评论 */
   refershComments: () => Promise<void>;
   /** 更新单条评论信息 */
-  updateCommentInfo: (currentId: number, action: COMMENT_ACTIONS) => void;
+  updateCommentInfo: (currentId: number, info: CommentInfo) => void;
   /** 更新评论 */
   updateComments: (currentId: number) => Promise<void>;
   /** 修改类型 */
   changeType: (type: classType) => void;
   /** 根据 id 获取 comment */
   getComment: (id: number) => CommentInfo | undefined;
+  /** 点赞 */
+  enrose: (id: number, action: COMMENT_ACTIONS) => Promise<CommentInfo>;
+  /** 评论 */
+  comment: (param: {
+    id: number;
+    biz: 'Evaluation' | 'Answer';
+    parentId: number;
+    rootId: number;
+    action: COMMENT_ACTIONS;
+    content: string;
+  }) => Promise<CommentInfo>;
 }
 /** 评课人 */
 export interface PublisherInfoSlice {

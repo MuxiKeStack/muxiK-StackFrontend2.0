@@ -9,22 +9,25 @@ import './style.scss';
 import { useCourseStore } from '@/pages/main/store/store';
 
 import IconFont from '@/common/components/iconfont';
-import { formatIsoDate, post } from '@/common/utils';
+import { formatIsoDate } from '@/common/utils';
+import { features as featureMap } from '@/pages/evaluate/const';
 
 import {
   COMMENT_ACTIONS,
   CourseDetailsType,
   PublisherDetailsType,
 } from '@/pages/main/store/types';
+import Label3 from '../label3/label3';
 import ShowStar from '../showStar/showStar';
 
 interface CommentProps extends CommentInfo {
   type?: string;
   isHot?: boolean;
+  showTag?: boolean;
   showAll?: boolean;
   onClick?: (comment: CommentInfo) => void;
   onCommentClick?: (comment: CommentInfo) => void;
-  onLikeClick?: (comment: CommentInfo) => void;
+  onLikeClick?: (comment: CommentProps) => void;
   classNames?: string;
 }
 
@@ -112,9 +115,9 @@ const Comment: React.FC<CommentProps> = memo((props) => {
     features,
   } = props;
   const [shouldSupport, setShouldSupport] = useState(stance === 1);
-  const { getComment, updateCommentInfo } = useCourseStore((state) => ({
+  const { getComment, enrose } = useCourseStore((state) => ({
     getComment: state.getComment,
-    updateCommentInfo: state.updateCommentInfo,
+    enrose: state.enrose,
   }));
   useEffect(() => {
     setShouldSupport(stance === 1);
@@ -124,19 +127,14 @@ const Comment: React.FC<CommentProps> = memo((props) => {
     onClick && onClick(props);
   }, [onClick]);
 
-  const handlEndorse = (a: number) => {
+  const handlEndorse = async () => {
     setShouldSupport(!shouldSupport);
-    onLikeClick && onLikeClick(props);
-    void post(`/evaluations/${id}/endorse`, { stance: shouldSupport ? 0 : a }).then(
-      (res) => {
-        updateCommentInfo(
-          id ?? -1,
-          shouldSupport ? COMMENT_ACTIONS.DISLIKE : COMMENT_ACTIONS.LIKE
-        );
-      }
+    const res = await enrose(
+      id ?? 0,
+      shouldSupport ? COMMENT_ACTIONS.DISLIKE : COMMENT_ACTIONS.LIKE
     );
+    onLikeClick && onLikeClick(res);
   };
-
   return (
     <View
       className={`bigcomment ${props.classNames}`}
@@ -147,10 +145,13 @@ const Comment: React.FC<CommentProps> = memo((props) => {
     >
       <View className="commentplus">
         <CommentHeader {...props}></CommentHeader>
-        {features?.map((item, index) => {
-          console.log(features);
-          return <Text key={index}>{item}</Text>;
-        })}
+        <View className="mt-3 flex w-full flex-wrap">
+          {props.showTag &&
+            features?.map((item, index) => {
+              const feature = featureMap.find((feat) => feat.value === item);
+              return feature && <Label3 key={index} content={feature.content}></Label3>;
+            })}
+        </View>
         <View className={`content ${!showAll ? 'text-overflow' : 'text-showAll'}`}>
           {content}
           {/* {!showAll && <Text>...</Text>} */}
@@ -160,14 +161,12 @@ const Comment: React.FC<CommentProps> = memo((props) => {
           <View className="likes" onClick={(e) => e.stopPropagation()}>
             <View
               className={`icon ${shouldSupport && 'bg-orange-200'}`}
-              onClick={() => handlEndorse(1)}
+              onClick={() => void handlEndorse()}
             >
               <IconFont name="like" />
               {/* <Navigator className="iconfont">&#xe786;</Navigator> */}
             </View>
-            <Text className="text1">
-              {father_record?.total_support_count ?? props.total_support_count}
-            </Text>
+            <Text className="text1">{props.total_support_count}</Text>
             <View
               className="icon"
               onClick={() =>
@@ -177,9 +176,7 @@ const Comment: React.FC<CommentProps> = memo((props) => {
               <IconFont name="comment" />
               {/* <Navigator className="iconfont">&#xe769;</Navigator> */}
             </View>
-            <Text className="text1">
-              {father_record?.total_comment_count ?? props.total_comment_count}
-            </Text>
+            <Text className="text1">{props.total_comment_count}</Text>
           </View>
         )}
       </View>
@@ -188,21 +185,15 @@ const Comment: React.FC<CommentProps> = memo((props) => {
           <View className="icon">
             <Navigator className="iconfont">&#xe786;</Navigator>
           </View>
-          <Text className="text1">
-            {father_record?.total_support_count ?? props.total_support_count}
-          </Text>
+          <Text className="text1">{props.total_support_count}</Text>
           <View className="icon">
             <Navigator className="iconfont">&#xe769;</Navigator>
           </View>
-          <Text className="text1">
-            {father_record?.total_comment_count ?? props.total_comment_count}
-          </Text>
+          <Text className="text1">{props.total_comment_count}</Text>
           <View className="icon">
             <Navigator className="iconfont">&#xe785;</Navigator>
           </View>
-          <Text className="text1">
-            {father_record?.total_oppose_count ?? props.total_oppose_count}
-          </Text>
+          <Text className="text1">{props.total_oppose_count}</Text>
         </View>
       )}
     </View>

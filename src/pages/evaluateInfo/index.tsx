@@ -17,7 +17,7 @@ import './index.scss';
 
 import { Comment } from '@/common/components';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
-import { get, post } from '@/common/utils';
+import { get } from '@/common/utils';
 
 import { useCourseStore } from '../main/store/store';
 import { COMMENT_ACTIONS } from '../main/store/types';
@@ -33,7 +33,8 @@ export default function Index() {
   const [comment, setComment] = useState<CommentInfoType | null>(null); //获取课评信息
   // const biz_id = 1;
   const [biz_id, setBiz_id] = useState<number | null>(null);
-  const updateInfo = useCourseStore((state) => state.updateCommentInfo);
+  const updateInfo = useCourseStore((state) => state.comment);
+  const enrose = useCourseStore((state) => state.enrose);
   useEffect(() => {
     const handleQuery = () => {
       const query = Taro.getCurrentInstance()?.router?.params; // 获取查询参数
@@ -99,74 +100,63 @@ export default function Index() {
 
   const handleReplySubmit = async () => {
     if (!replyContent.trim()) return; // 忽略空内容
-
-    try {
-      Taro.showLoading({
-        title: '发布课评中',
-      });
-      await post('/comments/publish', {
-        biz: 'Evaluation',
-        biz_id,
-        content: replyContent,
-        parent_id: replyTo?.id || 0,
-        root_id:
-          replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
-      }).catch(() => {
-        Taro.hideLoading();
-        Taro.showToast({
-          title: '课评发布失败',
-          icon: 'error',
-        });
-        return;
-      });
-      Taro.hideLoading();
-      Taro.showToast({
-        title: '课评发布成功',
-        icon: 'success',
-      });
-      updateInfo(biz_id ?? 1, COMMENT_ACTIONS.COMMENT);
-      // 清空回复目标和输入框
-      setReplyTo(null);
-      setReplyContent('');
-      setplaceholderContent('写下你的评论...');
-      // 评论发布成功后，重新加载评论
-      //@ts-expect-error dont
-      setComment({ ...comment, total_oppose_count: comment?.total_oppose_count + 1 });
-      setCommentsLoaded(false); // 先将commentsLoaded设为false，避免useEffect中的fetchComments不被调用
-      const fetchComments = async () => {
-        try {
-          const res = await get(
-            `/comments/list?biz=Evaluation&biz_id=${biz_id}&cur_comment_id=0&limit=100`
-          );
-          setAllComments(res.data);
-          setCommentsLoaded(true);
-        } catch (error) {
-          console.error('加载评论失败', error);
-        }
-      };
-      await fetchComments();
-    } catch (error) {
-      console.error('评论发布失败', error);
-    }
+    const res = await updateInfo({
+      biz: 'Evaluation',
+      action: COMMENT_ACTIONS.COMMENT,
+      id: biz_id ?? 0,
+      content: replyContent,
+      parentId: replyTo?.id || 0,
+      rootId:
+        replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
+    });
+    setComment(res as CommentInfoType);
+    setReplyTo(null);
+    setReplyContent('');
+    setplaceholderContent('写下你的评论...');
+    // 评论发布成功后，重新加载评论
+    setCommentsLoaded(false); // 先将commentsLoaded设为false，避免useEffect中的fetchComments不被调用
+    const fetchComments = async () => {
+      try {
+        const res = await get(
+          `/comments/list?biz=Evaluation&biz_id=${biz_id}&cur_comment_id=0&limit=100`
+        );
+        setAllComments(res.data);
+        setCommentsLoaded(true);
+      } catch (error) {
+        console.error('加载评论失败', error);
+      }
+    };
+    await fetchComments();
   };
 
   // 仅当评论数据加载完成时渲染CommentComponent
   return (
     <View className="evaluateInfo" onClick={handleClearReply}>
-      <Comment showAll {...comment} onCommentClick={handleCommentClick} />
+      <Comment
+        showAll
+        {...comment}
+        type="inner"
+        onLikeClick={(props) => {
+          console.log('proppppp', props);
+          setComment({
+            ...comment,
+            total_support_count:
+              props.total_support_count ?? (comment?.total_support_count || 0),
+          } as CommentInfoType);
+        }}
+        onCommentClick={handleCommentClick}
+      />
       {commentsLoaded && (
         <CommentComponent comments={allComments} onCommentClick={handleCommentClick} />
       )}
-      <View className="absolute bottom-0 flex h-[10vh] w-full justify-center bg-[#f9f9f2] p-2 pb-0 text-sm">
+      <View className="h-[10vh] w-full"></View>
+      <View className="fixed bottom-0 flex h-[10vh] w-full justify-center border-b-0 border-t-2 border-solid border-orange-200 bg-[#f9f9f2] p-2 pb-0 text-sm">
         <Textarea
           className="ml-4 mr-4 flex-1"
           ref={inputRef}
           placeholderClass="flex-1 justify-center text-sm text-gray-500"
           placeholder={placeholderContent}
           value={replyContent}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
           onInput={handleReplyChange}
           onConfirm={handleReplySubmit}
         />

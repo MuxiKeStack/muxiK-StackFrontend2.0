@@ -43,6 +43,18 @@ export default function Index() {
   const [questionNum, setQuestionNum] = useState<number>(0);
   const [questionlist, setQuestionlist] = useState<WebQuestionVo[]>([]);
   const [collect, setCollect] = useState<boolean | undefined>(course?.is_collected);
+  const getCommentData = async () => {
+    try {
+      await get(
+        `/evaluations/list/courses/${courseId}?cur_evaluation_id=0&limit=100`
+      ).then((res) => {
+        console.log(res);
+        setComments(res.data as CommentInfoType[]);
+      });
+    } catch (error) {
+      console.error('Failed to fetch course data:', error);
+    }
+  };
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
@@ -202,15 +214,13 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
-      <View className="mx-auto flex w-[90%] pt-1.5">
-        <LineChart
-          className="mx-auto text-center"
-          data={yData}
-          xLabels={xLabels}
-          heightLightPercent={heightLightPercent ?? 0}
-          title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
-        />
-      </View>
+      <LineChart
+        className="mx-auto text-center"
+        data={yData}
+        xLabels={xLabels}
+        heightLightPercent={heightLightPercent ?? 0}
+        title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
+      />
       <View>
         <View>
           <View className="line-container pt-2.5 text-center text-xl">
@@ -245,12 +255,14 @@ export default function Index() {
         comments.map((comment) => (
           <Comment
             classNames="mt-2"
+            showTag
             onClick={(props) => {
               const serializedComment = encodeURIComponent(JSON.stringify(props));
               void Taro.navigateTo({
                 url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
               });
             }}
+            onLikeClick={() => void getCommentData()}
             key={comment.id}
             {...comment}
             type="inner"
