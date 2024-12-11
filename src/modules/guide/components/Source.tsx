@@ -12,6 +12,11 @@ import { get } from '@/common/api/get';
 interface SourceProps {
   year: string;
   term: string;
+  // label: {
+  //   year: string;
+  //   term: string;
+  //   type: string;
+  // };
 }
 
 const handleCopy = (link: string) => {
@@ -52,21 +57,23 @@ const Source: React.FC<SourceProps> = memo(({ year, term }) => {
       try {
         const type = '选课手册';
         const res = await get(`/statics/match/labels?labels[type]=${type}`);
-        let filteredData = res.data;
-        if (year !== '全部' && term !== '全部') {
-          filteredData = filteredData.filter(
-            (item) => item.labels.year === year && item.labels.term === term
-          );
-        } else if (year === '全部') {
-          filteredData = filteredData.filter((item) => item.labels.term === term);
-        } else if (term === '全部') {
-          filteredData = filteredData.filter((item) => item.labels.year === year);
-        }
-        const mappedData = filteredData.map((item) => ({
-          name: item.name as string,
-          content: item.content as string,
-        }));
-        setSource(mappedData);
+        const filteredData = res.data;
+        setSource(filteredData);
+        // if (year !== '全部' && term !== '全部') {
+        //   filteredData = filteredData.filter(
+        //     (item) => item.labels.year === year && item.labels.term === term
+        //   );
+        // } else if (year === '全部') {
+        //   filteredData = filteredData.filter((item) => item.labels.term === term);
+        // } else if (term === '全部') {
+        //   filteredData = filteredData.filter((item) => item.labels.year === year);
+        // }
+        // const mappedData = filteredData.map((item) => ({
+        //   name: item.name as string,
+        //   content: item.content as string,
+        // }));
+        // setSource(mappedData);
+        console.log('source', source);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
@@ -77,9 +84,9 @@ const Source: React.FC<SourceProps> = memo(({ year, term }) => {
 
   return (
     <View className="h-auto min-h-[73vh] w-[85vw] rounded-lg bg-[#f9f9f2] px-4 py-2">
-      <SourceItem text="2022-2023第一学期选课手册" link="" />
+      {/* <SourceItem text="2022-2023第一学期选课手册" link="" />
       <SourceItem text="2022-2023第一学期选课手册(2)" link="" />
-      <SourceItem text="2022-2023第一学期选课手册(3)" link="" />
+      <SourceItem text="2022-2023第一学期选课手册(3)" link="" /> */}
       {source.map((item, index) => (
         <SourceItem key={index} text={item.name} link={item.content} />
       ))}
