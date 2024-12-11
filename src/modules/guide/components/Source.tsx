@@ -57,23 +57,25 @@ const Source: React.FC<SourceProps> = memo(({ year, term }) => {
       try {
         const type = '选课手册';
         const res = await get(`/statics/match/labels?labels[type]=${type}`);
-        const filteredData = res.data;
-        setSource(filteredData);
-        // if (year !== '全部' && term !== '全部') {
-        //   filteredData = filteredData.filter(
-        //     (item) => item.labels.year === year && item.labels.term === term
-        //   );
-        // } else if (year === '全部') {
-        //   filteredData = filteredData.filter((item) => item.labels.term === term);
-        // } else if (term === '全部') {
-        //   filteredData = filteredData.filter((item) => item.labels.year === year);
-        // }
-        // const mappedData = filteredData.map((item) => ({
-        //   name: item.name as string,
-        //   content: item.content as string,
-        // }));
-        // setSource(mappedData);
-        console.log('source', source);
+        let filteredData = res.data;
+        if (year !== '全部' || term !== '全部') {
+          if (year !== '全部' && term !== '全部') {
+            filteredData = filteredData.filter(
+              (item) => item.labels.year === year && item.labels.term === term
+            );
+          } else if (year === '全部') {
+            filteredData = filteredData.filter((item) => item.labels.term === term);
+          } else if (term === '全部') {
+            filteredData = filteredData.filter((item) => item.labels.year === year);
+          }
+          const mappedData = filteredData.map((item) => ({
+            name: item.name as string,
+            content: item.content as string,
+          }));
+          setSource(mappedData);
+        } else {
+          setSource(filteredData);
+        }
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
