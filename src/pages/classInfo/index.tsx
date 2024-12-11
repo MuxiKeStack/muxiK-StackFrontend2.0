@@ -5,6 +5,7 @@
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useMemo, useState } from 'react';
+import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
@@ -14,7 +15,6 @@ import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get, post } from '@/common/utils';
-import { AtIcon } from 'taro-ui';
 
 const coursePropertyMap = {
   CoursePropertyGeneralCore: '通识核心课',
@@ -62,7 +62,7 @@ export default function Index() {
           console.log('res', res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setCourse(res.data);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
           console.log('course', course);
           console.log('collect1', res.data.is_collected);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
