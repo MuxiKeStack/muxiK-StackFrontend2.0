@@ -12,9 +12,9 @@ import './evaluate.scss';
 import Label3 from '@/common/components/label3/label3';
 import Star from '@/common/components/star/star';
 import { post } from '@/common/utils';
+import { postBool } from '@/common/utils/fetch';
 
 export default function evaluate() {
-  const accoutInfo = Taro.getStorageSync('accountInfo');
   // 初始化状态，存储所有选中的 Radio 项的值
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
@@ -84,9 +84,13 @@ export default function evaluate() {
   // 更新 id 状态为 number 类型
   const [courseId, setId] = useState<number | null>(null);
   const [courseName, setName] = useState<string | null>('只能评价自己学过的课程哦');
-
+  const [test, setTest] = useState<boolean>(false);
   useEffect(() => {
     const getParams = () => {
+      void postBool('/checkStatus', { name: 'kestack' }).then((res) => {
+        setTest(res.data.status);
+        console.log('res.data.status', test);
+      });
       const instance = Taro.getCurrentInstance();
       // 使用可选链操作符安全访问 router 和 params
       const params = instance?.router?.params || {};
@@ -100,7 +104,7 @@ export default function evaluate() {
     };
 
     getParams();
-  }, []); // 这个 effect 仅在组件挂载时运行一次
+  }, [test]); // 这个 effect 仅在组件挂载时运行一次
 
   const postEvaluation = () => {
     if (selectedStarIndex === -1) {
@@ -123,11 +127,6 @@ export default function evaluate() {
     post(`/evaluations/save`, evaluationobj)
       .then((res) => {
         if (res.code === 0) {
-          // 打印成功信息，但最好使用其他日志记录方式，而不是 console.log
-          // 例如：this.setState({ message: '发布课评成功' });
-          // 或者使用 Taro 的日志记录方式：Taro.showToast({ title: '发布课评成功', icon: 'success' });
-          // console.log('发布课评成功');
-          // 使用 redirectTo 跳转
           void Taro.switchTab({
             url: '/pages/main/index', // 页面路径
           });
@@ -159,8 +158,10 @@ export default function evaluate() {
       });
     }
   };
-
-  return (
+  // eslint-disable-next-line no-constant-condition
+  return { test } ? (
+    <View>因为政策原因暂不能发布课评</View>
+  ) : (
     <Form className="view">
       <View className="p">
         <Text> 选择课程 : </Text>
