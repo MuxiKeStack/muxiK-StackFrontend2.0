@@ -63,6 +63,9 @@ const SearchInput: React.FC<SearchInputProps> = ({
         placeholder={searchPlaceholder}
         placeholderStyle={searchPlaceholderStyle}
         ref={inputRef}
+        onConfirm={handleImageClick} // 绑定回车事件
+        autoFocus={autoFocus}
+        confirmType="search"
       />
       <Image
         style={{ width: '34.09rpx', height: '34.09rpx' }}

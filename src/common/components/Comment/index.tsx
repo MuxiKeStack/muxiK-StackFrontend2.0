@@ -169,9 +169,7 @@ const Comment: React.FC<CommentProps> = memo((props) => {
             <Text className="text1">{props.total_support_count}</Text>
             <View
               className="icon"
-              onClick={() =>
-                onCommentClick && father_record && onCommentClick(father_record)
-              }
+              onClick={() => onCommentClick && father_record && onCommentClick(props)}
             >
               <IconFont name="comment" />
               {/* <Navigator className="iconfont">&#xe769;</Navigator> */}

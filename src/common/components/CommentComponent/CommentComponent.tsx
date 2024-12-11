@@ -22,7 +22,6 @@ interface CommentProps {
 }
 
 const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) => {
-  // console.log(comments);
   const [allComments, setAllComments] = useState<CommentType[]>(comments);
   const dispatch = useCourseStore(({ getPublishers }) => ({ getPublishers }));
   useEffect(() => {
@@ -73,12 +72,6 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
 
     void fetchAllReplies();
   }, []);
-
-  // const ctimeToString = (ctime: number) => {
-  //   return (
-  //     <Text className="time">formatIsoDate(new Date(ctime as number).toISOString())</Text>
-  //   );
-  // };
 
   // 辅助函数：获取回复者的昵称
   const getReplyToNickname = (replyToUid: number): string => {

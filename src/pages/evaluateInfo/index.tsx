@@ -144,7 +144,7 @@ export default function Index() {
               props.total_support_count ?? (comment?.total_support_count || 0),
           } as CommentInfoType);
         }}
-        onCommentClick={handleCommentClick}
+        onCommentClick={handleClearReply}
       />
       {commentsLoaded && (
         <CommentComponent comments={allComments} onCommentClick={handleCommentClick} />
@@ -153,6 +153,7 @@ export default function Index() {
       <View className="fixed bottom-0 flex h-[10vh] w-full justify-center border-b-0 border-t-2 border-solid border-orange-200 bg-[#f9f9f2] p-2 pb-0 text-sm">
         <Textarea
           className="ml-4 mr-4 flex-1"
+          confirmType="send"
           ref={inputRef}
           placeholderClass="flex-1 justify-center text-sm text-gray-500"
           placeholder={placeholderContent}
