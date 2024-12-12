@@ -80,7 +80,7 @@ export default function Index() {
     const getCommentData = async () => {
       try {
         void get(
-          `/evaluations/list/courses/${courseId}?cur_evaluation_id=0&limit=100`
+          `/evaluations/list/courses/${courseId}?cur_evaluation_id=${0}&limit=${100}`
         ).then((res) => {
           console.log(res);
           setComments(res.data as CommentInfoType[]);
@@ -117,14 +117,22 @@ export default function Index() {
         console.error(e);
       }
     };
-    const fetchAnswer = async () => {
+    const fetchAnswer = () => {
       try {
-        await get(
-          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=&limit=`
+        void get(
+          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${100}`
         ).then((res) => {
           console.log(res);
+
+          console.log('questionlist1', res.data);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
+          const questionsWithAnswers = res.data.map((item) => ({
+            ...item,
+            preview_answers: item.preview_answers || [],
+          }));
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setQuestionlist(res.data);
+          setQuestionlist(questionsWithAnswers);
+          console.log('questionlist', questionsWithAnswers);
         });
       } catch (e) {
         console.error('Failed to fetch course data:', e);
@@ -209,23 +217,16 @@ export default function Index() {
               />
             ))}
         </>
-        {questionlist.length > 0 && (
-          <View
-            onClick={() => {
-              void Taro.navigateTo({
-                url: `/pages/questionList/index?course_id=${courseId}`,
-              });
-            }}
-            className="text-right"
-          >
-            全部&gt;
-          </View>
-        )}
-        {questionlist.length === 0 && (
-          <Text className="mb-2 mr-auto mt-2 flex items-center justify-center">
-            暂无内容敬请期待
-          </Text>
-        )}
+        <View
+          onClick={() => {
+            void Taro.navigateTo({
+              url: `/pages/questionList/index?course_id=${courseId}`,
+            });
+          }}
+          className="text-right"
+        >
+          全部&gt;
+        </View>
       </View>
       <View>
         <View className="line-container pt-5 text-center text-xl">最新评论</View>
