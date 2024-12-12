@@ -130,7 +130,7 @@ export default function Index() {
   const postQuestion = () => {
     const questionobj = {
       biz: 'Course',
-      biz_id: courseId,
+      biz_id: Number(courseId),
       content: question,
     };
     post(`/questions/publish`, questionobj)
