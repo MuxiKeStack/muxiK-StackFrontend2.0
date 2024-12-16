@@ -31,7 +31,6 @@ const EditUser: React.FC = () => {
         const url = '/users/profile';
 
         const response: ResponseUser = await get(url);
-        console.log(response);
         setNickName(response.data.nickname);
         setAvatarUrl(response.data.avatar);
         setSelectedTitle(response.data.using_title);
@@ -54,7 +53,6 @@ const EditUser: React.FC = () => {
         const tempFilePath = res.tempFilePaths[0];
         // eslint-disable-next-line @typescript-eslint/no-shadow
         void fetchToQiniu(tempFilePath).then((res: string) => setAvatarUrl(res));
-        console.log(res);
       },
       fail: function (res) {
         console.log(res);
@@ -91,7 +89,6 @@ const EditUser: React.FC = () => {
       nickname: nickName,
       using_title: selectedTitle,
     }).then((res) => {
-      console.log(res);
       void Taro.showToast({ icon: 'success', title: '保存成功' });
       setTimeout(() => {
         void Taro.switchTab({ url: '/pages/profile/index' });
@@ -105,17 +102,10 @@ const EditUser: React.FC = () => {
   };
   // Taro.redirectTo({url:'pages/login/index'});
   const handleLogout = () => {
-    void post('/users/logout', {}).then((res) => console.log(res));
-    void Taro.removeStorage({
-      key: 'shortToken',
-      success: (res) => console.log(res),
-      fail: (err) => console.log(err),
-    });
-    void Taro.removeStorage({
-      key: 'longToken',
-      success: (res) => console.log(res),
-      fail: (err) => console.log(err),
-    });
+    void post('/users/logout', {});
+    Taro.removeStorageSync('shortToken');
+    Taro.removeStorageSync('visitor');
+    void Taro.removeStorageSync('longToken');
     void Taro.reLaunch({ url: '/pages/login/index' });
   };
   return (

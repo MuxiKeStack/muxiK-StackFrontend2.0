@@ -10,7 +10,6 @@ const ShareGrades = () => {
   const handleSubmit = () => {
     try {
       void post('/grades/sign', { wants_to_sign: true }).then((r) => {
-        console.log(r);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (r.msg === '重复签约') {
           void Taro.showToast({

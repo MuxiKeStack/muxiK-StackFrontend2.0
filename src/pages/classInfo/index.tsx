@@ -5,6 +5,7 @@
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
@@ -14,7 +15,6 @@ import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get, post } from '@/common/utils';
-import { AtIcon } from 'taro-ui';
 
 const coursePropertyMap = {
   CoursePropertyGeneralCore: '通识核心课',
@@ -48,7 +48,6 @@ export default function Index() {
       await get(
         `/evaluations/list/courses/${courseId}?cur_evaluation_id=0&limit=100`
       ).then((res) => {
-        console.log(res);
         setComments(res.data as CommentInfoType[]);
       });
     } catch (error) {
@@ -71,7 +70,6 @@ export default function Index() {
     const getCourseData = async () => {
       try {
         void get(`/courses/${courseId}/detail`).then((res) => {
-          console.log('res', res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setCourse(res.data);
           !res.data && bailout();
@@ -81,7 +79,7 @@ export default function Index() {
       }
     };
 
-    if (courseId) void getCourseData().then((r) => console.log(r));
+    if (courseId) void getCourseData();
 
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCommentData = async () => {
@@ -100,11 +98,9 @@ export default function Index() {
     if (courseId) void getCommentData();
   }, [courseId]);
   useEffect(() => {
-    console.log('test', courseId);
     const fetchGrades = async () => {
       try {
         await get(`/grades/courses/${courseId}`).then((res) => {
-          console.log(res.data);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setGrade(res.data); // 设置 grade 数据
           !res.data && bailout();
@@ -116,9 +112,7 @@ export default function Index() {
     };
     const getNumData = () => {
       try {
-        console.log('test', courseId);
         void get(`/questions/count?biz=Course&biz_id=${courseId}`).then((res) => {
-          console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setQuestionNum(res.data);
           Taro.hideLoading();
@@ -165,7 +159,6 @@ export default function Index() {
   }, [collect]);
   function handleCollect() {
     void post(`/courses/${courseId}/collect`, { collect: !collect }).then((res) => {
-      console.log(res);
       setCollect(!collect);
     });
   }

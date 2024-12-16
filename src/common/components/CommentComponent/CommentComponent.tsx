@@ -92,8 +92,8 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
           key={comment.id}
           className="acomment"
           onClick={(e) => {
-            onCommentClick(comment);
             e.stopPropagation();
+            onCommentClick(comment);
           }}
         >
           <View className="comment-header">

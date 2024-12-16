@@ -35,7 +35,6 @@ const MyCollection: React.FC = () => {
         const url = '/courses/collections/list/mine?cur_collection_id=0&limit=10';
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const response = await get(url);
-        console.log(response);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
         setCollection(response.data);
       } catch (error) {

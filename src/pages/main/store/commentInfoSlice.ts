@@ -46,7 +46,7 @@ export const CreateCommentInfo: StateCreator<
       .then(() => {
         Taro.hideLoading();
         void Taro.showToast({
-          title: shouldSupport ? '取消成功' : '点赞成功',
+          title: !shouldSupport ? '取消成功' : '点赞成功',
           icon: 'success',
           duration: 600,
         });

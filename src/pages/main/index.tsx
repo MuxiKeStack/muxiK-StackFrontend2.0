@@ -49,7 +49,6 @@ export default function Index() {
     dispatch.changeType(type);
     void dispatch.refershComments();
   };
-
   useEffect(() => {
     if (!comments[classType].length) {
       void Taro.showLoading({ title: '加载中' });
@@ -80,8 +79,6 @@ export default function Index() {
         e.detail.deltaY < 0 &&
         Date.now() - timeNow > 1000
       ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        console.log(e.detail);
         void dispatch.loadMoreComments();
         timeNow = Date.now();
       }
@@ -98,10 +95,11 @@ export default function Index() {
   }, [loading]);
 
   return (
-    <View className="h-screen pb-[35vh]">
+    <View className="flex flex-col">
       <SearchInput
         onSearch={handleSearch} // 传递搜索逻辑
         onSearchToggle={handleSearchToggle}
+        disabled
         searchPlaceholder="搜索课程名/老师名"
         searchPlaceholderStyle="color:#9F9F9C"
         searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
@@ -122,7 +120,7 @@ export default function Index() {
       </View>
       <ScrollView
         refresherEnabled
-        style={{ height: '100%' }}
+        style={{ height: '70vh' }}
         refresherTriggered={refresherTriggered}
         scrollY
         onScroll={(e) => loadMoreHandler(e)}

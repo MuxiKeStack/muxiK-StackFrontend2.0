@@ -55,7 +55,6 @@ const LineChart: React.FC<LineChartProps> = (props) => {
   } = props;
   useEffect(() => {
     if (propData) {
-      console.log(123123123);
       const ctx = Taro.createCanvasContext(id ?? DEFAULT_CHART_ID);
       void drawChart(ctx);
     }

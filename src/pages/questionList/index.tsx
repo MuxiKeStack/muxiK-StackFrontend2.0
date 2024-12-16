@@ -48,7 +48,6 @@ const App = () => {
     const getCourseData = async () => {
       try {
         void get(`/courses/${courseId}/detail`).then((res) => {
-          console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           setCourse(res?.data as Course);
@@ -59,7 +58,7 @@ const App = () => {
       }
     };
 
-    if (courseId) void getCourseData().then((r) => console.log(r));
+    if (courseId) void getCourseData();
 
     // eslint-disable-next-line @typescript-eslint/require-await
     const getQuestionList = async () => {
@@ -67,7 +66,6 @@ const App = () => {
         void get(
           `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=0&limit=100`
         ).then((res) => {
-          console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           setQuestions(res?.data as IQuestion[]);

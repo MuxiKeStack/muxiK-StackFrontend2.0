@@ -11,7 +11,7 @@ import CommentItem from './CommentItem';
 
 const History: React.FC = memo(() => {
   const [comments, setComments] = useState<CommentInfo[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [end, setEnd] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
 
@@ -31,8 +31,7 @@ const History: React.FC = memo(() => {
     }
     setLoading(false);
     void Taro.hideLoading();
-  }, [comments, end, index]);
-
+  }, [comments.length, end, index]);
   const listReachBottom = () => {
     setLoading(true);
     setTimeout(() => {

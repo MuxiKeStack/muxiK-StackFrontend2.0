@@ -23,7 +23,6 @@ export default function evaluate() {
   // 处理 Radio 变化的函数
   const handleRadioChange = (value: string) => {
     const currentIndex = selectedValues.indexOf(value);
-    console.log(currentIndex);
     if (currentIndex > -1) {
       // 如果值已选中，移除它
       const newSelectedValues = selectedValues.filter((v, i) => i !== currentIndex);
@@ -71,7 +70,6 @@ export default function evaluate() {
       void postBool('/checkStatus', { name: 'kestack' }).then(
         (res: { data: { status: boolean } }) => {
           setTest(res?.data?.status);
-          console.log('res.data.status', test);
         }
       );
       const instance = Taro.getCurrentInstance();
@@ -82,8 +80,6 @@ export default function evaluate() {
       setId(params.id ? Number(params.id) : null);
       // 解码 name 参数
       setName(params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦');
-
-      console.log(params.id);
     };
 
     getParams();
@@ -106,7 +102,6 @@ export default function evaluate() {
       id: 0,
       status: 'Public',
     };
-    console.log(evaluationobj);
     void Taro.showLoading({
       title: '发布中',
     });
@@ -156,7 +151,7 @@ export default function evaluate() {
       });
     }
   };
-  // eslint-disable-next-line no-constant-condition
+
   return (
     <>
       {test ? (

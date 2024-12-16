@@ -34,7 +34,6 @@ export default function Index() {
   // const biz_id = 1;
   const [biz_id, setBiz_id] = useState<number | null>(null);
   const updateInfo = useCourseStore((state) => state.comment);
-  const enrose = useCourseStore((state) => state.enrose);
   useEffect(() => {
     const handleQuery = () => {
       const query = Taro.getCurrentInstance()?.router?.params; // 获取查询参数
@@ -74,18 +73,20 @@ export default function Index() {
 
     // 确保 biz_id 设置后再调用 fetchComments
     if (biz_id !== null) {
-      console.log(1);
       fetchComments();
     }
   }, [biz_id, commentsLoaded]); // 依赖项中添加biz_id
 
-  const handleCommentClick = (comment: CommentType) => {
-    if (inputRef.current && !comment) {
-      (inputRef.current as unknown as { focus: () => void }).focus();
+  const handleCommentClick = (comment: CommentType | null) => {
+    if (comment) {
+      setReplyTo(comment);
+      // 设置回复目标
+      setplaceholderContent(`回复给${comment.user?.nickname}: `); // 初始化回复内容
       return;
     }
-    setReplyTo(comment); // 设置回复目标
-    setplaceholderContent(`回复给${comment.user?.nickname}: `); // 初始化回复内容
+    if (inputRef.current) {
+      (inputRef.current as unknown as { focus: () => void }).focus();
+    }
   };
 
   const handleReplyChange = (e: any) => {
@@ -110,9 +111,7 @@ export default function Index() {
         replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
     });
     setComment(res as CommentInfoType);
-    setReplyTo(null);
-    setReplyContent('');
-    setplaceholderContent('写下你的评论...');
+    handleClearReply();
     // 评论发布成功后，重新加载评论
     setCommentsLoaded(false); // 先将commentsLoaded设为false，避免useEffect中的fetchComments不被调用
     const fetchComments = async () => {
@@ -137,14 +136,13 @@ export default function Index() {
         {...comment}
         type="inner"
         onLikeClick={(props) => {
-          console.log('proppppp', props);
           setComment({
             ...comment,
             total_support_count:
               props.total_support_count ?? (comment?.total_support_count || 0),
           } as CommentInfoType);
         }}
-        onCommentClick={handleClearReply}
+        onCommentClick={() => handleCommentClick(null)}
       />
       {commentsLoaded && (
         <CommentComponent comments={allComments} onCommentClick={handleCommentClick} />
@@ -157,6 +155,9 @@ export default function Index() {
           ref={inputRef}
           placeholderClass="flex-1 justify-center text-sm text-gray-500"
           placeholder={placeholderContent}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
           value={replyContent}
           onInput={handleReplyChange}
           onConfirm={handleReplySubmit}

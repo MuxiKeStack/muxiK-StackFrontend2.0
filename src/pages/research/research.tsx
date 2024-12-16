@@ -1,5 +1,5 @@
 /* eslint-disable import/first */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -50,12 +50,10 @@ const Research: React.FC = () => {
     // Taro.navigateTo({
     //   url: '/pages/research/research',
     // });
-    console.log(1);
     setSpread(false);
   };
 
   const handleClick = () => {
-    console.log(2);
     Taro.switchTab({
       url: '/pages/main/index',
     });
@@ -69,7 +67,6 @@ const Research: React.FC = () => {
     setSpread(true);
     get(`/search?biz=Course&keyword=${searchText}&search_location=Home`)
       .then((res) => {
-        console.log(res);
         setClasses(res.data);
         Taro.hideLoading();
         if (res.data.length === 0) {
@@ -135,12 +132,19 @@ const ConditionalRender = ({ isSpread, classes, hrs, handleSearch }) => {
           src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"
         />
       </View>
-      <View className="historyResult">
+      <View
+        className="historyResult"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         {hrs.map((hr) => (
           <Label1
             key={hr.id}
             content={hr.keyword}
-            onClick={() => handleSearch(hr.keyword)}
+            onClick={(e) => {
+              handleSearch(hr.keyword);
+            }}
           />
         ))}
       </View>
