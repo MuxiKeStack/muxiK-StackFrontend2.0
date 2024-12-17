@@ -120,7 +120,7 @@ export default function Index() {
     const fetchAnswer = () => {
       try {
         void get(
-          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${100}`
+          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${3}`
         ).then((res) => {
           console.log(res);
 
