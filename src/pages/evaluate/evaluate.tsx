@@ -195,17 +195,6 @@ export default function evaluate() {
           })}
         </View>
       </View>
-      <View className="p">
-        <Text>是否匿名：</Text>
-        <Radio
-          className="myradio"
-          checked={isAnonymous}
-          onClick={() => setIsAnonymous(!isAnonymous)}
-          color="#3399ff"
-        >
-          匿名发布
-        </Radio>
-      </View>
       <Textarea
         maxlength={450}
         onInput={countContent}
@@ -214,6 +203,15 @@ export default function evaluate() {
         className="myComment"
       ></Textarea>
       <Text className="zsxz">字数限制{textLength}/450</Text>
+      <View className="p">
+        <Text>匿名：</Text>
+        <Radio
+          className="myradio"
+          checked={isAnonymous}
+          onClick={() => setIsAnonymous(!isAnonymous)}
+          color="#3399ff"
+        ></Radio>
+      </View>
       <Button onClick={postEvaluation}>发布</Button>
     </Form>
   );
