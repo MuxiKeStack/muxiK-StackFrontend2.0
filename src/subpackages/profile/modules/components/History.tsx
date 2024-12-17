@@ -23,7 +23,7 @@ const History: React.FC = memo(() => {
     const res = await get(
       `/evaluations/list/mine?cur_evaluation_id=${index}&limit=${10}&status=${'Public'}`
     );
-    setComments([...comments, ...res.data]);
+    setComments(comments.concat(res.data));
     if (res.data.length < 10) {
       setEnd(true);
     } else {
@@ -53,10 +53,11 @@ const History: React.FC = memo(() => {
       itemCount={comments.length}
       itemSize={220}
       onScroll={({ scrollDirection, scrollOffset }) => {
+        console.log(scrollDirection, scrollOffset);
         if (
           !loading &&
           scrollDirection === 'forward' &&
-          scrollOffset > (comments.length - 5) * 220 + 100
+          scrollOffset > (comments.length - 5) * 20 + 100
         )
           listReachBottom();
       }}

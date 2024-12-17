@@ -17,11 +17,8 @@
 
 .publishView {
   background-color: #f9f9f2;
-  padding: 45rpx;
-  width: 659.42rpx;
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  padding: 45rpx;
 }
 
 .askicon {
@@ -31,12 +28,14 @@
 }
 
 .quesionContent {
-  width: 568.84rpx;
-  height: 719.2rpx;
+  flex: 1;
   background-color: white;
-  padding: 40rpx;
   font-size: 25rpx;
   box-sizing: border-box;
+  width: 100%;
+  padding: 45rpx;
+  border-radius: 20rpx;
+  min-height: 40vh;
 }
 
 .publishBtn {

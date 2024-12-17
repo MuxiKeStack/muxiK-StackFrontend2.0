@@ -48,7 +48,7 @@ export const CreateCommentInfo: StateCreator<
         void Taro.showToast({
           title: !shouldSupport ? '取消成功' : '点赞成功',
           icon: 'success',
-          duration: 600,
+          duration: 1000,
         });
       })
       .catch(() => {

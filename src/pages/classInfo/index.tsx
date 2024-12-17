@@ -81,8 +81,8 @@ export default function Index() {
 
     if (courseId) void getCourseData();
 
-    // eslint-disable-next-line @typescript-eslint/require-await
-    const getCommentData = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const getCommentData = () => {
       try {
         void get(
           `/evaluations/list/courses/${courseId}?cur_evaluation_id=${0}&limit=${100}`
@@ -221,25 +221,42 @@ export default function Index() {
           </View>
         </View>
         <>
-          {questionlist &&
-            questionlist.map((question) => (
-              <AnswerToStudent
-                content={question.content}
-                key={question.id}
-                preview_answers={question.preview_answers}
-              />
-            ))}
+          {questionlist.length > 0 ? (
+            <>
+              <View className="relative">
+                {questionlist.slice(0, 3).map((question, index) => (
+                  <View key={question.id} style={{ filter: `blur(${index}px)` }}>
+                    <AnswerToStudent
+                      content={question.content}
+                      preview_answers={question.preview_answers}
+                    />
+                  </View>
+                ))}
+              </View>
+              <View
+                className="text-center text-xl"
+                onClick={() => {
+                  void Taro.navigateTo({
+                    url: `/pages/questionList/index?course_id=${courseId}`,
+                  });
+                }}
+              >
+                <Text>查看全部</Text>
+              </View>
+            </>
+          ) : (
+            <View
+              className="flex h-[10vh] items-center justify-center"
+              onClick={() => {
+                void Taro.navigateTo({
+                  url: `/pages/publishQuestion/index?course_id=${courseId}`,
+                });
+              }}
+            >
+              <Text className="text-center text-xl">暂无问题, 快去提问吧 》</Text>
+            </View>
+          )}
         </>
-        <View
-          onClick={() => {
-            void Taro.navigateTo({
-              url: `/pages/questionList/index?course_id=${courseId}`,
-            });
-          }}
-          className="text-right"
-        >
-          全部&gt;
-        </View>
       </View>
       <View>
         <View className="line-container pt-5 text-center text-xl">最新评论</View>
@@ -261,6 +278,18 @@ export default function Index() {
             type="inner"
           />
         ))}
+      {comments.length === 0 && (
+        <View
+          className="flex h-[10vh] items-center justify-center"
+          onClick={() => {
+            void Taro.navigateTo({
+              url: `pages/evaluate/evaluate?id=${courseId}&name=${course?.name}`,
+            });
+          }}
+        >
+          <Text className="text-center text-xl">暂无课评, 快去评价一下吧 》</Text>
+        </View>
+      )}
       <View
         className="fixed bottom-[12vh] right-8 flex flex-col items-center gap-2"
         onClick={handleCollect}

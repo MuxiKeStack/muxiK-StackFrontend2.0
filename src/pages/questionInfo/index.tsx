@@ -303,7 +303,10 @@ const Index: React.FC = () => {
             title={`${commentNum}条回复`}
             onClose={() => handleFloatLayoutChange(null)}
           >
-            <View onClick={handleClearReply}>
+            <View
+              onClick={handleClearReply}
+              style={{ height: '100%', position: 'relative' }}
+            >
               {/* 这里是浮动弹层的内容 */}
               {commentsLoaded && (
                 <CommentComponent
@@ -311,7 +314,18 @@ const Index: React.FC = () => {
                   onCommentClick={handleCommentClick}
                 />
               )}
-              <View className="reply-input">
+              <View
+                className="reply-input"
+                style={{
+                  position: 'fixed',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: '10px',
+                  backgroundColor: '#fff',
+                  borderTop: '1px solid #eee',
+                }}
+              >
                 <Input
                   type="text"
                   placeholder={placeholderContent}
@@ -321,6 +335,14 @@ const Index: React.FC = () => {
                   }}
                   onInput={handleReplyChange}
                   onConfirm={void handleReplySubmit}
+                  style={{
+                    width: '100%',
+                    height: '40px',
+                    padding: '0 15px',
+                    border: '1px solid #ddd',
+                    borderRadius: '20px',
+                    fontSize: '14px',
+                  }}
                 />
               </View>
             </View>

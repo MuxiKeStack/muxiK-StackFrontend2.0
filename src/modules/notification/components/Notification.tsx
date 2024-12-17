@@ -16,20 +16,24 @@ import type { Message as MessageType } from './types';
 
 const Notification: React.FC = memo(() => {
   const [tab, setTab] = useState<string>('提问');
-  const [ctime, setCtime] = useState<number>(0);
   const [commentMessage, setCommentMessage] = useState<MessageType[]>([]);
   const [supportMessage, setSupportMessage] = useState<MessageType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const currentMessage = useMemo(() => {
     return tab === '提问' ? commentMessage : tab === '点赞' ? supportMessage : [];
   }, [tab, commentMessage, supportMessage]);
-
+  const [ctime, setCtime] = useState<number>(0);
+  const [end, setEnd] = useState(false);
   const fetchData = async () => {
     try {
       const res = await get(
         `/feed/events_list?last_time=${ctime}&direction=${'After'}&limit=${10}`
       );
-
+      if (Array.isArray(res.data)) {
+        setCtime(res.data.at(-1)?.ctime ?? 0);
+      } else {
+        setEnd(true);
+      }
       const personalItems = async (items, itemType) => {
         return Promise.all(
           items.map(async (item) => {
@@ -96,17 +100,13 @@ const Notification: React.FC = memo(() => {
 
   const handleScroll = useCallback(
     (event) => {
-      const { scrollDirection, scrollOffset } = event.detail;
-      if (
-        !loading &&
-        scrollDirection === 'forward' &&
-        scrollOffset > (currentMessage.length - 5) * 120 + 5
-      ) {
-        console.log('fetching');
+      if (end) return;
+      if (!loading) {
+        console.log('fetching', event);
         void fetchData();
       }
     },
-    [loading, currentMessage.length]
+    [loading, currentMessage.length, end]
   );
 
   useEffect(() => {
@@ -123,7 +123,7 @@ const Notification: React.FC = memo(() => {
     <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll pb-[13vh]">
       <TabBar tab={tab} setTab={setTab} />
       <VirtualList
-        height="100%"
+        height="70%"
         width="100%"
         item={tab === '提问' || tab === '点赞' ? MessageItem : OfficialItem}
         itemData={currentMessage}

@@ -54,9 +54,9 @@ const Research: React.FC = () => {
   };
 
   const handleClick = () => {
-    Taro.switchTab({
-      url: '/pages/main/index',
-    });
+    // Taro.switchTab({
+    //   url: '/pages/main/index',
+    // });
   };
 
   const handleSearch = (searchText: string) => {
