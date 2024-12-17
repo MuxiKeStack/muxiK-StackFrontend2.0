@@ -289,36 +289,45 @@ const Index: React.FC = () => {
   };
 
   return (
-    <View>
-      <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
-      {question ? (
-        <QuestionDetail
-          question={question}
-          answers={answers}
-          handleFloatLayoutChange={handleFloatLayoutChange}
+    <View className="min-h-screen bg-gray-50 pb-20">
+      <View className="sticky top-0 z-10 bg-white shadow-sm">
+        <CourseInfo
+          name={course?.name}
+          school={course?.school}
+          teacher={course?.teacher}
         />
+      </View>
+      {question ? (
+        <View className="mx-auto mt-4 max-w-3xl px-4">
+          <QuestionDetail
+            question={question}
+            answers={answers}
+            handleFloatLayoutChange={handleFloatLayoutChange}
+          />
+        </View>
       ) : (
-        ''
+        <View className="flex h-32 items-center justify-center">
+          <View className="text-gray-500">加载中...</View>
+        </View>
       )}
 
       <View className="panel">
         <View className="panel__content">
-          {/* AtFloatLayout 组件 */}
           <AtFloatLayout
             isOpened={isFloatLayoutVisible}
             title={`${commentNum}条回复`}
             onClose={() => handleFloatLayoutChange(null)}
           >
-            <View onClick={handleClearReply}>
-              {/* 这里是浮动弹层的内容 */}
+            <View onClick={handleClearReply} className="pb-16">
               {commentsLoaded && (
                 <CommentComponent
                   comments={allComments}
                   onCommentClick={handleCommentClick}
                 />
               )}
-              <View className="reply-input">
+              <View className="fixed bottom-0 left-0 right-0 bg-white p-3 shadow-lg">
                 <Input
+                  className="rounded-full border border-gray-200 bg-gray-50 px-4 py-2"
                   type="text"
                   placeholder={placeholderContent}
                   value={replyContent}
