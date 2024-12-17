@@ -30,8 +30,6 @@ export async function get(url: string) {
     if (response.data.code !== 0) {
       console.log('code不为0');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    console.log(response.data.data);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return response.data;
   } catch (error) {

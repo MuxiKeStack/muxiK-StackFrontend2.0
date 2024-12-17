@@ -1,14 +1,13 @@
-.select {
+.selector {
   width: 100%;
-  height: 3vh;
   display: flex;
   position: relative;
+  justify-content: center;
+  align-items: center;
+  
 }
 
 .text {
-  left: 50%;
-  transform: translate(-50%);
-  position: absolute;
   font-family:
     Segoe UI-Bold,
     Segoe UI,
@@ -16,16 +15,15 @@
   font-weight: bold;
   font-size: 5vw;
   white-space: nowrap;
+  margin-left: 2vw;
 }
 
 .sjx {
-  width: 0;
-  height: 0;
-  border-top: 4vw solid #f18900;
-  border-left: 2vw solid transparent;
-  border-right: 2vw solid transparent;
-  border-bottom: 4vw solid transparent;
-  position: absolute;
+  border: 2vw solid transparent;
+  border-top: 3vw solid #f18900;
+  // position: absolute;
+  margin-top: 2vw;
+  margin-left: 2vw;
   right: 0;
 }
 .classes {
@@ -61,24 +59,31 @@
 
 .classname {
   font-weight: 500;
-  width: 60vw;
-  overflow-wrap: break-word;
+  width: 50vw;
+  flex-grow: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  // overflow-wrap: break-word;
 }
-
 .classteacher {
   font-size: 4vw;
   color: #777;
+  width: 50vw;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .classstatus {
   color: #f18900;
   position: absolute;
-  right: 15vw;
+  right: 20vw;
 }
 
 .jt {
   color: #f18900;
   position: absolute;
-  right: 0;
+  right: 30px;
   font-size: 10vw;
 }

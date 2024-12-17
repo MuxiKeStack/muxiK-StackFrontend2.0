@@ -10,7 +10,6 @@ export default function Index() {
   // 处理打开 FloatLayout 的方法
 
   const handleFloatLayoutChange = (isVisible: boolean) => {
-    console.log(1);
     setIsFloatLayoutVisible(isVisible);
   };
 

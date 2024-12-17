@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 import './label2.scss';
@@ -52,7 +53,14 @@ export default function Label2(props) {
   // ...其他代码
 
   return (
-    <View className="label2">
+    <View
+      className="label2"
+      onClick={() => {
+        void Taro.navigateTo({
+          url: `/pages/classInfo/index?course_id=${props.id}`,
+        });
+      }}
+    >
       <View className="labeltext1">{props.name}</View>
       <View className="labeltext2">{props.teacher}</View>
       <ShowStar score={props.composite_score} />

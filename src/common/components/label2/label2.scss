@@ -15,10 +15,14 @@
     Segoe UI;
   font-weight: bold;
   color: #565552;
-  line-height: 0rpx;
+  // line-height: 0rpx;
   position: relative;
-  top: 35.36rpx;
-  left: 34.42rpx;
+  margin-top: 35.36rpx;
+  margin-left: 34.42rpx;
+  width: 80vw;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .labeltext2 {
@@ -28,16 +32,18 @@
     Segoe UI;
   font-weight: bold;
   color: #565552;
-  line-height: 0rpx;
   position: relative;
-  top: 89.71rpx;
-  left: 35.36rpx;
+  margin-top: 10rpx;
+  margin-left: 35.36rpx;
+  width: 80vw;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .score {
   position: relative;
-  top: 118.62rpx;
-  left: 34.42rpx;
+  margin-left: 34.42rpx;
 }
 
 .star {

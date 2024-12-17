@@ -70,4 +70,5 @@ const request1 = async (url = '', method: 'GET' | 'POST' = 'GET', data = {}) => 
   }
 };
 //为了躲避审核
-export const postBool = (url = '', data = {}) => request1(url, 'POST', data);
+export const postBool = (url = '', data = {}): Promise<unknown> =>
+  request1(url, 'POST', data);

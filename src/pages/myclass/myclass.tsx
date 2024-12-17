@@ -40,6 +40,9 @@ export default function Myclass() {
   };
 
   useEffect(() => {
+    void Taro.showLoading({
+      title: '加载中',
+    });
     async function fetchClasses() {
       try {
         const yearValue = year.split('-')[0];
@@ -57,15 +60,32 @@ export default function Myclass() {
         console.error('Error fetching user courses:', error);
       }
     }
-    void fetchClasses();
+    void fetchClasses()
+      .then(() => {
+        Taro.hideLoading();
+      })
+      .catch(() => {
+        Taro.hideLoading();
+        void Taro.showToast({
+          icon: 'error',
+          title: '加载失败',
+        });
+      });
   }, [year, sem]);
 
-  const handleClassClick = (id: number, name: string) => {
+  const handleClassClick = (item: CouresProps) => {
     // 拼接查询字符串参数
-    const query = `?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}`;
+    const query = `?id=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}`;
     // 使用 navigateTo 跳转到 evaluate 页面，并传递参数
+    if (item.evaluated) handleNavToCourseInfo(item);
+    else
+      void Taro.navigateTo({
+        url: `/pages/evaluate/evaluate${query}`,
+      });
+  };
+  const handleNavToCourseInfo = (each) => {
     void Taro.navigateTo({
-      url: `/pages/evaluate/evaluate${query}`,
+      url: `/pages/classInfo/index?course_id=${each.id}`,
     });
   };
 
@@ -88,14 +108,12 @@ export default function Myclass() {
       </View>
       <View className="classes">
         {myclasses.map((each, index) => (
-          <View
-            key={index}
-            className="eachClass"
-            onClick={() => handleClassClick(each.id, each.name)}
-          >
+          <View key={index} className="eachClass" onClick={() => handleClassClick(each)}>
             <View className="circle"></View>
-            <View className="flex flex-col">
-              <Text className="classname">{each.name}</Text>
+            <View className="flex flex-col" onClick={() => handleNavToCourseInfo(each)}>
+              <Text className="classname" overflow="ellipsis">
+                {each.name}
+              </Text>
               <Text className="classteacher">{'（' + each.teacher + '）'}</Text>
             </View>
             <Text className="classstatus">{each.evaluated ? '已评课' : '未评课'}</Text>
