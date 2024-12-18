@@ -93,7 +93,7 @@ const QuestionListComponent: React.FC<{ question: IQuestion; courseId: string }>
     };
 
     void fetchQuestionWithUserInfo();
-  }, [question, dispatch]);
+  }, [question]);
 
   const handleQuestionDetailClick = () => {
     void Taro.navigateTo({

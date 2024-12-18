@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable import/first */
-import { Button, Form, Radio, Text, Textarea, View } from '@tarojs/components';
+import { Button, Checkbox, Form, Radio, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
@@ -180,7 +180,7 @@ export default function evaluate() {
         </View>
       </View>
       <View className="p">
-        <Text>课程特点</Text>
+        <Text>课程特点 :</Text>
         <View className="fea">
           {features.map((item) => {
             return (
@@ -204,13 +204,14 @@ export default function evaluate() {
       ></Textarea>
       <Text className="zsxz">字数限制{textLength}/450</Text>
       <View className="p">
-        <Text>匿名：</Text>
-        <Radio
+        <Checkbox
+          value="anonymous"
           className="myradio"
           checked={isAnonymous}
           onClick={() => setIsAnonymous(!isAnonymous)}
           color="#3399ff"
-        ></Radio>
+        ></Checkbox>
+        <Text>匿名</Text>
       </View>
       <Button onClick={postEvaluation}>发布</Button>
     </Form>

@@ -6,6 +6,7 @@ import answericon from '@/common/assets/img/publishQuestion/answer.png';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import IconFont from '@/common/components/iconfont';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
+import { post } from '@/common/utils';
 import { useCourseStore } from '@/pages/main/store/store';
 
 interface IUser {
@@ -129,18 +130,13 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
 
   const handlePublishAnswer = async () => {
     try {
-      const response = await fetch('/answers/publish', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: answerContent,
-          question_id: question.id,
-        }),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const response = await post('/answers/publish', {
+        content: answerContent,
+        question_id: question.id,
       });
 
-      if (response.ok) {
+      if (response) {
         setAnswerContent('');
         setShowAnswerForm(false);
       }
