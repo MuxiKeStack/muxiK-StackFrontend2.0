@@ -1,5 +1,5 @@
 import '@/common/components/QuestionDetail/QuestionDetail';
-import { Image, Text, View } from '@tarojs/components';
+import { Button, Image, Text, Textarea, View } from '@tarojs/components';
 import React, { useEffect, useState } from 'react';
 
 import answericon from '@/common/assets/img/publishQuestion/answer.png';
@@ -52,6 +52,7 @@ interface IQuestionProps {
   question: IQuestion;
   answers: IAnswer[] | null;
   handleFloatLayoutChange: (answerId: number | null) => void;
+  onAnswer?: (questionId: number) => void;
 }
 
 const formatTime = (timestamp: number) => {
@@ -69,11 +70,14 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
   question,
   answers,
   handleFloatLayoutChange,
+  onAnswer,
 }) => {
   const dispatch = useCourseStore(({ getPublishers }) => ({ getPublishers }));
 
   const [questionDetail, setQuestion] = useState<IQuestion>(question);
   const [answersDetail, setAnswers] = useState<IAnswer[] | null>(answers);
+  const [showAnswerForm, setShowAnswerForm] = useState(false);
+  const [answerContent, setAnswerContent] = useState('');
 
   useEffect(() => {
     const fetchAllPublishers = async () => {
@@ -121,7 +125,30 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
     };
 
     void fetchAllPublishers();
-  }, [question, answers]);
+  }, [question]);
+
+  const handlePublishAnswer = async () => {
+    try {
+      const response = await fetch('/answers/publish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: answerContent,
+          question_id: question.id,
+        }),
+      });
+
+      if (response.ok) {
+        setAnswerContent('');
+        setShowAnswerForm(false);
+      }
+    } catch (error) {
+      console.error('发布回答失败:', error);
+    }
+  };
+
   return (
     <View className="relative mx-auto flex w-[659.42rpx] flex-col items-center bg-[#f9f9f2]">
       <View className="w-[603.26rpx] border-b border-[#e3e3e3] pb-[35rpx] pt-[40rpx]">
@@ -139,6 +166,13 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
             {question.content}
           </View>
         </View>
+      </View>
+
+      <View
+        className="bg-primary fixed bottom-[40rpx] right-[40rpx] flex h-[80rpx] w-[80rpx] items-center justify-center rounded-full shadow-lg"
+        onClick={() => onAnswer?.(question.id)}
+      >
+        <IconFont name="tiwen" size={40} color="#ffffff" />
       </View>
 
       <View className="w-full">
@@ -176,6 +210,43 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
               </View>
             </View>
           ))}
+      </View>
+
+      <View className="w-full px-[28rpx] py-[20rpx]">
+        {!showAnswerForm ? (
+          <Button
+            className="bg-primary w-full rounded-lg py-[20rpx] text-white"
+            onClick={() => setShowAnswerForm(true)}
+          >
+            写回答
+          </Button>
+        ) : (
+          <View className="w-full">
+            <Textarea
+              className="mb-[20rpx] min-h-[200rpx] w-full rounded-lg bg-white p-[20rpx]"
+              value={answerContent}
+              onInput={(e) => setAnswerContent(e.detail.value)}
+              placeholder="请输入您的回答..."
+            />
+            <View className="flex justify-end space-x-[20rpx]">
+              <Button
+                className="rounded-lg bg-gray-200 px-[30rpx] text-gray-600"
+                onClick={() => {
+                  setShowAnswerForm(false);
+                  setAnswerContent('');
+                }}
+              >
+                取消
+              </Button>
+              <Button
+                className="bg-primary rounded-lg px-[30rpx] text-white"
+                onClick={() => void handlePublishAnswer()}
+              >
+                发布回答
+              </Button>
+            </View>
+          </View>
+        )}
       </View>
     </View>
   );
