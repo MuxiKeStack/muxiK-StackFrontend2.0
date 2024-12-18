@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable import/first */
-import { Button, Form, Radio, Text, Textarea, View } from '@tarojs/components';
+import { Button, Checkbox, Form, Radio, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
@@ -14,7 +14,13 @@ import Star from '@/common/components/star/star';
 import { post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 
-// import { features, testways } from './const';
+interface StatusResponse {
+  code: number;
+  data: {
+    status: boolean;
+  };
+  msg: string;
+}
 
 export default function evaluate() {
   // 初始化状态，存储所有选中的 Radio 项的值
@@ -22,6 +28,7 @@ export default function evaluate() {
   // 处理 Radio 变化的函数
   const handleRadioChange = (value: string) => {
     const currentIndex = selectedValues.indexOf(value);
+    console.log(currentIndex);
     if (currentIndex > -1) {
       // 如果值已选中，移除它
       const newSelectedValues = selectedValues.filter((v, i) => i !== currentIndex);
@@ -83,20 +90,24 @@ export default function evaluate() {
   const [courseName, setName] = useState<string | null>('只能评价自己学过的课程哦');
   const [test, setTest] = useState<boolean>(false);
   useEffect(() => {
-    const getParams = () => {
-      void postBool('/checkStatus', { name: 'kestack' }).then(
-        (res: { data: { status: boolean } }) => {
-          setTest(res?.data?.status);
-        }
-      );
-      const instance = Taro.getCurrentInstance();
-      // 使用可选链操作符安全访问 router 和 params
-      const params = instance?.router?.params || {};
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setTest(res.data.status);
 
-      // 确保 id 是 number 类型
-      setId(params.id ? Number(params.id) : null);
-      // 解码 name 参数
-      setName(params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦');
+        const instance = Taro.getCurrentInstance();
+        const params = instance?.router?.params || {};
+
+        setId(params.id ? Number(params.id) : null);
+        setName(
+          params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦'
+        );
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
     };
 
     void getParams();
@@ -123,36 +134,17 @@ export default function evaluate() {
       status: 'Public',
       is_anonymous: isAnonymous,
     };
-    void Taro.showLoading({
-      title: '发布中',
-    });
+    console.log(evaluationobj);
     post(`/evaluations/save`, evaluationobj)
       .then((res) => {
         if (res.code === 0) {
-          // 打印成功信息，但最好使用其他日志记录方式，而不是 console.log
-          // 例如：this.setState({ message: '发布课评成功' });
-          // 或者使用 Taro 的日志记录方式：Taro.showToast({ title: '发布课评成功', icon: 'success' });
-          // console.log('发布课评成功');
-          // 使用 redirectTo 跳转
-          void Taro.showToast({ title: '发布课评成功', icon: 'success' }).then(() => {
-            void Taro.switchTab({
-              url: '/pages/main/index', // 页面路径
-            });
+          void Taro.switchTab({
+            url: '/pages/main/index', // 页面路径
           });
-        } else {
-          // 处理其他响应代码，可能需要给用户一些反馈
-          // 例如：Taro.showToast({ title: '发布课评失败', icon: 'none' });
-          void Taro.showToast({ title: '发布课评失败', icon: 'none' });
         }
       })
       .catch((error) => {
-        // 处理可能出现的错误情况
-        // 例如：Taro.showToast({ title: '发布失败，请稍后重试', icon: 'none' });
-        void Taro.showToast({ title: '发布失败，请稍后重试', icon: 'none' });
         console.error('发布课评请求失败:', error);
-      })
-      .finally(() => {
-        Taro.hideLoading();
       });
   };
   const [selectedStarIndex, setSelectedStarIndex] = useState(-1);
@@ -168,72 +160,70 @@ export default function evaluate() {
       });
     }
   };
-
-  return (
-    <>
-      {test ? (
-        <View>因为政策原因暂不能发布课评</View>
-      ) : (
-        <Form className="view">
-          <View className="p">
-            <Text> 选择课程 : </Text>
-            <Label3 handleClick={onLableClick} content={courseName}></Label3>
-          </View>
-          <View className="p">
-            <Text>评价星级 :</Text>
-            <Star onStarClick={onStarClick} />
-          </View>
-          <View className="p">
-            <Text>考核方式 :</Text>
-            <View className="ways">
-              {testways.map((item) => (
-                <Radio
-                  key={item.value}
-                  className="myradio"
-                  checked={selectedValues.includes(item.value)}
-                  value={item.value}
-                  color="transparent"
-                  onClick={() => handleRadioChange(item.value)}
-                >
-                  {item.text}
-                </Radio>
-              ))}
-            </View>
-          </View>
-          <View className="p">
-            <Text>课程特点</Text>
-            <View className="fea">
-              {features.map((item) => {
-                return (
-                  <Label3
-                    key={item.value}
-                    id={item.value} // 确保 Label3 组件可以访问到 id
-                    content={item.content}
-                    checked={selectedFeatureValues.includes(item.value)} // 判断是否包含该项的 id
-                    handleChecked={() => handleFeaturesChecked(item.value)} // 传递 handleChecked 函数
-                  />
-                );
-              })}
-            </View>
-          </View>
-          <Textarea
-            maxlength={450}
-            onInput={countContent}
-            placeholderStyle="font-size: 25rpx;"
-            placeholder="输入课程评价"
-            className="myComment"
-          ></Textarea>
-          <Text className="zsxz">字数限制{textLength}/450</Text>
-          {/* 按钮样式采用 style 强制覆盖 */}
-          <Button
-            style={{ marginTop: 0, height: 30 }}
-            className="h-30 w-4/5 rounded-full bg-[#FFD777]"
-            onClick={postEvaluation}
-          >
-            发布
-          </Button>
-        </Form>
-      )}
-    </>
+  return !test ? (
+    <View>因为政策原因暂不能发布课评</View>
+  ) : (
+    <Form className="view">
+      <View className="p">
+        <Text> 选择课程 : </Text>
+        <Label3 handleClick={onLableClick} content={courseName}></Label3>
+      </View>
+      <View className="p">
+        <Text>评价星级 :</Text>
+        <Star onStarClick={onStarClick} />
+      </View>
+      <View className="p">
+        <Text>考核方式 :</Text>
+        <View className="ways">
+          {testways.map((item) => (
+            <Radio
+              key={item.value}
+              className="myradio"
+              checked={selectedValues.includes(item.value)}
+              value={item.value}
+              color="transparent"
+              onClick={() => handleRadioChange(item.value)}
+            >
+              {item.text}
+            </Radio>
+          ))}
+        </View>
+      </View>
+      <View className="p">
+        <Text>课程特点 :</Text>
+        <View className="fea">
+          {features.map((item) => {
+            return (
+              <Label3
+                key={item.value}
+                id={item.value} // 确保 Label3 组件可以访问到 id
+                content={item.content}
+                checked={selectedFeatureValues.includes(item.value)} // 判断是否包含该项的 id
+                handleChecked={() => handleFeaturesChecked(item.value)} // 传递 handleChecked 函数
+              />
+            );
+          })}
+        </View>
+      </View>
+      <Textarea
+        maxlength={450}
+        onInput={countContent}
+        placeholderStyle="font-size: 25rpx;"
+        placeholder="输入课程评价"
+        className="myComment"
+      ></Textarea>
+      <Text className="zsxz">字数限制{textLength}/450</Text>
+      <View className="p">
+        <Checkbox
+          value="anonymous"
+          className="myradio"
+          checked={isAnonymous}
+          onClick={() => setIsAnonymous(!isAnonymous)}
+          color="#3399ff"
+        ></Checkbox>
+        <Text>匿名</Text>
+      </View>
+      <Button onClick={postEvaluation}>发布</Button>
+    </Form>
   );
 }
