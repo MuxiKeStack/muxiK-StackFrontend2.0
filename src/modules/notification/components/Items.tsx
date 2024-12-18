@@ -30,6 +30,8 @@ const AlertOfficial: React.FC<OfficialProps> = memo(({ title }) => (
 export const MessageItem = memo(
   ({ id, index, data }: { id: string; index: number; data: MessageType[] }) => {
     const message = data[index];
+    console.log('ddd', data);
+
     return (
       <Message
         key={uniqueKey.nextKey()}

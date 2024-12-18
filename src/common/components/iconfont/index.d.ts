@@ -10,7 +10,8 @@ interface Props {
     | 'wechat'
     | 'yanjing'
     | 'yanjing1'
-    | 'xiaxue';
+    | 'xiaxue'
+    | 'edit';
   size?: number;
   color?: string | string[];
   style?: React.CSSProperties;

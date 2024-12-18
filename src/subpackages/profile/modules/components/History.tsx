@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect, useState } from 'react';
 
@@ -12,7 +11,7 @@ import CommentItem from './CommentItem';
 
 const History: React.FC = memo(() => {
   const [comments, setComments] = useState<CommentInfo[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [end, setEnd] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
 
@@ -24,7 +23,7 @@ const History: React.FC = memo(() => {
     const res = await get(
       `/evaluations/list/mine?cur_evaluation_id=${index}&limit=${10}&status=${'Public'}`
     );
-    setComments([...comments, ...res.data]);
+    setComments(comments.concat(res.data));
     if (res.data.length < 10) {
       setEnd(true);
     } else {
@@ -32,8 +31,7 @@ const History: React.FC = memo(() => {
     }
     setLoading(false);
     void Taro.hideLoading();
-  }, [comments, end, index]);
-
+  }, [comments.length, end, index]);
   const listReachBottom = () => {
     setLoading(true);
     setTimeout(() => {
@@ -47,24 +45,23 @@ const History: React.FC = memo(() => {
   }, [fetchData]);
 
   return (
-    <View className="flex h-screen flex-col items-center gap-4 overflow-y-scroll py-4">
-      <VirtualList
-        height="100%"
-        width="100%"
-        item={CommentItem}
-        itemData={comments}
-        itemCount={comments.length}
-        itemSize={220}
-        onScroll={({ scrollDirection, scrollOffset }) => {
-          if (
-            !loading &&
-            scrollDirection === 'forward' &&
-            scrollOffset > (comments.length - 5) * 220 + 100
-          )
-            listReachBottom();
-        }}
-      />
-    </View>
+    <VirtualList
+      height="100%"
+      width="100%"
+      item={CommentItem}
+      itemData={comments}
+      itemCount={comments.length}
+      itemSize={220}
+      onScroll={({ scrollDirection, scrollOffset }) => {
+        console.log(scrollDirection, scrollOffset);
+        if (
+          !loading &&
+          scrollDirection === 'forward' &&
+          scrollOffset > (comments.length - 5) * 20 + 100
+        )
+          listReachBottom();
+      }}
+    />
   );
 });
 

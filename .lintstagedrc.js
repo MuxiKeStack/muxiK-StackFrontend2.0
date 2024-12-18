@@ -1,9 +1,9 @@
 const path = require('path');
 
 const buildEslintCommand = (filenames) =>
-  `eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 90 --fix ${filenames
+  `eslint ${filenames
     .map((f) => path.relative(process.cwd(), f))
-    .join(' --file ')}`;
+    .join(' ')} --ext ts,tsx --report-unused-disable-directives --max-warnings 90 --fix`;
 
 module.exports = {
   '*.{js,jsx,ts,tsx}': [buildEslintCommand],

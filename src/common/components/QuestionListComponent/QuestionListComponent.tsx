@@ -48,7 +48,10 @@ const formatTime = (timestamp: number) => {
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 };
 
-const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) => {
+const QuestionListComponent: React.FC<{ question: IQuestion; courseId: string }> = ({
+  question,
+  courseId,
+}) => {
   const dispatch = useCourseStore(({ getPublishers }) => ({ getPublishers }));
 
   const [questionDetail, setQuestion] = useState<IQuestion>(question);
@@ -94,7 +97,7 @@ const QuestionListComponent: React.FC<{ question: IQuestion }> = ({ question }) 
 
   const handleQuestionDetailClick = () => {
     void Taro.navigateTo({
-      url: `/pages/questionInfo/index?id=${questionDetail.id}`,
+      url: `/pages/questionInfo/index?id=${questionDetail.id}&&course_id=${courseId}`,
     });
   };
 

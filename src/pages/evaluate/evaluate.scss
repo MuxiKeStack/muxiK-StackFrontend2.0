@@ -55,19 +55,22 @@
 
 .view .myComment {
   width: 659.42rpx;
-  height: 543.48rpx;
+  height: 30vh;
   background-color: #f9f9f2;
   border-radius: 43.48rpx 43.48rpx 43.48rpx 43.48rpx;
   margin-left: 45.29rpx;
   padding: 20rpx;
+  padding-bottom: 0;
   font-size: 25rpx;
   margin-top: 47rpx;
 }
 
 .view Button {
   width: 657.61rpx;
-  height: 141.3rpx;
-  line-height: 141.3rpx;
+  max-height: 141.3rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 43rpx;
   color: white;
   background-color: #ffd777;
