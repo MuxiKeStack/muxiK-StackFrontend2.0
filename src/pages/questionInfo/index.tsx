@@ -51,40 +51,12 @@ interface ResponseType {
 }
 
 const Index: React.FC = () => {
-  // const question = {
-  //   id: 5,
-  //   questioner_id: 5208,
-  //   biz: 'Course',
-  //   biz_id: 2347,
-  //   content: '这节课怎么样？',
-  //   answer_cnt: 0,
-  //   preview_answers: null,
-  //   utime: 1725039765090,
-  //   ctime: 1725039765090,
-  // };
-
-  // const answers = [
-  //   {
-  //     id: 5,
-  //     publisher_id: 5208,
-  //     question_id: 5,
-  //     content: '我觉得很不错',
-  //     stance: 0,
-  //     total_support_count: 0,
-  //     total_oppose_count: 0,
-  //     total_comment_count: 0,
-  //     utime: 1725039834700,
-  //     ctime: 1725039834700,
-  //   },
-  // ];
-
   const [course, setCourse] = useState<Course | null>(null);
 
   const [question, setQuestion] = useState<IQuestion | null>(null);
 
   const [answers, setAnswers] = useState<IAnswer[] | null>(null);
-
-  const courseId = 2347; //先用概率统计A来调试吧
+  const [courseId, setCourseId] = useState<string>('');
   const [questionId, setQuestionId] = useState<string | null>(null);
 
   // const questionId = 5;
@@ -96,6 +68,7 @@ const Index: React.FC = () => {
       const params = instance?.router?.params || {};
 
       if (params.id) setQuestionId(params.id);
+      if (params.course_id) setCourseId(params.course_id);
     };
 
     getParams();
@@ -289,45 +262,36 @@ const Index: React.FC = () => {
   };
 
   return (
-    <View className="min-h-screen bg-gray-50 pb-20">
-      <View className="sticky top-0 z-10 bg-white shadow-sm">
-        <CourseInfo
-          name={course?.name}
-          school={course?.school}
-          teacher={course?.teacher}
-        />
-      </View>
+    <View>
+      <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
       {question ? (
-        <View className="mx-auto mt-4 max-w-3xl px-4">
-          <QuestionDetail
-            question={question}
-            answers={answers}
-            handleFloatLayoutChange={handleFloatLayoutChange}
-          />
-        </View>
+        <QuestionDetail
+          question={question}
+          answers={answers}
+          handleFloatLayoutChange={handleFloatLayoutChange}
+        />
       ) : (
-        <View className="flex h-32 items-center justify-center">
-          <View className="text-gray-500">加载中...</View>
-        </View>
+        ''
       )}
 
       <View className="panel">
         <View className="panel__content">
+          {/* AtFloatLayout 组件 */}
           <AtFloatLayout
             isOpened={isFloatLayoutVisible}
             title={`${commentNum}条回复`}
             onClose={() => handleFloatLayoutChange(null)}
           >
-            <View onClick={handleClearReply} className="pb-16">
+            <View onClick={handleClearReply}>
+              {/* 这里是浮动弹层的内容 */}
               {commentsLoaded && (
                 <CommentComponent
                   comments={allComments}
                   onCommentClick={handleCommentClick}
                 />
               )}
-              <View className="fixed bottom-0 left-0 right-0 bg-white p-3 shadow-lg">
+              <View className="reply-input">
                 <Input
-                  className="rounded-full border border-gray-200 bg-gray-50 px-4 py-2"
                   type="text"
                   placeholder={placeholderContent}
                   value={replyContent}

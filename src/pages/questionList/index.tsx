@@ -30,8 +30,7 @@ interface IQuestion {
 const App = () => {
   const [course, setCourse] = useState<Course | null>(null);
   const [questions, setQuestions] = useState<IQuestion[] | null>(null);
-  // const courseId = 2347; //先用概率统计A来调试吧
-  const [courseId, setCourseId] = useState<string | null>(null);
+  const [courseId, setCourseId] = useState<string>('');
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
@@ -92,7 +91,7 @@ const App = () => {
       <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
       {questions !== null &&
         questions.map((question, index) => (
-          <QuestionListComponent key={index} question={question} />
+          <QuestionListComponent key={index} question={question} courseId={courseId} />
         ))}
       <Button className="btn" onClick={handleAsk}>
         我也要提问

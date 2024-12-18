@@ -123,27 +123,30 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
     void fetchAllPublishers();
   }, [question, answers]);
   return (
-    <View className="questionDetail">
-      <View className="question-detail">
+    <View className="relative mx-auto flex w-[659.42rpx] flex-col items-center bg-[#f9f9f2]">
+      <View className="w-[603.26rpx] border-b border-[#e3e3e3] pb-[35rpx] pt-[40rpx]">
         <PublishHeader
           avatarUrl={questionDetail?.user?.avatar ?? ''}
           nickName={questionDetail?.user?.nickname ?? ''}
           date={formatTime(questionDetail?.ctime)}
         />
-        <View className="question-item">
-          {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            <Image src={askicon} className="askicon"></Image>
-          }
-          <View className="question-value">{question.content}</View>
+        <View className="mt-[20rpx] flex">
+          <Image
+            src={askicon as string}
+            className="ml-[10rpx] mr-[20rpx] h-[47.05rpx] w-[44.44rpx]"
+          />
+          <View className="mt-[5rpx] max-w-[471rpx] text-[21.74rpx] text-[#565552]">
+            {question.content}
+          </View>
         </View>
       </View>
-      <View className="answer-list">
+
+      <View className="w-full">
         {answersDetail &&
           answersDetail.map((answer, index) => (
             <View
               key={index}
-              className="answer-item"
+              className="mx-auto w-[603.26rpx] border-b border-[#e3e3e3] pb-[35rpx] pt-[40rpx]"
               onClick={() => handleFloatLayoutChange(answer.id)}
             >
               <PublishHeader
@@ -151,24 +154,25 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
                 nickName={answer?.user?.nickname ?? ''}
                 date={formatTime(answer.ctime)}
               />
-              <View className="question-item">
-                {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  <Image src={answericon} className="askicon"></Image>
-                }
-                <View className="answer-content">{answer?.content}</View>
+              <View className="mt-[20rpx] flex">
+                <Image src={answericon as string} className="h-[47.05rpx] w-[44.44rpx]" />
+                <View className="mt-[5rpx] max-w-[471rpx] text-[21.74rpx] text-[#565552]">
+                  {answer?.content}
+                </View>
               </View>
-              <View className="answer-statistics">
-                <View className="icon">
+              <View className="ml-[450rpx] flex items-center">
+                <View className="inline-block h-[40rpx] w-[40rpx] rounded-full text-center leading-[40rpx] shadow-md">
                   <IconFont name="comment" />
-                  {/* <Navigator className="iconfont">&#xe769;</Navigator> */}
                 </View>
-                <Text className="text1">{answer.total_comment_count}</Text>
-                <View className="icon">
+                <Text className="mx-[10rpx] text-[22rpx] font-bold text-[#565552]">
+                  {answer.total_comment_count}
+                </Text>
+                <View className="inline-block h-[40rpx] w-[40rpx] rounded-full text-center leading-[40rpx] shadow-md">
                   <IconFont name="like" />
-                  {/* <Navigator className="iconfont">&#xe786;</Navigator> */}
                 </View>
-                <Text className="text1">{answer.total_support_count}</Text>
+                <Text className="mx-[10rpx] text-[22rpx] font-bold text-[#565552]">
+                  {answer.total_support_count}
+                </Text>
               </View>
             </View>
           ))}
