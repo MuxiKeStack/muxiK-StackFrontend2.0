@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-// eslint-disable-next-line simple-import-sort/imports
-import { Canvas } from '@tarojs/components';
-import Taro, { CanvasContext, Canvas as CanvasInterface } from '@tarojs/taro';
-import React, { CSSProperties, useEffect, useState } from 'react';
+import { Canvas, Image, View } from '@tarojs/components';
+import Taro, { CanvasContext } from '@tarojs/taro';
+import React, { CSSProperties, useEffect } from 'react';
 
 interface LineChartProps {
   data?: number[];
@@ -26,18 +24,18 @@ interface LineChartProps {
   width?: number;
   height?: number;
 }
-const DEFAULT_HIGHLIGHT_COLOR = '#FFA5007F';
+const DEFAULT_HIGHLIGHT_COLOR = '#FFA500';
 const DEFAULT_TEXT_COLOR = 'orange';
 const DEFAULT_LINE_COLOR = 'orange';
 const DEFAULT_PADDING = 30;
-const DEFAULT_WIDTH = 300;
+const DEFAULT_WIDTH = Taro.getSystemInfoSync().screenWidth * 0.9;
 const DEFAULT_HEIGHT = 200;
-const DEFAULT_DATA = [10, 20, 30, 40, 50];
-const DEFAULT_X_LABELS = ['0-40', '50-60', '70-80', '80-90', '90-100'];
+const DEFAULT_DATA = [10, 20, 30, 40, 50, 60, 70];
+const DEFAULT_X_LABELS = ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'];
 const DEFAULT_CHART_ID = 'lineCanvas';
-const DEFAULT_MARK_LINE_COLOR = '#cccccc8f';
+const DEFAULT_MARK_LINE_COLOR = '#cccccc';
 const BLANK = 20;
-const DEFAULT_HEIGHTLIGHT_POS = 1;
+const DEFAULT_HEIGHTLIGHT_POS = 4;
 const DEFAULT_TITLE = '平均分';
 
 const LineChart: React.FC<LineChartProps> = (props) => {
@@ -55,33 +53,12 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     style,
     subfix,
   } = props;
-  const [size, setSize] = useState<{ x: number; y: number }>({
-    x: propWidth ?? DEFAULT_WIDTH,
-    y: propHeight ?? DEFAULT_HEIGHT,
-  });
   useEffect(() => {
-    drawLineChart();
+    if (propData) {
+      const ctx = Taro.createCanvasContext(id ?? DEFAULT_CHART_ID);
+      void drawChart(ctx);
+    }
   }, []);
-  const drawLineChart = () => {
-    const query = Taro.createSelectorQuery();
-    setTimeout(() => {
-      query
-        .select(`#${id ?? DEFAULT_CHART_ID}`)
-        .fields({ node: true, size: true })
-        .exec((res) => {
-          const dpr = Taro.getSystemInfoSync().pixelRatio;
-          const canvas = res[0].node as CanvasInterface;
-          const { width, height } = canvas;
-          canvas.width = width * dpr;
-          canvas.height = height * dpr;
-          // 设置 canvas 组件的样式宽高
-          setSize({ x: width ?? 200, y: height ?? 200 });
-          const ctx = canvas.getContext('2d') as CanvasContext;
-          ctx.scale(dpr, dpr);
-          drawChart(ctx);
-        });
-    }, 200);
-  };
 
   const drawChart = (ctx: CanvasContext) => {
     // 初始化
@@ -126,9 +103,8 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     }
     xLabels.forEach((value, index) => {
       const x = padding + index * barWidth + BLANK;
-      ctx.fillText(value, x - 15, height - 5);
+      ctx.fillText(value, x - (value.length / 2) * 5, height - 5);
     });
-
     // 图
     ctx.strokeStyle = lineColor ?? DEFAULT_LINE_COLOR;
     ctx.lineWidth = 6;
@@ -175,13 +151,11 @@ const LineChart: React.FC<LineChartProps> = (props) => {
       centerX - ctx.measureText(title ?? DEFAULT_TITLE).width / 2,
       padding / 2
     );
+    void ctx.draw();
   };
 
   return (
-    <Canvas
-      id={id ?? DEFAULT_CHART_ID}
-      // width={(size?.x ?? DEFAULT_WIDTH + 'px') as string}
-      // height={(size?.y ?? DEFAULT_HEIGHT + 'px') as string}
+    <View
       className={className}
       style={{
         ...style,
@@ -189,10 +163,43 @@ const LineChart: React.FC<LineChartProps> = (props) => {
           width: `${propWidth ?? DEFAULT_WIDTH}px`,
           height: `${propHeight ?? DEFAULT_HEIGHT}px`,
           flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          display: 'flex',
+          position: 'relative',
         },
       }}
-      type="2d"
-    />
+    >
+      {propData && <View>数据量太少,暂不支持预览</View>}
+      {propData ? (
+        <Image
+          src="https://s2.loli.net/2024/12/11/sJ9kANj5yz6HiUa.png"
+          style={{
+            width: `${propWidth ?? DEFAULT_WIDTH}px`,
+            height: `${propHeight ?? DEFAULT_HEIGHT}px`,
+            flex: 1,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: -1,
+          }}
+        />
+      ) : (
+        <Canvas
+          id={id ?? DEFAULT_CHART_ID}
+          canvasId={id ?? DEFAULT_CHART_ID}
+          className={className}
+          style={{
+            ...style,
+            ...{
+              width: `${propWidth ?? DEFAULT_WIDTH}px`,
+              height: `${propHeight ?? DEFAULT_HEIGHT}px`,
+              flex: 1,
+            },
+          }}
+        />
+      )}
+    </View>
   );
 };
 
@@ -245,6 +252,6 @@ function drawGradientRectangle(
     gradient.addColorStop(0, DEFAULT_HIGHLIGHT_COLOR); // 顶部不透明橙色
     gradient.addColorStop(1, 'rgba(255, 165, 0, 0)'); // 底部完全透明
     // 应用渐变并填充路径
-    ctx.fillStyle = gradient;
+    ctx.setFillStyle(gradient);
   });
 }

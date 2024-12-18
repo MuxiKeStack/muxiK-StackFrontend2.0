@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable no-console */
+
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Image, Input, View } from '@tarojs/components';
@@ -14,6 +14,8 @@ type SearchInputProps = {
   searchPlaceholder: string;
   searchPlaceholderStyle: string;
   searchIconSrc: string;
+  autoFocus?: boolean;
+  disabled?: boolean;
 };
 
 const SearchInput: React.FC<SearchInputProps> = ({
@@ -22,6 +24,8 @@ const SearchInput: React.FC<SearchInputProps> = ({
   searchPlaceholder,
   searchPlaceholderStyle,
   searchIconSrc,
+  autoFocus,
+  disabled,
 }) => {
   // const [isSearchActive, setIsSearchActive] = useState(true);
   const [searchText, setSearchText] = useState(''); // 添加状态来存储搜索文本
@@ -30,7 +34,6 @@ const SearchInput: React.FC<SearchInputProps> = ({
   const handleImageClick = (e: any) => {
     // 阻止事件冒泡
     e.stopPropagation();
-    console.log(2);
     onSearch(searchText); // 发送搜索请求
   };
 
@@ -61,6 +64,10 @@ const SearchInput: React.FC<SearchInputProps> = ({
         placeholder={searchPlaceholder}
         placeholderStyle={searchPlaceholderStyle}
         ref={inputRef}
+        onConfirm={handleImageClick} // 绑定回车事件
+        autoFocus={autoFocus}
+        disabled={disabled}
+        confirmType="search"
       />
       <Image
         style={{ width: '34.09rpx', height: '34.09rpx' }}

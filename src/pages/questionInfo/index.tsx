@@ -79,7 +79,6 @@ const Index: React.FC = () => {
     const getCourseData = async () => {
       try {
         void get(`/courses/${courseId}/detail`).then((res) => {
-          console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           setCourse(res?.data as Course);
@@ -90,13 +89,12 @@ const Index: React.FC = () => {
       }
     };
 
-    if (courseId) void getCourseData().then((r) => console.log(r));
+    if (courseId) void getCourseData();
 
     // eslint-disable-next-line @typescript-eslint/require-await
     const getQuestionDetail = async () => {
       try {
         void get(`/questions/${questionId}/detail`).then((res) => {
-          console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           setQuestion(res?.data as IQuestion);
@@ -114,7 +112,6 @@ const Index: React.FC = () => {
       try {
         void get(`/answers/list/questions/${questionId}?cur_answer_id=0&limit=100`).then(
           (res) => {
-            console.log(res);
             // 检查 res 是否有 data 属性，并且断言其类型
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             setAnswers(res?.data as IAnswer[]);
@@ -181,7 +178,6 @@ const Index: React.FC = () => {
 
     // 确保 biz_id 设置后再调用 fetchComments
     if (currentAnswerId !== null) {
-      console.log(1);
       void fetchCommentNum();
     }
 
@@ -205,7 +201,6 @@ const Index: React.FC = () => {
   }, [currentAnswerId, commentsLoaded]); // 依赖项中添加biz_id
 
   const handleCommentClick = (comment: CommentType) => {
-    console.log(comment);
     setReplyTo(comment); // 设置回复目标
     setplaceholderContent(`回复给${comment.user?.nickname}: `); // 初始化回复内容
   };
@@ -216,7 +211,6 @@ const Index: React.FC = () => {
   };
 
   const handleClearReply = () => {
-    console.log(2);
     setReplyTo(null);
     setReplyContent('');
     setplaceholderContent('写下你的评论...');
@@ -282,7 +276,10 @@ const Index: React.FC = () => {
             title={`${commentNum}条回复`}
             onClose={() => handleFloatLayoutChange(null)}
           >
-            <View onClick={handleClearReply}>
+            <View
+              onClick={handleClearReply}
+              style={{ height: '100%', position: 'relative' }}
+            >
               {/* 这里是浮动弹层的内容 */}
               {commentsLoaded && (
                 <CommentComponent
@@ -290,7 +287,18 @@ const Index: React.FC = () => {
                   onCommentClick={handleCommentClick}
                 />
               )}
-              <View className="reply-input">
+              <View
+                className="reply-input"
+                style={{
+                  position: 'fixed',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: '10px',
+                  backgroundColor: '#fff',
+                  borderTop: '1px solid #eee',
+                }}
+              >
                 <Input
                   type="text"
                   placeholder={placeholderContent}
@@ -300,6 +308,14 @@ const Index: React.FC = () => {
                   }}
                   onInput={handleReplyChange}
                   onConfirm={void handleReplySubmit}
+                  style={{
+                    width: '100%',
+                    height: '40px',
+                    padding: '0 15px',
+                    border: '1px solid #ddd',
+                    borderRadius: '20px',
+                    fontSize: '14px',
+                  }}
                 />
               </View>
             </View>

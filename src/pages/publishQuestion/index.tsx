@@ -77,7 +77,6 @@ export default function Index() {
     const getCourseData = async () => {
       try {
         void get(`/courses/${courseId}/detail`).then((res) => {
-          console.log(res);
           // 检查 res 是否有 data 属性，并且断言其类型
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           setCourse(res?.data as Course);
