@@ -4,7 +4,7 @@
 /* eslint-disable import/first */
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
 import './index.scss';
@@ -43,6 +43,17 @@ export default function Index() {
   const [questionNum, setQuestionNum] = useState<number>(0);
   const [questionlist, setQuestionlist] = useState<WebQuestionVo[]>([]);
   const [collect, setCollect] = useState<boolean | undefined>(course?.is_collected);
+  const getCommentData = async () => {
+    try {
+      await get(
+        `/evaluations/list/courses/${courseId}?cur_evaluation_id=0&limit=100`
+      ).then((res) => {
+        setComments(res.data as CommentInfoType[]);
+      });
+    } catch (error) {
+      console.error('Failed to fetch course data:', error);
+    }
+  };
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
@@ -59,25 +70,19 @@ export default function Index() {
     const getCourseData = async () => {
       try {
         void get(`/courses/${courseId}/detail`).then((res) => {
-          console.log('res', res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setCourse(res.data);
-
-          console.log('course', course);
-          console.log('collect1', res.data.is_collected);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setCollect(res.data.is_collected);
-          console.log('collect', collect);
+          !res.data && bailout();
         });
       } catch (error) {
         console.error('Failed to fetch course data:', error);
       }
     };
 
-    if (courseId) void getCourseData().then((r) => console.log(r));
+    if (courseId) void getCourseData();
 
-    // eslint-disable-next-line @typescript-eslint/require-await
-    const getCommentData = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const getCommentData = () => {
       try {
         void get(
           `/evaluations/list/courses/${courseId}?cur_evaluation_id=${0}&limit=${100}`
@@ -93,13 +98,13 @@ export default function Index() {
     if (courseId) void getCommentData();
   }, [courseId]);
   useEffect(() => {
-    console.log('test', courseId);
     const fetchGrades = async () => {
       try {
         await get(`/grades/courses/${courseId}`).then((res) => {
-          console.log(res.data);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setGrade(res.data); // 设置 grade 数据
+          !res.data && bailout();
+          Taro.hideLoading();
         });
       } catch (err) {
         console.error('Failed to fetch grades data', err);
@@ -107,11 +112,10 @@ export default function Index() {
     };
     const getNumData = () => {
       try {
-        console.log('test', courseId);
         void get(`/questions/count?biz=Course&biz_id=${courseId}`).then((res) => {
-          console.log(res);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setQuestionNum(res.data);
+          Taro.hideLoading();
         });
       } catch (e) {
         console.error(e);
@@ -120,7 +124,7 @@ export default function Index() {
     const fetchAnswer = () => {
       try {
         void get(
-          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${100}`
+          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${3}`
         ).then((res) => {
           console.log(res);
 
@@ -131,14 +135,17 @@ export default function Index() {
             preview_answers: item.preview_answers || [],
           }));
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setQuestionlist(questionsWithAnswers);
-          console.log('questionlist', questionsWithAnswers);
+          setQuestionlist(res.data);
+          Taro.hideLoading();
         });
       } catch (e) {
         console.error('Failed to fetch course data:', e);
       }
     };
     if (courseId) {
+      void Taro.showLoading({
+        title: '加载中',
+      });
       void fetchGrades();
       void getNumData();
       void fetchAnswer();
@@ -152,7 +159,6 @@ export default function Index() {
   }, [collect]);
   function handleCollect() {
     void post(`/courses/${courseId}/collect`, { collect: !collect }).then((res) => {
-      console.log(res);
       setCollect(!collect);
     });
   }
@@ -167,24 +173,33 @@ export default function Index() {
       yData: grade?.grades.map((item) => item.total_grades?.length ?? 0),
     };
   }, [grade]);
-  if (!course || !grade) {
-    return <Text>请先确定已签约成绩共享计划</Text>; // 数据加载中
-  }
-  const featuresList =
-    course.features && Array.isArray(course.features) ? course.features : [];
-
+  const bailout = useCallback(() => {
+    void Taro.showToast({
+      title: '请先确定已签约成绩共享计划',
+      icon: 'none',
+    });
+    setTimeout(() => {
+      void Taro.navigateBack();
+    }, 1000);
+  }, []);
+  const featuresList = useMemo(() => {
+    if (course?.features && Array.isArray(course?.features)) {
+      return course?.features;
+    }
+    return [];
+  }, [course?.features]);
   return (
     <View className="classInfo">
       <View className="theClassnme">{course?.name}</View>
       <View className="teacherName">
-        {course.school} {course.teacher}
+        {course?.school} {course?.teacher}
       </View>
       <View className="p">
-        综合评分: <ShowStar score={course.composite_score} />
-        <Text>（共{course.rater_count}人评价）</Text>
+        综合评分: <ShowStar score={course?.composite_score} />
+        <Text>（共{course?.rater_count}人评价）</Text>
       </View>
       <View className="p">
-        课程分类: <Label3 content={translateCourseProperty(course.type)} />
+        课程分类: <Label3 content={translateCourseProperty(course?.type)} />
       </View>
       <View className="p">
         课程特点: {}
@@ -192,15 +207,13 @@ export default function Index() {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
-      <View className="mx-auto flex w-[90%] pt-1.5">
-        <LineChart
-          className="mx-auto text-center"
-          data={yData}
-          xLabels={xLabels}
-          heightLightPercent={heightLightPercent ?? 0}
-          title={`平均分: ${grade?.avg.toFixed(1)}`}
-        />
-      </View>
+      <LineChart
+        className="mx-auto text-center"
+        data={yData}
+        xLabels={xLabels}
+        heightLightPercent={heightLightPercent ?? 0}
+        title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
+      />
       <View>
         <View>
           <View className="line-container pt-2.5 text-center text-xl">
@@ -208,25 +221,42 @@ export default function Index() {
           </View>
         </View>
         <>
-          {questionlist &&
-            questionlist.map((question) => (
-              <AnswerToStudent
-                content={question.content}
-                key={question.id}
-                preview_answers={question.preview_answers}
-              />
-            ))}
+          {questionlist.length > 0 ? (
+            <>
+              <View className="relative">
+                {questionlist.slice(0, 3).map((question, index) => (
+                  <View key={question.id} style={{ filter: `blur(${index}px)` }}>
+                    <AnswerToStudent
+                      content={question.content}
+                      preview_answers={question.preview_answers}
+                    />
+                  </View>
+                ))}
+              </View>
+              <View
+                className="text-center text-xl"
+                onClick={() => {
+                  void Taro.navigateTo({
+                    url: `/pages/questionList/index?course_id=${courseId}`,
+                  });
+                }}
+              >
+                <Text>查看全部</Text>
+              </View>
+            </>
+          ) : (
+            <View
+              className="flex h-[10vh] items-center justify-center"
+              onClick={() => {
+                void Taro.navigateTo({
+                  url: `/pages/publishQuestion/index?course_id=${courseId}`,
+                });
+              }}
+            >
+              <Text className="text-center text-xl">暂无问题, 快去提问吧 》</Text>
+            </View>
+          )}
         </>
-        <View
-          onClick={() => {
-            void Taro.navigateTo({
-              url: `/pages/questionList/index?course_id=${courseId}`,
-            });
-          }}
-          className="text-right"
-        >
-          全部&gt;
-        </View>
       </View>
       <View>
         <View className="line-container pt-5 text-center text-xl">最新评论</View>
@@ -234,17 +264,32 @@ export default function Index() {
       {comments &&
         comments.map((comment) => (
           <Comment
+            classNames="mt-2"
+            showTag
             onClick={(props) => {
               const serializedComment = encodeURIComponent(JSON.stringify(props));
               void Taro.navigateTo({
                 url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
               });
             }}
+            onLikeClick={() => void getCommentData()}
             key={comment.id}
             {...comment}
             type="inner"
           />
         ))}
+      {comments.length === 0 && (
+        <View
+          className="flex h-[10vh] items-center justify-center"
+          onClick={() => {
+            void Taro.navigateTo({
+              url: `pages/evaluate/evaluate?id=${courseId}&name=${course?.name}`,
+            });
+          }}
+        >
+          <Text className="text-center text-xl">暂无课评, 快去评价一下吧 》</Text>
+        </View>
+      )}
       <View
         className="fixed bottom-[12vh] right-8 flex flex-col items-center gap-2"
         onClick={handleCollect}

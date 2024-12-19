@@ -1,5 +1,5 @@
 /* eslint-disable import/first */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -50,24 +50,39 @@ const Research: React.FC = () => {
     // Taro.navigateTo({
     //   url: '/pages/research/research',
     // });
-    console.log(1);
     setSpread(false);
   };
 
   const handleClick = () => {
-    console.log(2);
-    Taro.switchTab({
-      url: '/pages/main/index',
-    });
+    // Taro.switchTab({
+    //   url: '/pages/main/index',
+    // });
   };
 
   const handleSearch = (searchText: string) => {
+    Taro.showLoading({
+      title: '搜索中',
+    });
     console.log('搜索文本:', searchText);
     setSpread(true);
-    get(`/search?biz=Course&keyword=${searchText}&search_location=Home`).then((res) => {
-      console.log(res);
-      setClasses(res.data);
-    });
+    get(`/search?biz=Course&keyword=${searchText}&search_location=Home`)
+      .then((res) => {
+        setClasses(res.data);
+        Taro.hideLoading();
+        if (res.data.length === 0) {
+          Taro.showToast({
+            title: '暂无内容',
+            icon: 'error',
+          });
+        }
+      })
+      .catch((err) => {
+        Taro.hideLoading();
+        Taro.showToast({
+          title: '搜索失败',
+          icon: 'error',
+        });
+      });
   };
 
   useEffect(() => {
@@ -82,6 +97,7 @@ const Research: React.FC = () => {
       }}
     >
       <SearchInput
+        autoFocus
         onSearch={handleSearch} // 传递搜索逻辑
         onSearchToggle={handleSearchToggle}
         searchPlaceholder="搜索课程名/老师名"
@@ -116,12 +132,19 @@ const ConditionalRender = ({ isSpread, classes, hrs, handleSearch }) => {
           src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"
         />
       </View>
-      <View className="historyResult">
+      <View
+        className="historyResult"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         {hrs.map((hr) => (
           <Label1
             key={hr.id}
             content={hr.keyword}
-            onClick={() => handleSearch(hr.keyword)}
+            onClick={(e) => {
+              handleSearch(hr.keyword);
+            }}
           />
         ))}
       </View>

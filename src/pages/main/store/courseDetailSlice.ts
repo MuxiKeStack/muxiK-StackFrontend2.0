@@ -12,7 +12,7 @@ export const CreateCourseDetail: StateCreator<
 > = (set, get, api) => ({
   courseDetail: {},
   fetchCouseDetail(courseId: number) {
-    return fetchGet(`/courses/${courseId}/simple_detail`).then(
+    return fetchGet(`/courses/${courseId}/detail`).then(
       (res: { data: CourseDetailsType }) => {
         set({ courseDetail: { ...get().courseDetail, [courseId]: res.data } });
         return res.data;

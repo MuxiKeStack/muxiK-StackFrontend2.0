@@ -5,4 +5,5 @@ export type Message = {
   description?: string;
   comment: string;
   timestamp: string;
+  ctime?: number;
 };

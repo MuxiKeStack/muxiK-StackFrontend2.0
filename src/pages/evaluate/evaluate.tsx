@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable import/first */
-import { Button, Form, Radio, Text, Textarea, View } from '@tarojs/components';
+import { Button, Checkbox, Form, Radio, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
@@ -14,10 +14,17 @@ import Star from '@/common/components/star/star';
 import { post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 
+interface StatusResponse {
+  code: number;
+  data: {
+    status: boolean;
+  };
+  msg: string;
+}
+
 export default function evaluate() {
   // 初始化状态，存储所有选中的 Radio 项的值
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-
   // 处理 Radio 变化的函数
   const handleRadioChange = (value: string) => {
     const currentIndex = selectedValues.indexOf(value);
@@ -31,8 +38,6 @@ export default function evaluate() {
       setSelectedValues([...selectedValues, value]);
     }
   };
-
-  // 测试方式的数据
   const testways = [
     { value: 'OpenBookExamination', text: '开卷考试' },
     { value: 'ClosedBookExamination', text: '闭卷考试' },
@@ -54,11 +59,10 @@ export default function evaluate() {
   ];
 
   const [selectedFeatureValues, setSelectedFeatureValues] = useState<string[]>([]);
-
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const handleFeaturesChecked = (value: string) => {
     const currentIndex = selectedFeatureValues.indexOf(value);
     if (currentIndex > -1) {
-      // 如果 id 已选中，移除它
       const newSelectedFeatureValues = selectedFeatureValues.filter(
         (v, i) => i !== currentIndex
       );
@@ -86,25 +90,31 @@ export default function evaluate() {
   const [courseName, setName] = useState<string | null>('只能评价自己学过的课程哦');
   const [test, setTest] = useState<boolean>(false);
   useEffect(() => {
-    const getParams = () => {
-      void postBool('/checkStatus', { name: 'kestack' }).then((res) => {
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
+
         setTest(res.data.status);
-        console.log('res.data.status', test);
-      });
-      const instance = Taro.getCurrentInstance();
-      // 使用可选链操作符安全访问 router 和 params
-      const params = instance?.router?.params || {};
 
-      // 确保 id 是 number 类型
-      setId(params.id ? Number(params.id) : null);
-      // 解码 name 参数
-      setName(params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦');
+        const instance = Taro.getCurrentInstance();
+        const params = instance?.router?.params || {};
 
-      console.log(params.id);
+        setId(params.id ? Number(params.id) : null);
+        setName(
+          params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦'
+        );
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
     };
 
-    getParams();
-  }, [test]); // 这个 effect 仅在组件挂载时运行一次
+    void getParams();
+  }, []);
+  useEffect(() => {
+    console.log('test status updated:', test);
+  }, [test]);
 
   const postEvaluation = () => {
     if (selectedStarIndex === -1) {
@@ -122,6 +132,7 @@ export default function evaluate() {
       features: selectedFeatureValues,
       id: 0,
       status: 'Public',
+      is_anonymous: isAnonymous,
     };
     console.log(evaluationobj);
     post(`/evaluations/save`, evaluationobj)
@@ -130,25 +141,16 @@ export default function evaluate() {
           void Taro.switchTab({
             url: '/pages/main/index', // 页面路径
           });
-        } else {
-          // 处理其他响应代码，可能需要给用户一些反馈
-          // 例如：Taro.showToast({ title: '发布课评失败', icon: 'none' });
         }
       })
       .catch((error) => {
-        // 处理可能出现的错误情况
-        // 例如：Taro.showToast({ title: '发布失败，请稍后重试', icon: 'none' });
         console.error('发布课评请求失败:', error);
       });
   };
-
-  //星级部分的代码
   const [selectedStarIndex, setSelectedStarIndex] = useState(-1);
 
   const onStarClick = (index) => {
-    console.log('选中的星级索引:', index);
     setSelectedStarIndex(index + 1);
-    // 执行其他需要的逻辑
   };
 
   const onLableClick = () => {
@@ -158,8 +160,7 @@ export default function evaluate() {
       });
     }
   };
-  // eslint-disable-next-line no-constant-condition
-  return { test } ? (
+  return !test ? (
     <View>因为政策原因暂不能发布课评</View>
   ) : (
     <Form className="view">
@@ -189,7 +190,7 @@ export default function evaluate() {
         </View>
       </View>
       <View className="p">
-        <Text>课程特点</Text>
+        <Text>课程特点 :</Text>
         <View className="fea">
           {features.map((item) => {
             return (
@@ -212,6 +213,16 @@ export default function evaluate() {
         className="myComment"
       ></Textarea>
       <Text className="zsxz">字数限制{textLength}/450</Text>
+      <View className="p">
+        <Checkbox
+          value="anonymous"
+          className="myradio"
+          checked={isAnonymous}
+          onClick={() => setIsAnonymous(!isAnonymous)}
+          color="#3399ff"
+        ></Checkbox>
+        <Text>匿名</Text>
+      </View>
       <Button onClick={postEvaluation}>发布</Button>
     </Form>
   );

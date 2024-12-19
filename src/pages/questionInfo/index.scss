@@ -1,5 +1,26 @@
 @import '~taro-ui/dist/style/components/float-layout.scss';
 
+:root {
+  --primary-color: #3399ff; // 主题色
+}
+
+.shadow-up {
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+input {
+  &:focus {
+    border-color: var(--primary-color);
+  }
+}
+
+.at-float-layout {
+  .at-float-layout__container {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+}
+
 .flex-page .at-row {
   margin-bottom: 40px;
 

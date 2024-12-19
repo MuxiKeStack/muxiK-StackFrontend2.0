@@ -58,15 +58,9 @@ const AuthForm: React.FC = memo(() => {
       void Taro.switchTab({
         url: '/pages/main/index',
       });
-      void Taro.setStorage({
-        key: 'shortToken',
-        data: ' ',
-      });
-
-      void Taro.setStorage({
-        key: 'longToken',
-        data: ' ',
-      });
+      Taro.setStorageSync('shortToken', ' ');
+      Taro.setStorageSync('visitor', true);
+      Taro.setStorageSync('longToken', ' ');
     } else {
       void Taro.showToast({
         icon: 'error',

@@ -3,6 +3,7 @@ import Taro from '@tarojs/taro';
 import { StateCreator } from 'zustand';
 
 import { get as fetchGet } from '@/common/api/get';
+import { post } from '@/common/utils';
 
 import { COMMENT_ACTIONS, CommentInfoSlice, COURSE_TYPE, CourseInfoStore } from './types';
 
@@ -26,30 +27,95 @@ export const CreateCommentInfo: StateCreator<
     return await get().updateComments(0);
   },
   getComment(id) {
+    if (id === 0) return undefined;
     const { classType, comments } = get();
-    console.log('comments', comments);
     return comments[classType].find((item) => item.id === id);
   },
   async loadMoreComments() {
     const { currentId, updateComments } = get();
     return await updateComments(currentId);
   },
-  updateCommentInfo(currentId: number, action) {
+  async enrose(id, action) {
+    void Taro.showLoading({
+      title: '点赞中',
+    });
+    const shouldSupport = action === COMMENT_ACTIONS.LIKE;
+    await post(`/evaluations/${id}/endorse`, {
+      stance: shouldSupport ? 1 : 0,
+    })
+      .then(() => {
+        Taro.hideLoading();
+        void Taro.showToast({
+          title: !shouldSupport ? '取消成功' : '点赞成功',
+          icon: 'success',
+          duration: 1000,
+        });
+      })
+      .catch(() => {
+        Taro.hideLoading();
+        void Taro.showToast({
+          title: '服务端错误',
+          icon: 'error',
+        });
+        return undefined;
+      });
+    const curInfo = await fetchGet(`/evaluations/${id}/detail`).then(
+      (res: { data: CommentInfo }) => {
+        Taro.hideLoading();
+        return res.data;
+      }
+    );
+    get().updateCommentInfo(id, curInfo);
+    return curInfo;
+  },
+  async comment({
+    id: biz_id,
+    biz,
+    action,
+    parentId: parent_id,
+    rootId: root_id,
+    content,
+  }) {
+    Taro.showLoading({
+      title: '发布课评中',
+    });
+    await post('/comments/publish', {
+      biz,
+      biz_id,
+      content,
+      parent_id,
+      root_id,
+    }).catch(() => {
+      Taro.hideLoading();
+      Taro.showToast({
+        title: '课评发布失败',
+        icon: 'error',
+      });
+      return;
+    });
+    Taro.hideLoading();
+    Taro.showToast({
+      title: '课评发布成功',
+      icon: 'success',
+    });
+    const curInfo = await fetchGet(`/evaluations/${biz_id}/detail`).then(
+      (res: { data: CommentInfo }) => {
+        Taro.hideLoading();
+        return res.data;
+      }
+    );
+    get().updateCommentInfo(biz_id, curInfo);
+    return curInfo;
+  },
+  updateCommentInfo(currentId: number, info: CommentInfo) {
     const { comments, classType } = get();
     const currentCourses = JSON.parse(
       JSON.stringify(comments[classType])
     ) as CommentInfo[];
-    const currentSelect = currentCourses.find((course) => course.id === currentId);
-    if (currentSelect) {
-      switch (action) {
-        case COMMENT_ACTIONS.COMMENT:
-          currentSelect.total_comment_count! += 1;
-          break;
-        case COMMENT_ACTIONS.LIKE:
-          currentSelect.total_support_count! += 1;
-          break;
-      }
-    }
+    const currentSelectIndex: number = currentCourses.findIndex(
+      (course) => course.id === currentId
+    );
+    currentSelectIndex !== -1 && (currentCourses[currentSelectIndex] = info);
     set((state) => ({
       comments: { ...state.comments, [classType]: currentCourses },
     }));
@@ -71,15 +137,13 @@ export const CreateCommentInfo: StateCreator<
           });
           return { comments: state.comments };
         }
-
+        const currentComments = currentId
+          ? state.comments[classType].concat(resDataList).sort((a, b) => b.id! - a.id!)
+          : resDataList;
         return {
           comments: {
             ...comments,
-            [classType]: currentId
-              ? state.comments[classType]
-                  .concat(resDataList)
-                  .sort((a, b) => b.id! - a.id!)
-              : resDataList,
+            [classType]: currentComments,
           },
           currentId: prevId,
           loading: false,
@@ -87,5 +151,8 @@ export const CreateCommentInfo: StateCreator<
       });
     });
   },
-  changeType: (classType) => set({ classType }),
+  changeType: (classType) =>
+    set({
+      classType,
+    }),
 });

@@ -10,11 +10,11 @@ interface Question {
 const AnswerToStudent: React.FC<Question> = (props) => {
   const { content, preview_answers } = props;
   return (
-    <View className="flex h-[4vh] w-[90vw] items-center justify-center gap-2">
+    <View className="m-auto flex h-[4vh] w-[80vw] items-center justify-center gap-2">
       <Image src={Ask as string} className="h-6 w-6" />
       <View className="text-base font-medium text-gray-800">{content}</View>
       <View className="ml-auto text-sm text-gray-500">
-        {preview_answers.length} 个回答
+        {preview_answers?.length ?? 0} 个回答
       </View>
     </View>
   );
