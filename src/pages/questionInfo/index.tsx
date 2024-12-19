@@ -58,13 +58,9 @@ const Index: React.FC = () => {
   const [answers, setAnswers] = useState<IAnswer[] | null>(null);
   const [courseId, setCourseId] = useState<string>('');
   const [questionId, setQuestionId] = useState<string | null>(null);
-
-  // const questionId = 5;
-
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
-      // 使用可选链操作符安全访问 router 和 params
       const params = instance?.router?.params || {};
 
       if (params.id) setQuestionId(params.id);
@@ -72,7 +68,7 @@ const Index: React.FC = () => {
     };
 
     getParams();
-  }, []); // 这个 effect 仅在组件挂载时运行一次
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/require-await
@@ -110,13 +106,13 @@ const Index: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getAnswersList = async () => {
       try {
-        void get(`/answers/list/questions/${questionId}?cur_answer_id=0&limit=100`).then(
-          (res) => {
-            // 检查 res 是否有 data 属性，并且断言其类型
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            setAnswers(res?.data as IAnswer[]);
-          }
-        );
+        void get(
+          `/answers/list/questions/${questionId}?cur_answer_id=${0}&limit=${100}`
+        ).then((res) => {
+          // 检查 res 是否有 data 属性，并且断言其类型
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          setAnswers(res?.data as IAnswer[]);
+        });
       } catch (error) {
         // 错误处理，例如弹出提示
         console.error('Failed to fetch course data:', error);
@@ -144,24 +140,21 @@ const Index: React.FC = () => {
 
   const [commentNum, setCommentNum] = useState<string | null>(null);
 
+  // 将 fetchComments 函数移到 useEffect 外部
+  const fetchComments = async () => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const res: ResponseType = await get(
+        `/comments/list?biz=Answer&biz_id=${currentAnswerId}&cur_comment_id=${0}&limit=${100}`
+      );
+      setAllComments(res?.data as CommentType[]);
+      setCommentsLoaded(true);
+    } catch (error) {
+      console.error('加载评论失败', error);
+    }
+  };
+
   useEffect(() => {
-    // const handleQuery = () => {
-    //   const query = Taro.getCurrentInstance()?.router?.params; // 获取查询参数
-    //   const serializedComment = query?.comment;
-    //   if (serializedComment) {
-    //     try {
-    //       // 解析字符串
-    //       const parsedComment = JSON.parse(decodeURIComponent(serializedComment));
-    //       setComment(parsedComment);
-    //       setBiz_id(parsedComment.id);
-    //     } catch (error) {
-    //       console.error('解析评论参数失败', error);
-    //     }
-    //   }
-    // };
-
-    // handleQuery();
-
     const fetchCommentNum = async () => {
       // console.log(biz_id)
       try {
@@ -176,26 +169,8 @@ const Index: React.FC = () => {
       }
     };
 
-    // 确保 biz_id 设置后再调用 fetchComments
     if (currentAnswerId !== null) {
       void fetchCommentNum();
-    }
-
-    const fetchComments = async () => {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const res: ResponseType = await get(
-          `/comments/list?biz=Answer&biz_id=${currentAnswerId}&cur_comment_id=0&limit=100`
-        );
-        setAllComments(res?.data as CommentType[]);
-        setCommentsLoaded(true);
-      } catch (error) {
-        console.error('加载评论失败', error);
-      }
-    };
-
-    // 确保 biz_id 设置后再调用 fetchComments
-    if (currentAnswerId !== null) {
       void fetchComments();
     }
   }, [currentAnswerId, commentsLoaded]); // 依赖项中添加biz_id
@@ -217,10 +192,11 @@ const Index: React.FC = () => {
   };
 
   const handleReplySubmit = async () => {
-    if (!replyContent.trim()) return; // 忽略空内容
+    if (!replyContent.trim()) return;
 
     try {
-      await post('/comments/publish', {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const response = await post('/comments/publish', {
         biz: 'Answer',
         biz_id: currentAnswerId,
         content: replyContent,
@@ -228,35 +204,51 @@ const Index: React.FC = () => {
         root_id:
           replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
       });
-      console.log('评论发布成功');
 
-      // 清空回复目标和输入框
-      setReplyTo(null);
-      setReplyContent('');
-      setplaceholderContent('写下你的评论...');
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (response?.code === 409002) {
+        void Taro.showToast({
+          title: '不能回答未上过的课',
+          icon: 'none',
+          duration: 2000,
+        });
+        return;
+      }
 
-      // 评论发布成功后，重新加载评论
-      setCommentsLoaded(false); // 先将commentsLoaded设为false，避免useEffect中的fetchComments不被调用
-      const fetchComments = async () => {
-        try {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const res: ResponseType = await get(
-            `/comments/list?biz=Answer&biz_id=${currentAnswerId}&cur_comment_id=0&limit=100`
-          );
-          setAllComments(res.data as CommentType[]);
-          setCommentsLoaded(true);
-        } catch (error) {
-          console.error('加载评论失败', error);
-        }
-      };
-      await fetchComments();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (response?.code === 0) {
+        // 清空回复目标和输入框
+        void Taro.showToast({
+          title: '评论发布成功',
+          icon: 'success',
+          duration: 2000,
+        });
+        setReplyTo(null);
+        setReplyContent('');
+        setplaceholderContent('写下你的评论...');
+
+        // 评论发布成功后，重新加载评论
+        setCommentsLoaded(false);
+        await fetchComments();
+
+        void Taro.showToast({
+          title: '评论发布成功',
+          icon: 'success',
+          duration: 2000,
+        });
+      }
     } catch (error) {
-      console.error('评论发布失败', error);
+      console.error('评论发布失败:', error);
+      void Taro.showToast({
+        title: '评论发布失败',
+        icon: 'error',
+        duration: 2000,
+      });
     }
   };
 
   return (
-    <View>
+    <View className="relative min-h-screen pb-[120px]">
       <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
       {question ? (
         <QuestionDetail
@@ -268,59 +260,42 @@ const Index: React.FC = () => {
         ''
       )}
 
-      <View className="panel">
-        <View className="panel__content">
-          {/* AtFloatLayout 组件 */}
-          <AtFloatLayout
-            isOpened={isFloatLayoutVisible}
-            title={`${commentNum}条回复`}
-            onClose={() => handleFloatLayoutChange(null)}
-          >
-            <View
-              onClick={handleClearReply}
-              style={{ height: '100%', position: 'relative' }}
-            >
-              {/* 这里是浮动弹层的内容 */}
-              {commentsLoaded && (
-                <CommentComponent
-                  comments={allComments}
-                  onCommentClick={handleCommentClick}
-                />
-              )}
+      <View className="shadow-up fixed bottom-0 left-0 right-0 bg-[#f9f9f2]">
+        <AtFloatLayout
+          isOpened={isFloatLayoutVisible}
+          title={`${commentNum}条回复`}
+          onClose={() => handleFloatLayoutChange(null)}
+        >
+          <View onClick={handleClearReply} className="relative h-full pb-[60px]">
+            {commentsLoaded && (
+              <CommentComponent
+                comments={allComments}
+                onCommentClick={handleCommentClick}
+              />
+            )}
+            <View className="fixed bottom-0 left-0 right-0 flex items-center gap-2 border-t border-gray-200 bg-white px-4 py-3">
+              <Input
+                type="text"
+                placeholder={placeholderContent}
+                value={replyContent}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                onInput={handleReplyChange}
+                className="focus:border-primary h-10 flex-1 rounded-full border border-gray-300 px-4 text-sm focus:outline-none"
+              />
               <View
-                className="reply-input"
-                style={{
-                  position: 'fixed',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: '10px',
-                  backgroundColor: '#fff',
-                  borderTop: '1px solid #eee',
+                className="rounded-full bg-[#f18900] px-4 py-2 text-sm text-white"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  void handleReplySubmit();
                 }}
               >
-                <Input
-                  type="text"
-                  placeholder={placeholderContent}
-                  value={replyContent}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  onInput={handleReplyChange}
-                  onConfirm={void handleReplySubmit}
-                  style={{
-                    width: '100%',
-                    height: '40px',
-                    padding: '0 15px',
-                    border: '1px solid #ddd',
-                    borderRadius: '20px',
-                    fontSize: '14px',
-                  }}
-                />
+                发布
               </View>
             </View>
-          </AtFloatLayout>
-        </View>
+          </View>
+        </AtFloatLayout>
       </View>
     </View>
   );

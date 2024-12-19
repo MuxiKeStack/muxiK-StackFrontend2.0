@@ -6,8 +6,9 @@ import answericon from '@/common/assets/img/publishQuestion/answer.png';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import IconFont from '@/common/components/iconfont';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
-import { post } from '@/common/utils';
+import { get, post } from '@/common/utils';
 import { useCourseStore } from '@/pages/main/store/store';
+import Taro from '@tarojs/taro';
 
 interface IUser {
   avatar: string;
@@ -76,7 +77,7 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
   const dispatch = useCourseStore(({ getPublishers }) => ({ getPublishers }));
 
   const [questionDetail, setQuestion] = useState<IQuestion>(question);
-  const [answersDetail, setAnswers] = useState<IAnswer[] | null>(answers);
+  const [answersDetail, setAnswersDetail] = useState<IAnswer[] | null>(answers);
   const [showAnswerForm, setShowAnswerForm] = useState(false);
   const [answerContent, setAnswerContent] = useState('');
 
@@ -102,10 +103,10 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
       // 确保 answers 不为 null
       if (answers !== null) {
         const answersWithUserInfo = await getAnswersWithUserInfo(answers);
-        setAnswers(answersWithUserInfo);
+        setAnswersDetail(answersWithUserInfo);
       } else {
         // 如果 answers 为 null，可以选择设置一个空数组或者执行其他逻辑
-        setAnswers([]);
+        setAnswersDetail([]);
       }
 
       // 函数，用于获取问题的提问者用户信息
@@ -129,6 +130,8 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
   }, [question]);
 
   const handlePublishAnswer = async () => {
+    if (!answerContent.trim()) return;
+
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const response = await post('/answers/publish', {
@@ -136,12 +139,47 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
         question_id: question.id,
       });
 
-      if (response) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (response?.code === 409002) {
+        void Taro.showToast({
+          title: '不能回答未上过的课',
+          icon: 'none',
+          duration: 2000,
+        });
+        return;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (response?.code === 0) {
         setAnswerContent('');
         setShowAnswerForm(false);
+
+        // 刷新回答列表
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          const res = await get(
+            `/answers/list/questions/${question.id}?cur_answer_id=${0}&limit=${100}`
+          );
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          setAnswersDetail(res?.data as IAnswer[]);
+
+          void Taro.showToast({
+            title: '回答发布成功',
+            icon: 'success',
+            duration: 2000,
+          });
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          console.error('获取回答列表失败:', errorMessage);
+        }
       }
     } catch (error) {
       console.error('发布回答失败:', error);
+      void Taro.showToast({
+        title: '发布回答失败',
+        icon: 'error',
+        duration: 2000,
+      });
     }
   };
 
@@ -163,15 +201,7 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
           </View>
         </View>
       </View>
-
-      <View
-        className="bg-primary fixed bottom-[40rpx] right-[40rpx] flex h-[80rpx] w-[80rpx] items-center justify-center rounded-full shadow-lg"
-        onClick={() => onAnswer?.(question.id)}
-      >
-        <IconFont name="tiwen" size={40} color="#ffffff" />
-      </View>
-
-      <View className="w-full">
+      <View className="w-full pb-[180rpx]">
         {answersDetail &&
           answersDetail.map((answer, index) => (
             <View
@@ -207,11 +237,10 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
             </View>
           ))}
       </View>
-
-      <View className="w-full px-[28rpx] py-[20rpx]">
+      <View className="shadow-up fixed bottom-0 left-0 right-0 bg-[#f9f9f2] px-[28rpx] py-[20rpx]">
         {!showAnswerForm ? (
           <Button
-            className="bg-primary w-full rounded-lg py-[20rpx] text-white"
+            className="h-[8vh] w-[90vw] rounded-lg bg-[#f18900] py-[20rpx] text-white"
             onClick={() => setShowAnswerForm(true)}
           >
             写回答
@@ -219,7 +248,7 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
         ) : (
           <View className="w-full">
             <Textarea
-              className="mb-[20rpx] min-h-[200rpx] w-full rounded-lg bg-white p-[20rpx]"
+              className="mb-[20rpx] min-h-[200rpx] w-full rounded-lg border border-gray-200 bg-[#f9f9f2] p-[20rpx]"
               value={answerContent}
               onInput={(e) => setAnswerContent(e.detail.value)}
               placeholder="请输入您的回答..."
@@ -235,7 +264,7 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
                 取消
               </Button>
               <Button
-                className="bg-primary rounded-lg px-[30rpx] text-white"
+                className="rounded-lg bg-[#f18900] px-[30rpx] text-white"
                 onClick={() => void handlePublishAnswer()}
               >
                 发布回答

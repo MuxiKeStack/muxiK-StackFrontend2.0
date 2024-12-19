@@ -95,7 +95,7 @@ export default function evaluate() {
         const res = (await postBool('/checkStatus', {
           name: 'kestack',
         })) as StatusResponse;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         setTest(res.data.status);
 
         const instance = Taro.getCurrentInstance();
