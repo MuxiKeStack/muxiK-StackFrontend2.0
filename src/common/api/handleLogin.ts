@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro';
 
 const preUrl = 'https://kstack.muxixyz.com';
 
-type LoginResponseHeaders = {
+export type LoginResponseHeaders = {
   'X-Jwt-Token'?: string;
   'X-Refresh-Token'?: string;
 };
