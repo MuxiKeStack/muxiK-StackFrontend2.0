@@ -1,5 +1,6 @@
 import '@/common/components/QuestionDetail/QuestionDetail';
 import { Button, Image, Text, Textarea, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 
 import answericon from '@/common/assets/img/publishQuestion/answer.png';
@@ -8,7 +9,6 @@ import IconFont from '@/common/components/iconfont';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
 import { get, post } from '@/common/utils';
 import { useCourseStore } from '@/pages/main/store/store';
-import Taro from '@tarojs/taro';
 
 interface IUser {
   avatar: string;
