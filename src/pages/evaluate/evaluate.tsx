@@ -14,7 +14,7 @@ import Star from '@/common/components/star/star';
 import { post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 
-interface StatusResponse {
+export interface StatusResponse {
   code: number;
   data: {
     status: boolean;

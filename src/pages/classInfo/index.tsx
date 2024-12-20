@@ -15,6 +15,9 @@ import LineChart from '@/common/components/chart';
 import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get, post } from '@/common/utils';
+import { postBool } from '@/common/utils/fetch';
+
+import { StatusResponse } from '../evaluate/evaluate';
 
 const coursePropertyMap = {
   CoursePropertyGeneralCore: '通识核心课',
@@ -43,6 +46,33 @@ export default function Index() {
   const [questionNum, setQuestionNum] = useState<number>(0);
   const [questionlist, setQuestionlist] = useState<WebQuestionVo[]>([]);
   const [collect, setCollect] = useState<boolean | undefined>(course?.is_collected);
+  const [test, setTest] = useState<boolean>(false);
+  useEffect(() => {
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
+
+        setTest(res.data.status);
+
+        // const instance = Taro.getCurrentInstance();
+        // const params = instance?.router?.params || {};
+
+        // setId(params.id ? Number(params.id) : null);
+        // setName(
+        //   params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦'
+        // );
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    void getParams();
+  }, []);
+  useEffect(() => {
+    console.log('test status updated:', test);
+  }, [test]);
   const getCommentData = async () => {
     try {
       await get(
@@ -221,7 +251,9 @@ export default function Index() {
           </View>
         </View>
         <>
-          {questionlist.length > 0 ? (
+          {!test ? (
+            <View>因为政策原因暂不能发布课评</View>
+          ) : questionlist.length > 0 ? (
             <>
               <View className="relative">
                 {questionlist.slice(0, 3).map((question, index) => (

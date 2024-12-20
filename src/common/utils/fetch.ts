@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import Taro from '@tarojs/taro';
 
+import { LoginResponseHeaders } from '../api/handleLogin';
+
 const preUrl = 'https://kstack.muxixyz.com';
 
 const header = {
@@ -11,7 +13,7 @@ const getToken = async () => {
   const res = await Taro.getStorage({ key: 'shortToken' });
   if (res.data) return res.data;
   void Taro.navigateTo({ url: '/pages/login/index' });
-  throw new Error(`Failed to get token: ${res.errMsg as unknown as string}`);
+  throw new Error(`没token: ${res.errMsg as unknown as string}`);
 };
 
 const refreshToken = async () => {
@@ -19,7 +21,7 @@ const refreshToken = async () => {
     const longToken = await Taro.getStorage({ key: 'longToken' });
     if (!longToken.data) {
       void Taro.navigateTo({ url: '/pages/login/index' });
-      throw new Error('No long token found');
+      throw new Error('没longToken');
     }
 
     const response = await Taro.request({
@@ -32,16 +34,18 @@ const refreshToken = async () => {
     });
 
     if (response.statusCode.toString().startsWith('2')) {
-      const headers: LoginResponseHeaders = response.header || {};
+      const headers: LoginResponseHeaders = response.header;
       const shortToken = headers['X-Jwt-Token'];
-      //const longToken = headers['X-Refresh-Token'];
-      if (shortToken && longToken) {
-        await Taro.setStorage({ key: 'shortToken', data: shortToken });
-        // await Taro.setStorage({ key: 'longToken', data: longToken });
+      if (shortToken) {
+        await Taro.setStorage({ key: 'shortToken', data: shortToken.toString() });
       }
     }
-    throw new Error('Failed to refresh token');
+    throw new Error('刷新token失败');
   } catch (error) {
+    void Taro.showToast({
+      title: '登录过期 请刷新小程序重新登录',
+      icon: 'error',
+    });
     void Taro.navigateTo({ url: '/pages/login/index' });
     throw error;
   }
@@ -67,9 +71,9 @@ const request = async (
     if (response.statusCode.toString().startsWith('2')) {
       return response.data;
     } else if (response.statusCode === 401) {
-      // Token 过期，尝试刷新
-      const newToken = await refreshToken();
-      token = `Bearer ${newToken}`;
+      await refreshToken();
+      const newToken = await Taro.getStorage({ key: 'shortToken' });
+      token = `Bearer ${newToken.data}`;
       header['Authorization'] = token;
 
       // 使用新 token 重试请求
@@ -83,10 +87,10 @@ const request = async (
       if (retryResponse.statusCode.toString().startsWith('2')) {
         return retryResponse.data;
       }
-      throw new Error(`${retryResponse.statusCode}`);
+      throw new Error(retryResponse.statusCode.toString());
     } else {
       const errorData = response.data as { code: number; msg: string };
-      throw new Error(`${errorData.code}`);
+      throw new Error(errorData.code.toString());
     }
   } catch (error) {
     // eslint-disable-next-line no-console
