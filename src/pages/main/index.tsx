@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/first */
 import { ScrollView, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
@@ -13,9 +13,9 @@ import { useCourseStore } from './store/store';
 import { COURSE_TYPE } from './store/types';
 
 const COURSE_NAME_MAP = {
+  [COURSE_TYPE.ANY]: '全部',
   [COURSE_TYPE.MAJOR]: '专业',
-  [COURSE_TYPE.GENERAL_ELECT]: '通选',
-  [COURSE_TYPE.GENERAL_REQUIRED]: '通必',
+  [COURSE_TYPE.GENERAL_ELECT]: '个性',
   [COURSE_TYPE.GENERAL_CORE]: '通核',
 };
 
@@ -63,6 +63,19 @@ export default function Index() {
         });
     }
   }, [classType]);
+
+  useDidShow(() => {
+    void Taro.showLoading({ title: '加载中' });
+    void dispatch
+      .refershComments()
+      .then(() => {
+        Taro.hideLoading();
+      })
+      .catch(() => {
+        Taro.hideLoading();
+        void Taro.showToast({ title: '加载失败', icon: 'none' });
+      });
+  });
 
   const handleSearch = (searchText: string) => {
     console.log('搜索文本:', searchText);

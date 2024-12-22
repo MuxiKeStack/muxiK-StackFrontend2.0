@@ -2,21 +2,21 @@ type CourseType = {
   MAJOR: 'CoursePropertyMajorCore';
   GENERAL_ELECT: 'CoursePropertyGeneralElective';
   GENERAL_CORE: 'CoursePropertyGeneralCore';
-  GENERAL_REQUIRED: 'CoursePropertyGeneralRequired';
+  ANY: 'CoursePropertyAny';
 };
 
 export const COURSE_TYPE: CourseType = {
   MAJOR: 'CoursePropertyMajorCore',
   GENERAL_ELECT: 'CoursePropertyGeneralElective',
   GENERAL_CORE: 'CoursePropertyGeneralCore',
-  GENERAL_REQUIRED: 'CoursePropertyGeneralRequired',
+  ANY: 'CoursePropertyAny',
 };
 /** 课程类别 */
 export type classType =
   | CourseType['MAJOR']
   | CourseType['GENERAL_CORE']
   | CourseType['GENERAL_ELECT']
-  | CourseType['GENERAL_REQUIRED'];
+  | CourseType['ANY'];
 
 export type CourseDetailsType = {
   /** 课程名 */

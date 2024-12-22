@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import { Picker, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 import './myclass.scss';
@@ -38,28 +38,27 @@ export default function Myclass() {
     setYear(yearSelector[yearIndex]);
     setSem(semSelector[semIndex]);
   };
-
-  useEffect(() => {
+  async function fetchClasses() {
+    try {
+      const yearValue = year.split('-')[0];
+      const semValue =
+        sem === '第一学期'
+          ? '1'
+          : sem === '第二学期'
+            ? '2'
+            : sem === '第三学期'
+              ? '3'
+              : '0';
+      const classes: Array<CouresProps> = await getUserCourses(yearValue, semValue);
+      setMyclasses(classes);
+    } catch (error) {
+      console.error('Error fetching user courses:', error);
+    }
+  }
+  const fetchCourses = () => {
     void Taro.showLoading({
       title: '加载中',
     });
-    async function fetchClasses() {
-      try {
-        const yearValue = year.split('-')[0];
-        const semValue =
-          sem === '第一学期'
-            ? '1'
-            : sem === '第二学期'
-              ? '2'
-              : sem === '第三学期'
-                ? '3'
-                : '0';
-        const classes: Array<CouresProps> = await getUserCourses(yearValue, semValue);
-        setMyclasses(classes);
-      } catch (error) {
-        console.error('Error fetching user courses:', error);
-      }
-    }
     void fetchClasses()
       .then(() => {
         Taro.hideLoading();
@@ -71,7 +70,13 @@ export default function Myclass() {
           title: '加载失败',
         });
       });
+  };
+  useEffect(() => {
+    fetchCourses();
   }, [year, sem]);
+  useDidShow(() => {
+    fetchCourses();
+  });
 
   const handleClassClick = (item: CouresProps) => {
     // 拼接查询字符串参数

@@ -16,13 +16,13 @@ export const CreateCommentInfo: StateCreator<
   comments: {
     CoursePropertyGeneralCore: [],
     CoursePropertyGeneralElective: [],
-    CoursePropertyGeneralRequired: [],
+    CoursePropertyAny: [],
     CoursePropertyMajorCore: [],
   },
   currentId: 0,
   pageSize: 10,
   loading: true,
-  classType: COURSE_TYPE.GENERAL_CORE,
+  classType: COURSE_TYPE.ANY,
   async refershComments() {
     return await get().updateComments(0);
   },
