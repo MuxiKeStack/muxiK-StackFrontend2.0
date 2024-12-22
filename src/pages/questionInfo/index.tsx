@@ -11,6 +11,9 @@ import CommentComponent from '@/common/components/CommentComponent/CommentCompon
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail';
 import { get, post } from '@/common/utils';
+import { postBool } from '@/common/utils/fetch';
+
+import { StatusResponse } from '../evaluate/evaluate';
 
 interface IQuestion {
   id: number;
@@ -58,6 +61,33 @@ const Index: React.FC = () => {
   const [answers, setAnswers] = useState<IAnswer[] | null>(null);
   const [courseId, setCourseId] = useState<string>('');
   const [questionId, setQuestionId] = useState<string | null>(null);
+  const [test, setTest] = useState<boolean>(false);
+  useEffect(() => {
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
+
+        setTest(res.data.status);
+
+        // const instance = Taro.getCurrentInstance();
+        // const params = instance?.router?.params || {};
+
+        // setId(params.id ? Number(params.id) : null);
+        // setName(
+        //   params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦'
+        // );
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    void getParams();
+  }, []);
+  useEffect(() => {
+    console.log('test status updated:', test);
+  }, [test]);
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();

@@ -1,14 +1,18 @@
 /* eslint-disable import/first */
-import { Button, Image, Textarea, View } from '@tarojs/components';
+import { Button, Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 import './index.scss';
 
+import { Icon, TopBackground } from '@/common/assets/img/login';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
 import { get, post } from '@/common/utils';
+import { postBool } from '@/common/utils/fetch';
+
+import { StatusResponse } from '../evaluate/evaluate';
 
 export interface UserInfo {
   avatarUrl: string; // 用户头像的URL
@@ -71,7 +75,25 @@ export default function Index() {
   //用户个人身份信息
   const [avatarUrl, setAvatarUrl] = useState<string>('');
   const [nickName, setNickName] = useState<string>('昵称');
+  const [test, setTest] = useState<boolean>(false);
+  useEffect(() => {
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
 
+        setTest(res.data.status);
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    void getParams();
+  }, []);
+  useEffect(() => {
+    console.log('test status updated:', test);
+  }, [test]);
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
@@ -163,7 +185,19 @@ export default function Index() {
         console.error('发布问题请求失败:', error);
       });
   };
-  return (
+  return !test ? (
+    <View className="flex flex-col">
+      <Image src={TopBackground as string} className="w-full"></Image>
+      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
+        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
+          <Image src={Icon as string} className="h-full w-full"></Image>
+        </View>
+        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
+          木犀课栈
+        </Text>
+      </View>
+    </View>
+  ) : (
     <View>
       <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
       <View className="publishView">

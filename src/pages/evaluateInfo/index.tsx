@@ -9,16 +9,19 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 /* eslint-disable import/first */
-import { Textarea, View } from '@tarojs/components';
+import { Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
+import { Icon, TopBackground } from '@/common/assets/img/login';
 import { Comment } from '@/common/components';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
 import { get } from '@/common/utils';
+import { postBool } from '@/common/utils/fetch';
 
+import { StatusResponse } from '../evaluate/evaluate';
 import { useCourseStore } from '../main/store/store';
 import { COMMENT_ACTIONS } from '../main/store/types';
 
@@ -76,7 +79,25 @@ export default function Index() {
       fetchComments();
     }
   }, [biz_id, commentsLoaded]); // 依赖项中添加biz_id
+  const [test, setTest] = useState<boolean>(false);
+  useEffect(() => {
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
 
+        setTest(res.data.status);
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    void getParams();
+  }, []);
+  useEffect(() => {
+    console.log('test status updated:', test);
+  }, [test]);
   const handleCommentClick = (comment: CommentType | null) => {
     if (comment) {
       setReplyTo(comment);
@@ -129,7 +150,19 @@ export default function Index() {
   };
 
   // 仅当评论数据加载完成时渲染CommentComponent
-  return (
+  return !test ? (
+    <View className="flex flex-col">
+      <Image src={TopBackground as string} className="w-full"></Image>
+      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
+        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
+          <Image src={Icon as string} className="h-full w-full"></Image>
+        </View>
+        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
+          木犀课栈
+        </Text>
+      </View>
+    </View>
+  ) : (
     <View className="evaluateInfo" onClick={handleClearReply}>
       <Comment
         showAll

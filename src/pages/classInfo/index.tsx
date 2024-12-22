@@ -2,13 +2,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable import/first */
-import { Text, View } from '@tarojs/components';
+import { Image, Text, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
+import { Icon, TopBackground } from '@/common/assets/img/login';
 import { Comment } from '@/common/components';
 import AnswerToStudent from '@/common/components/AnswerToStudent';
 import LineChart from '@/common/components/chart';
@@ -232,7 +233,19 @@ export default function Index() {
     }
     return [];
   }, [course?.features]);
-  return (
+  return !test ? (
+    <View className="flex flex-col">
+      <Image src={TopBackground as string} className="w-full"></Image>
+      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
+        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
+          <Image src={Icon as string} className="h-full w-full"></Image>
+        </View>
+        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
+          木犀课栈
+        </Text>
+      </View>
+    </View>
+  ) : (
     <View className="classInfo">
       <View className="theClassnme">{course?.name}</View>
       <View className="teacherName">
@@ -265,9 +278,7 @@ export default function Index() {
           </View>
         </View>
         <>
-          {!test ? (
-            <View>因为政策原因暂不能发布课评</View>
-          ) : questionlist.length > 0 ? (
+          {questionlist.length > 0 ? (
             <>
               <View className="relative">
                 {questionlist.slice(0, 3).map((question, index) => (

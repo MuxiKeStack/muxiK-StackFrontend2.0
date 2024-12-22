@@ -1,12 +1,16 @@
 /* eslint-disable no-console */
-import { Button, View } from '@tarojs/components';
+import { Button, Image, Text, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 // import './index.scss';
+import { Icon, TopBackground } from '@/common/assets/img/login';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionListComponent from '@/common/components/QuestionListComponent/QuestionListComponent';
 import { get } from '@/common/utils';
+import { postBool } from '@/common/utils/fetch';
+
+import { StatusResponse } from '../evaluate/evaluate';
 
 interface IQuestion {
   id: number;
@@ -31,6 +35,25 @@ const App = () => {
   const [course, setCourse] = useState<Course | null>(null);
   const [questions, setQuestions] = useState<IQuestion[] | null>(null);
   const [courseId, setCourseId] = useState<string>('');
+  const [test, setTest] = useState<boolean>(false);
+  useEffect(() => {
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
+
+        setTest(res.data.status);
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    void getParams();
+  }, []);
+  useEffect(() => {
+    console.log('test status updated:', test);
+  }, [test]);
   useEffect(() => {
     const getParams = () => {
       const instance = Taro.getCurrentInstance();
@@ -86,7 +109,19 @@ const App = () => {
     });
   };
 
-  return (
+  return !test ? (
+    <View className="flex flex-col">
+      <Image src={TopBackground as string} className="w-full"></Image>
+      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
+        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
+          <Image src={Icon as string} className="h-full w-full"></Image>
+        </View>
+        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
+          木犀课栈
+        </Text>
+      </View>
+    </View>
+  ) : (
     <View>
       <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
       {questions !== null &&
