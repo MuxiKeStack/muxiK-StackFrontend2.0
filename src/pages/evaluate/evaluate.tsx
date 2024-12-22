@@ -3,12 +3,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable import/first */
-import { Button, Checkbox, Form, Radio, Text, Textarea, View } from '@tarojs/components';
+import {
+  Button,
+  Checkbox,
+  Form,
+  Image,
+  Radio,
+  Text,
+  Textarea,
+  View,
+} from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 import './evaluate.scss';
 
+import { Icon, TopBackground } from '@/common/assets/img/login';
 import Label3 from '@/common/components/label3/label3';
 import Star from '@/common/components/star/star';
 import { post } from '@/common/utils';
@@ -182,7 +192,17 @@ export default function evaluate() {
     }
   };
   return !test ? (
-    <View>因为政策原因暂不能发布课评</View>
+    <View className="flex flex-col">
+      <Image src={TopBackground as string} className="w-full"></Image>
+      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
+        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
+          <Image src={Icon as string} className="h-full w-full"></Image>
+        </View>
+        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
+          木犀课栈
+        </Text>
+      </View>
+    </View>
   ) : (
     <Form className="view">
       <View className="p">
