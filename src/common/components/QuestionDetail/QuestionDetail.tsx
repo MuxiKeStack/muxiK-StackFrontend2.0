@@ -1,13 +1,16 @@
 import '@/common/components/QuestionDetail/QuestionDetail';
-import { Button, Image, Text, Textarea, View } from '@tarojs/components';
+import { Button, Icon, Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 
+import { TopBackground } from '@/common/assets/img/login';
 import answericon from '@/common/assets/img/publishQuestion/answer.png';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import IconFont from '@/common/components/iconfont';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
 import { get, post } from '@/common/utils';
+import { postBool } from '@/common/utils/fetch';
+import { StatusResponse } from '@/pages/evaluate/evaluate';
 import { useCourseStore } from '@/pages/main/store/store';
 
 interface IUser {
@@ -182,8 +185,38 @@ const QuestionDetail: React.FC<IQuestionProps> = ({
       });
     }
   };
+  const [test, setTest] = useState<boolean>(false);
+  useEffect(() => {
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
 
-  return (
+        setTest(res.data.status);
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    void getParams();
+  }, []);
+  useEffect(() => {
+    console.log('test status updated:', test);
+  }, [test]);
+  return !test ? (
+    <View className="flex flex-col">
+      <Image src={TopBackground as string} className="w-full"></Image>
+      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
+        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
+          <Image src={Icon as unknown as string} className="h-full w-full"></Image>
+        </View>
+        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
+          木犀课栈
+        </Text>
+      </View>
+    </View>
+  ) : (
     <View className="relative mx-auto flex w-[659.42rpx] flex-col items-center bg-[#f9f9f2]">
       <View className="w-[603.26rpx] border-b border-[#e3e3e3] pb-[35rpx] pt-[40rpx]">
         <PublishHeader
