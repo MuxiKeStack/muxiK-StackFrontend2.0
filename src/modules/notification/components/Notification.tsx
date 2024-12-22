@@ -3,12 +3,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { View } from '@tarojs/components';
+import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { VirtualList } from '@/common/components';
 import { formatIsoDate, get, getUserInfo } from '@/common/utils';
+import { postBool } from '@/common/utils/fetch';
+import { StatusResponse } from '@/pages/evaluate/evaluate';
 
 import { MessageItem, OfficialItem } from './Items';
 import TabBar from './TabBar';
@@ -97,7 +99,25 @@ const Notification: React.FC = memo(() => {
       console.error('Error fetching data:', error);
     }
   };
+  const [test, setTest] = useState<boolean>(false);
+  useEffect(() => {
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
 
+        setTest(res.data.status);
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    void getParams();
+  }, []);
+  useEffect(() => {
+    console.log('test status updated:', test);
+  }, [test]);
   const handleScroll = useCallback(
     (event) => {
       if (end) return;
@@ -119,7 +139,30 @@ const Notification: React.FC = memo(() => {
     void fetchData();
   }, [tab]);
 
-  return (
+  return !test ? (
+    <View className="flex flex-col">
+      <View className="flex flex-col gap-4 p-4">
+        {[
+          {
+            title: '如何使用课栈',
+            content: '点击右下角的个人中心，即可查看课程信息',
+            time: '2024-03-20',
+          },
+          {
+            title: '遇到问题如何反馈？',
+            content: '您可以通过设置页面的问题反馈向我们报告使用过程中遇到的问题',
+            time: '2024-03-18',
+          },
+        ].map((item, index) => (
+          <View key={index} className="rounded-lg bg-white p-4 shadow">
+            <Text className="mb-2 text-lg font-bold">{item.title}</Text>
+            <Text className="mb-2 text-gray-600">{item.content}</Text>
+            <Text className="text-sm text-gray-400">{item.time}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  ) : (
     <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll pb-[13vh]">
       <TabBar tab={tab} setTab={setTab} />
       <VirtualList

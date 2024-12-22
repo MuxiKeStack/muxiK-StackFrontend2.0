@@ -1,14 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/first */
-import { ScrollView, View } from '@tarojs/components';
+import { Image, ScrollView, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
 
+import { Icon, TopBackground } from '@/common/assets/img/login';
 import { Comment } from '@/common/components';
 import SearchInput from '@/common/components/SearchInput/SearchInput';
+import { postBool } from '@/common/utils/fetch';
 
+import { StatusResponse } from '../evaluate/evaluate';
 import { useCourseStore } from './store/store';
 import { COURSE_TYPE } from './store/types';
 
@@ -67,7 +70,25 @@ export default function Index() {
   const handleSearch = (searchText: string) => {
     console.log('搜索文本:', searchText);
   };
+  const [test, setTest] = useState<boolean>(false);
+  useEffect(() => {
+    const getParams = async () => {
+      try {
+        const res = (await postBool('/checkStatus', {
+          name: 'kestack',
+        })) as StatusResponse;
 
+        setTest(res.data.status);
+      } catch (error) {
+        console.error('Error fetching status:', error);
+      }
+    };
+
+    void getParams();
+  }, []);
+  useEffect(() => {
+    console.log('test status updated:', test);
+  }, [test]);
   const geneHandler = () => {
     let timeNow = Date.now();
     return (e) => {
@@ -94,7 +115,19 @@ export default function Index() {
     return geneHandler();
   }, [loading]);
 
-  return (
+  return !test ? (
+    <View className="flex flex-col">
+      <Image src={TopBackground as string} className="w-full"></Image>
+      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
+        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
+          <Image src={Icon as string} className="h-full w-full"></Image>
+        </View>
+        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
+          木犀课栈
+        </Text>
+      </View>
+    </View>
+  ) : (
     <View className="flex flex-col">
       <SearchInput
         onSearch={handleSearch} // 传递搜索逻辑
