@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/first */
 import { Image, ScrollView, Text, View } from '@tarojs/components';
+
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -90,7 +91,6 @@ export default function Index() {
         const res = (await postBool('/checkStatus', {
           name: 'kestack',
         })) as StatusResponse;
-
         setTest(res.data.status);
       } catch (error) {
         console.error('Error fetching status:', error);
