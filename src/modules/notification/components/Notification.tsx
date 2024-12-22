@@ -22,7 +22,14 @@ const Notification: React.FC = memo(() => {
   const [supportMessage, setSupportMessage] = useState<MessageType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const currentMessage = useMemo(() => {
-    return tab === '提问' ? commentMessage : tab === '点赞' ? supportMessage : [];
+    const msg = tab === '提问' ? commentMessage : tab === '点赞' ? supportMessage : [];
+    if (!msg || !msg.length) {
+      void Taro.showToast({
+        title: '暂时没有消息',
+        icon: 'none',
+      });
+    }
+    return msg;
   }, [tab, commentMessage, supportMessage]);
   const [ctime, setCtime] = useState<number>(0);
   const [end, setEnd] = useState(false);
@@ -43,8 +50,9 @@ const Notification: React.FC = memo(() => {
             if (itemType === 'Comment') {
               detailRes = await get(`/comments/${item.Ext.commentId}/detail`);
               parentRes = await get(
-                `/comments/${detailRes.data.parent_comment_id}/detail`
+                `/comments/${detailRes.data?.parent_comment_id ?? 0}/detail`
               );
+              console.log('tag');
               user = await getUserInfo(item.Ext.commentator);
             } else if (itemType === 'Support') {
               detailRes =
@@ -164,7 +172,14 @@ const Notification: React.FC = memo(() => {
     </View>
   ) : (
     <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll pb-[13vh]">
-      <TabBar tab={tab} setTab={setTab} />
+      <TabBar
+        tab={tab}
+        //eslint-disable-next-line @typescript-eslint/no-shadow
+        setTab={(tab) => {
+          setTab(tab);
+          setCtime(0);
+        }}
+      />
       <VirtualList
         height="70%"
         width="100%"

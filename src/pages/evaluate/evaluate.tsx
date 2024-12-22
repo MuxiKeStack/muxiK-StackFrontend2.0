@@ -134,6 +134,9 @@ export default function evaluate() {
       });
       return;
     }
+    void Taro.showLoading({
+      title: '提交中',
+    });
     const evaluationobj = {
       star_rating: selectedStarIndex,
       content: comment,
@@ -145,16 +148,34 @@ export default function evaluate() {
       is_anonymous: isAnonymous,
     };
     console.log(evaluationobj);
+    if (!comment) {
+      void Taro.showToast({
+        title: '内容不能为空',
+        icon: 'none',
+      });
+      return;
+    }
     post(`/evaluations/save`, evaluationobj)
       .then((res) => {
         if (res.code === 0) {
-          void Taro.switchTab({
-            url: '/pages/main/index', // 页面路径
+          void Taro.navigateBack().then(() => {
+            void Taro.showToast({
+              title: '课评发布成功',
+              icon: 'none',
+            });
+          });
+        } else {
+          void Taro.showToast({
+            title: res.msg,
+            icon: 'none',
           });
         }
       })
       .catch((error) => {
         console.error('发布课评请求失败:', error);
+      })
+      .finally(() => {
+        void Taro.hideLoading();
       });
   };
   const [selectedStarIndex, setSelectedStarIndex] = useState(-1);

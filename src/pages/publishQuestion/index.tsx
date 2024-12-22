@@ -154,6 +154,13 @@ export default function Index() {
       biz_id: Number(courseId),
       content: question,
     };
+    if (question.length === 0) {
+      void Taro.showToast({
+        title: '内容不能为空',
+        icon: 'none',
+      });
+      return;
+    }
     post(`/questions/publish`, questionobj)
       .then((res) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -161,6 +168,7 @@ export default function Index() {
           // 打印成功信息，但最好使用其他日志记录方式，而不是 console.log
           // 例如：this.setState({ message: '发布课评成功' });
           void Taro.showToast({ title: '发布问题成功', icon: 'success' });
+          void Taro.navigateBack();
           // console.log('发布课评成功');
           // 使用 redirectTo 跳转
           // void Taro.redirectTo({

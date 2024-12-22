@@ -12,7 +12,7 @@ const header = {
 const getToken = async () => {
   const res = await Taro.getStorage({ key: 'shortToken' });
   if (res.data) return res.data;
-  void Taro.navigateTo({ url: '/pages/login/index' });
+  void Taro.reLaunch({ url: '/pages/login/index' });
   throw new Error(`没token: ${res.errMsg as unknown as string}`);
 };
 
@@ -20,7 +20,7 @@ const refreshToken = async () => {
   try {
     const longToken = await Taro.getStorage({ key: 'longToken' });
     if (!longToken.data) {
-      void Taro.navigateTo({ url: '/pages/login/index' });
+      void Taro.reLaunch({ url: '/pages/login/index' });
       throw new Error('没longToken');
     }
 
@@ -42,11 +42,13 @@ const refreshToken = async () => {
     }
     throw new Error('刷新token失败');
   } catch (error) {
-    void Taro.showToast({
-      title: '登录过期 请刷新小程序重新登录',
-      icon: 'error',
+    if (Taro.getStorageSync('visitor') === true) return;
+    void Taro.reLaunch({ url: '/pages/login/index' }).then(() => {
+      void Taro.showToast({
+        title: '登录过期 请刷新小程序重新登录',
+        icon: 'none',
+      });
     });
-    void Taro.navigateTo({ url: '/pages/login/index' });
     throw error;
   }
 };

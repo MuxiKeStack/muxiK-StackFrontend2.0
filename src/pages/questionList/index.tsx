@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Button, Image, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 // import './index.scss';
@@ -64,6 +64,21 @@ const App = () => {
 
     getParams();
   }, []);
+  // eslint-disable-next-line @typescript-eslint/require-await
+  const getQuestionList = async () => {
+    try {
+      void get(
+        `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=0&limit=100`
+      ).then((res) => {
+        // 检查 res 是否有 data 属性，并且断言其类型
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        setQuestions(res?.data as IQuestion[]);
+      });
+    } catch (error) {
+      // 错误处理，例如弹出提示
+      console.error('Failed to fetch course data:', error);
+    }
+  };
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/require-await
@@ -82,24 +97,11 @@ const App = () => {
 
     if (courseId) void getCourseData();
 
-    // eslint-disable-next-line @typescript-eslint/require-await
-    const getQuestionList = async () => {
-      try {
-        void get(
-          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=0&limit=100`
-        ).then((res) => {
-          // 检查 res 是否有 data 属性，并且断言其类型
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          setQuestions(res?.data as IQuestion[]);
-        });
-      } catch (error) {
-        // 错误处理，例如弹出提示
-        console.error('Failed to fetch course data:', error);
-      }
-    };
-
     if (courseId) void getQuestionList().then((r) => console.log(r));
   }, [courseId]);
+  useDidShow(() => {
+    if (courseId) void getQuestionList().then((r) => console.log(r));
+  });
 
   const handleAsk = () => {
     void Taro.navigateTo({

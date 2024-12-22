@@ -3,7 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable import/first */
 import { Image, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+
+import Taro, { useDidShow } from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
@@ -96,7 +97,7 @@ export default function Index() {
     getParams();
   }, []);
   //获取问题个数
-  useEffect(() => {
+  const initData = () => {
     // eslint-disable-next-line @typescript-eslint/require-await
     const getCourseData = async () => {
       try {
@@ -127,52 +128,66 @@ export default function Index() {
     };
 
     if (courseId) void getCommentData();
-  }, [courseId]);
-  useEffect(() => {
-    const fetchGrades = async () => {
-      try {
-        await get(`/grades/courses/${courseId}`).then((res) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setGrade(res.data); // 设置 grade 数据
-          !res.data && bailout();
-          Taro.hideLoading();
-        });
-      } catch (err) {
-        console.error('Failed to fetch grades data', err);
-      }
-    };
-    const getNumData = () => {
-      try {
-        void get(`/questions/count?biz=Course&biz_id=${courseId}`).then((res) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setQuestionNum(res.data);
-          Taro.hideLoading();
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    const fetchAnswer = () => {
-      try {
-        void get(
-          `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${3}`
-        ).then((res) => {
-          console.log(res);
+  };
+  const fetchAnswer = () => {
+    try {
+      void get(
+        `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${3}`
+      ).then((res) => {
+        console.log(res);
 
-          console.log('questionlist1', res.data);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
-          const questionsWithAnswers = res.data.map((item) => ({
-            ...item,
-            preview_answers: item.preview_answers || [],
-          }));
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setQuestionlist(res.data);
-          Taro.hideLoading();
-        });
-      } catch (e) {
-        console.error('Failed to fetch course data:', e);
-      }
-    };
+        console.log('questionlist1', res.data);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
+        const questionsWithAnswers = res.data.map((item) => ({
+          ...item,
+          preview_answers: item.preview_answers || [],
+        }));
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setQuestionlist(res.data);
+        Taro.hideLoading();
+      });
+    } catch (e) {
+      console.error('Failed to fetch course data:', e);
+    }
+  };
+  const fetchGrades = async () => {
+    try {
+      await get(`/grades/courses/${courseId}`).then((res) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setGrade(res.data); // 设置 grade 数据
+        !res.data && bailout();
+        Taro.hideLoading();
+      });
+    } catch (err) {
+      console.error('Failed to fetch grades data', err);
+    }
+  };
+  const getNumData = () => {
+    try {
+      void get(`/questions/count?biz=Course&biz_id=${courseId}`).then((res) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setQuestionNum(res.data);
+        Taro.hideLoading();
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  useEffect(() => {
+    initData();
+  }, [courseId]);
+  useDidShow(() => {
+    initData();
+    if (courseId) {
+      void Taro.showLoading({
+        title: '加载中',
+      });
+      void fetchGrades();
+      void getNumData();
+      void fetchAnswer();
+    }
+  });
+  useEffect(() => {
     if (courseId) {
       void Taro.showLoading({
         title: '加载中',

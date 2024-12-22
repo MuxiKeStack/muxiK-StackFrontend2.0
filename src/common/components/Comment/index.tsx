@@ -63,7 +63,7 @@ const CommentHeader: React.FC<CommentProps> = memo((props) => {
     <>
       {!course_info ? (
         <>
-          <View className="classTitle">pending</View>
+          <View className="italic text-gray-400">加载中 ...</View>
         </>
       ) : (
         <>
@@ -75,7 +75,7 @@ const CommentHeader: React.FC<CommentProps> = memo((props) => {
       <View className="comment">
         {!publisher_info ? (
           <>
-            <View>pending</View>
+            <View className="italic text-gray-400">加载中 ...</View>
           </>
         ) : (
           <>
