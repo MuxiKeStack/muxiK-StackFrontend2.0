@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Button, Image, Text, View } from '@tarojs/components';
-import Taro, {useDidShow} from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 // import './index.scss';
