@@ -90,13 +90,11 @@ export default function Index() {
         const res = (await postBool('/checkStatus', {
           name: 'kestack',
         })) as StatusResponse;
-
         setTest(res.data.status);
       } catch (error) {
         console.error('Error fetching status:', error);
       }
     };
-
     void getParams();
   }, []);
   useEffect(() => {
