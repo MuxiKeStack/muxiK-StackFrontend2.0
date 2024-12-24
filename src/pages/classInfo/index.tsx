@@ -3,8 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable import/first */
 import { Image, Text, View } from '@tarojs/components';
-
-import Taro, { useDidShow } from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
@@ -129,37 +128,30 @@ export default function Index() {
 
     if (courseId) void getCommentData();
   };
-  const fetchAnswer = () => {
+  const fetchAnswer = async () => {
     try {
-      void get(
+      const res = await get(
         `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${3}`
-      ).then((res) => {
-        console.log(res);
-
-        console.log('questionlist1', res.data);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
-        const questionsWithAnswers = res.data.map((item) => ({
-          ...item,
-          preview_answers: item.preview_answers || [],
-        }));
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setQuestionlist(res.data);
-        Taro.hideLoading();
-      });
+      );
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setQuestionlist(res.data);
     } catch (e) {
       console.error('Failed to fetch course data:', e);
+      throw e;
     }
   };
   const fetchGrades = async () => {
     try {
-      await get(`/grades/courses/${courseId}`).then((res) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setGrade(res.data); // 设置 grade 数据
-        !res.data && bailout();
-        Taro.hideLoading();
-      });
+      const res = await get(`/grades/courses/${courseId}`);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setGrade(res.data);
+      if (!res.data) {
+        bailout();
+        return;
+      }
     } catch (err) {
       console.error('Failed to fetch grades data', err);
+      throw err;
     }
   };
   const getNumData = () => {
@@ -176,26 +168,29 @@ export default function Index() {
   useEffect(() => {
     initData();
   }, [courseId]);
-  useDidShow(() => {
-    initData();
-    if (courseId) {
-      void Taro.showLoading({
-        title: '加载中',
-      });
-      void fetchGrades();
-      void getNumData();
-      void fetchAnswer();
-    }
-  });
   useEffect(() => {
-    if (courseId) {
-      void Taro.showLoading({
-        title: '加载中',
-      });
-      void fetchGrades();
-      void getNumData();
-      void fetchAnswer();
-    }
+    const fetchData = async () => {
+      if (!courseId) return;
+
+      try {
+        void Taro.showLoading({
+          title: '加载中',
+        });
+
+        // 并行请求数据
+        await Promise.all([fetchGrades(), getNumData(), fetchAnswer()]);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+        void Taro.showToast({
+          title: '加载失败',
+          icon: 'error',
+        });
+      } finally {
+        void Taro.hideLoading();
+      }
+    };
+
+    void fetchData();
   }, [courseId]);
   // 监听 collect 状态更新
   useEffect(() => {
@@ -214,8 +209,12 @@ export default function Index() {
   );
   const { heightLightPercent, yData } = useMemo(() => {
     const percent = (grade?.avg ?? 0) / 10;
+    console.log(
+      grade?.grades.map((item) => item.total_grades?.length ?? 0),
+      grade?.grades
+    );
     return {
-      heightLightPercent: percent > 4 ? percent - 3 : 0,
+      heightLightPercent: percent > 4 ? percent - 4 : 0,
       yData: grade?.grades.map((item) => item.total_grades?.length ?? 0),
     };
   }, [grade]);
@@ -244,7 +243,7 @@ export default function Index() {
           <Image src={Icon as string} className="h-full w-full"></Image>
         </View>
         <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈 此功能敬请期待
+          木犀课栈
         </Text>
       </View>
     </View>

@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/first */
 import { Image, ScrollView, Text, View } from '@tarojs/components';
-
-import Taro, { useDidShow } from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
@@ -68,17 +67,18 @@ export default function Index() {
     }
   }, [classType]);
 
-  useDidShow(() => {
-    void dispatch
-      .refershComments()
-      .then(() => {
-        Taro.hideLoading();
-      })
-      .catch(() => {
-        Taro.hideLoading();
-        void Taro.showToast({ title: '加载失败', icon: 'none' });
-      });
-  });
+  // useDidShow(() => {
+  //   void Taro.showLoading({ title: '加载中' });
+  //   void dispatch
+  //     .refershComments()
+  //     .then(() => {
+  //       Taro.hideLoading();
+  //     })
+  //     .catch(() => {
+  //       Taro.hideLoading();
+  //       void Taro.showToast({ title: '加载失败', icon: 'none' });
+  //     });
+  // });
 
   const handleSearch = (searchText: string) => {
     console.log('搜索文本:', searchText);
@@ -90,6 +90,7 @@ export default function Index() {
         const res = (await postBool('/checkStatus', {
           name: 'kestack',
         })) as StatusResponse;
+
         setTest(res.data.status);
       } catch (error) {
         console.error('Error fetching status:', error);
@@ -137,19 +138,6 @@ export default function Index() {
         <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
           木犀课栈
         </Text>
-        <View className="mt-8 w-4/5">
-          <View className="rounded-lg bg-white p-4 shadow-md">
-            <Text className="mb-4 text-lg font-medium">功能介绍</Text>
-            <View className="flex flex-col gap-3">
-              {['查询课程信息', '教师评分反馈'].map((item, index) => (
-                <View key={index} className="flex items-center">
-                  <View className="mr-2 h-2 w-2 rounded-full bg-[#FFD777]" />
-                  <Text className="text-gray-600">{item}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-        </View>
       </View>
     </View>
   ) : (
