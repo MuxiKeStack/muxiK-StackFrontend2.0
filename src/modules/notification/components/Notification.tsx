@@ -128,10 +128,19 @@ const Notification: React.FC = memo(() => {
   }, [test]);
   const handleScroll = useCallback(
     (event) => {
-      if (end) return;
+      if (end) {
+        void Taro.showToast({
+          title: '没有更多啦',
+          icon: 'none',
+        });
+        return;
+      }
+      void Taro.showLoading({ title: '加载中 ...' });
       if (!loading) {
         console.log('fetching', event);
-        void fetchData();
+        void fetchData().then(() => {
+          void Taro.hideLoading();
+        });
       }
     },
     [loading, currentMessage.length, end]

@@ -91,7 +91,7 @@ const Research: React.FC = () => {
 
   return (
     <View
-      className="index"
+      className="index h-[100vh] w-[100vw]"
       onClick={() => {
         handleClick();
       }}
