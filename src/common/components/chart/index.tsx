@@ -1,6 +1,6 @@
 import { Canvas, Image, View } from '@tarojs/components';
 import Taro, { CanvasContext } from '@tarojs/taro';
-import React, { CSSProperties, useEffect } from 'react';
+import React, { CSSProperties, useEffect, useMemo } from 'react';
 
 interface LineChartProps {
   data?: number[];
@@ -58,8 +58,10 @@ const LineChart: React.FC<LineChartProps> = (props) => {
       const ctx = Taro.createCanvasContext(id ?? DEFAULT_CHART_ID);
       void drawChart(ctx);
     }
-  }, []);
-
+  }, [propData]);
+  const hasData = useMemo(() => {
+    return !propData?.some((data) => data);
+  }, [propData]);
   const drawChart = (ctx: CanvasContext) => {
     // 初始化
     const data = propData ?? DEFAULT_DATA;
@@ -133,10 +135,10 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     // 高亮
     ctx.lineWidth = 1;
     const highlightPos = heightLightPercent ?? DEFAULT_HEIGHTLIGHT_POS;
-    const centerX = padding + barWidth * highlightPos + BLANK;
+    const centerX = ((width - 2 * padding) / 7) * highlightPos + (1 / 2) * barWidth;
     drawGradientRectangle(
       ctx,
-      centerX - barWidth / 2,
+      centerX + barWidth / 2,
       padding - 6,
       barWidth,
       height - 2 * padding + 6,
@@ -146,11 +148,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     ctx.beginPath();
     ctx.fillStyle = DEFAULT_TEXT_COLOR;
     ctx.font = '15px sans-serif';
-    ctx.fillText(
-      title ?? DEFAULT_TITLE,
-      centerX - ctx.measureText(title ?? DEFAULT_TITLE).width / 2,
-      padding / 2
-    );
+    ctx.fillText(title ?? DEFAULT_TITLE, centerX, padding / 2);
     void ctx.draw();
   };
 
@@ -170,8 +168,8 @@ const LineChart: React.FC<LineChartProps> = (props) => {
         },
       }}
     >
-      {propData && <View>数据量太少,暂不支持预览</View>}
-      {propData ? (
+      {hasData && <View>数据量太少,暂不支持预览</View>}
+      {hasData ? (
         <Image
           src="https://s2.loli.net/2024/12/11/sJ9kANj5yz6HiUa.png"
           style={{
