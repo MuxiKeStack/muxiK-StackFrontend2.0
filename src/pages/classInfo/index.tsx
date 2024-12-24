@@ -212,8 +212,12 @@ export default function Index() {
   );
   const { heightLightPercent, yData } = useMemo(() => {
     const percent = (grade?.avg ?? 0) / 10;
+    console.log(
+      grade?.grades.map((item) => item.total_grades?.length ?? 0),
+      grade?.grades
+    );
     return {
-      heightLightPercent: percent > 4 ? percent - 3 : 0,
+      heightLightPercent: percent > 4 ? percent - 4 : 0,
       yData: grade?.grades.map((item) => item.total_grades?.length ?? 0),
     };
   }, [grade]);
