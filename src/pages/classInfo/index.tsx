@@ -220,12 +220,14 @@ export default function Index() {
   }, [grade]);
   const bailout = useCallback(() => {
     void Taro.showToast({
-      title: '请先确定已签约成绩共享计划',
+      title: '请先在个人主页签约成绩共享计划',
       icon: 'none',
     });
     setTimeout(() => {
-      void Taro.navigateBack();
-    }, 1000);
+      void Taro.switchTab({
+        url: '/pages/main/index',
+      });
+    }, 2000);
   }, []);
   const featuresList = useMemo(() => {
     if (course?.features && Array.isArray(course?.features)) {
@@ -241,7 +243,7 @@ export default function Index() {
           <Image src={Icon as string} className="h-full w-full"></Image>
         </View>
         <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈
+          木犀课栈 此功能敬请期待
         </Text>
       </View>
     </View>

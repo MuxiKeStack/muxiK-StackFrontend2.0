@@ -199,7 +199,7 @@ export default function evaluate() {
           <Image src={Icon as string} className="h-full w-full"></Image>
         </View>
         <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈
+          木犀课栈 此功能敬请期待
         </Text>
       </View>
     </View>
