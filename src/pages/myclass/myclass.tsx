@@ -95,7 +95,7 @@ export default function Myclass() {
   };
 
   return (
-    <View>
+    <View className="h-full w-full overflow-auto">
       <View className="select">
         <Picker
           mode="multiSelector"

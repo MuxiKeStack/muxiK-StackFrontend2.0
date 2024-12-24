@@ -2,7 +2,7 @@
 /* eslint-disable import/first */
 import { Image, ScrollView, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import './index.scss';
 
@@ -24,7 +24,6 @@ const COURSE_NAME_MAP = {
 
 export default function Index() {
   const handleSearchToggle = () => {
-    // console.log(isSearchActive);
     void Taro.navigateTo({
       url: '/pages/research/research',
     });
@@ -42,6 +41,36 @@ export default function Index() {
       changeType,
     })
   );
+  const touchStartX = useRef(0); // 记录触摸起始点
+  const touchEndX = useRef(0); // 记录触摸结束点
+
+  const handleTouchStart = (e) => {
+    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    touchStartX.current = e?.touches[0].pageX as number; // 记录起始触摸点
+  };
+  const handleTouchMove = (e) => {
+    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    touchEndX.current = e?.touches[0].pageX as number; // 实时记录滑动点
+  };
+
+  const handleTouchEnd = () => {
+    const deltaX = touchEndX.current - touchStartX.current; // 计算滑动距离
+    const tabs = Object.entries(COURSE_NAME_MAP);
+    const currentTab = tabs.findIndex(([name, value]) => name === classType);
+    if (Math.abs(deltaX) > 50) {
+      // 判断滑动距离是否足够切换 Tab
+      if (deltaX > 0 && currentTab > 0) {
+        // 向右滑动且不是第一个 Tab
+        handleChangeType(tabs[currentTab - 1][0]);
+      } else if (deltaX < 0 && currentTab < tabs.length - 1) {
+        // 向左滑动且不是最后一个 Tab
+        handleChangeType(tabs[currentTab + 1][0]);
+      }
+    }
+    // 重置滑动记录
+    touchStartX.current = 0;
+    touchEndX.current = 0;
+  };
 
   useEffect(() => {
     void dispatch.loadMoreComments();
@@ -67,19 +96,6 @@ export default function Index() {
     }
   }, [classType]);
 
-  // useDidShow(() => {
-  //   void Taro.showLoading({ title: '加载中' });
-  //   void dispatch
-  //     .refershComments()
-  //     .then(() => {
-  //       Taro.hideLoading();
-  //     })
-  //     .catch(() => {
-  //       Taro.hideLoading();
-  //       void Taro.showToast({ title: '加载失败', icon: 'none' });
-  //     });
-  // });
-
   const handleSearch = (searchText: string) => {
     console.log('搜索文本:', searchText);
   };
@@ -90,13 +106,11 @@ export default function Index() {
         const res = (await postBool('/checkStatus', {
           name: 'kestack',
         })) as StatusResponse;
-
         setTest(res.data.status);
       } catch (error) {
         console.error('Error fetching status:', error);
       }
     };
-
     void getParams();
   }, []);
   useEffect(() => {
@@ -105,6 +119,8 @@ export default function Index() {
   const geneHandler = () => {
     let timeNow = Date.now();
     return (e) => {
+      console.log(e);
+
       if (
         !useCourseStore.getState().loading &&
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -113,7 +129,16 @@ export default function Index() {
         e.detail.deltaY < 0 &&
         Date.now() - timeNow > 1000
       ) {
-        void dispatch.loadMoreComments();
+        void Taro.showLoading({ title: '加载中...' });
+        void dispatch
+          .loadMoreComments()
+          .then(() => {
+            Taro.hideLoading();
+          })
+          .catch(() => {
+            Taro.hideLoading();
+            void Taro.showToast({ title: '加载失败', icon: 'error' });
+          });
         timeNow = Date.now();
       }
     };
@@ -165,6 +190,9 @@ export default function Index() {
         })}
       </View>
       <ScrollView
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         refresherEnabled
         style={{ height: '70vh' }}
         refresherTriggered={refresherTriggered}

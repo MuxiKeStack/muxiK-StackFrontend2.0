@@ -135,10 +135,10 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     // 高亮
     ctx.lineWidth = 1;
     const highlightPos = heightLightPercent ?? DEFAULT_HEIGHTLIGHT_POS;
-    const centerX = ((width - 2 * padding) / 7) * highlightPos + (1 / 2) * barWidth;
+    const centerX = ((width - 2 * padding) / 7) * Math.ceil(highlightPos);
     drawGradientRectangle(
       ctx,
-      centerX + barWidth / 2,
+      centerX + padding,
       padding - 6,
       barWidth,
       height - 2 * padding + 6,
@@ -148,7 +148,11 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     ctx.beginPath();
     ctx.fillStyle = DEFAULT_TEXT_COLOR;
     ctx.font = '15px sans-serif';
-    ctx.fillText(title ?? DEFAULT_TITLE, centerX, padding / 2);
+    ctx.fillText(
+      title ?? DEFAULT_TITLE,
+      centerX + (1 / 2) * (title ?? DEFAULT_TITLE)?.length,
+      padding / 2
+    );
     void ctx.draw();
   };
 
