@@ -18,7 +18,7 @@ const ShareGrades = () => {
           });
         }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (r.msg === 'success') {
+        if (r.msg === 'Success') {
           void Taro.showToast({
             icon: 'success',
             title: '签约成功！',
