@@ -85,9 +85,7 @@ const Content: React.FC<{ onClose: () => void }> = memo(({ onClose }) => (
         </p>
 
         <h3 className="text-lg font-semibold text-gray-700">联系我们</h3>
-        <p>
-          如您对本条例或其他相关事宜有疑问，请通过QQ群：799651462与我们联系，或发送邮件至：i@muxistudio.com。
-        </p>
+        <p>如您对本条例或其他相关事宜有疑问，请通过QQ群：764752182与我们联系</p>
       </View>
     </View>
   </>

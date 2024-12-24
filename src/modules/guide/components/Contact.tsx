@@ -9,7 +9,7 @@ const Contact: React.FC = memo(() => {
       data: 'https://jwc.ccnu.edu.cn/info/1048/9828.htm',
       success: () => {
         void Taro.showToast({
-          title: '已复制链接',
+          title: '已复制链接，请在浏览器中打开',
           icon: 'success',
         });
       },
