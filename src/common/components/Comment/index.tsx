@@ -61,43 +61,33 @@ const CommentHeader: React.FC<CommentProps> = memo((props) => {
 
   return (
     <>
-      {!course_info ? (
-        <>
-          <View className="italic text-gray-400">加载中 ...</View>
-        </>
-      ) : (
-        <>
-          <View className="classTitle" onClick={handleClickToClass}>
-            {`${course_info?.name} (${course_info?.teacher}) `}
-          </View>
-        </>
-      )}
+      <>
+        <View className="classTitle" onClick={handleClickToClass}>
+          {course_info?.name
+            ? `${course_info?.name} (${course_info?.teacher}) `
+            : '加载中 ...'}
+        </View>
+      </>
       <View className="comment">
-        {!publisher_info ? (
-          <>
-            <View className="italic text-gray-400">加载中 ...</View>
-          </>
-        ) : (
-          <>
-            <View
-              className="tx"
-              style={`background-image: url(${publisher_info?.avatar});`}
-            ></View>
-            <View className="userName">{publisher_info?.nickname}</View>
-            <View className="time">
-              {' '}
-              {formatIsoDate(new Date(ctime as number).toISOString())}
-            </View>
-            <View className="stars">
-              <ShowStar score={star_rating}></ShowStar>
-            </View>
-            <Image
-              style={`display:${isHot ? 'block' : 'none'}`}
-              className="fire"
-              src="https://s2.loli.net/2023/11/12/2ITKRcDPMZaQCvk.png"
-            ></Image>
-          </>
-        )}
+        <>
+          <View
+            className="tx"
+            style={`background-image: url(${publisher_info?.avatar});`}
+          ></View>
+          <View className="userName">{publisher_info?.nickname}</View>
+          <View className="time">
+            {' '}
+            {formatIsoDate(new Date(ctime as number).toISOString())}
+          </View>
+          <View className="stars">
+            <ShowStar score={star_rating}></ShowStar>
+          </View>
+          <Image
+            style={`display:${isHot ? 'block' : 'none'}`}
+            className="fire"
+            src="https://s2.loli.net/2023/11/12/2ITKRcDPMZaQCvk.png"
+          ></Image>
+        </>
       </View>
     </>
   );
