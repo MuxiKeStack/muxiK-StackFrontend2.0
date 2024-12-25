@@ -166,7 +166,11 @@ export default function Index() {
           );
         })}
       </View>
-      <Swiper style={{ height: '70vh', width: '100vw' }} onChange={handleSwiperChange}>
+      <Swiper
+        style={{ height: '70vh', width: '100vw' }}
+        current={Object.keys(COURSE_NAME_MAP).indexOf(classType)}
+        onChange={handleSwiperChange}
+      >
         {Object.entries(scrollTopMap.current).map(([name]) => (
           <SwiperItem key={name}>
             <ScrollView
@@ -176,6 +180,8 @@ export default function Index() {
               onScrollToLower={loadMoreHandler}
               lowerThreshold={200}
               refresherEnabled
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              scrollTop={scrollTopMap.current[name]}
               style={{ height: '70vh' }}
               refresherTriggered={refresherTriggered}
               scrollY
@@ -209,6 +215,7 @@ export default function Index() {
         onClick={() => {
           // 设置滚动条回到顶部
           setScrollTop((prev) => (prev ? 0 : 1));
+          scrollTopMap.current = { ...scrollTopMap.current, [classType]: 0 };
           setTimeout(() => {
             setRefresherTriggered(true);
             void dispatch.refershComments().then(() => {
