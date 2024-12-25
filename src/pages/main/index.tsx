@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/first */
-import { Image, ScrollView, Text, View } from '@tarojs/components';
+import { Image, ScrollView, Swiper, SwiperItem, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AtIcon } from 'taro-ui';
@@ -51,51 +51,16 @@ export default function Index() {
   });
   // 用于回到顶部
   const [scrollTop, setScrollTop] = useState(0);
-  // 用于监听横向滚动
-  const touchStartX = useRef(0); // 记录触摸起始点
-  const touchEndX = useRef(0); // 记录触摸结束点
-  const touchStartY = useRef(0); // 记录触摸起始点
-  const touchEndY = useRef(0); // 记录触摸结束点
-
-  const handleTouchStart = (e) => {
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    touchStartX.current = e?.touches[0].pageX as number; // 记录起始触摸点
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    touchStartY.current = e?.touches[0].pageY as number; // 记录起始触摸点
-  };
-  const handleTouchMove = (e) => {
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    touchEndX.current = e?.touches[0].pageX as number; // 实时记录滑动点
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    touchEndY.current = e?.touches[0].pageY as number; // 实时记录滑动点
-  };
-
-  const handleTouchEnd = (e) => {
-    const deltaX = touchEndX.current - touchStartX.current; // 计算滑动距离
-    const deltaY = touchEndY.current - touchStartY.current;
-    const tabs = Object.entries(COURSE_NAME_MAP);
-    const currentTab = tabs.findIndex(([name, value]) => name === classType);
-    console.log(deltaX, deltaY);
-    if (Math.abs(deltaX) > 120 && Math.abs(deltaY) < 50) {
-      // 判断滑动距离是否足够切换 Tab
-      if (deltaX > 0 && currentTab > 0) {
-        // 向右滑动且不是第一个 Tab
-        handleChangeType(tabs[currentTab - 1][0]);
-      } else if (deltaX < 0 && currentTab < tabs.length - 1) {
-        // 向左滑动且不是最后一个 Tab
-        handleChangeType(tabs[currentTab + 1][0]);
-      }
-    }
-    // 重置滑动记录
-    touchStartX.current = 0;
-    touchEndX.current = 0;
-  };
 
   useEffect(() => {
     void dispatch.loadMoreComments();
   }, [dispatch.loadMoreComments]);
   const handleScroll = (e: { detail: { scrollTop: number } }) => {
     scrollTopMap.current = { ...scrollTopMap.current, [classType]: e.detail.scrollTop };
+  };
+  const handleSwiperChange = (e: { detail: { current: number } }) => {
+    console.log(e.detail.current);
+    handleChangeType(Object.keys(COURSE_NAME_MAP)[e.detail.current]);
   };
   const handleChangeType = (type) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -201,41 +166,48 @@ export default function Index() {
           );
         })}
       </View>
-      <ScrollView
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        scrollWithAnimation
-        onScroll={handleScroll}
-        scrollTop={scrollTop}
-        scrollAnimationDuration="300"
-        onScrollToLower={loadMoreHandler}
-        lowerThreshold={200}
-        refresherEnabled
-        style={{ height: '70vh' }}
-        refresherTriggered={refresherTriggered}
-        scrollY
-        onRefresherRefresh={() => {
-          setRefresherTriggered(true);
-          void dispatch.refershComments().then(() => {
-            setRefresherTriggered(false);
-          });
-        }}
-      >
-        {comments[classType] &&
-          comments[classType].map((comment) => (
-            <>
-              <Comment
-                onCommentClick={() => handleComment({ ...comment, type: 'inner' })}
-                onClick={() => handleComment({ ...comment, type: 'inner' })}
-                key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的
-                {...comment} // 展开comment对象，将属性传递给Comment组件
-                type="inner" // 固定属性，不需要从数组中获取
-              />
-              <View className="h-4 w-full"></View>
-            </>
-          ))}
-      </ScrollView>
+      <Swiper style={{ height: '70vh', width: '100vw' }} onChange={handleSwiperChange}>
+        {Object.entries(scrollTopMap.current).map(([name]) => (
+          <SwiperItem key={name}>
+            <ScrollView
+              scrollWithAnimation
+              onScroll={handleScroll}
+              scrollAnimationDuration="300"
+              onScrollToLower={loadMoreHandler}
+              lowerThreshold={200}
+              refresherEnabled
+              style={{ height: '70vh' }}
+              refresherTriggered={refresherTriggered}
+              scrollY
+              onRefresherRefresh={() => {
+                setRefresherTriggered(true);
+                void dispatch.refershComments().then(() => {
+                  setRefresherTriggered(false);
+                });
+              }}
+            >
+              {comments[name] &&
+                (comments[name] as CommentInfoType[]).map((comment) => (
+                  <>
+                    <Comment
+                      onCommentClick={() => handleComment({ ...comment, type: 'inner' })}
+                      onClick={() => handleComment({ ...comment, type: 'inner' })}
+                      key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的
+                      {...comment} // 展开comment对象，将属性传递给Comment组件
+                      type="inner" // 固定属性，不需要从数组中获取
+                    />
+                    <View className="h-4 w-full"></View>
+                  </>
+                ))}
+            </ScrollView>
+          </SwiperItem>
+        ))}
+        <SwiperItem>
+          <View className="flex flex-col items-center justify-center">
+            <Text>2</Text>
+          </View>
+        </SwiperItem>
+      </Swiper>
       {/* 刷新按钮 */}
       <View
         className="fixed bottom-[16vh] right-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF] shadow-lg active:opacity-80"
