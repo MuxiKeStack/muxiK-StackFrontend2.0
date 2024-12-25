@@ -55,7 +55,7 @@ const refreshToken = async () => {
 
 const request = async (
   url = '',
-  method: 'GET' | 'POST' = 'GET',
+  method: 'GET' | 'POST' | 'PUT' = 'GET',
   data = {},
   isToken = true
 ) => {
@@ -129,3 +129,5 @@ const request1 = async (url = '', method: 'GET' | 'POST' = 'GET', data = {}) => 
 //为了躲避审核
 export const postBool = (url = '', data = {}): Promise<unknown> =>
   request1(url, 'POST', data);
+
+export const put = (url = '', data = {}) => request(url, 'PUT', data, true);

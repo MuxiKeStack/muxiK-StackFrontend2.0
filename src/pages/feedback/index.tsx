@@ -1,11 +1,11 @@
-import { Button, Textarea, View } from '@tarojs/components';
+import { Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import React, { useState } from 'react';
+import React from 'react';
 
 import './index.scss';
 
 const Feedback: React.FC = React.memo(() => {
-  const [textareaValue, setTextareaValue] = useState('');
+  // const [textareaValue, setTextareaValue] = useState('');
   const copyText = '764752182';
 
   const handleCopy = () => {
@@ -42,9 +42,6 @@ const Feedback: React.FC = React.memo(() => {
             点击复制
           </View>
         </View>
-      </View>
-      <View>
-        <Button>提交</Button>
       </View>
     </>
   );
