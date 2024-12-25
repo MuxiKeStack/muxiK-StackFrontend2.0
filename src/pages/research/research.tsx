@@ -91,7 +91,7 @@ const Research: React.FC = () => {
 
   return (
     <View
-      className="index h-[100vh] w-[100vw]"
+      className="flex h-[100vh] w-[100vw] flex-col items-center overflow-auto"
       onClick={() => {
         handleClick();
       }}
@@ -124,13 +124,15 @@ const ConditionalRender = ({ isSpread, classes, hrs, handleSearch }) => {
       ))}
     </View>
   ) : (
-    <View>
-      <Text className="lsss">历史搜索</Text>
-      <View className="button">
-        <Image
-          style={{ width: '29.37rpx', height: '30.83rpx' }}
-          src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"
-        />
+    <View className="relative flex flex-col items-center">
+      <View className="mt-[4vh] flex w-[80vw] flex-row justify-between">
+        <Text className="lsss">历史搜索</Text>
+        <View className="button">
+          <Image
+            style={{ width: '29.37rpx', height: '30.83rpx' }}
+            src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"
+          />
+        </View>
       </View>
       <View
         className="historyResult"

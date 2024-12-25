@@ -109,10 +109,10 @@ $content-line-height: 30;
         Segoe UI-Regular,
         Segoe UI;
       font-weight: 400;
-      line-height: calc(#{$content-line-height}rpx);
+      line-height: calc(#{$content-line-height + 6}rpx);
       color: #565552;
       margin: 30rpx 0;
-      height: calc(#{$content-line-height}rpx);
+      // height: calc(#{$content-line-height}rpx);
       overflow: hidden;
     }
     .likes {
@@ -150,11 +150,13 @@ $content-line-height: 30;
   }
 }
 .text-overflow {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
-  /*! autoprefixer: off */
+  display: -webkit-box;
+  -webkit-line-clamp: 3; //多行在这里修改数字即可
+  overflow: hidden;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
 }
 .text-showAll {
   height: auto !important;

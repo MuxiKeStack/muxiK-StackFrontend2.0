@@ -53,9 +53,8 @@ const SearchInput: React.FC<SearchInputProps> = ({
   // ...组件的其余部分
 
   return (
-    <View>
+    <View className="relative mt-[4vh] flex w-[80vw] justify-center">
       <Input
-        // onBlur={handleBlur}
         onClick={handleClick} // 点击输入框时切换搜索状态
         value={searchText} // 绑定输入框的值
         onInput={handleInputChange} // 绑定输入框的值变化事件
