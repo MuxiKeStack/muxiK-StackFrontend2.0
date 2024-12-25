@@ -16,6 +16,7 @@ import Label1 from '@/common/components/label1/label1';
 import Label2 from '@/common/components/label2/label2';
 import SearchInput from '@/common/components/SearchInput/SearchInput';
 import { get } from '@/common/utils';
+import { put } from '@/common/utils/fetch';
 
 export interface Course {
   id: number;
@@ -53,10 +54,21 @@ const Research: React.FC = () => {
     setSpread(false);
   };
 
-  const handleClick = () => {
-    // Taro.switchTab({
-    //   url: '/pages/main/index',
-    // });
+  const handleDelete = () => {
+    put('/search/history', {
+      remove_all: true,
+      remove_history_ids: [],
+      search_location: 'Home',
+    }).then((res) => {
+      console.log(res);
+      if (res.code === 0) {
+        setHrs([]);
+        Taro.showToast({
+          title: '删除成功',
+          icon: 'success',
+        });
+      }
+    });
   };
 
   const handleSearch = (searchText: string) => {
@@ -92,9 +104,9 @@ const Research: React.FC = () => {
   return (
     <View
       className="flex h-[100vh] w-[100vw] flex-col items-center overflow-auto"
-      onClick={() => {
-        handleClick();
-      }}
+      // onClick={() => {
+      //   handleClick();
+      // }}
     >
       <SearchInput
         autoFocus
@@ -109,6 +121,7 @@ const Research: React.FC = () => {
         classes={classes}
         hrs={hrs}
         handleSearch={handleSearch}
+        handleDelete={handleDelete}
       />
     </View>
   );
@@ -116,7 +129,7 @@ const Research: React.FC = () => {
 
 export default Research;
 
-const ConditionalRender = ({ isSpread, classes, hrs, handleSearch }) => {
+const ConditionalRender = ({ isSpread, classes, hrs, handleSearch, handleDelete }) => {
   return isSpread ? (
     <View className="tj">
       {classes.map((each) => (
@@ -127,7 +140,7 @@ const ConditionalRender = ({ isSpread, classes, hrs, handleSearch }) => {
     <View className="relative flex flex-col items-center">
       <View className="mt-[4vh] flex w-[80vw] flex-row justify-between">
         <Text className="lsss">历史搜索</Text>
-        <View className="button">
+        <View className="button" onClick={handleDelete}>
           <Image
             style={{ width: '29.37rpx', height: '30.83rpx' }}
             src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"

@@ -25,6 +25,13 @@ const EditUser: React.FC = () => {
     KeStackPartner: false,
     None: false,
   });
+
+  const titleRequirements = {
+    CaringSenior: 80,
+    KeStackPartner: 150,
+    CCNUWithMe: 300,
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -98,6 +105,26 @@ const EditUser: React.FC = () => {
   const handleTitleSelect = (title: string) => {
     if (titleOwnership[title]) {
       setSelectedTitle(title);
+    } else {
+      const requirement = titleRequirements[title];
+      let titleName = '';
+      switch (title) {
+        case 'CaringSenior':
+          titleName = '知心学长';
+          break;
+        case 'KeStackPartner':
+          titleName = '课栈合伙人';
+          break;
+        case 'CCNUWithMe':
+          titleName = '华师有我';
+          break;
+      }
+      void Taro.showModal({
+        title: '称号获取条件',
+        content: `经验值达到${requirement}，可获得"${titleName}"称号`,
+        showCancel: false,
+        confirmText: '知道了',
+      });
     }
   };
   // Taro.redirectTo({url:'pages/login/index'});
