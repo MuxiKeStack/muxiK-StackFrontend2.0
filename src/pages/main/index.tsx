@@ -202,11 +202,6 @@ export default function Index() {
             </ScrollView>
           </SwiperItem>
         ))}
-        <SwiperItem>
-          <View className="flex flex-col items-center justify-center">
-            <Text>2</Text>
-          </View>
-        </SwiperItem>
       </Swiper>
       {/* 刷新按钮 */}
       <View
