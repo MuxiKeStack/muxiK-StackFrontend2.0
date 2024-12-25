@@ -76,7 +76,7 @@ export default function Index() {
     const tabs = Object.entries(COURSE_NAME_MAP);
     const currentTab = tabs.findIndex(([name, value]) => name === classType);
     console.log(deltaX, deltaY);
-    if (Math.abs(deltaX) > 80 && Math.abs(deltaY) < 50) {
+    if (Math.abs(deltaX) > 120 && Math.abs(deltaY) < 50) {
       // 判断滑动距离是否足够切换 Tab
       if (deltaX > 0 && currentTab > 0) {
         // 向右滑动且不是第一个 Tab
