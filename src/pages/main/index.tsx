@@ -3,6 +3,7 @@
 import { Image, ScrollView, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
@@ -41,23 +42,41 @@ export default function Index() {
       changeType,
     })
   );
+  // 存储每个tab的scrollTop
+  const scrollTopMap = useRef({
+    [COURSE_TYPE.ANY]: 0,
+    [COURSE_TYPE.MAJOR]: 0,
+    [COURSE_TYPE.GENERAL_ELECT]: 0,
+    [COURSE_TYPE.GENERAL_CORE]: 0,
+  });
+  // 用于回到顶部
+  const [scrollTop, setScrollTop] = useState(0);
+  // 用于监听横向滚动
   const touchStartX = useRef(0); // 记录触摸起始点
   const touchEndX = useRef(0); // 记录触摸结束点
+  const touchStartY = useRef(0); // 记录触摸起始点
+  const touchEndY = useRef(0); // 记录触摸结束点
 
   const handleTouchStart = (e) => {
     //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     touchStartX.current = e?.touches[0].pageX as number; // 记录起始触摸点
+    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    touchStartY.current = e?.touches[0].pageY as number; // 记录起始触摸点
   };
   const handleTouchMove = (e) => {
     //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     touchEndX.current = e?.touches[0].pageX as number; // 实时记录滑动点
+    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    touchEndY.current = e?.touches[0].pageY as number; // 实时记录滑动点
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e) => {
     const deltaX = touchEndX.current - touchStartX.current; // 计算滑动距离
+    const deltaY = touchEndY.current - touchStartY.current;
     const tabs = Object.entries(COURSE_NAME_MAP);
     const currentTab = tabs.findIndex(([name, value]) => name === classType);
-    if (Math.abs(deltaX) > 50) {
+    console.log(deltaX, deltaY);
+    if (Math.abs(deltaX) > 80 && Math.abs(deltaY) < 50) {
       // 判断滑动距离是否足够切换 Tab
       if (deltaX > 0 && currentTab > 0) {
         // 向右滑动且不是第一个 Tab
@@ -75,11 +94,13 @@ export default function Index() {
   useEffect(() => {
     void dispatch.loadMoreComments();
   }, [dispatch.loadMoreComments]);
-
+  const handleScroll = (e: { detail: { scrollTop: number } }) => {
+    scrollTopMap.current = { ...scrollTopMap.current, [classType]: e.detail.scrollTop };
+  };
   const handleChangeType = (type) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     dispatch.changeType(type);
-    void dispatch.refershComments();
+    setScrollTop(scrollTopMap.current[type as string] as number);
   };
   useEffect(() => {
     if (!comments[classType].length) {
@@ -119,16 +140,7 @@ export default function Index() {
   const geneHandler = () => {
     let timeNow = Date.now();
     return (e) => {
-      console.log(e);
-
-      if (
-        !useCourseStore.getState().loading &&
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        e.detail.scrollTop > e.detail.scrollHeight / 2 &&
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        e.detail.deltaY < 0 &&
-        Date.now() - timeNow > 1000
-      ) {
+      if (!useCourseStore.getState().loading && Date.now() - timeNow > 1000) {
         void Taro.showLoading({ title: '加载中...' });
         void dispatch
           .loadMoreComments()
@@ -193,11 +205,16 @@ export default function Index() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        scrollWithAnimation
+        onScroll={handleScroll}
+        scrollTop={scrollTop}
+        scrollAnimationDuration="300"
+        onScrollToLower={loadMoreHandler}
+        lowerThreshold={200}
         refresherEnabled
         style={{ height: '70vh' }}
         refresherTriggered={refresherTriggered}
         scrollY
-        onScroll={(e) => loadMoreHandler(e)}
         onRefresherRefresh={() => {
           setRefresherTriggered(true);
           void dispatch.refershComments().then(() => {
@@ -219,6 +236,22 @@ export default function Index() {
             </>
           ))}
       </ScrollView>
+      {/* 刷新按钮 */}
+      <View
+        className="fixed bottom-[16vh] right-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF] shadow-lg active:opacity-80"
+        onClick={() => {
+          // 设置滚动条回到顶部
+          setScrollTop((prev) => (prev ? 0 : 1));
+          setTimeout(() => {
+            setRefresherTriggered(true);
+            void dispatch.refershComments().then(() => {
+              setRefresherTriggered(false);
+            });
+          }, 600);
+        }}
+      >
+        <AtIcon value="chevron-up" size="30" color="#FFD777"></AtIcon>
+      </View>
     </View>
   );
 }
