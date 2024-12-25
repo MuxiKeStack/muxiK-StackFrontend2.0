@@ -1,17 +1,15 @@
 .searchInput {
-  left: 79.71rpx;
-  top: 80rpx;
-  position: relative;
-  background-color: black;
   background-color: #f9f9f2;
-  width: 592.39rpx;
-  height: 108.7rpx;
+  width: 80vw;
+  height: 4vh;
   border-radius: 18.12rpx 18.12rpx 18.12rpx 18.12rpx;
-  padding-left: 27.17rpx;
+  padding: 4vw;
 }
 .search {
-  left: 614.13rpx;
-  top: 11.67rpx;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 4vw;
   z-index: 999;
+  display: flex;
 }

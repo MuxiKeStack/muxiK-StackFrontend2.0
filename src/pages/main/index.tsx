@@ -178,7 +178,7 @@ export default function Index() {
       </View>
     </View>
   ) : (
-    <View className="flex flex-col">
+    <View className="flex flex-col items-center justify-center">
       <SearchInput
         onSearch={handleSearch} // 传递搜索逻辑
         onSearchToggle={handleSearchToggle}
