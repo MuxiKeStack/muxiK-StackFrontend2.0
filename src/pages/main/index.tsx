@@ -73,7 +73,9 @@ export default function Index() {
       void dispatch
         .refershComments()
         .then(() => {
-          Taro.hideLoading();
+          setTimeout(() => {
+            Taro.hideLoading();
+          }, 1000);
         })
         .catch(() => {
           Taro.hideLoading();
@@ -105,8 +107,12 @@ export default function Index() {
   const geneHandler = () => {
     let timeNow = Date.now();
     return (e) => {
+      scrollTopMap.current = {
+        ...scrollTopMap.current,
+        [classType]: scrollTopMap.current[classType] + 200,
+      };
       if (!useCourseStore.getState().loading && Date.now() - timeNow > 1000) {
-        void Taro.showLoading({ title: '加载中...' });
+        void Taro.showLoading({ title: '加载中...', mask: true });
         void dispatch
           .loadMoreComments()
           .then(() => {
@@ -171,17 +177,15 @@ export default function Index() {
         current={Object.keys(COURSE_NAME_MAP).indexOf(classType)}
         onChange={handleSwiperChange}
       >
-        {Object.entries(scrollTopMap.current).map(([name]) => (
+        {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
+        {Object.entries(scrollTopMap.current).map(([name, scrollTop]) => (
           <SwiperItem key={name}>
             <ScrollView
-              scrollWithAnimation
               onScroll={handleScroll}
-              scrollAnimationDuration="300"
               onScrollToLower={loadMoreHandler}
               lowerThreshold={200}
               refresherEnabled
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              scrollTop={scrollTopMap.current[name]}
+              scrollTop={scrollTop}
               style={{ height: '70vh' }}
               refresherTriggered={refresherTriggered}
               scrollY
