@@ -103,6 +103,8 @@ export default function Index() {
         void get(`/courses/${courseId}/detail`).then((res) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setCourse(res.data);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setCollect(res.data.is_collected);
           !res.data && bailout();
         });
       } catch (error) {
