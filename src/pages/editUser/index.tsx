@@ -5,7 +5,7 @@ import { Button, Image, Input, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 
-import './index.scss';
+import './style.scss';
 
 import { get } from '@/common/api/get';
 import { fetchQiniuToken, fetchToQiniu } from '@/common/api/qiniu';
@@ -13,7 +13,7 @@ import { editIcon } from '@/common/assets/img/editPersonal';
 import { TitleButton } from '@/common/components';
 import { post } from '@/common/utils';
 
-const EditUser: React.FC = () => {
+const Page: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [nickName, setNickName] = useState('请修改昵称');
   const [isEditingNickname, setIsEditingNickname] = useState(false);
@@ -204,4 +204,4 @@ const EditUser: React.FC = () => {
   );
 };
 
-export default EditUser;
+export default Page;

@@ -10,7 +10,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { VirtualList } from '@/common/components';
 import { formatIsoDate, get, getUserInfo } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
-import { StatusResponse } from '@/pages/evaluate/evaluate';
+import { StatusResponse } from '@/pages/evaluate';
 
 import { MessageItem, OfficialItem } from './Items';
 import TabBar from './TabBar';

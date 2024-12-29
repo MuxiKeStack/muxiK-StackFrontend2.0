@@ -5,7 +5,7 @@ import { useLoad } from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
-import './index.scss';
+import './style.scss';
 
 import { get } from '@/common/api/get';
 import CollectionCourse from '@/common/components/CollectionCourse/CollectionCourse';
@@ -22,7 +22,7 @@ interface CollectionProps {
   type?: string;
 }
 
-const MyCollection: React.FC = () => {
+const Page: React.FC = () => {
   const [collection, setCollection] = useState<CollectionProps[]>([]);
 
   useLoad(() => {
@@ -75,4 +75,4 @@ const MyCollection: React.FC = () => {
   );
 };
 
-export default MyCollection;
+export default Page;

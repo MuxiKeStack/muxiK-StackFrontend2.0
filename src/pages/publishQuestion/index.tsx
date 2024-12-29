@@ -3,16 +3,16 @@ import { Button, Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-import './index.scss';
+import './style.scss';
 
 import { Icon, TopBackground } from '@/common/assets/img/login';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
-import { get, post } from '@/common/utils';
+import { formatIsoDate, get, post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 
-import { StatusResponse } from '../evaluate/evaluate';
+import { StatusResponse } from '../evaluate';
 
 export interface UserInfo {
   avatarUrl: string; // 用户头像的URL
@@ -41,22 +41,7 @@ export interface WebUserProfileVo {
   utime?: number;
 }
 
-const getCurrentDate = () => {
-  // 创建一个新的Date对象，它将被初始化为当前日期和时间
-  const now = new Date();
-
-  // 获取年、月、日
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1; // getMonth() 返回的月份是从0开始的
-  const day = now.getDate();
-
-  // 格式化为 YYYY-MM-DD
-  const formattedDate = `${year}年${month.toString().padStart(2, '0')}月${day.toString().padStart(2, '0')}日`;
-
-  return formattedDate;
-};
-
-export default function Index() {
+const Page: React.FC = () => {
   const [course, setCourse] = useState<Course | null>(null);
 
   // const courseId = 2347; //先用概率统计A来调试吧！
@@ -201,11 +186,7 @@ export default function Index() {
     <View>
       <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
       <View className="publishView">
-        <PublishHeader
-          avatarUrl={avatarUrl}
-          nickName={nickName}
-          date={getCurrentDate()}
-        />
+        <PublishHeader avatarUrl={avatarUrl} nickName={nickName} date={formatIsoDate()} />
         {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           <Image src={askicon} className="askicon"></Image>
@@ -223,4 +204,6 @@ export default function Index() {
       </Button>
     </View>
   );
-}
+};
+
+export default Page;

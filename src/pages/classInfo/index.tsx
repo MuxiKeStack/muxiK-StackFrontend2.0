@@ -7,7 +7,7 @@ import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
-import './index.scss';
+import './style.scss';
 
 import { Icon, TopBackground } from '@/common/assets/img/login';
 import { Comment } from '@/common/components';
@@ -18,7 +18,7 @@ import ShowStar from '@/common/components/showStar/showStar';
 import { get, post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 
-import { StatusResponse } from '../evaluate/evaluate';
+import { StatusResponse } from '../evaluate';
 
 const coursePropertyMap = {
   CoursePropertyGeneralCore: '通识核心课',
@@ -39,7 +39,7 @@ function translateCourseProperty(englishDescription) {
   return entry ? entry[1] : '未找到对应的中文描述';
 }
 
-export default function Index() {
+const Page: React.FC = () => {
   const [course, setCourse] = useState<Course | null>(null);
   const [courseId, setCourseId] = useState<string | null>(null);
   const [comments, setComments] = useState<CommentInfoType[]>([]);
@@ -363,4 +363,6 @@ export default function Index() {
       </View>
     </View>
   );
-}
+};
+
+export default Page;

@@ -5,7 +5,7 @@ import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 import { AtFloatLayout } from 'taro-ui';
 
-import './index.scss';
+import './style.scss';
 
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
@@ -13,7 +13,7 @@ import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail';
 import { get, post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 
-import { StatusResponse } from '../evaluate/evaluate';
+import { StatusResponse } from '../evaluate';
 
 interface IQuestion {
   id: number;
@@ -53,7 +53,7 @@ interface ResponseType {
   msg: string;
 }
 
-const Index: React.FC = () => {
+const Page: React.FC = () => {
   const [course, setCourse] = useState<Course | null>(null);
 
   const [question, setQuestion] = useState<IQuestion | null>(null);
@@ -331,4 +331,4 @@ const Index: React.FC = () => {
   );
 };
 
-export default Index;
+export default Page;

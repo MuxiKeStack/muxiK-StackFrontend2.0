@@ -1,12 +1,12 @@
 import { Button, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 
-import './index.scss';
+import './style.scss';
 
 // eslint-disable-next-line import/first
 import { post } from '@/common/utils';
 
-const ShareGrades = () => {
+const Page: React.FC = () => {
   const handleSubmit = () => {
     try {
       void post('/grades/sign', { wants_to_sign: true }).then((r) => {
@@ -26,7 +26,7 @@ const ShareGrades = () => {
         }
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -50,4 +50,5 @@ const ShareGrades = () => {
     </View>
   );
 };
-export default ShareGrades;
+
+export default Page;

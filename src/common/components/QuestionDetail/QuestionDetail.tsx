@@ -10,7 +10,7 @@ import IconFont from '@/common/components/iconfont';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
 import { get, post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
-import { StatusResponse } from '@/pages/evaluate/evaluate';
+import { StatusResponse } from '@/pages/evaluate';
 import { useCourseStore } from '@/pages/main/store/store';
 
 interface IUser {

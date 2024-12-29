@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/imports */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/first */
 import { Image, ScrollView, Swiper, SwiperItem, Text, View } from '@tarojs/components';
@@ -5,14 +6,14 @@ import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
-import './index.scss';
+import './style.scss';
 
 import { Icon, TopBackground } from '@/common/assets/img/login';
 import { Comment } from '@/common/components';
 import SearchInput from '@/common/components/SearchInput/SearchInput';
 import { postBool } from '@/common/utils/fetch';
 
-import { StatusResponse } from '../evaluate/evaluate';
+import { StatusResponse } from '../evaluate';
 import { useCourseStore } from './store/store';
 import { COURSE_TYPE } from './store/types';
 
@@ -23,7 +24,7 @@ const COURSE_NAME_MAP = {
   [COURSE_TYPE.GENERAL_CORE]: '通核',
 };
 
-export default function Index() {
+const Page: React.FC = () => {
   const handleSearchToggle = () => {
     void Taro.navigateTo({
       url: '/pages/research/research',
@@ -232,4 +233,6 @@ export default function Index() {
       </View>
     </View>
   );
-}
+};
+
+export default Page;
