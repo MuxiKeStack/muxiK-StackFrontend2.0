@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="130" src="https://github.com/eleliauk/muxiK-StackFrontend2.0/blob/main/src/common/assets/img/login/logo.png" alt="muxiK-StackFrontend2.0 logo">
+  <img width="130" src="https://github.com/MuxiKeStack/muxiK-StackFrontend2.0/blob/main/src/common/assets/img/login/Icon.png" alt="muxiK-StackFrontend2.0 logo">
   <h1 align="center">muxiK-StackFrontend2.0</h1>
   <h3>muxiK-StackFrontend2.0</h3>
   <a href="https://github.com/MuxiKeStack/muxiK-StackFrontend2.0"><strong>探索项目文档 »</strong></a>
