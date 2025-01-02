@@ -2,9 +2,9 @@ import { Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React from 'react';
 
-import './index.scss';
+import './style.scss';
 
-const Feedback: React.FC = React.memo(() => {
+const Page: React.FC = React.memo(() => {
   // const [textareaValue, setTextareaValue] = useState('');
   const copyText = '764752182';
 
@@ -47,4 +47,4 @@ const Feedback: React.FC = React.memo(() => {
   );
 });
 
-export default Feedback;
+export default Page;

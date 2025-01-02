@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import './index.scss';
+import './style.scss';
 
 import Profile from '../../modules/profile';
 

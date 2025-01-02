@@ -1,7 +1,5 @@
 /* eslint-disable import/first */
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -10,7 +8,7 @@ import { Image, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 
-import './research.scss';
+import './style.scss';
 
 import Label1 from '@/common/components/label1/label1';
 import Label2 from '@/common/components/label2/label2';
@@ -32,7 +30,59 @@ export interface ClassInfo {
   assessments?: object; // 使用?表示这个属性是可选的
 }
 
-const Research: React.FC = () => {
+interface ConditionalRenderProps {
+  isSpread: boolean;
+  classes: ClassInfo[];
+  hrs: Course[];
+  handleSearch: (searchText: string) => void;
+  handleDelete: () => void;
+}
+
+const ConditionalRender: React.FC<ConditionalRenderProps> = ({
+  isSpread,
+  classes,
+  hrs,
+  handleSearch,
+  handleDelete,
+}) => {
+  return isSpread ? (
+    <View className="tj">
+      {classes.map((each) => (
+        <Label2 key={each.id} {...each} />
+      ))}
+    </View>
+  ) : (
+    <View className="relative flex flex-col items-center">
+      <View className="mt-[4vh] flex w-[80vw] flex-row justify-between">
+        <Text className="lsss">历史搜索</Text>
+        <View className="button" onClick={handleDelete}>
+          <Image
+            style={{ width: '29.37rpx', height: '30.83rpx' }}
+            src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"
+          />
+        </View>
+      </View>
+      <View
+        className="historyResult"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {hrs.map((hr) => (
+          <Label1
+            key={hr.id}
+            content={hr.keyword}
+            onClick={(e) => {
+              handleSearch(hr.keyword);
+            }}
+          />
+        ))}
+      </View>
+    </View>
+  );
+};
+
+const Page: React.FC = () => {
   const [hrs, setHrs] = useState<Course[]>([]);
   const [classes, setClasses] = useState<ClassInfo[]>([]);
   const [isSpread, setSpread] = useState<boolean>(false);
@@ -127,42 +177,4 @@ const Research: React.FC = () => {
   );
 };
 
-export default Research;
-
-const ConditionalRender = ({ isSpread, classes, hrs, handleSearch, handleDelete }) => {
-  return isSpread ? (
-    <View className="tj">
-      {classes.map((each) => (
-        <Label2 key={each.id} {...each} />
-      ))}
-    </View>
-  ) : (
-    <View className="relative flex flex-col items-center">
-      <View className="mt-[4vh] flex w-[80vw] flex-row justify-between">
-        <Text className="lsss">历史搜索</Text>
-        <View className="button" onClick={handleDelete}>
-          <Image
-            style={{ width: '29.37rpx', height: '30.83rpx' }}
-            src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"
-          />
-        </View>
-      </View>
-      <View
-        className="historyResult"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        {hrs.map((hr) => (
-          <Label1
-            key={hr.id}
-            content={hr.keyword}
-            onClick={(e) => {
-              handleSearch(hr.keyword);
-            }}
-          />
-        ))}
-      </View>
-    </View>
-  );
-};
+export default Page;

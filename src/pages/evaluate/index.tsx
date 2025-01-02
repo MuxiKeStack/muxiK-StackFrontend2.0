@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable react-hooks/rules-of-hooks */
+
 /* eslint-disable import/first */
 import {
   Button,
@@ -16,7 +16,7 @@ import {
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-import './evaluate.scss';
+import './style.scss';
 
 import { Icon, TopBackground } from '@/common/assets/img/login';
 import Label3 from '@/common/components/label3/label3';
@@ -32,7 +32,7 @@ export interface StatusResponse {
   msg: string;
 }
 
-export default function evaluate() {
+const Page: React.FC = () => {
   // 初始化状态，存储所有选中的 Radio 项的值
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   // 处理 Radio 变化的函数
@@ -267,4 +267,6 @@ export default function evaluate() {
       <Button onClick={postEvaluation}>发布</Button>
     </Form>
   );
-}
+};
+
+export default Page;

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import './index.scss';
+import './style.scss';
 
 import Notification from '../../modules/notification';
 

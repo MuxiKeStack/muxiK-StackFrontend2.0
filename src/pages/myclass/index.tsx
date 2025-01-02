@@ -6,7 +6,7 @@ import { Picker, Text, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-import './myclass.scss';
+import './style.scss';
 
 // eslint-disable-next-line import/first
 import { getUserCourses } from '@/common/api/getUserCourses';
@@ -20,7 +20,7 @@ interface CouresProps {
   id: number;
 }
 
-export default function Myclass() {
+const Page: React.FC = () => {
   const [yearSelector] = useState<string[]>([
     '2022-2023学年',
     '2023-2024学年',
@@ -128,4 +128,6 @@ export default function Myclass() {
       </View>
     </View>
   );
-}
+};
+
+export default Page;

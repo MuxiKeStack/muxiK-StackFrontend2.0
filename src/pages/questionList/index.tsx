@@ -3,14 +3,13 @@ import { Button, Image, Text, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-// import './index.scss';
 import { Icon, TopBackground } from '@/common/assets/img/login';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionListComponent from '@/common/components/QuestionListComponent/QuestionListComponent';
 import { get } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 
-import { StatusResponse } from '../evaluate/evaluate';
+import { StatusResponse } from '../evaluate';
 
 interface IQuestion {
   id: number;
@@ -31,7 +30,7 @@ interface IQuestion {
   ctime: number;
 }
 
-const App = () => {
+const Page: React.FC = () => {
   const [course, setCourse] = useState<Course | null>(null);
   const [questions, setQuestions] = useState<IQuestion[] | null>(null);
   const [courseId, setCourseId] = useState<string>('');
@@ -135,4 +134,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Page;

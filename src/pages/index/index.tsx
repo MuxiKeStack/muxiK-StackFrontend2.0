@@ -3,9 +3,9 @@ import { Navigator, View } from '@tarojs/components';
 import { useState } from 'react';
 import { AtFloatLayout } from 'taro-ui';
 
-import './index.scss';
+import './style.scss';
 
-export default function Index() {
+const Page: React.FC = () => {
   const [isFloatLayoutVisible, setIsFloatLayoutVisible] = useState(false); // 控制 AtFloatLayout 显示的状态
   // 处理打开 FloatLayout 的方法
 
@@ -38,4 +38,6 @@ export default function Index() {
       </View>
     </View>
   );
-}
+};
+
+export default Page;

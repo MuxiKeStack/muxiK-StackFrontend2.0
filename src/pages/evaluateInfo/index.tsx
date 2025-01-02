@@ -14,7 +14,7 @@ import { Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useRef, useState } from 'react';
 
-import './index.scss';
+import './style.scss';
 
 import { Icon, TopBackground } from '@/common/assets/img/login';
 import { Comment } from '@/common/components';
@@ -22,11 +22,11 @@ import CommentComponent from '@/common/components/CommentComponent/CommentCompon
 import { get } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 
-import { StatusResponse } from '../evaluate/evaluate';
+import { StatusResponse } from '../evaluate';
 import { useCourseStore } from '../main/store/store';
 import { COMMENT_ACTIONS } from '../main/store/types';
 
-export default function Index() {
+const Page: React.FC = () => {
   const [allComments, setAllComments] = useState<CommentType[]>([]);
   const [commentsLoaded, setCommentsLoaded] = useState(false); // 新增状态，标记评论是否已加载
   const [replyTo, setReplyTo] = useState<CommentType | null>(null); // 新增状态，存储被回复的评论
@@ -199,4 +199,6 @@ export default function Index() {
       </View>
     </View>
   );
-}
+};
+
+export default Page;
