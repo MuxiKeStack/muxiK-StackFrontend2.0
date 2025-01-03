@@ -103,6 +103,8 @@ const Page: React.FC = () => {
         void get(`/courses/${courseId}/detail`).then((res) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setCourse(res.data);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setCollect(res.data.is_collected);
           !res.data && bailout();
         });
       } catch (error) {
@@ -342,7 +344,7 @@ const Page: React.FC = () => {
           className="flex h-[10vh] items-center justify-center"
           onClick={() => {
             void Taro.navigateTo({
-              url: `pages/evaluate/evaluate?id=${courseId}&name=${course?.name}`,
+              url: `pages/evaluate/index?id=${courseId}&name=${course?.name}`,
             });
           }}
         >

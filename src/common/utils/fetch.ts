@@ -105,9 +105,11 @@ export const post = (url = '', data = {}) => request(url, 'POST', data, true);
 export const get = (url = '') => request(url, 'GET', {}, true);
 
 const preUrl1 = 'https://miniprograms.muxixyz.com';
+const preUrl2 = 'https://miniprogramschanger.muxixyz.com';
 const request1 = async (url = '', method: 'GET' | 'POST' = 'GET', data = {}) => {
   try {
     const response = await Taro.request({
+      //审核之前换一下url
       url: `${preUrl1}${url}`,
       method,
       header,
