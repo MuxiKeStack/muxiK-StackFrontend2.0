@@ -344,7 +344,7 @@ const Page: React.FC = () => {
           className="flex h-[10vh] items-center justify-center"
           onClick={() => {
             void Taro.navigateTo({
-              url: `pages/evaluate/evaluate?id=${courseId}&name=${course?.name}`,
+              url: `pages/evaluate/index?id=${courseId}&name=${course?.name}`,
             });
           }}
         >

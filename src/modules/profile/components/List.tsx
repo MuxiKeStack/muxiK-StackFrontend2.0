@@ -6,7 +6,7 @@ import { BookIcon, ClockIcon, MailIcon, StarIcon } from '@/common/assets/img/pro
 import { uniqueKey } from '@/common/utils';
 
 const ListItems: { title: string; icon: string; url: string }[] = [
-  { title: '我的课程', icon: BookIcon as string, url: '/pages/myclass/myclass' },
+  { title: '我的课程', icon: BookIcon as string, url: '/pages/myclass/index' },
   { title: '我的收藏', icon: StarIcon as string, url: '/pages/myCollection/index' },
   {
     title: '评课历史',

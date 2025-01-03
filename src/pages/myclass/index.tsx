@@ -85,7 +85,7 @@ const Page: React.FC = () => {
     if (item.evaluated) handleNavToCourseInfo(item);
     else
       void Taro.navigateTo({
-        url: `/pages/evaluate/evaluate${query}`,
+        url: `/pages/evaluate/index${query}`,
       });
   };
   const handleNavToCourseInfo = (each) => {

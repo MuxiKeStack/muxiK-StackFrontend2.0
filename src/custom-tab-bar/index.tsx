@@ -12,7 +12,7 @@ import { uniqueKey } from '@/common/utils';
 const TAB_LIST: Array<{ pagePath: string; name: string; icon?: string }> = [
   { pagePath: '/pages/main/index', name: 'Home', icon: 'streaming' },
   { pagePath: '/pages/guide/index', name: 'Guide', icon: 'download-cloud' },
-  { pagePath: '/pages/evaluate/evaluate', name: '+' },
+  { pagePath: '/pages/evaluate/index', name: '+' },
   { pagePath: '/pages/notification/index', name: 'Massage', icon: 'message' },
   { pagePath: '/pages/profile/index', name: 'Profile', icon: 'user' },
 ];
@@ -29,7 +29,7 @@ const TabBar: React.FC = memo(() => {
               <View
                 className="add_sign"
                 onClick={() => {
-                  void Taro.navigateTo({ url: '/pages/evaluate/evaluate' });
+                  void Taro.navigateTo({ url: '/pages/evaluate/index' });
                 }}
               >
                 +
