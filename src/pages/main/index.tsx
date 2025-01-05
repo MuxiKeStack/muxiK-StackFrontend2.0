@@ -27,7 +27,7 @@ const COURSE_NAME_MAP = {
 const Page: React.FC = () => {
   const handleSearchToggle = () => {
     void Taro.navigateTo({
-      url: '/pages/research/research',
+      url: '/pages/research/index',
     });
   };
   const [refresherTriggered, setRefresherTriggered] = useState(false);

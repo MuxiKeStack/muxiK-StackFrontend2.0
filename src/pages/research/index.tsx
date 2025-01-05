@@ -99,7 +99,7 @@ const Page: React.FC = () => {
   const handleSearchToggle = () => {
     // setSpread(isSearchActive);
     // Taro.navigateTo({
-    //   url: '/pages/research/research',
+    //   url: '/pages/research/index',
     // });
     setSpread(false);
   };
