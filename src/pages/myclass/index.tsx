@@ -21,6 +21,7 @@ interface CouresProps {
 }
 
 const Page: React.FC = () => {
+  //待优化点 别写死了
   const [yearSelector] = useState<string[]>([
     '2022-2023学年',
     '2023-2024学年',

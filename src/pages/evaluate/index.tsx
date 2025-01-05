@@ -187,7 +187,7 @@ const Page: React.FC = () => {
   const onLableClick = () => {
     if (courseName == '只能评价自己学过的课程哦') {
       void Taro.navigateTo({
-        url: '/pages/myclass/myclass',
+        url: '/pages/myclass/index',
       });
     }
   };
