@@ -95,8 +95,8 @@ export default function Myclass() {
   };
 
   return (
-    <View className="h-full w-full overflow-auto">
-      <View className="select">
+    <View className="h-[100vh] w-full overflow-auto">
+      <View className="select flex-1">
         <Picker
           mode="multiSelector"
           range={[yearSelector, semSelector]}
