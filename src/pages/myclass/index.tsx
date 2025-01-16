@@ -30,7 +30,7 @@ const Page: React.FC = () => {
   ]);
   const [semSelector] = useState(['第一学期', '第二学期', '第三学期', '全部学期']);
   const [year, setYear] = useState('2024-2025学年');
-  const [sem, setSem] = useState('第一学期');
+  const [sem, setSem] = useState('第二学期');
 
   const [myclasses, setMyclasses] = useState<CouresProps[]>([]);
 
@@ -96,8 +96,8 @@ const Page: React.FC = () => {
   };
 
   return (
-    <View className="h-full w-full overflow-auto">
-      <View className="select">
+    <View className="h-[100vh] w-full overflow-auto">
+      <View className="select flex-1">
         <Picker
           mode="multiSelector"
           range={[yearSelector, semSelector]}
