@@ -3466,6 +3466,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tarojs/shared@npm:4.0.8":
+  version: 4.0.8
+  resolution: "@tarojs/shared@npm:4.0.8"
+  checksum: 10c0/05e7476ed18abe9048ce0a10364442325dfa885a8c7ec682e1665954b56dc17c3705917562172ac37d2cdd0713100fc899ed2ea8fe2ddfcb787b7ca30bf3bcb7
+  languageName: node
+  linkType: hard
+
 "@tarojs/taro-h5@npm:4.0.5":
   version: 4.0.5
   resolution: "@tarojs/taro-h5@npm:4.0.5"
@@ -11441,7 +11448,7 @@ __metadata:
     "@tarojs/plugin-platform-weapp": "npm:4.0.6"
     "@tarojs/react": "npm:4.0.5"
     "@tarojs/runtime": "npm:4.0.5"
-    "@tarojs/shared": "npm:4.0.5"
+    "@tarojs/shared": "npm:4.0.8"
     "@tarojs/taro": "npm:4.0.5"
     "@tarojs/taro-loader": "npm:4.0.5"
     "@tarojs/webpack5-runner": "npm:4.0.5"
