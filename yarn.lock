@@ -7563,9 +7563,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-taro@npm:4.0.5":
-  version: 4.0.5
-  resolution: "eslint-config-taro@npm:4.0.5"
+"eslint-config-taro@npm:4.0.8":
+  version: 4.0.8
+  resolution: "eslint-config-taro@npm:4.0.8"
   dependencies:
     "@babel/eslint-parser": "npm:^7.24.1"
     "@typescript-eslint/eslint-plugin": "npm:^6.2.0"
@@ -7583,7 +7583,7 @@ __metadata:
       optional: true
     eslint-plugin-vue:
       optional: true
-  checksum: 10c0/f78c45c00a8dfcfe56d3b4d73ec1df0f0227fcbdc3cdba03e30a3bd299ee10a393fa934677609eedff20344b3739b74f9f79b967273f5f8a6aaa0ec127d83164
+  checksum: 10c0/f7b7f9219d7e1071e0489ec37c2c99215a831649bcf2af20e15a132bfe5c52a55e9b34ef920e73ef55e0b91c9e41c3f84bbc457c169822730270d87a460cb430
   languageName: node
   linkType: hard
 
@@ -11459,7 +11459,7 @@ __metadata:
     echarts: "npm:^5.5.1"
     eslint: "npm:^8.57.1"
     eslint-config-prettier: "npm:^9.1.0"
-    eslint-config-taro: "npm:4.0.5"
+    eslint-config-taro: "npm:4.0.8"
     eslint-plugin-import: "npm:^2.30.0"
     eslint-plugin-prettier: "npm:^5.2.1"
     eslint-plugin-react: "npm:^7.36.1"
