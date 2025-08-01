@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Image, Input, View } from '@tarojs/components';
-import React, { useRef, useState } from 'react';
+import React, { CSSProperties, useRef, useState } from 'react';
 
 import './SearchInput.scss';
 
@@ -16,6 +16,7 @@ type SearchInputProps = {
   searchIconSrc: string;
   autoFocus?: boolean;
   disabled?: boolean;
+  style?: CSSProperties;
 };
 
 const SearchInput: React.FC<SearchInputProps> = ({
@@ -26,6 +27,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   searchIconSrc,
   autoFocus,
   disabled,
+  style,
 }) => {
   // const [isSearchActive, setIsSearchActive] = useState(true);
   const [searchText, setSearchText] = useState(''); // 添加状态来存储搜索文本
@@ -53,12 +55,13 @@ const SearchInput: React.FC<SearchInputProps> = ({
   // ...组件的其余部分
 
   return (
-    <View className="relative mt-[4vh] flex w-[80vw] justify-center">
+    <View className="relative flex w-[80vw] justify-center">
       <Input
         onClick={handleClick} // 点击输入框时切换搜索状态
         value={searchText} // 绑定输入框的值
         onInput={handleInputChange} // 绑定输入框的值变化事件
         className="searchInput"
+        style={style}
         type="text"
         placeholder={searchPlaceholder}
         placeholderStyle={searchPlaceholderStyle}

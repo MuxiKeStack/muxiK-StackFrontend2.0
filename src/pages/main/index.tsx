@@ -12,6 +12,7 @@ import { Icon, TopBackground } from '@/common/assets/img/login';
 import { Comment } from '@/common/components';
 import SearchInput from '@/common/components/SearchInput/SearchInput';
 import { postBool } from '@/common/utils/fetch';
+import { NavigationBar } from '@/modules/navigation';
 
 import { StatusResponse } from '../evaluate';
 import { useCourseStore } from './store/store';
@@ -150,22 +151,28 @@ const Page: React.FC = () => {
       </View>
     </View>
   ) : (
-    <View className="flex flex-col items-center justify-center">
-      <SearchInput
-        onSearch={handleSearch} // 传递搜索逻辑
-        onSearchToggle={handleSearchToggle}
-        disabled
-        searchPlaceholder="搜索课程名/老师名"
-        searchPlaceholderStyle="color:#9F9F9C"
-        searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
-      />
+    <View className="mt-20 flex flex-col items-center justify-center">
+      <NavigationBar title="评课广场" isTabPage />
+      <View className="mt-5 flex w-full items-center justify-center gap-2">
+        <SearchInput
+          style={{ height: '30rpx', width: '500rpx', borderRadius: '20rpx' }}
+          onSearch={handleSearch} // 传递搜索逻辑
+          onSearchToggle={handleSearchToggle}
+          disabled
+          searchPlaceholder="搜索课程名/老师名"
+          searchPlaceholderStyle="color:#9F9F9C"
+          searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
+        />
+        <Text className="text-center text-lg text-[#3D3D3D]">搜索</Text>
+      </View>
       <View className="classLine">
         {Object.entries(COURSE_NAME_MAP).map(([name, displayName]) => {
           return (
             <>
               <View
                 className={'label' + ' ' + (classType === name ? 'active' : '')}
-                onClick={() => handleChangeType(name)}
+                // onClick={() => handleChangeType(name)}
+                onTouchEnd={() => handleChangeType(name)}
               >
                 {displayName}
               </View>

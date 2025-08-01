@@ -1,6 +1,7 @@
+import { Image, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import React, { memo, useCallback } from 'react';
-import { AtList, AtListItem } from 'taro-ui';
+import React, { memo, useCallback, useState } from 'react';
+import { AtIcon, AtList, AtListItem } from 'taro-ui';
 
 import { BookIcon, ClockIcon, MailIcon, StarIcon } from '@/common/assets/img/profile';
 import { uniqueKey } from '@/common/utils';
@@ -19,8 +20,29 @@ const ListItems: { title: string; icon: string; url: string }[] = [
 
 const List: React.FC = memo(() => {
   const navigate = useCallback((url: string) => void Taro.navigateTo({ url }), []);
+  const [test, setTest] = useState<boolean>(false);
 
-  return (
+  return !test ? (
+    <View
+      className="flex w-[95vw] flex-col items-center"
+      style={{ borderTop: '1px solid rgba(237, 163, 53, 0.15)' }}
+    >
+      {ListItems.map((item) => (
+        <View
+          key={uniqueKey.nextKey()}
+          className="flex h-16 w-full items-center justify-between"
+          style={{ borderBottom: '1px solid rgba(237, 163, 53, 0.15)' }}
+          onTouchEnd={() => navigate(item.url)}
+        >
+          <View className="flex items-center gap-3">
+            <Image className="h-7 w-7" src={item.icon} />
+            <Text className="text-lg">{item.title}</Text>
+          </View>
+          <AtIcon value="chevron-right" color="8C8C8C" />
+        </View>
+      ))}
+    </View>
+  ) : (
     <AtList className="w-[95vw] px-[10%]">
       {ListItems.map((item) => (
         <AtListItem

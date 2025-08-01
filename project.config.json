@@ -2,7 +2,7 @@
   "miniprogramRoot": "dist/",
   "projectname": "muxiK-StackFrontend2.0",
   "description": "muxiK-StackFrontend2.0",
-  "appid": "wx6220588048f6e417",
+  "appid": "wxb8d843f0289294eb",
   "setting": {
     "urlCheck": true,
     "es6": true,
@@ -26,7 +26,16 @@
     "condition": false,
     "compileWorklet": false,
     "ignoreUploadUnusedFiles": true,
-    "uglifyFileName": false
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "swc": false,
+    "disableSWC": true
   },
   "compileType": "miniprogram",
   "simulatorType": "wechat",

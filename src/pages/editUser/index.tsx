@@ -5,6 +5,8 @@ import { Button, Image, Input, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 
+import { NavigationBar } from '@/modules/navigation';
+
 import './style.scss';
 
 import { get } from '@/common/api/get';
@@ -136,7 +138,8 @@ const Page: React.FC = () => {
     void Taro.reLaunch({ url: '/pages/login/index' });
   };
   return (
-    <View>
+    <View className="mt-24 w-full">
+      <NavigationBar title="修改个人信息" isBackToPage />
       <View className="avatar-container">
         <View className="avatar-text">修改头像</View>
         <Image src={avatarUrl} onClick={chooseAvatar} className="avatar1"></Image>
@@ -191,13 +194,18 @@ const Page: React.FC = () => {
           ></TitleButton>
         </View>
       </View>
-      <View className="flex">
+      <View className="divide-line"></View>
+      <View className="mt-8 flex">
         <Button className="cancel-button">取消</Button>
         <Button className="save-button" onClick={handleSave}>
           保存
         </Button>
       </View>
-      <Button className="mt-7 h-1/6 w-1/3" onClick={handleLogout}>
+      <Button
+        className="b absolute bottom-10 h-11 w-44 rounded-md bg-[#F9B94F] text-white"
+        style={{ left: '50%', transform: 'translateX(-50%)', lineHeight: '44px' }}
+        onClick={handleLogout}
+      >
         退出登录
       </Button>
     </View>

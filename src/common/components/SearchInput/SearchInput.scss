@@ -3,13 +3,15 @@
   width: 80vw;
   height: 4vh;
   border-radius: 18.12rpx 18.12rpx 18.12rpx 18.12rpx;
-  padding: 4vw;
+  padding: 3.5vw;
+  padding-left: 8vw;
+  padding-right: 0;
 }
 .search {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 4vw;
+  left: 4.5vw;
   z-index: 999;
   display: flex;
 }

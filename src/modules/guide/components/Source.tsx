@@ -85,7 +85,7 @@ const Source: React.FC<SourceProps> = memo(({ year, term }) => {
   }, [term, year]);
 
   return (
-    <View className="h-auto min-h-[73vh] w-[85vw] rounded-lg bg-[#f9f9f2] px-4 py-2">
+    <View className="h-auto min-h-[73vh] w-[85vw] rounded-lg px-4 py-2">
       {/* <SourceItem text="2022-2023第一学期选课手册" link="" />
       <SourceItem text="2022-2023第一学期选课手册(2)" link="" />
       <SourceItem text="2022-2023第一学期选课手册(3)" link="" /> */}

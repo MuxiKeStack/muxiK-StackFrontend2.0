@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '首页',
-  disableScroll: true,
+  // navigationBarTitleText: '评课广场',
+  navigationStyle: 'custom',
 });

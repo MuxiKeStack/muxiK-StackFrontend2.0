@@ -6,6 +6,8 @@ import { Picker, Text, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
+import { NavigationBar } from '@/modules/navigation';
+
 import './style.scss';
 
 // eslint-disable-next-line import/first
@@ -96,7 +98,12 @@ const Page: React.FC = () => {
   };
 
   return (
-    <View className="h-[100vh] w-full overflow-auto">
+    <View className="mt-24 w-full overflow-auto" style={{ height: 'cal(100vh - 96px)' }}>
+      <NavigationBar
+        title="我的课程"
+        isBackToPage
+        style={{ backgroundColor: '#FFFFFF' }}
+      />
       <View className="select flex-1">
         <Picker
           mode="multiSelector"

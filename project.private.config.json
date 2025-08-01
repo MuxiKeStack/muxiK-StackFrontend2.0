@@ -4,10 +4,21 @@
   "setting": {
     "compileHotReLoad": true,
     "bigPackageSizeSupport": true,
-    "urlCheck": true,
+    "urlCheck": false,
     "autoAudits": true,
     "preloadBackgroundData": false,
-    "skylineRenderEnable": false
+    "skylineRenderEnable": false,
+    "coverView": true,
+    "lazyloadPlaceholderEnable": false,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "showShadowRootInWxmlPanel": false,
+    "useStaticServer": false,
+    "useLanDebug": false,
+    "showES6CompileOption": false,
+    "checkInvalidKey": true,
+    "ignoreDevUnusedFiles": true
   },
-  "libVersion": "3.4.2"
+  "libVersion": "3.8.9",
+  "condition": {}
 }

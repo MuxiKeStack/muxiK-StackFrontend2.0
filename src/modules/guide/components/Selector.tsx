@@ -1,7 +1,7 @@
 import { ConfigProvider, Picker, Popup } from '@taroify/core';
 import { ArrowDown } from '@taroify/icons';
 import { Text, View } from '@tarojs/components';
-import { memo } from 'react';
+import { CSSProperties, memo } from 'react';
 
 import { uniqueKey } from '@/common/utils';
 
@@ -11,6 +11,7 @@ interface SelectProps {
   type: SelectType;
   value: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  style?: CSSProperties;
 }
 
 interface SelectorProps {
@@ -46,9 +47,9 @@ const Times = () => {
   ];
 };
 
-const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen }) => (
-  <View className="flex w-1/3 flex-col gap-2">
-    <Text className="pl-2 text-xs">选择{type}</Text>
+const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen, style }) => (
+  <View className="flex w-1/2 flex-col justify-center gap-2" style={style}>
+    <Text className="w-full pl-2 text-center text-base">选择{type}</Text>
     <View
       className="flex w-full justify-between rounded-lg bg-[#f9f9f2] px-2 py-1"
       onClick={() => setIsOpen(true)}
@@ -62,9 +63,10 @@ const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen }) => (
 const Selector: React.FC<SelectorProps> = memo(
   ({ selection, isOpen, setSelection, setIsOpen, children }) => (
     <>
-      <View className="-ml-4 flex w-[85vw] items-center justify-between pt-2">
+      <View className="mt-4 flex w-full items-center justify-center pt-2">
         {['学年', '学期'].map((item: SelectType) => (
           <Select
+            style={{ width: '50%' }}
             key={uniqueKey.nextKey()}
             type={item}
             value={item === '学年' ? selection.year : selection.term}

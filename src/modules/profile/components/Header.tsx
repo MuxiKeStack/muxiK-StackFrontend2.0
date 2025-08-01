@@ -2,6 +2,7 @@
 import { Image, Progress, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { memo, useEffect, useMemo, useState } from 'react';
+import { AtIcon } from 'taro-ui';
 
 import { get } from '@/common/api/get';
 import { TopBackground } from '@/common/assets/img/profile';
@@ -60,32 +61,40 @@ const Header: React.FC = memo(() => {
     void fetchUserData();
   }, []);
 
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('user updated:', user);
+  }, [user]);
+
   if (user.newUser) {
     void Taro.navigateTo({ url: '/pages/editUser/index' });
   }
 
   return (
     <>
-      <Image src={TopBackground as string} className="h-[35vh] w-full"></Image>
+      <Image src={TopBackground as string} className="h-[34vh] w-full"></Image>
       <View
-        className="absolute top-[12vh] flex w-full items-center gap-4 pl-14"
-        onClick={() => {
+        className="absolute top-[16vh] flex w-full items-center gap-4 pl-14"
+        onTouchEnd={() => {
           void Taro.navigateTo({ url: '/pages/editUser/index' });
         }}
+        // onClick={() => {
+        //   void Taro.navigateTo({ url: '/pages/editUser/index' });
+        // }}
       >
         <View className="aspect-square h-[20vw] w-[20vw] rounded-full bg-white">
           <Image
-            src={user.avatarUrl}
+            src={user.avatarUrl !== null ? user.avatarUrl : ''}
             className="aspect-square h-[20vw] w-[20vw] rounded-full bg-white"
           />
         </View>
         <View className="flex flex-col gap-2">
           <View className="flex items-center gap-2">
-            <Text className="text-md whitespace-nowrap">{user.nickName}</Text>
+            <Text className="whitespace-nowrap text-lg">{user.nickName}</Text>
             {user.selectedTitle !== 'None' && (
               <TitleButton title={user.selectedTitle} isSelected></TitleButton>
             )}
-            <Text className="text-md font-bold text-white">&gt;</Text>
+            <AtIcon value="chevron-right" />
           </View>
           <Text className="flex w-full justify-end text-xs font-bold text-orange-400">
             {user.points}/{user.nextLevel}
