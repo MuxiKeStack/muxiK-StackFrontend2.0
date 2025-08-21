@@ -59,9 +59,7 @@ const Page: React.FC = () => {
             className="mycollection_search_button"
             value="search"
             color="#8C8C8C"
-            onClick={() => {
-              //
-            }}
+            // onClick={() => {}}
           />
         </View>
         <Text className="h-full text-base text-[#8C8C8C]" style={{ lineHeight: '72rpx' }}>

@@ -3,16 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 /* eslint-disable import/first */
-import {
-  Button,
-  Checkbox,
-  Form,
-  Image,
-  Radio,
-  Text,
-  Textarea,
-  View,
-} from '@tarojs/components';
+import { Button, Form, Image, Radio, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
@@ -23,6 +14,7 @@ import Label3 from '@/common/components/label3/label3';
 import Star from '@/common/components/star/star';
 import { post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
+import { NavigationBar } from '@/modules/navigation';
 
 export interface StatusResponse {
   code: number;
@@ -204,68 +196,71 @@ const Page: React.FC = () => {
       </View>
     </View>
   ) : (
-    <Form className="view">
-      <View className="p">
-        <Text> 选择课程 : </Text>
-        <Label3 handleClick={onLableClick} content={courseName}></Label3>
-      </View>
-      <View className="p">
-        <Text>评价星级 :</Text>
-        <Star onStarClick={onStarClick} />
-      </View>
-      <View className="p">
-        <Text>考核方式 :</Text>
-        <View className="ways">
-          {testways.map((item) => (
-            <Radio
-              key={item.value}
-              className="myradio"
-              checked={selectedValues.includes(item.value)}
-              value={item.value}
-              color="transparent"
-              onClick={() => handleRadioChange(item.value)}
-            >
-              {item.text}
-            </Radio>
-          ))}
+    <View className="mt-24">
+      <Form className="view">
+        <NavigationBar title="评课" isBackToPage />
+        <View className="p">
+          <Text> 选择课程 : </Text>
+          <Label3 handleClick={onLableClick} content={courseName}></Label3>
         </View>
-      </View>
-      <View className="p">
-        <Text>课程特点 :</Text>
-        <View className="fea">
-          {features.map((item) => {
-            return (
-              <Label3
+        <View className="p">
+          <Text>评价星级 :</Text>
+          <Star onStarClick={onStarClick} />
+        </View>
+        <View className="p">
+          <Text>考核方式 :</Text>
+          <View className="ways">
+            {testways.map((item) => (
+              <Radio
                 key={item.value}
-                id={item.value} // 确保 Label3 组件可以访问到 id
-                content={item.content}
-                checked={selectedFeatureValues.includes(item.value)} // 判断是否包含该项的 id
-                handleChecked={() => handleFeaturesChecked(item.value)} // 传递 handleChecked 函数
-              />
-            );
-          })}
+                className="myradio"
+                checked={selectedValues.includes(item.value)}
+                value={item.value}
+                color="transparent"
+                onClick={() => handleRadioChange(item.value)}
+              >
+                {item.text}
+              </Radio>
+            ))}
+          </View>
         </View>
-      </View>
-      <Textarea
-        maxlength={450}
-        onInput={countContent}
-        placeholderStyle="font-size: 25rpx;"
-        placeholder="输入课程评价"
-        className="myComment"
-      ></Textarea>
-      <Text className="zsxz">字数限制{textLength}/450</Text>
-      <View className="p">
-        <Checkbox
-          value="anonymous"
-          className="myradio"
-          checked={isAnonymous}
-          onClick={() => setIsAnonymous(!isAnonymous)}
-          color="#3399ff"
-        ></Checkbox>
-        <Text>匿名</Text>
-      </View>
-      <Button onClick={postEvaluation}>发布</Button>
-    </Form>
+        <View className="p">
+          <Text>课程特点 :</Text>
+          <View className="fea">
+            {features.map((item) => {
+              return (
+                <Label3
+                  key={item.value}
+                  id={item.value} // 确保 Label3 组件可以访问到 id
+                  content={item.content}
+                  checked={selectedFeatureValues.includes(item.value)} // 判断是否包含该项的 id
+                  handleChecked={() => handleFeaturesChecked(item.value)} // 传递 handleChecked 函数
+                />
+              );
+            })}
+          </View>
+        </View>
+        <Textarea
+          maxlength={450}
+          onInput={countContent}
+          placeholderStyle="font-size: 25rpx;"
+          placeholder="输入课程评价"
+          className="myComment"
+        ></Textarea>
+        <Text className="zsxz">字数限制{textLength}/450</Text>
+        <View className="p">
+          <Radio
+            value="anonymous"
+            className="myradio h-3 w-3"
+            checked={isAnonymous}
+            onClick={() => setIsAnonymous(!isAnonymous)}
+            color="transparent"
+          ></Radio>
+          <Text>匿名</Text>
+        </View>
+        <Button onClick={postEvaluation}>发布</Button>
+      </Form>
+    </View>
   );
 };
 

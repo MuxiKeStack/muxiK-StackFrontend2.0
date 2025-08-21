@@ -12,7 +12,7 @@ interface OfficialProps {
 }
 
 const ImageOfficial: React.FC<OfficialProps> = memo(({ title, description }) => (
-  <View className="flex h-[30vh] w-full flex-col overflow-hidden rounded-lg bg-[#f9f9f2] shadow-lg">
+  <View className="flex h-[30vh] w-full flex-col overflow-hidden rounded-lg bg-[#FFFAEC] shadow-lg">
     <View className="flex-[4] border-b-2 border-[#ffd777]"></View>
     <View className="flex flex-1 flex-col gap-1 px-4 py-2">
       <Text className="text-md">{title}</Text>
@@ -22,7 +22,7 @@ const ImageOfficial: React.FC<OfficialProps> = memo(({ title, description }) => 
 ));
 
 const AlertOfficial: React.FC<OfficialProps> = memo(({ title }) => (
-  <View className="flex w-[85vw] items-center rounded-l-full rounded-r-full bg-[#f9f9f2] px-4 py-2 text-sm shadow-lg">
+  <View className="flex w-[85vw] items-center rounded-l-full rounded-r-full bg-[#FFFAEC] px-4 py-2 text-sm shadow-lg">
     <Text className="text-sm text-[#f18900]">{title}</Text>
   </View>
 ));

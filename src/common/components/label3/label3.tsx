@@ -16,14 +16,14 @@ export default function Label3(props) {
 
   return (
     <View
-      onClick={() => {
+      onTouchEnd={() => {
         return label3Checked(props.id);
       }}
       className="label3"
       style={
         props.checked
-          ? 'background:#F18900;color:#F9F9F2;'
-          : 'background: #F9F9F2;color: #F18900;'
+          ? 'background:#FFFAEC;color:#F9B94F;'
+          : 'background: #F9B94F;color: #FFFFFF;'
       }
     >
       {props.content}

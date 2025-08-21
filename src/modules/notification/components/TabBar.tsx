@@ -30,9 +30,9 @@ const TabBar: React.FC<TabBarProps> = memo(({ tab, setTab }) => (
       <View
         key={uniqueKey.nextKey()}
         className="flex flex-col items-center gap-2"
-        // onClick={() => {
-        //   setTab(item.name);
-        // }}
+        onTouchEnd={() => {
+          setTab(item.name);
+        }}
       >
         <View className="flex h-16 w-16 items-center justify-center rounded-md bg-[#FEF6DF] shadow-lg">
           <IconFont

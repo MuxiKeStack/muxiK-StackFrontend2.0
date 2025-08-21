@@ -52,7 +52,7 @@ const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen, style }) =
     <Text className="w-full pl-2 text-center text-base">选择{type}</Text>
     <View
       className="flex w-full justify-between rounded-lg bg-[#f9f9f2] px-2 py-1"
-      onClick={() => setIsOpen(true)}
+      onTouchEnd={() => setIsOpen(true)}
     >
       <Text className="text-xs">{value}</Text>
       <ArrowDown className="text-xs" style={{ color: '#f18900' }} />

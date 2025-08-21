@@ -21,6 +21,7 @@ const NavigationBar: React.FC<NavigayionProps> = ({
   title = '',
   style,
 }) => {
+  console.log(style);
   const handleNavigate = () => {
     if (isBackToPage) {
       navigateBack()
@@ -51,8 +52,13 @@ const NavigationBar: React.FC<NavigayionProps> = ({
 
   return (
     <View
-      className="fixed left-0 top-0 w-full"
-      style={{ height: '180rpx', backgroundColor: '#FFFAEC', ...style }}
+      className="fixed left-0 top-0 z-50 w-full"
+      style={{
+        fontFamily: 'SourceHanSans',
+        height: '180rpx',
+        backgroundColor: style?.backgroundColor || '#FFFAEC',
+        ...style,
+      }}
     >
       <View className="w-full" style={{ marginTop: '100rpx' }}>
         {!isTabPage && (

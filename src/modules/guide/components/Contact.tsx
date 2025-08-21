@@ -18,7 +18,7 @@ const Contact: React.FC = memo(() => {
   return (
     <View
       className="fixed bottom-[16vh] right-8 flex flex-col items-center gap-2"
-      onClick={handleCopy}
+      onTouchEnd={handleCopy}
     >
       <View className="flex aspect-square w-14 items-center justify-center rounded-full bg-[#f9f9f2] shadow-xl">
         <AtIcon value="mail" size={30} color="#f18900" />

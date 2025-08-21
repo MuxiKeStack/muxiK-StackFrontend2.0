@@ -42,7 +42,7 @@ const handleCopy = (link: string) => {
 const SourceItem: React.FC<{ text: string; link: string }> = memo(({ text, link }) => (
   <View
     className="flex w-full items-center gap-4 p-2 hover:bg-gray-200"
-    onClick={() => handleCopy(link)}
+    onTouchEnd={() => handleCopy(link)}
   >
     <AtIcon value="file-generic" size="35" color="#f18900" />
     <Text className="text-sm">{text}</Text>

@@ -1,4 +1,4 @@
-import { ScrollView } from '@tarojs/components';
+import { ScrollView, View } from '@tarojs/components';
 import type { VirtualListProps as TaroVirtualListProps } from '@tarojs/components-advanced/dist/components/virtual-list';
 import { memo, useCallback, useRef } from 'react';
 
@@ -39,6 +39,7 @@ const VirtualList: React.FC<VirtualListProps> = memo(
           itemData.map((_, index) => (
             <Item key={index} data={itemData} index={index}></Item>
           ))}
+        <View style={{ height: '11.5vh' }}></View>
       </ScrollView>
     );
   }
