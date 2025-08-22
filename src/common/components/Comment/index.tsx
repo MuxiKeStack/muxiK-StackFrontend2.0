@@ -21,8 +21,6 @@ import Label3 from '../label3/label3';
 import ShowStar from '../showStar/showStar';
 
 interface CommentProps extends CommentInfo {
-  // name?: string;
-  // teacher?: string;
   type?: string;
   isHot?: boolean;
   showTag?: boolean;
@@ -64,14 +62,13 @@ const CommentHeader: React.FC<CommentProps> = memo((props) => {
   return (
     <>
       <>
-        <View className="classTitle" onClick={handleClickToClass}>
+        <View className="classTitle" onTouchEnd={handleClickToClass}>
           {course_info?.name
             ? `${course_info?.name} (${course_info?.teacher}) `
             : '加载中 ...'}
         </View>
       </>
       <View className="comment">
-        {/* <View>{`${name}(${teacher})`}</View> */}
         <>
           <View
             className="tx"

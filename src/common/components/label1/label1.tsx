@@ -15,7 +15,7 @@ export default function Label1(props) {
   );
 
   return (
-    <View className="label1" onClick={handleClick}>
+    <View className="label1" onTouchEnd={handleClick}>
       <Text className="labeltext">{props.content}</Text>
     </View>
   );

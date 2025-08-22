@@ -41,7 +41,7 @@ const handleCopy = (link: string) => {
 
 const SourceItem: React.FC<{ text: string; link: string }> = memo(({ text, link }) => (
   <View
-    className="flex w-full items-center gap-4 p-2 hover:bg-gray-200"
+    className="flex w-full items-center gap-4 rounded-lg bg-[#FFFAEC] p-2 hover:bg-gray-200"
     onTouchEnd={() => handleCopy(link)}
   >
     <AtIcon value="file-generic" size="35" color="#f18900" />
@@ -85,7 +85,7 @@ const Source: React.FC<SourceProps> = memo(({ year, term }) => {
   }, [term, year]);
 
   return (
-    <View className="h-auto min-h-[73vh] w-[85vw] rounded-lg px-4 py-2">
+    <View className="flex h-auto min-h-[73vh] w-[90vw] flex-col items-center rounded-lg px-4 py-2">
       {/* <SourceItem text="2022-2023第一学期选课手册" link="" />
       <SourceItem text="2022-2023第一学期选课手册(2)" link="" />
       <SourceItem text="2022-2023第一学期选课手册(3)" link="" /> */}

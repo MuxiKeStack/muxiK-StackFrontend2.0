@@ -48,10 +48,11 @@ const Times = () => {
 };
 
 const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen, style }) => (
-  <View className="flex w-1/2 flex-col justify-center gap-2" style={style}>
+  <View className="flex w-1/2 flex-col items-center justify-center gap-2" style={style}>
     <Text className="w-full pl-2 text-center text-base">选择{type}</Text>
     <View
-      className="flex w-full justify-between rounded-lg bg-[#f9f9f2] px-2 py-1"
+      className="flex w-[50%] justify-between rounded-lg bg-[#FFFAEC] px-2 py-2"
+      style={{ boxShadow: '0px 4px 10px 0px rgba(185, 185, 185, 0.302)' }}
       onTouchEnd={() => setIsOpen(true)}
     >
       <Text className="text-xs">{value}</Text>

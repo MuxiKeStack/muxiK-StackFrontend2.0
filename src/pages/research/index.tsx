@@ -65,7 +65,7 @@ const ConditionalRender: React.FC<ConditionalRenderProps> = ({
       </View>
       <View
         className="historyResult"
-        onClick={(e) => {
+        onTouchEnd={(e) => {
           e.stopPropagation();
         }}
       >
@@ -87,6 +87,7 @@ const Page: React.FC = () => {
   const [hrs, setHrs] = useState<Course[]>([]);
   const [classes, setClasses] = useState<ClassInfo[]>([]);
   const [isSpread, setSpread] = useState<boolean>(false);
+  const [globalSearchText, setGlobalSearchText] = useState<string>('');
 
   useLoad(() => {
     console.log('Page loaded.');
@@ -126,7 +127,7 @@ const Page: React.FC = () => {
     Taro.showLoading({
       title: '搜索中',
     });
-    console.log('搜索文本:', searchText);
+    // console.log('搜索文本:', searchText);
     setSpread(true);
     get(`/search?biz=Course&keyword=${searchText}&search_location=Home`)
       .then((res) => {
@@ -155,9 +156,7 @@ const Page: React.FC = () => {
   return (
     <View
       className="mt-20 flex h-[100vh] w-[100vw] flex-col items-center overflow-auto"
-      // onClick={() => {
-      //   handleClick();
-      // }}
+      // onTouchEnd={() => handleClick()}
     >
       <NavigationBar title="搜索查询" isBackToPage />
       <View className="mt-5 flex w-full items-center justify-center gap-2">
@@ -165,12 +164,16 @@ const Page: React.FC = () => {
           style={{ height: '30rpx', width: '500rpx', borderRadius: '30rpx' }}
           onSearch={handleSearch} // 传递搜索逻辑
           onSearchToggle={handleSearchToggle}
-          disabled
+          searchText={globalSearchText}
+          setSearchText={setGlobalSearchText}
+          // disabled
           searchPlaceholder="搜索课程名/老师名"
           searchPlaceholderStyle="color:#9F9F9C"
           searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
         />
-        <Text className="text-center text-lg">搜索</Text>
+        <Text className="text-center text-lg" onTouchEnd={() => handleSearch(searchText)}>
+          搜索
+        </Text>
       </View>
       <ConditionalRender
         isSpread={isSpread}

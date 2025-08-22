@@ -27,6 +27,8 @@ const Content: React.FC<{ onClose: () => void }> = memo(({ onClose }) => (
           木犀课栈隐私条例
         </View>
       </View>
+      {/* 分割线 */}
+      <View className="w-full border-b-0 border-t-[1px] border-solid border-[#6A6A6A]"></View>
 
       {/* 内容部分 */}
       <View className="bg-slate-0">
