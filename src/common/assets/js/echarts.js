@@ -16458,7 +16458,7 @@
             psi = p[off++];
             fa = p[off++];
             fs = p[off++];
-            (x1 = cpx), (y1 = cpy);
+            ((x1 = cpx), (y1 = cpy));
             cpx = p[off++];
             cpy = p[off++];
             cmd = CMD.A;
@@ -16471,7 +16471,7 @@
             psi = p[off++];
             fa = p[off++];
             fs = p[off++];
-            (x1 = cpx), (y1 = cpy);
+            ((x1 = cpx), (y1 = cpy));
             cpx += p[off++];
             cpy += p[off++];
             cmd = CMD.A;
@@ -16834,11 +16834,11 @@
         var cornerRadius = shape.cornerRadius;
 
         if (cornerRadius) {
-          (_a = normalizeCornerRadius(cornerRadius)),
+          ((_a = normalizeCornerRadius(cornerRadius)),
             (icrStart = _a[0]),
             (icrEnd = _a[1]),
             (ocrStart = _a[2]),
-            (ocrEnd = _a[3]);
+            (ocrEnd = _a[3]));
         }
 
         var halfRd = mathAbs$1(radius - innerRadius) / 2;
@@ -33571,7 +33571,7 @@
     var lineDashOffset;
 
     if (ctx.setLineDash && style.lineDash) {
-      (_a = getLineDash(el)), (lineDash = _a[0]), (lineDashOffset = _a[1]);
+      ((_a = getLineDash(el)), (lineDash = _a[0]), (lineDashOffset = _a[1]));
     }
 
     var needsRebuild = true;
@@ -33682,7 +33682,7 @@
       var lineDashOffset = void 0;
 
       if (ctx.setLineDash && style.lineDash) {
-        (_a = getLineDash(el)), (lineDash = _a[0]), (lineDashOffset = _a[1]);
+        ((_a = getLineDash(el)), (lineDash = _a[0]), (lineDashOffset = _a[1]));
       }
 
       if (lineDash) {

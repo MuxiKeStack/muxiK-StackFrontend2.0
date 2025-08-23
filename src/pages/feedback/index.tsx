@@ -2,9 +2,9 @@ import { Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React from 'react';
 
-import { NavigationBar } from '@/modules/navigation';
-
 import './style.scss';
+
+import { NavigationBar } from '@/modules/navigation';
 
 const Page: React.FC = React.memo(() => {
   // const [textareaValue, setTextareaValue] = useState('');

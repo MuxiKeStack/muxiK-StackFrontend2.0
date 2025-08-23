@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { memo } from 'react';

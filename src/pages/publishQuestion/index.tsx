@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import { Button, Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';

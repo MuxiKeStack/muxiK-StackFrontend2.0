@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-/* eslint-disable import/first */
+
 import { Input, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';

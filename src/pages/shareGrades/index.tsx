@@ -3,7 +3,6 @@ import Taro from '@tarojs/taro';
 
 import './style.scss';
 
-// eslint-disable-next-line import/first
 import { post } from '@/common/utils';
 
 const Page: React.FC = () => {

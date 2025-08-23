@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-console */
-/* eslint-disable import/first */
+
 import { Button, Image, Input, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
-
-import { NavigationBar } from '@/modules/navigation';
 
 import './style.scss';
 
@@ -14,6 +12,7 @@ import { fetchQiniuToken, fetchToQiniu } from '@/common/api/qiniu';
 import { editIcon } from '@/common/assets/img/editPersonal';
 import { TitleButton } from '@/common/components';
 import { post } from '@/common/utils';
+import { NavigationBar } from '@/modules/navigation';
 
 const Page: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState('');

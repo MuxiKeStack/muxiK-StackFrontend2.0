@@ -1,16 +1,15 @@
 /* eslint-disable no-console */
-/* eslint-disable import/first */
+
 import { Input, Text, View } from '@tarojs/components';
 import { useLoad } from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
-import { NavigationBar } from '@/modules/navigation';
-
 import './style.scss';
 
 import { get } from '@/common/api/get';
 import CollectionCourse from '@/common/components/CollectionCourse/CollectionCourse';
+import { NavigationBar } from '@/modules/navigation';
 
 interface CollectionProps {
   composite_score?: number;

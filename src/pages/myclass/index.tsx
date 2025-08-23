@@ -6,12 +6,10 @@ import { Picker, Text, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-import { NavigationBar } from '@/modules/navigation';
-
 import './style.scss';
 
-// eslint-disable-next-line import/first
 import { getUserCourses } from '@/common/api/getUserCourses';
+import { NavigationBar } from '@/modules/navigation';
 
 interface CouresProps {
   name: string;

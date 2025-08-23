@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect, useState } from 'react';
 
 import { get } from '@/common/api/get';
 import { VirtualList } from '@/common/components';
 
-import { View } from '@tarojs/components';
 import CommentItem from './CommentItem';
 
 const Item = memo(

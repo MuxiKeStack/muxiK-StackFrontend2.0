@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import { Image, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';

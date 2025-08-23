@@ -1,5 +1,5 @@
 /* eslint-disable simple-import-sort/imports */
-/* eslint-disable import/first */
+
 import { Image, Navigator, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { memo, useCallback, useEffect, useState } from 'react';

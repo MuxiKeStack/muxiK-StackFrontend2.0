@@ -8,9 +8,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-/* eslint-disable import/first */
-
-import { NavigationBar } from '@/modules/navigation';
 import { Button, Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useRef, useState } from 'react';
@@ -22,6 +19,7 @@ import { Comment } from '@/common/components';
 import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
 import { get } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
+import { NavigationBar } from '@/modules/navigation';
 
 import { StatusResponse } from '../evaluate';
 import { useCourseStore } from '../main/store/store';

@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable import/first */
-import { NavigationBar } from '@/modules/navigation';
+
 import { Image, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -18,6 +17,7 @@ import Label3 from '@/common/components/label3/label3';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get, post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
+import { NavigationBar } from '@/modules/navigation';
 
 import { StatusResponse } from '../evaluate';
 

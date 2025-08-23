@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -11,9 +10,7 @@ import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
-// eslint-disable-next-line import/first
 import { formatIsoDate, get } from '@/common/utils';
-// eslint-disable-next-line import/first
 import { useCourseStore } from '@/pages/main/store/store';
 
 interface CommentProps {
