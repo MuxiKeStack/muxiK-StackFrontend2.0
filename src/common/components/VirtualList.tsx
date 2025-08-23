@@ -21,7 +21,7 @@ const VirtualList: React.FC<VirtualListProps> = memo(
       };
     }, []);
     const handleScroll = throttle((event) => {
-      console.log('fetching');
+      // console.log('fetching');
       onScroll && onScroll(event);
     }, 1000);
     return (

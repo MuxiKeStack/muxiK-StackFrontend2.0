@@ -22,10 +22,10 @@ const interceptor: Taro.interceptor = function (chain: Taro.Chain) {
   const requestParams = chain.requestParams;
 
   return chain.proceed(requestParams).then((res) => {
-    console.log(Taro.getStorageSync('shortToken'));
+    // console.log(Taro.getStorageSync('shortToken'));
 
     if (res.statusCode === 401 && Taro.getStorageSync('visitor') !== true) {
-      console.log(res, Taro.getStorageSync('visitor'));
+      // console.log(res, Taro.getStorageSync('visitor'));
 
       void Taro.reLaunch({ url: '/pages/login/index' }).then(() => {
         Taro.showToast({

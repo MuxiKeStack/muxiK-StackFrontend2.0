@@ -206,19 +206,25 @@ const Page: React.FC = () => {
       setCollect(!collect);
     });
   }
-  const xLabels = useMemo(
-    () => ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'],
-    []
-  );
-  const { heightLightPercent, yData } = useMemo(() => {
+  const xLabels = useMemo(() => ['0', '60', '70', '80', '90', '100'], []);
+  const { yData, max, min, avg } = useMemo(() => {
     const percent = (grade?.avg ?? 0) / 10;
-    console.log(
-      grade?.grades.map((item) => item.total_grades?.length ?? 0),
-      grade?.grades
-    );
+    const customData: number[] = [];
+    let maxS = -1,
+      minS = Infinity;
+    if (grade)
+      grade.grades.map((item) => {
+        if (item.total_grades) {
+          customData.push(...item.total_grades);
+          maxS = Math.max(Math.max(...[...item.total_grades]), maxS);
+          minS = Math.min(Math.min(...[...item.total_grades]), minS);
+        }
+      });
     return {
-      heightLightPercent: percent > 4 ? percent - 4 : 0,
-      yData: grade?.grades.map((item) => item.total_grades?.length ?? 0),
+      yData: customData,
+      max: maxS,
+      min: minS,
+      avg: grade?.avg ?? -1,
     };
   }, [grade]);
   const bailout = useCallback(() => {
@@ -271,7 +277,7 @@ const Page: React.FC = () => {
         ))}
       </View>
       <View>
-        <View className="line-container pt-2.5 text-center text-xl text-[#3D3D3D]">
+        <View className="line-container mb-2 pt-2.5 text-center text-xl text-[#3D3D3D]">
           成绩分布
         </View>
       </View>
@@ -279,12 +285,14 @@ const Page: React.FC = () => {
         className="mx-auto text-center"
         data={yData}
         xLabels={xLabels}
-        heightLightPercent={heightLightPercent ?? 0}
+        maxScore={max}
+        minScore={min}
+        avgScore={avg}
         title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
       />
       <View>
         <View>
-          <View className="line-container pt-2.5 text-center text-xl text-[#3D3D3D]">
+          <View className="line-container mt-2 pt-2.5 text-center text-xl text-[#3D3D3D]">
             问问同学({questionNum})
           </View>
         </View>

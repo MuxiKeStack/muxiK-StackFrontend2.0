@@ -2,20 +2,31 @@ import { Canvas, Image, View } from '@tarojs/components';
 import Taro, { CanvasContext } from '@tarojs/taro';
 import React, { CSSProperties, useEffect, useMemo } from 'react';
 
+import {
+  drawBottomInfo,
+  drawCoordinateDiagram,
+  drawHightlightScore,
+  drawRoundedRectangle,
+} from './utils';
+
 interface LineChartProps {
   data?: number[];
+  style?: CSSProperties;
+  className?: string;
   /** x轴标签 */
   xLabels?: string[];
-  /** 边距 */
-  padding?: number;
-  style?: CSSProperties;
-  /** y坐标后缀 */
-  subfix?: string;
-  /** 线条颜色 */
-  lineColor?: string;
-  className?: string;
-  /** heightLight 在的比例 */
-  heightLightPercent?: number;
+  /** y轴标签 */
+  yLabels?: string[];
+  /** 与x轴标签对应的范围 */
+  xRange?: [number, number][];
+  /** x、y、data之间的映射函数 */
+  mappingFunction?: (data: number[], x: [number, number]) => number;
+  /** 边距： 左右上下 */
+  padding?: number[];
+  /** 最大分、最小分、平均分 */
+  maxScore?: number;
+  minScore?: number;
+  avgScore?: number;
   /** 容器id，默认为lineCanvas */
   id?: string;
   /** 标题 */
@@ -23,35 +34,62 @@ interface LineChartProps {
   /** 画布宽高 */
   width?: number;
   height?: number;
+  /** 底部内容高度 */
+  bottomHeight?: number;
 }
 const DEFAULT_HIGHLIGHT_COLOR = '#FFA500';
-const DEFAULT_TEXT_COLOR = 'orange';
-const DEFAULT_LINE_COLOR = 'orange';
-const DEFAULT_PADDING = 30;
+const DEFAULT_AXIS_TEXT_COLOR = '#3D3D3D';
+const DEFAULT_LINE_COLOR = '#F48500';
+const DEFAULT_Axis_LINE_COLOR = '#3D3D3D';
+const DEFAULT_PADDING = [25, 45, 35, 35]; //左右上下
 const DEFAULT_WIDTH = Taro.getSystemInfoSync().screenWidth * 0.9;
-const DEFAULT_HEIGHT = 200;
+const DEFAULT_HEIGHT = 260;
+const DEFAULT_BOTTOM_HEIGTH = 40;
 const DEFAULT_DATA = [10, 20, 30, 40, 50, 60, 70];
-const DEFAULT_X_LABELS = ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'];
+const DEFAULT_X_LABELS = ['0', '60', '70', '80', '90', '100'];
+const DEFUALT_Y_LABELS = ['0%', '20%', '40%', '60%', '80%', '100%'];
+const DEFAUTL_X_RANGE: [number, number][] = [
+  [0, 0],
+  [1, 59],
+  [60, 69],
+  [70, 79],
+  [80, 89],
+  [90, 100],
+];
+const DEFAULT_MAPPING_FUNCTION = (
+  data: number[],
+  x: [number, number],
+  height: number,
+  y: number
+) => {
+  const sum = data.length;
+  let cnt = 0;
+  data.forEach((d) => {
+    if (d >= x[0] && d <= x[1]) cnt++;
+  });
+  const ratio = cnt / sum;
+  return y - ratio * height;
+};
 const DEFAULT_CHART_ID = 'lineCanvas';
-const DEFAULT_MARK_LINE_COLOR = '#cccccc';
-const BLANK = 20;
-const DEFAULT_HEIGHTLIGHT_POS = 4;
-const DEFAULT_TITLE = '平均分';
+const DEFAULT_GAP_LINE_COLOR = '#FE9F00';
 
 const LineChart: React.FC<LineChartProps> = (props) => {
   const {
     width: propWidth,
     height: propHeight,
-    heightLightPercent,
+    bottomHeight: propBHeight,
+    maxScore = 0,
+    minScore = 0,
+    avgScore = 0,
     id,
     data: propData,
     className,
-    lineColor,
     padding: propPadding,
     xLabels: propX,
-    title,
+    yLabels: propY,
+    xRange: propXRange,
+    mappingFunction: propMFunc,
     style,
-    subfix,
   } = props;
   useEffect(() => {
     if (propData) {
@@ -67,92 +105,104 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     const data = propData ?? DEFAULT_DATA;
     const width = propWidth ?? DEFAULT_WIDTH;
     const height = propHeight ?? DEFAULT_HEIGHT;
-    const padding = propPadding ?? DEFAULT_PADDING;
+    const bottomHeight = propBHeight ?? DEFAULT_BOTTOM_HEIGTH;
+    const [pl, pr, pt, pb] = propPadding ?? DEFAULT_PADDING;
     const xLabels = propX ?? DEFAULT_X_LABELS;
+    const yLabels = propY ?? DEFUALT_Y_LABELS;
+    const xRange = propXRange ?? DEFAUTL_X_RANGE;
+    const mappingFunction = propMFunc ?? DEFAULT_MAPPING_FUNCTION;
     ctx.clearRect(0, 0, width, height);
     // // 适配不同比例
-    if (width / height > 2) {
-      ctx.scale((height * 2) / width, 1);
-    } else {
-      ctx.scale(1, width / 2 / height);
-    }
-    const barWidth = (width - 2 * padding) / data.length;
-    const lines = 5;
-    // 背景
-    drawRoundedRectangle(ctx, 0, 0, width, height, 10, () => null, '#f9f9f2');
-    // 标识线
-    ctx.beginPath();
-    ctx.strokeStyle = DEFAULT_MARK_LINE_COLOR;
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= lines; i++) {
-      const y = padding + (i * (height - 2 * padding)) / lines;
-      ctx.beginPath();
-      ctx.moveTo(padding, y);
-      ctx.lineTo(width - padding, y);
-      ctx.stroke();
-    }
+    // if (width / height > 2) {
+    //   ctx.scale((height * 2) / width, 1);
+    // } else {
+    //   ctx.scale(1, width / 2 / height);
+    // }
+    // const barWidth = (width - 2 * padding) / data.length;
+    // const lines = 5;
 
-    // 坐标轴标签
-    ctx.fillStyle = DEFAULT_TEXT_COLOR;
-    ctx.font = '10px sans-serif';
-    // 平均分配标签，比如五根标签，最大为94.4，那么标签最大为95，按19递增
-    const step = Math.floor(
-      ((Math.floor(Math.max(...data) / lines) + 1) * lines) / lines
-    );
-    for (let i = 0; i <= lines; i++) {
-      const y = height - padding - (i * (height - 2 * padding)) / lines;
-      ctx.fillText((i * step).toString() + (subfix ? subfix : ''), 2, y + 3);
-    }
-    xLabels.forEach((value, index) => {
-      const x = padding + index * barWidth + BLANK;
-      ctx.fillText(value, x - (value.length / 2) * 5, height - 5);
-    });
-    // 图
-    ctx.strokeStyle = lineColor ?? DEFAULT_LINE_COLOR;
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    const dots: { x: number; y: number }[] = [];
-    data.forEach((value, index) => {
-      const x = padding + index * barWidth + BLANK;
-      const y = value
-        ? height - padding - (value / (step * lines)) * (height - 2 * padding)
-        : height - padding;
-      if (index === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        const prevX = padding + (index - 1) * barWidth;
-        const prevY = dots.at(-1)!.y;
-        const cp1x = (prevX + x) / 2;
-        const cp1y = prevY;
-        const cp2x = (prevX + x) / 2;
-        const cp2y = y;
-        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
-      }
-      dots.push({ x, y });
-    });
-    ctx.stroke();
-
-    // 高亮
-    ctx.lineWidth = 1;
-    const highlightPos = heightLightPercent ?? DEFAULT_HEIGHTLIGHT_POS;
-    const centerX = ((width - 2 * padding) / 7) * Math.ceil(highlightPos);
-    drawGradientRectangle(
+    //绘制背景
+    drawRoundedRectangle(
       ctx,
-      centerX + padding,
-      padding - 6,
-      barWidth,
-      height - 2 * padding + 6,
-      5
+      0,
+      0,
+      width,
+      height,
+      [10, 10, 10, 10],
+      () => null,
+      '#FEF8E4'
     );
-    // 高亮文字
-    ctx.beginPath();
-    ctx.fillStyle = DEFAULT_TEXT_COLOR;
-    ctx.font = '15px sans-serif';
-    ctx.fillText(
-      title ?? DEFAULT_TITLE,
-      centerX + (1 / 2) * (title ?? DEFAULT_TITLE)?.length,
-      padding / 2
+
+    //绘制坐标图
+    drawCoordinateDiagram(
+      ctx,
+      data,
+      [pl, height - pb - bottomHeight],
+      [true, false],
+      [height - pb - bottomHeight + 15, width - pr + 8],
+      width - pl - pr,
+      height - pt - pb - bottomHeight,
+      xLabels,
+      yLabels,
+      xRange,
+      mappingFunction,
+      DEFAULT_Axis_LINE_COLOR,
+      DEFAULT_GAP_LINE_COLOR,
+      DEFAULT_AXIS_TEXT_COLOR,
+      DEFAULT_LINE_COLOR
     );
+
+    drawBottomInfo(
+      ctx,
+      avgScore,
+      minScore,
+      maxScore,
+      [pl, height - Math.floor(bottomHeight / 2)],
+      width - pl
+    );
+
+    //高亮平均值
+    const avgXValue = avgScore;
+    const avgXPos = (() => {
+      // 找到avgXValue的区间
+      let rangeIdx = -1;
+      let rangeLength = -1;
+      let property = -1;
+      for (let i = 0; i < xRange.length; i++) {
+        const [min, max] = xRange[i];
+        if (avgXValue >= min && avgXValue <= max) {
+          rangeIdx = i;
+          rangeLength = Math.max(max - min, 1);
+          property = avgXValue - min;
+          break;
+        }
+      }
+
+      if (rangeIdx === -1) return -1; // 不在任何区间，直接不画
+
+      // 计算该区间对应的 x 像素位置
+      const chartWidth = width - pl - pr;
+      const singleWidth = Math.floor(chartWidth / (xLabels.length - 1));
+      //注意[0，0]区间不占长度，所以要-1
+      const posX =
+        pl + (rangeIdx - 1) * singleWidth + singleWidth * (property / rangeLength);
+      return posX;
+    })();
+    if (avgXPos !== -1)
+      drawHightlightScore(
+        ctx,
+        [avgXPos, height - pb - bottomHeight],
+        pl,
+        height - pb - pt - bottomHeight,
+        10,
+        `${avgScore.toFixed(2)}`,
+        DEFAULT_HIGHLIGHT_COLOR,
+        (gradient: Taro.CanvasGradient) => {
+          gradient.addColorStop(0, DEFAULT_HIGHLIGHT_COLOR); // 顶部不透明橙色
+          gradient.addColorStop(1, 'rgba(255, 165, 0, 0)'); // 底部完全透明
+        }
+      );
+
     void ctx.draw();
   };
 
@@ -206,54 +256,3 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 };
 
 export default LineChart;
-
-function drawRoundedRectangle(
-  ctx: Taro.CanvasContext,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radius: number,
-  addtionFn?: (ctx: Taro.CanvasContext) => void,
-  background?: string
-) {
-  // 确保半径不超过宽度或高度的一半
-  radius = Math.min(radius, width / 2, height / 2);
-  addtionFn && addtionFn(ctx);
-
-  ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.lineTo(x + width - radius, y);
-  ctx.arc(x + width - radius, y + radius, radius, -Math.PI / 2, 0, false);
-  ctx.lineTo(x + width, y + height - radius);
-  ctx.arc(x + width - radius, y + height - radius, radius, 0, Math.PI / 2, false);
-  ctx.lineTo(x + radius, y + height);
-  ctx.arc(x + radius, y + height - radius, radius, Math.PI / 2, Math.PI, false);
-  ctx.lineTo(x, y + radius);
-  ctx.arc(x + radius, y + radius, radius, Math.PI, (Math.PI * 3) / 2, false);
-  ctx.closePath();
-  if (background) {
-    ctx.fillStyle = background;
-    ctx.strokeStyle = background;
-  }
-  ctx.fill();
-  ctx.stroke(); // 如果需要边框，也可以绘制
-}
-
-function drawGradientRectangle(
-  ctx: Taro.CanvasContext,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radius: number
-) {
-  // 创建渐变
-  drawRoundedRectangle(ctx, x, y, width, height, radius, () => {
-    const gradient = ctx.createLinearGradient(x, y, x, y + height);
-    gradient.addColorStop(0, DEFAULT_HIGHLIGHT_COLOR); // 顶部不透明橙色
-    gradient.addColorStop(1, 'rgba(255, 165, 0, 0)'); // 底部完全透明
-    // 应用渐变并填充路径
-    ctx.setFillStyle(gradient);
-  });
-}

@@ -53,7 +53,7 @@ const Notification: React.FC = memo(() => {
               parentRes = await get(
                 `/comments/${detailRes.data?.parent_comment_id ?? 0}/detail`
               );
-              console.log('tag');
+              // console.log('tag');
               user = await getUserInfo(item.Ext.commentator);
             } else if (itemType === 'Support') {
               detailRes =

@@ -80,7 +80,7 @@ const QuestionListComponent: React.FC<{ question: IQuestion; courseId: string }>
               )
             : [];
 
-        console.log('previewAnswersWithUserInfo:', previewAnswersWithUserInfo);
+        // console.log('previewAnswersWithUserInfo:', previewAnswersWithUserInfo);
         // 更新问题状态，包括填充了用户信息的 preview_answers
         setQuestion((prev) => ({
           ...prev,

@@ -32,7 +32,7 @@ const CollectionCourse: React.FC<CollectionCourseProps> = ({
   };
 
   const handleClickToClass = () => {
-    console.log('Clicked on course:');
+    // console.log('Clicked on course:');
     void navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise
   };
   let courseIcon: string = '';

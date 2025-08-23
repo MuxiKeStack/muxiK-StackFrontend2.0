@@ -65,7 +65,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
         })
       );
 
-      console.log(commentsWithRepliesAndUserInfo);
+      // console.log(commentsWithRepliesAndUserInfo);
 
       setAllComments(commentsWithRepliesAndUserInfo);
     };
