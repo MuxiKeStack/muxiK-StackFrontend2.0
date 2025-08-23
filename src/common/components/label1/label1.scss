@@ -2,9 +2,9 @@
   width: max-content;
   display: flex;
   align-items: center;
-  background: #f9f9f2;
-  height: 72rpx;
-  border-radius: 36rpx 36rpx 36rpx 36rpx;
+  background: #fffaec;
+  height: 36rpx;
+  border-radius: 18rpx;
   opacity: 1;
   padding-left: 40rpx;
   padding-right: 40rpx;
@@ -14,11 +14,11 @@
   margin-top: 27rpx;
 }
 .labeltext {
-  font-size: 31rpx;
+  font-size: 24rpx;
   font-family:
     Segoe UI-Regular,
     Segoe UI;
   font-weight: 400;
-  color: #565656;
-  line-height: 49rpx;
+  color: #3d3d3d;
+  line-height: 36rpx;
 }

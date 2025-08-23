@@ -62,7 +62,7 @@ const CommentHeader: React.FC<CommentProps> = memo((props) => {
   return (
     <>
       <>
-        <View className="classTitle" onClick={handleClickToClass}>
+        <View className="classTitle" onTouchEnd={handleClickToClass}>
           {course_info?.name
             ? `${course_info?.name} (${course_info?.teacher}) `
             : '加载中 ...'}
@@ -128,7 +128,7 @@ const Comment: React.FC<CommentProps> = memo((props) => {
   return (
     <View
       className={`bigcomment ${props.classNames}`}
-      onClick={(e) => {
+      onTouchEnd={(e) => {
         e.stopPropagation();
         handleClick();
       }}
@@ -148,10 +148,10 @@ const Comment: React.FC<CommentProps> = memo((props) => {
         </View>
 
         {type === 'inner' && (
-          <View className="likes" onClick={(e) => e.stopPropagation()}>
+          <View className="likes" onTouchEnd={(e) => e.stopPropagation()}>
             <View
               className={`icon ${shouldSupport && 'bg-orange-200'}`}
-              onClick={() => void handlEndorse()}
+              onTouchEnd={() => void handlEndorse()}
             >
               <IconFont name="like" />
               {/* <Navigator className="iconfont">&#xe786;</Navigator> */}
@@ -159,7 +159,7 @@ const Comment: React.FC<CommentProps> = memo((props) => {
             <Text className="text1">{props.total_support_count}</Text>
             <View
               className="icon"
-              onClick={() => onCommentClick && father_record && onCommentClick(props)}
+              onTouchEnd={() => onCommentClick && father_record && onCommentClick(props)}
             >
               <IconFont name="comment" />
               {/* <Navigator className="iconfont">&#xe769;</Navigator> */}

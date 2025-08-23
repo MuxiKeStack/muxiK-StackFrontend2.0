@@ -55,7 +55,7 @@ export default function Label2(props) {
   return (
     <View
       className="label2"
-      onClick={() => {
+      onTouchEnd={() => {
         void Taro.navigateTo({
           url: `/pages/classInfo/index?course_id=${props.id}`,
         });

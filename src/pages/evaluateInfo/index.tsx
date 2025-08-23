@@ -10,7 +10,8 @@
 
 /* eslint-disable import/first */
 
-import { Image, Text, Textarea, View } from '@tarojs/components';
+import { NavigationBar } from '@/modules/navigation';
+import { Button, Image, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useRef, useState } from 'react';
 
@@ -164,7 +165,8 @@ const Page: React.FC = () => {
       </View>
     </View>
   ) : (
-    <View className="evaluateInfo" onClick={handleClearReply}>
+    <View className="evaluateInfo mt-24" onClick={handleClearReply}>
+      <NavigationBar title="评课详细" isBackToPage />
       <Comment
         showAll
         {...comment}
@@ -178,13 +180,14 @@ const Page: React.FC = () => {
         }}
         onCommentClick={() => handleCommentClick(null)}
       />
+      <View className="ml-4 mt-3 w-[90vw] text-lg text-[#3D3D3D]">评论区</View>
       {commentsLoaded && (
         <CommentComponent comments={allComments} onCommentClick={handleCommentClick} />
       )}
       <View className="h-[10vh] w-full"></View>
-      <View className="fixed bottom-0 flex h-[10vh] w-full justify-center border-b-0 border-t-2 border-solid border-orange-200 bg-[#f9f9f2] p-2 pb-0 text-sm">
+      <View className="fixed bottom-0 flex h-[8vh] w-full items-center justify-center text-sm">
         <Textarea
-          className="ml-4 mr-4 flex-1"
+          className="ml-4 mr-4 h-7 w-[70%] rounded-2xl bg-[#D8D8D8] pl-3 pt-2"
           confirmType="send"
           ref={inputRef}
           placeholderClass="flex-1 justify-center text-sm text-gray-500"
@@ -196,6 +199,12 @@ const Page: React.FC = () => {
           onInput={handleReplyChange}
           onConfirm={handleReplySubmit}
         />
+        <Button
+          className="flex h-8 w-[20%] items-center justify-center rounded-2xl bg-[#EDA335] text-center text-base text-[#FFFFFF]"
+          onClick={handleReplySubmit}
+        >
+          发送
+        </Button>
       </View>
     </View>
   );

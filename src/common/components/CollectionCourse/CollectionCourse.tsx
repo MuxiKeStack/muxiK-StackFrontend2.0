@@ -32,7 +32,7 @@ const CollectionCourse: React.FC<CollectionCourseProps> = ({
   };
 
   const handleClickToClass = () => {
-    console.log('Clicked on course:');
+    // console.log('Clicked on course:');
     void navigateToPage().then((r) => console.log(r)); // 这里调用异步函数，但不返回 Promise
   };
   let courseIcon: string = '';
@@ -59,7 +59,7 @@ const CollectionCourse: React.FC<CollectionCourseProps> = ({
       break;
   }
   return (
-    <View className="collection_course" onClick={handleClickToClass}>
+    <View className="collection_course" onTouchEnd={handleClickToClass}>
       <View className="collection_course_type">{courseIcon}</View>
       <View className="collection_course_detail">
         <View className="collection_course_name">{courseName}</View>
@@ -67,6 +67,9 @@ const CollectionCourse: React.FC<CollectionCourseProps> = ({
           <View className="collection_course_teacher">{courseTeacher}</View>
           <AtRate className="collection_course_rate" value={courseRate} size={15} />
         </View>
+      </View>
+      <View className={`collection_course_collected ${isCollected ? 'active' : ''}`}>
+        {isCollected ? '已收藏' : '未收藏'}
       </View>
     </View>
   );

@@ -15,6 +15,7 @@ import Label2 from '@/common/components/label2/label2';
 import SearchInput from '@/common/components/SearchInput/SearchInput';
 import { get } from '@/common/utils';
 import { put } from '@/common/utils/fetch';
+import { NavigationBar } from '@/modules/navigation';
 
 export interface Course {
   id: number;
@@ -53,9 +54,9 @@ const ConditionalRender: React.FC<ConditionalRenderProps> = ({
     </View>
   ) : (
     <View className="relative flex flex-col items-center">
-      <View className="mt-[4vh] flex w-[80vw] flex-row justify-between">
-        <Text className="lsss">历史搜索</Text>
-        <View className="button" onClick={handleDelete}>
+      <View className="mt-[2vh] flex w-[80vw] flex-row justify-between">
+        <Text className="text-lg">历史搜索</Text>
+        <View className="button" onTouchEnd={handleDelete}>
           <Image
             style={{ width: '29.37rpx', height: '30.83rpx' }}
             src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"
@@ -64,7 +65,7 @@ const ConditionalRender: React.FC<ConditionalRenderProps> = ({
       </View>
       <View
         className="historyResult"
-        onClick={(e) => {
+        onTouchEnd={(e) => {
           e.stopPropagation();
         }}
       >
@@ -86,6 +87,7 @@ const Page: React.FC = () => {
   const [hrs, setHrs] = useState<Course[]>([]);
   const [classes, setClasses] = useState<ClassInfo[]>([]);
   const [isSpread, setSpread] = useState<boolean>(false);
+  const [globalSearchText, setGlobalSearchText] = useState<string>('');
 
   useLoad(() => {
     console.log('Page loaded.');
@@ -125,7 +127,7 @@ const Page: React.FC = () => {
     Taro.showLoading({
       title: '搜索中',
     });
-    console.log('搜索文本:', searchText);
+    // console.log('搜索文本:', searchText);
     setSpread(true);
     get(`/search?biz=Course&keyword=${searchText}&search_location=Home`)
       .then((res) => {
@@ -153,19 +155,26 @@ const Page: React.FC = () => {
 
   return (
     <View
-      className="flex h-[100vh] w-[100vw] flex-col items-center overflow-auto"
-      // onClick={() => {
-      //   handleClick();
-      // }}
+      className="mt-20 flex h-[100vh] w-[100vw] flex-col items-center overflow-auto"
+      // onTouchEnd={() => handleClick()}
     >
-      <SearchInput
-        autoFocus
-        onSearch={handleSearch} // 传递搜索逻辑
-        onSearchToggle={handleSearchToggle}
-        searchPlaceholder="搜索课程名/老师名"
-        searchPlaceholderStyle="color:#9F9F9C"
-        searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
-      />
+      <NavigationBar title="搜索查询" isBackToPage />
+      <View className="mt-5 flex w-full items-center justify-center gap-2">
+        <SearchInput
+          style={{ height: '30rpx', width: '500rpx', borderRadius: '30rpx' }}
+          onSearch={handleSearch} // 传递搜索逻辑
+          onSearchToggle={handleSearchToggle}
+          searchText={globalSearchText}
+          setSearchText={setGlobalSearchText}
+          // disabled
+          searchPlaceholder="搜索课程名/老师名"
+          searchPlaceholderStyle="color:#9F9F9C"
+          searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
+        />
+        <Text className="text-center text-lg" onTouchEnd={() => handleSearch(searchText)}>
+          搜索
+        </Text>
+      </View>
       <ConditionalRender
         isSpread={isSpread}
         classes={classes}

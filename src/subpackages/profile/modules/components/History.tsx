@@ -7,7 +7,19 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { get } from '@/common/api/get';
 import { VirtualList } from '@/common/components';
 
+import { View } from '@tarojs/components';
 import CommentItem from './CommentItem';
+
+const Item = memo(
+  ({ id, index, data }: { id: string; index: number; data: CommentInfo[] }) => {
+    return (
+      <>
+        <CommentItem id={id} index={index} data={data} />
+        <View className="h-4 w-full"></View>
+      </>
+    );
+  }
+);
 
 const History: React.FC = memo(() => {
   const [comments, setComments] = useState<CommentInfo[]>([]);
@@ -48,7 +60,7 @@ const History: React.FC = memo(() => {
     <VirtualList
       height="100%"
       width="100%"
-      item={CommentItem}
+      item={Item}
       itemData={comments}
       itemCount={comments.length}
       itemSize={220}

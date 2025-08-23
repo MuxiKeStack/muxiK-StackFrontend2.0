@@ -65,7 +65,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
         })
       );
 
-      console.log(commentsWithRepliesAndUserInfo);
+      // console.log(commentsWithRepliesAndUserInfo);
 
       setAllComments(commentsWithRepliesAndUserInfo);
     };
@@ -91,7 +91,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
         <View
           key={comment.id}
           className="acomment"
-          onClick={(e) => {
+          onTouchEnd={(e) => {
             e.stopPropagation();
             onCommentClick(comment);
           }}
@@ -111,7 +111,7 @@ const CommentComponent: React.FC<CommentProps> = ({ comments, onCommentClick }) 
               <View
                 key={reply.id}
                 className="reply"
-                onClick={(e) => {
+                onTouchEnd={(e) => {
                   onCommentClick(reply);
                   e.stopPropagation();
                 }}

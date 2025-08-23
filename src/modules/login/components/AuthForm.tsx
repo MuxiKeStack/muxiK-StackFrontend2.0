@@ -1,6 +1,8 @@
-import { Button, Checkbox, Image, Input, Text, View } from '@tarojs/components';
+import { Button, Image, Input, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useState } from 'react';
+
+import '@/modules/login/components/style.scss';
 
 import handleLogin from '@/common/api/handleLogin';
 import { Icon } from '@/common/assets/img/login';
@@ -73,62 +75,64 @@ const AuthForm: React.FC = memo(() => {
   };
   return (
     <>
-      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
-        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
+      <View className="absolute top-0 mt-[10vh] flex w-full flex-col items-center gap-4">
+        <View className="h-36 w-36 overflow-hidden rounded-2xl">
           <Image src={Icon as string} className="h-full w-full"></Image>
         </View>
-        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
+        {/* <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
           木犀课栈
-        </Text>
-        <View className="flex flex-col items-center">
-          <View className="flex w-[80vw] flex-col items-center gap-3">
+        </Text> */}
+        <View className="mt-12 flex flex-col items-center">
+          <View className="flex w-[65vw] flex-col items-center gap-6">
             <Input
-              className="h-12 w-full rounded-l-full rounded-r-full bg-gray-100 px-5"
+              className="h-12 w-full rounded-l-2xl rounded-r-2xl px-5"
+              style={{ backgroundColor: '#F4F4F4' }}
               placeholder="学号/昵称"
               value={userData.studentId}
               onInput={(e) => setUserData({ ...userData, studentId: e.detail.value })}
             ></Input>
             <Input
-              className="h-12 w-full rounded-l-full rounded-r-full bg-gray-100 px-5"
+              className="h-12 w-full rounded-l-2xl rounded-r-2xl px-5"
+              style={{ backgroundColor: '#F4F4F4' }}
               placeholder="密码"
               value={userData.password}
               password
               onInput={(e) => setUserData({ ...userData, password: e.detail.value })}
             ></Input>
-            <Text className="text-sm text-gray-500">请使用一站式账号密码登录</Text>
+            <Text className="font-sans text-sm font-bold text-amber-500">
+              请使用一站式账号密码登录
+            </Text>
           </View>
-          <View className="mb-12 mt-8 flex w-[90vw] flex-col gap-2">
+          <View className="mb-12 mt-24 flex w-[75vw] flex-col gap-6">
             <Button
-              className="text-bold h-12 w-full rounded-l-full rounded-r-full border-none bg-[#ffd777] text-white"
+              className="text-bold btn-background h-12 w-full rounded-l-2xl rounded-r-2xl border-none text-white"
               onClick={handleLoginClick}
             >
               学号登录
             </Button>
-            <Button
-              className="text-bold h-12 w-full rounded-l-full rounded-r-full border bg-[white] text-gray-500"
+            <Text
+              className="text-bold h-12 w-full rounded-l-2xl rounded-r-2xl text-center text-lg text-gray-500"
               onClick={handleLoginYouke}
             >
               游客登录
-            </Button>
+            </Text>
           </View>
         </View>
-        <View className="flex items-center gap-2">
-          <Checkbox
-            className="-m-1"
-            value=""
-            checked={userData.isAgreeTerms}
+        <View className="absolute -bottom-20 flex items-center gap-2">
+          <Button
+            className={`checkbox ${userData.isAgreeTerms ? 'checkbox-active' : ''}`}
             onClick={() =>
               setUserData({ ...userData, isAgreeTerms: !userData.isAgreeTerms })
             }
-          ></Checkbox>
+          ></Button>
           <View className="flex w-full items-center">
             <Text className="text-sm">我已同意</Text>
-            <View
+            <Text
               className="text-sm text-blue-500"
               onClick={() => setIsPopperOpened(true)}
             >
               《木犀课栈隐私条例》
-            </View>
+            </Text>
             <Text className="text-sm">内的所有内容</Text>
           </View>
         </View>

@@ -1,0 +1,46 @@
+.background {
+  position: absolute;
+  left: -400px;
+  top: -220px;
+  width: 994px;
+  height: 734px;
+  opacity: 1;
+
+  background: linear-gradient(
+    180deg,
+    #fea000 42%,
+    rgba(255, 182, 58, 0.546) 56%,
+    #ffe4b7 100%
+  );
+
+  filter: blur(245px);
+}
+
+.btn-background {
+  background: linear-gradient(90deg, #fba007 0%, #ffa50d 53%, #ffc667 100%);
+}
+
+.checkbox {
+  width: 32rpx;
+  height: 30rpx;
+  padding: 0;
+  border-radius: 100%;
+  border: 1px solid #000;
+  position: relative;
+}
+
+.checkbox-active::after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 100%;
+  background-color: #fe9f00;
+  z-index: 10;
+}
+
+.pop-btn {
+  background: linear-gradient(90deg, #fba007 0%, #ffa50d 53%, #ffc667 100%);
+}

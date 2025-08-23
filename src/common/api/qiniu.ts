@@ -23,7 +23,7 @@ export const fetchQiniuToken = async () => {
     const url = '/tube/access_token';
 
     const response: ResponseQiniu = await get(url);
-    console.log('response', response);
+    // console.log('response', response);
     return response.data;
   } catch (error) {
     console.error('Error fetching Qiniu token:', error);

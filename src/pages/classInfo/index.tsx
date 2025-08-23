@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable import/first */
+import { NavigationBar } from '@/modules/navigation';
 import { Image, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -205,19 +206,25 @@ const Page: React.FC = () => {
       setCollect(!collect);
     });
   }
-  const xLabels = useMemo(
-    () => ['0-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100'],
-    []
-  );
-  const { heightLightPercent, yData } = useMemo(() => {
+  const xLabels = useMemo(() => ['0', '60', '70', '80', '90', '100'], []);
+  const { yData, max, min, avg } = useMemo(() => {
     const percent = (grade?.avg ?? 0) / 10;
-    console.log(
-      grade?.grades.map((item) => item.total_grades?.length ?? 0),
-      grade?.grades
-    );
+    const customData: number[] = [];
+    let maxS = -1,
+      minS = Infinity;
+    if (grade)
+      grade.grades.map((item) => {
+        if (item.total_grades) {
+          customData.push(...item.total_grades);
+          maxS = Math.max(Math.max(...[...item.total_grades]), maxS);
+          minS = Math.min(Math.min(...[...item.total_grades]), minS);
+        }
+      });
     return {
-      heightLightPercent: percent > 4 ? percent - 4 : 0,
-      yData: grade?.grades.map((item) => item.total_grades?.length ?? 0),
+      yData: customData,
+      max: maxS,
+      min: minS,
+      avg: grade?.avg ?? -1,
     };
   }, [grade]);
   const bailout = useCallback(() => {
@@ -250,10 +257,11 @@ const Page: React.FC = () => {
       </View>
     </View>
   ) : (
-    <View className="classInfo">
+    <View className="classInfo mt-24">
+      <NavigationBar title="课程主页" isBackToPage />
       <View className="theClassnme">{course?.name}</View>
       <View className="teacherName">
-        {course?.school} {course?.teacher}
+        {course?.school}&nbsp;&nbsp;&nbsp;{course?.teacher}
       </View>
       <View className="p">
         综合评分: <ShowStar score={course?.composite_score} />
@@ -268,16 +276,23 @@ const Page: React.FC = () => {
           <Label3 key={keyindex} content={feature} />
         ))}
       </View>
+      <View>
+        <View className="line-container mb-2 pt-2.5 text-center text-xl text-[#3D3D3D]">
+          成绩分布
+        </View>
+      </View>
       <LineChart
         className="mx-auto text-center"
         data={yData}
         xLabels={xLabels}
-        heightLightPercent={heightLightPercent ?? 0}
+        maxScore={max}
+        minScore={min}
+        avgScore={avg}
         title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
       />
       <View>
         <View>
-          <View className="line-container pt-2.5 text-center text-xl">
+          <View className="line-container mt-2 pt-2.5 text-center text-xl text-[#3D3D3D]">
             问问同学({questionNum})
           </View>
         </View>
@@ -308,7 +323,7 @@ const Page: React.FC = () => {
           ) : (
             <View
               className="flex h-[10vh] items-center justify-center"
-              onClick={() => {
+              onTouchEnd={() => {
                 void Taro.navigateTo({
                   url: `/pages/publishQuestion/index?course_id=${courseId}`,
                 });
@@ -320,7 +335,9 @@ const Page: React.FC = () => {
         </>
       </View>
       <View>
-        <View className="line-container pt-5 text-center text-xl">最新评论</View>
+        <View className="line-container pt-5 text-center text-xl text-[#3D3D3D]">
+          评论区
+        </View>
       </View>
       {comments &&
         comments.map((comment) => (
@@ -342,7 +359,7 @@ const Page: React.FC = () => {
       {comments.length === 0 && (
         <View
           className="flex h-[10vh] items-center justify-center"
-          onClick={() => {
+          onTouchEnd={() => {
             void Taro.navigateTo({
               url: `pages/evaluate/index?id=${courseId}&name=${course?.name}`,
             });
@@ -353,7 +370,7 @@ const Page: React.FC = () => {
       )}
       <View
         className="fixed bottom-[12vh] right-8 flex flex-col items-center gap-2"
-        onClick={handleCollect}
+        onTouchEnd={handleCollect}
       >
         <View className="flex aspect-square w-14 items-center justify-center rounded-full bg-[#f9f9f2] shadow-xl">
           {collect ? (

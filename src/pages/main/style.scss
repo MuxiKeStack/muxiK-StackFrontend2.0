@@ -1,22 +1,21 @@
 .label {
   width: 145rpx;
-  height: 53rpx;
-  border-radius: 14rpx 14rpx 14rpx 14rpx;
-  font-family:
-    Segoe UI,
-    Segoe UI;
+  height: 62rpx;
+  border-radius: 24rpx;
+  font-family: SourceHanSans;
   font-weight: bold;
-  font-size: 22rpx;
-  line-height: 53rpx;
+  font-size: 28rpx;
+  line-height: 62rpx;
   text-align: center;
   font-style: normal;
   text-transform: none;
-  background: #f9f9f2;
-  color: #a5a29c;
+  background: #fffaec;
+  color: #3d3d3d;
 }
 
 .active {
-  background-color: #ffd777;
+  background-color: #eda335;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
   color: white;
 }
 
@@ -24,6 +23,7 @@
   margin-top: 35rpx;
   display: flex;
   margin-bottom: 35rpx;
-  justify-content: space-evenly;
-  gap: 20rpx;
+  justify-content: center;
+  width: 100%;
+  gap: 28rpx;
 }

@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
 /* eslint-disable import/first */
-import { Input, View } from '@tarojs/components';
+import { Input, Text, View } from '@tarojs/components';
 import { useLoad } from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 import { AtIcon } from 'taro-ui';
+
+import { NavigationBar } from '@/modules/navigation';
 
 import './style.scss';
 
@@ -45,17 +47,24 @@ const Page: React.FC = () => {
   }, []);
 
   return (
-    <View className="MyCollection">
-      <View className="mycollection_searchbar">
-        <Input className="mycollection_search_input" placeholder="搜索课程名/老师名" />
-        <AtIcon
-          className="mycollection_search_button"
-          value="search"
-          color="#3A3A3A"
-          onClick={() => {
-            //
-          }}
-        />
+    <View className="MyCollection mt-24">
+      <NavigationBar title="我的收藏" isBackToPage />
+      <View className="mycollection_searchbar flex w-full items-center justify-around">
+        <View className="h-full w-[78vw]">
+          <Input
+            className="mycollection_search_input h-full rounded-3xl bg-[#FFFAEC]"
+            placeholder="搜索课程名/老师名"
+          />
+          <AtIcon
+            className="mycollection_search_button"
+            value="search"
+            color="#8C8C8C"
+            // onClick={() => {}}
+          />
+        </View>
+        <Text className="h-full text-base text-[#8C8C8C]" style={{ lineHeight: '72rpx' }}>
+          搜索
+        </Text>
       </View>
       <View className="mycollection_text">我的收藏 ({collection.length})</View>
       <View className="mycollection_collections">

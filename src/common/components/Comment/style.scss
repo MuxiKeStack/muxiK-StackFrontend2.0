@@ -50,7 +50,7 @@ $content-line-height: 30;
     position: relative;
     margin-left: 45rpx;
     margin-right: 45rpx;
-    background: #f9f9f2;
+    background: #fffaec;
     border-radius: 43rpx 43rpx 43rpx 43rpx;
     opacity: 1;
     border: 2rpx solid #f9f9f2;
@@ -66,7 +66,7 @@ $content-line-height: 30;
         Segoe UI;
       font-weight: bold;
       font-size: 33rpx;
-      color: #565552;
+      color: #3d3d3d;
       font-style: normal;
       text-transform: none;
       margin-bottom: 40rpx;
@@ -127,13 +127,14 @@ $content-line-height: 30;
     position: relative;
     width: 50rpx;
     height: 50rpx;
-    box-shadow: 0rpx 5rpx 11rpx 2rpx rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
     opacity: 1;
     border-radius: 50%;
     display: inline-block;
     text-align: center;
     line-height: 40rpx;
-    margin-left: 15rpx;
+    margin-left: 30rpx;
     margin-right: 15rpx;
     > Iconfont {
       position: absolute;
@@ -144,8 +145,9 @@ $content-line-height: 30;
   }
   .text1 {
     font-size: 28rpx;
-    font-weight: bold;
-    color: black;
+    // font-weight: bold;
+    // color: black;
+    color: #3d3d3d;
     line-height: 50rpx;
   }
 }

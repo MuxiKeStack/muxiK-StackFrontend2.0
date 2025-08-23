@@ -6,6 +6,8 @@ import { Picker, Text, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
+import { NavigationBar } from '@/modules/navigation';
+
 import './style.scss';
 
 // eslint-disable-next-line import/first
@@ -52,6 +54,7 @@ const Page: React.FC = () => {
               : '0';
       const classes: Array<CouresProps> = await getUserCourses(yearValue, semValue);
       setMyclasses(classes);
+      console.log('获取到的课程:', classes);
     } catch (error) {
       console.error('Error fetching user courses:', error);
     }
@@ -96,7 +99,12 @@ const Page: React.FC = () => {
   };
 
   return (
-    <View className="h-[100vh] w-full overflow-auto">
+    <View className="mt-24 w-full overflow-auto" style={{ height: 'cal(100vh - 96px)' }}>
+      <NavigationBar
+        title="我的课程"
+        isBackToPage
+        style={{ backgroundColor: '#FFFFFF' }}
+      />
       <View className="select flex-1">
         <Picker
           mode="multiSelector"
@@ -114,9 +122,16 @@ const Page: React.FC = () => {
       </View>
       <View className="classes">
         {myclasses.map((each, index) => (
-          <View key={index} className="eachClass" onClick={() => handleClassClick(each)}>
+          <View
+            key={index}
+            className="eachClass"
+            onTouchEnd={() => handleClassClick(each)}
+          >
             <View className="circle"></View>
-            <View className="flex flex-col" onClick={() => handleNavToCourseInfo(each)}>
+            <View
+              className="flex flex-col"
+              onTouchEnd={() => handleNavToCourseInfo(each)}
+            >
               <Text className="classname" overflow="ellipsis">
                 {each.name}
               </Text>

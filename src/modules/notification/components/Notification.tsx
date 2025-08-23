@@ -10,6 +10,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { VirtualList } from '@/common/components';
 import { formatIsoDate, get, getUserInfo } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
+import { NavigationBar } from '@/modules/navigation';
 import { StatusResponse } from '@/pages/evaluate';
 
 import { MessageItem, OfficialItem } from './Items';
@@ -52,7 +53,7 @@ const Notification: React.FC = memo(() => {
               parentRes = await get(
                 `/comments/${detailRes.data?.parent_comment_id ?? 0}/detail`
               );
-              console.log('tag');
+              // console.log('tag');
               user = await getUserInfo(item.Ext.commentator);
             } else if (itemType === 'Support') {
               detailRes =
@@ -157,7 +158,8 @@ const Notification: React.FC = memo(() => {
   }, [tab]);
 
   return !test ? (
-    <View className="flex flex-col">
+    <View className="mt-20 flex flex-col">
+      <NavigationBar title="消息" isTabPage />
       <View className="flex flex-col gap-4 p-4">
         {[
           {
@@ -180,7 +182,8 @@ const Notification: React.FC = memo(() => {
       </View>
     </View>
   ) : (
-    <View className="flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll pb-[13vh]">
+    <View className="mt-5 flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll pb-[13vh]">
+      <NavigationBar title="消息" isTabPage />
       <TabBar
         tab={tab}
         //eslint-disable-next-line @typescript-eslint/no-shadow

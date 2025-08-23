@@ -2,8 +2,8 @@
   display: flex;
   align-items: center; /* 垂直居中 */
   justify-content: space-between;
-  width: 100vw;
-  height: 15vh;
+  width: calc(100% - 10vw);
+  height: 13vh;
 }
 .avatar-text {
   font-size: 4.5vw;
@@ -29,12 +29,12 @@
   border-radius: 50%;
   border: #ffd777 solid 1.81rpx;
   align-content: center;
-  margin-right: 25%;
+  // margin-right: 25%;
 }
 .nickname-container {
   display: flex;
-  width: 100vw;
-  height: 15vh;
+  width: calc(100% - 10vw);
+  height: 13vh;
   align-items: center; /* 垂直居中 */
   justify-content: space-between;
 }
@@ -50,11 +50,10 @@
   height: 43.48rpx;
   width: 50vw;
   font-size: 4.5vw;
-  //margin-left: 30%;
-  margin-right: 25%;
   display: flex;
   gap: 1vw;
   align-items: center;
+  justify-content: flex-end;
 }
 .editor-nickname {
   width: 4vw;
@@ -71,17 +70,21 @@
   align-items: center; /* 垂直居中 */
   justify-content: space-between;
   width: 100vw;
-  height: 15vh;
+  height: 13vh;
 }
 .cancel-button {
-  width: 300rpx;
-  height: 81rpx;
-  background: #f9f9f2;
+  width: 220rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: 16rpx;
+  background: #C2C2C2;
 }
 .save-button {
-  width: 300rpx;
-  height: 81rpx;
-  background: #f19900;
+  width: 220rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: 16rpx;
+  background: #F9B94F;
   color: white;
 }
 .logout-button {
