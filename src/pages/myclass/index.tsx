@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import './style.scss';
 
 import { getUserCourses } from '@/common/api/getUserCourses';
+import { generateSemesterOptions } from '@/common/utils/generateSemesterOptions';
 import { NavigationBar } from '@/modules/navigation';
 
 interface CouresProps {
@@ -22,15 +23,10 @@ interface CouresProps {
 
 const Page: React.FC = () => {
   //待优化点 别写死了
-  const [yearSelector] = useState<string[]>([
-    '2022-2023学年',
-    '2023-2024学年',
-    '2024-2025学年',
-    '2025-2026学年',
-  ]);
+  const [yearSelector, setYearSelector] = useState<string[]>([]);
   const [semSelector] = useState(['第一学期', '第二学期', '第三学期', '全部学期']);
-  const [year, setYear] = useState('2024-2025学年');
-  const [sem, setSem] = useState('第二学期');
+  const [year, setYear] = useState<string>('');
+  const [sem, setSem] = useState<string>('');
 
   const [myclasses, setMyclasses] = useState<CouresProps[]>([]);
 
@@ -39,6 +35,7 @@ const Page: React.FC = () => {
     setYear(yearSelector[yearIndex]);
     setSem(semSelector[semIndex]);
   };
+
   async function fetchClasses() {
     try {
       const yearValue = year.split('-')[0];
@@ -78,6 +75,12 @@ const Page: React.FC = () => {
   }, [year, sem]);
   useDidShow(() => {
     fetchCourses();
+    generateSemesterOptions().then(({ yearOptions, currentSemester }) => {
+      console.log(yearOptions, currentSemester);
+      setYearSelector(yearOptions);
+      setYear(currentSemester.year);
+      setSem(currentSemester.sem);
+    });
   });
 
   const handleClassClick = (item: CouresProps) => {
