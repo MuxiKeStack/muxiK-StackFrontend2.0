@@ -41,6 +41,7 @@ Taro.onAppShow(() => {
   Taro.setStorageSync('visitor', false);
 });
 Taro.addInterceptor(interceptor);
+
 class App extends Component<PropsWithChildren> {
   state = {
     isLoading: true,
