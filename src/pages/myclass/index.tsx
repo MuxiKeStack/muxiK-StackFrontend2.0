@@ -75,7 +75,7 @@ const Page: React.FC = () => {
   }, [year, sem]);
   useDidShow(() => {
     fetchCourses();
-    generateSemesterOptions().then(({ yearOptions, currentSemester }) => {
+    void generateSemesterOptions().then(({ yearOptions, currentSemester }) => {
       console.log(yearOptions, currentSemester);
       setYearSelector(yearOptions);
       setYear(currentSemester.year);

@@ -7,16 +7,16 @@ export interface semesterOptionsType {
 }
 
 export const generateSemesterOptions = async (): Promise<semesterOptionsType> => {
-  const response = await get('/users/profile');
+  const response = (await get('/users/profile')) as ResponseUser;
   const { studentId } = response.data;
 
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
-  const firstOfUserYear = Number(studentId.slice(0, 4));
+  const firstOfUserYear = Number(studentId?.slice(0, 4) ?? new Date().getFullYear());
 
   const yearOptions: string[] = [];
   //   const semesterOptions: string[] = [];
-  let currentSemester: { year: string; sem: string } = {} as {
+  const currentSemester: { year: string; sem: string } = {} as {
     year: string;
     sem: string;
   };
