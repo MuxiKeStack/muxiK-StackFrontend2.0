@@ -14,7 +14,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module",
     "project": true,
-    "tsconfigRootDir": "./tsconfig.json"
+    "tsconfigRootDir": "."
   },
   "rules": {
     "import/first": "off",
