@@ -1,0 +1,24 @@
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-center {
+  height: 100%;
+}
+
+.loading-inline {
+  padding: 20rpx 0;
+}
+
+.loading-indicator {
+  font-size: 40px;
+}
+
+.loading-text {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #666;
+}

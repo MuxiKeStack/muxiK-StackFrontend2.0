@@ -1,0 +1,128 @@
+.feedback-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 30rpx;
+  background-color: #f8f9fb;
+  box-sizing: border-box;
+}
+
+.feedback-history-list {
+  flex: 1;
+  margin-top: 160rpx;
+  width: 100%;
+}
+
+.feedback-item {
+  padding: 30rpx;
+  padding-bottom: 24rpx;
+  height: 250rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+  line-height: normal;
+  min-height: 160rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.item-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.item-tag {
+  width: 98rpx;
+  height: 32rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8rpx;
+  border-radius: 20rpx;
+  background-color: #fffbf0;
+}
+
+.item-tag-text {
+  font-size: 24rpx;
+  color: #eda335;
+}
+
+.item-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.item-content {
+  height: 130rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 12rpx;
+}
+
+.item-text {
+  font-size: 28rpx;
+  color: #4b5563;
+}
+
+.item-footer {
+  margin-top: 10rpx;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.item-status-bg {
+  padding: 8rpx 24rpx;
+  border-radius: 24rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-status-text {
+  font-size: 24rpx;
+}
+
+.item-status-bg.pending {
+  background-color: #f0f1f5;
+}
+.item-status-text.pending {
+  color: #4b5563;
+}
+
+.item-status-bg.processing {
+  background-color: rgba(237, 163, 53, 0.1);
+}
+.item-status-text.processing {
+  color: #f2a93b;
+}
+
+.item-status-bg.resolved {
+  background-color: #e6f7ef;
+}
+.item-status-text.resolved {
+  color: #10b981;
+}
+
+.no-more {
+  text-align: center;
+  color: #999;
+  font-size: 24rpx;
+  margin-top: 24rpx;
+  display: block;
+}

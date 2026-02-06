@@ -44,6 +44,7 @@ const AuthForm: React.FC = memo(() => {
       if (!userData.userInfo) {
         handleGetUserProfile();
       }
+      Taro.setStorageSync('student_id', userData.studentId);
       void handleLogin({
         student_id: userData.studentId,
         password: userData.password,

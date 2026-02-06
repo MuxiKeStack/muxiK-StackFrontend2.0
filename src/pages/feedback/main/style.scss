@@ -1,0 +1,89 @@
+.faq-container {
+  height: 100vh;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  padding: 32rpx;
+  box-sizing: border-box;
+  background-color: #ffffff;
+}
+
+.searchBar {
+  margin-top: 180rpx;
+}
+
+.content {
+  margin-top: 32rpx;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+
+  .header-text {
+    font-weight: 600;
+    font-size: 34rpx;
+    color: #000;
+  }
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.empty {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.bottom {
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 20rpx;
+
+  .button {
+    z-index: 100;
+    background-color: #f2a93b;
+    border-radius: 44rpx;
+    width: 80%;
+    height: 88rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24rpx;
+
+    .button-text {
+      color: #fff;
+      font-size: 34rpx;
+      letter-spacing: 4rpx;
+    }
+  }
+
+  .group {
+    display: flex;
+    align-items: center;
+    font-size: 26rpx;
+    color: #999;
+
+    .group-number {
+      margin: 0 10rpx;
+      color: #999;
+    }
+
+    .copy {
+      color: #f2a93b;
+    }
+  }
+}
