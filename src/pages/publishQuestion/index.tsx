@@ -8,7 +8,7 @@ import { Icon, TopBackground } from '@/common/assets/img/login';
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
-import { formatIsoDate, get, post } from '@/common/utils';
+import { formatDate, get, post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 
 import { StatusResponse } from '../evaluate';
@@ -185,7 +185,7 @@ const Page: React.FC = () => {
     <View>
       <CourseInfo name={course?.name} school={course?.school} teacher={course?.teacher} />
       <View className="publishView">
-        <PublishHeader avatarUrl={avatarUrl} nickName={nickName} date={formatIsoDate()} />
+        <PublishHeader avatarUrl={avatarUrl} nickName={nickName} date={formatDate()} />
         {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           <Image src={askicon} className="askicon"></Image>

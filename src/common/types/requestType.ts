@@ -30,6 +30,7 @@ export interface RequestConfig {
   tokenConfig?: TokenConfig;
   header?: Record<string, string>;
   upload?: UploadConfig;
+  returnFullResponse?: boolean;
   onRequestError?: (error: unknown) => void;
 }
 

@@ -59,7 +59,7 @@ const CollectionCourse: React.FC<CollectionCourseProps> = ({
       break;
   }
   return (
-    <View className="collection_course" onTouchEnd={handleClickToClass}>
+    <View className="collection_course" onClick={handleClickToClass}>
       <View className="collection_course_type">{courseIcon}</View>
       <View className="collection_course_detail">
         <View className="collection_course_name">{courseName}</View>

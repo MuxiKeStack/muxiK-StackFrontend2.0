@@ -60,6 +60,7 @@ function transformRecordsToFeedbackItems(
       source: item.record['问题来源'] || '未知来源',
       status: item.record['进度'] || '未知状态',
       type: item.record['问题类型'] || '未知类型',
+      reply: item.record['回复内容'] || '暂无回复',
     },
   }));
 }
@@ -123,39 +124,55 @@ const FeedbackHistory = () => {
     }
 
     const getStatusClass = (status: string) => {
-      if (status === '待处理') return 'pending';
-      if (status === '处理中') return 'processing';
-      if (status === '已完成') return 'resolved';
-      return 'pending';
+      if (status === '待处理') return 'feedback_history_pending';
+      if (status === '处理中') return 'feedback_history_processing';
+      if (status === '已完成') return 'feedback_history_resolved';
+      return 'feedback_history_pending';
     };
 
     return (
       <View
-        className="feedback-item"
+        className="feedback_history_item"
         style={style}
         key={item.record_id}
-        onTouchStart={handleNavi}
+        onClick={handleNavi}
       >
-        <View className="item-header">
-          <View className="item-tags-row">
-            <View className="item-tag">
-              <Text className="item-tag-text">{item.fields.source || '未知来源'}</Text>
+        <View className="feedback_history_item_header">
+          <View className="feedback_history_item_tags_row">
+            <View className="feedback_history_item_tag">
+              <Text className="feedback_history_item_tag_text">
+                {item.fields.source || '未知来源'}
+              </Text>
             </View>
-            <View className="item-tag">
-              <Text className="item-tag-text">{item.fields.type || '其他问题'}</Text>
+            <View className="feedback_history_item_tag">
+              <Text className="feedback_history_item_tag_text">
+                {item.fields.type || '其他问题'}
+              </Text>
             </View>
           </View>
-          <Text className="item-time">{item.fields.submitTime}</Text>
+          <Text className="feedback_history_item_time">{item.fields.submitTime}</Text>
         </View>
 
-        <View className="item-content">
-          <Text className="item-title">反馈内容</Text>
-          <Text className="item-text">{spliceText(item.fields.content)}</Text>
+        <View className="feedback_history_item_content">
+          <Text className="feedback_history_item_title">反馈内容</Text>
+          <Text className="feedback_history_item_text">
+            {spliceText(item.fields.content)}
+          </Text>
         </View>
 
-        <View className="item-footer">
-          <View className={`item-status-bg ${getStatusClass(item.fields.status)}`}>
-            <Text className={`item-status-text ${getStatusClass(item.fields.status)}`}>
+        <View className="feedback_history_item_footer">
+          <View className="feedback_history_reply_container">
+            <Text className="feedback_history_reply_text">
+              回复: {spliceText(item.fields.reply, 15)}
+            </Text>
+          </View>
+
+          <View
+            className={`feedback_history_item_status_bg ${getStatusClass(item.fields.status)}`}
+          >
+            <Text
+              className={`feedback_history_item_status_text ${getStatusClass(item.fields.status)}`}
+            >
               {item.fields.status}
             </Text>
           </View>
@@ -165,14 +182,14 @@ const FeedbackHistory = () => {
   }, []);
 
   return (
-    <View className="feedback-container">
+    <View className="feedback_history_container">
       <NavigationBar title="反馈历史" isBackToPage />
       {feedbackHistory.length === 0 && isLoading ? (
         <Loading text="加载中..." />
       ) : (
         <>
           <VirtualList
-            className="feedback-history-list"
+            className="feedback_history_list"
             height="100%"
             width="100%"
             itemData={feedbackHistory}

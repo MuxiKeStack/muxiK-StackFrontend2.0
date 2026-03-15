@@ -1,0 +1,83 @@
+.courseLabel {
+  margin: auto;
+  width: 85%;
+  padding: 24rpx 36rpx;
+  border-radius: 36rpx;
+  opacity: 1;
+  margin-bottom: 47rpx;
+  background: #ffffff;
+  box-shadow:
+    0 -4rpx 6rpx rgba(0, 0, 0, 0.07),
+    0 4rpx 6rpx rgba(0, 0, 0, 0.07);
+
+  .class_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 36rpx;
+
+    .class_info {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 16rpx;
+
+      .class_name {
+        max-width: 330rpx;
+        font-size: 30rpx;
+        font-family:
+          Segoe UI-Bold,
+          Segoe UI;
+        color: #3d3d3d;
+        font-weight: 600;
+
+        letter-spacing: 0rpx;
+      }
+
+      .class_teacher {
+        font-size: 26rpx;
+        font-family:
+          Segoe UI-Bold,
+          Segoe UI;
+        color: #9ca3af;
+        white-space: nowrap;
+        letter-spacing: 4rpx;
+      }
+
+      .star_container {
+        margin-left: 16rpx;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .class_type_container {
+    display: flex;
+    align-items: center;
+    margin: 8rpx 0 24rpx;
+    width: 100%;
+
+    .class_type_text {
+      font-size: 22rpx;
+      color: #9ca3af;
+      letter-spacing: 4rpx;
+    }
+  }
+
+  .class_feature_container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 14rpx;
+  }
+
+  .class_footer {
+    margin-top: 16rpx;
+    padding-top: 16rpx;
+    display: flex;
+    align-items: center;
+  }
+}

@@ -2,22 +2,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Image, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AtIcon } from 'taro-ui';
-
-import './style.scss';
-
 import { Icon, TopBackground } from '@/common/assets/img/login';
-import { Comment } from '@/common/components';
-import AnswerToStudent from '@/common/components/AnswerToStudent';
+import { CourseReview, Drawer } from '@/common/components';
 import LineChart from '@/common/components/chart';
-import Label3 from '@/common/components/label3/label3';
+import FeatureLabel from '@/common/components/FeatureLabel';
 import ShowStar from '@/common/components/showStar/showStar';
 import { get, post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 import { NavigationBar } from '@/modules/navigation';
+import { Image, ScrollView, Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { AtIcon } from 'taro-ui';
+import QAlist from './component/QAlist';
+import './index.scss';
+import { mockQuestionList, mockQuestionNum } from './mock';
 
 import { StatusResponse } from '../evaluate';
 
@@ -41,12 +40,13 @@ function translateCourseProperty(englishDescription) {
 }
 
 const Page: React.FC = () => {
+  const [drawerOpened, setDrawerOpened] = useState(false);
   const [course, setCourse] = useState<Course | null>(null);
   const [courseId, setCourseId] = useState<string | null>(null);
   const [comments, setComments] = useState<CommentInfoType[]>([]);
   const [grade, setGrade] = useState<GradeChart>();
-  const [questionNum, setQuestionNum] = useState<number>(0);
-  const [questionlist, setQuestionlist] = useState<WebQuestionVo[]>([]);
+  const [questionNum, setQuestionNum] = useState<number>(mockQuestionNum);
+  const [questionlist, setQuestionlist] = useState<WebQuestionVo[]>(mockQuestionList);
   const [collect, setCollect] = useState<boolean | undefined>(course?.is_collected);
   const [test, setTest] = useState<boolean>(false);
   useEffect(() => {
@@ -131,18 +131,18 @@ const Page: React.FC = () => {
 
     if (courseId) void getCommentData();
   };
-  const fetchAnswer = async () => {
-    try {
-      const res = await get(
-        `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${3}`
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      setQuestionlist(res.data);
-    } catch (e) {
-      console.error('Failed to fetch course data:', e);
-      throw e;
-    }
-  };
+  // const fetchAnswer = async () => {
+  //   try {
+  //     const res = await get(
+  //       `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${3}`
+  //     );
+  //     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  //     setQuestionlist(res.data);
+  //   } catch (e) {
+  //     console.error('Failed to fetch course data:', e);
+  //     throw e;
+  //   }
+  // };
   const fetchGrades = async () => {
     try {
       const res = await get(`/grades/courses/${courseId}`);
@@ -157,17 +157,17 @@ const Page: React.FC = () => {
       throw err;
     }
   };
-  const getNumData = () => {
-    try {
-      void get(`/questions/count?biz=Course&biz_id=${courseId}`).then((res) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setQuestionNum(res.data);
-        Taro.hideLoading();
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  // const getNumData = () => {
+  //   try {
+  //     void get(`/questions/count?biz=Course&biz_id=${courseId}`).then((res) => {
+  //       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  //       setQuestionNum(res.data);
+  //       Taro.hideLoading();
+  //     });
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
   useEffect(() => {
     initData();
   }, [courseId]);
@@ -181,7 +181,7 @@ const Page: React.FC = () => {
         });
 
         // 并行请求数据
-        await Promise.all([fetchGrades(), getNumData(), fetchAnswer()]);
+        await Promise.all([fetchGrades()]);
       } catch (error) {
         console.error('Failed to fetch data:', error);
         void Taro.showToast({
@@ -229,7 +229,7 @@ const Page: React.FC = () => {
   }, [grade]);
   const bailout = useCallback(() => {
     void Taro.showToast({
-      title: '请先在个人主页签约成绩共享计划',
+      title: '加载课程信息失败，请稍后重试',
       icon: 'none',
     });
     setTimeout(() => {
@@ -245,141 +245,180 @@ const Page: React.FC = () => {
     return [];
   }, [course?.features]);
   return !test ? (
-    <View className="flex flex-col">
-      <Image src={TopBackground as string} className="w-full"></Image>
-      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
-        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
-          <Image src={Icon as string} className="h-full w-full"></Image>
+    <View className="classInfo_page_unauthorized_container">
+      <Image
+        src={TopBackground as string}
+        className="classInfo_page_background_image"
+      ></Image>
+      <View className="classInfo_page_unauthorized_content">
+        <View className="classInfo_page_unauthorized_icon_wrapper">
+          <Image
+            src={Icon as string}
+            className="classInfo_page_unauthorized_icon"
+          ></Image>
         </View>
-        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈
-        </Text>
+        <Text className="classInfo_page_unauthorized_text">木犀课栈</Text>
       </View>
     </View>
   ) : (
-    <View className="classInfo mt-24">
+    <View className="classInfo_page_container">
       <NavigationBar title="课程主页" isBackToPage />
-      <View className="theClassnme">{course?.name}</View>
-      <View className="teacherName">
+      <View className="classInfo_page_header_container">
+        <View className="classInfo_page_course_name">{course?.name}</View>
+        <View className="classInfo_page_collect_icon_wrapper" onClick={handleCollect}>
+          {collect ? (
+            <AtIcon value="star-2" size={25} color="#FE9F00" />
+          ) : (
+            <AtIcon value="star" size={25} color="#FE9F00" />
+          )}
+        </View>
+      </View>
+      <View className="classInfo_page_teacher_info">
         {course?.school}&nbsp;&nbsp;&nbsp;{course?.teacher}
       </View>
-      <View className="p">
+      <View className="classInfo_page_info_row">
         综合评分: <ShowStar score={course?.composite_score} />
-        <Text>（共{course?.rater_count}人评价）</Text>
+        <Text className="classInfo_page_text">（共{course?.rater_count}人评价）</Text>
       </View>
-      <View className="p">
-        课程分类: <Label3 content={translateCourseProperty(course?.type)} />
+      <View className="classInfo_page_info_row">
+        课程分类: <FeatureLabel checked content={translateCourseProperty(course?.type)} />
       </View>
-      <View className="p">
-        课程特点: {}
-        {featuresList.map((feature, keyindex) => (
-          <Label3 key={keyindex} content={feature} />
-        ))}
+      <View className="classInfo_page_info_row">
+        课程特点:
+        {featuresList && featuresList.length > 0 ? (
+          featuresList.map((feature, keyindex) => (
+            <FeatureLabel checked key={keyindex} content={feature} />
+          ))
+        ) : (
+          <Text className="classInfo_page_placeholder">暂无课程特点</Text>
+        )}
       </View>
-      <View>
-        <View className="line-container mb-2 pt-2.5 text-center text-xl text-[#3D3D3D]">
-          成绩分布
+      <View className="classInfo_page_info_row">
+        {/* todos: 新增的，后端没传吗？记得加，占个位先*/}
+        考核方式:
+        {featuresList && featuresList.length > 0 ? (
+          featuresList.map((feature, keyindex) => (
+            <FeatureLabel checked key={keyindex} content={feature} />
+          ))
+        ) : (
+          <Text className="classInfo_page_placeholder">暂无考核方式信息</Text>
+        )}
+      </View>
+      <View className="classInfo_page_grade_title">成绩分布</View>
+      <View className="classInfo_page_chart_container">
+        <LineChart
+          data={yData}
+          xLabels={xLabels}
+          maxScore={max}
+          minScore={min}
+          avgScore={avg}
+          title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
+        />
+      </View>
+      <View className="classInfo_page_questions_section">
+        <View className="classInfo_page_questions_title">问问同学</View>
+        <View className="classInfo_page_questions_header">
+          <Text className="classInfo_page_questions_header_title">有问题，问大家</Text>
+          <Text
+            className="classInfo_page_questions_header_more"
+            onClick={() => {
+              setDrawerOpened(true);
+            }}
+          >
+            查看更多
+          </Text>
         </View>
-      </View>
-      <LineChart
-        className="mx-auto text-center"
-        data={yData}
-        xLabels={xLabels}
-        maxScore={max}
-        minScore={min}
-        avgScore={avg}
-        title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
-      />
-      <View>
-        <View>
-          <View className="line-container mt-2 pt-2.5 text-center text-xl text-[#3D3D3D]">
-            问问同学({questionNum})
-          </View>
-        </View>
-        <>
-          {questionlist.length > 0 ? (
-            <>
-              <View className="relative">
-                {questionlist.slice(0, 3).map((question, index) => (
-                  <View key={question.id} style={{ filter: `blur(${index}px)` }}>
-                    <AnswerToStudent
-                      content={question.content}
-                      preview_answers={question.preview_answers}
-                    />
-                  </View>
-                ))}
+
+        {questionlist.length > 0 ? (
+          <>
+            {questionlist.slice(0, 2).map((question) => (
+              <View key={question.id} className="classInfo_page_question_item">
+                <View className="classInfo_page_question_title_row">
+                  <Text className="classInfo_page_question_mark">问</Text>
+                  <Text className="classInfo_page_question_title">
+                    {question.content}
+                  </Text>
+                  <Text className="classInfo_page_question_count">
+                    ({question.answer_cnt || 0}条)
+                  </Text>
+                </View>
+
+                <View className="classInfo_page_answer_preview">
+                  {question.preview_answers && question.preview_answers.length > 0 ? (
+                    question.preview_answers.slice(0, 2).map((answer, idx) => (
+                      <View key={idx} className="classInfo_page_answer_item">
+                        <Text className="classInfo_page_answer_content">
+                          {answer.content}
+                        </Text>
+                      </View>
+                    ))
+                  ) : (
+                    <Text className="classInfo_page_answer_placeholder">
+                      暂无回答，快来抢沙发
+                    </Text>
+                  )}
+                </View>
               </View>
-              <View
-                className="text-center text-xl"
-                onClick={() => {
-                  void Taro.navigateTo({
-                    url: `/pages/questionList/index?course_id=${courseId}`,
-                  });
-                }}
-              >
-                <Text>查看全部</Text>
-              </View>
-            </>
-          ) : (
-            <View
-              className="flex h-[10vh] items-center justify-center"
-              onTouchEnd={() => {
-                void Taro.navigateTo({
-                  url: `/pages/publishQuestion/index?course_id=${courseId}`,
-                });
-              }}
-            >
-              <Text className="text-center text-xl">暂无问题, 快去提问吧 》</Text>
-            </View>
-          )}
-        </>
-      </View>
-      <View>
-        <View className="line-container pt-5 text-center text-xl text-[#3D3D3D]">
-          评论区
-        </View>
-      </View>
-      {comments &&
-        comments.map((comment) => (
-          <Comment
-            classNames="mt-2"
-            showTag
-            onClick={(props) => {
-              const serializedComment = encodeURIComponent(JSON.stringify(props));
+            ))}
+          </>
+        ) : (
+          <View
+            className="classInfo_page_empty_questions"
+            onClick={() => {
               void Taro.navigateTo({
-                url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
+                url: `/pages/publishQuestion/index?course_id=${courseId}`,
               });
             }}
-            onLikeClick={() => void getCommentData()}
-            key={comment.id}
-            {...comment}
-            type="inner"
-          />
-        ))}
-      {comments.length === 0 && (
-        <View
-          className="flex h-[10vh] items-center justify-center"
-          onTouchEnd={() => {
-            void Taro.navigateTo({
-              url: `pages/evaluate/index?id=${courseId}&name=${course?.name}`,
-            });
-          }}
-        >
-          <Text className="text-center text-xl">暂无课评, 快去评价一下吧 》</Text>
-        </View>
-      )}
-      <View
-        className="fixed bottom-[12vh] right-8 flex flex-col items-center gap-2"
-        onTouchEnd={handleCollect}
-      >
-        <View className="flex aspect-square w-14 items-center justify-center rounded-full bg-[#f9f9f2] shadow-xl">
-          {collect ? (
-            <AtIcon value="star-2" size={30} color="#f18900" />
-          ) : (
-            <AtIcon value="star" size={30} color="#f18900" />
-          )}
-        </View>
+          >
+            <Text className="classInfo_page_empty_text">暂无问题，快去提问吧 》</Text>
+          </View>
+        )}
       </View>
+      <View className="classInfo_page_comments_section">
+        <View className="classInfo_page_comments_title">评论区</View>
+        <ScrollView className="classInfo_page_comments_scroll" scrollY>
+          <View className="classInfo_page_comments_list">
+            {comments &&
+              comments.map((comment) => (
+                <CourseReview
+                  classNames="classInfo_page_comment_item"
+                  showTag
+                  onClick={(props) => {
+                    const serializedComment = encodeURIComponent(JSON.stringify(props));
+                    void Taro.navigateTo({
+                      url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
+                    });
+                  }}
+                  onLikeClick={() => void getCommentData()}
+                  key={comment.id}
+                  {...comment}
+                  type="inner"
+                />
+              ))}
+          </View>
+        </ScrollView>
+        {comments.length === 0 && (
+          <View
+            className="classInfo_page_empty_comments"
+            onClick={() => {
+              void Taro.navigateTo({
+                url: `pages/evaluate/index?id=${courseId}&name=${course?.name}`,
+              });
+            }}
+          >
+            <Text className="classInfo_page_empty_questions_text">
+              暂无课评, 快去评价一下吧 》
+            </Text>
+          </View>
+        )}
+      </View>
+      <Drawer
+        isOpened={drawerOpened}
+        onClose={() => setDrawerOpened(false)}
+        title="问问同学"
+      >
+        <QAlist qas={questionlist}></QAlist>
+      </Drawer>
     </View>
   );
 };

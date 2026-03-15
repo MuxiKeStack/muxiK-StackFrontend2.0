@@ -103,6 +103,11 @@ const Page: React.FC = () => {
       }, 1000);
     });
   };
+
+  const handleCancel = () => {
+    void Taro.switchTab({ url: '/pages/profile/index' });
+  };
+
   const handleTitleSelect = (title: string) => {
     if (titleOwnership[title]) {
       setSelectedTitle(title);
@@ -129,23 +134,26 @@ const Page: React.FC = () => {
     }
   };
   // Taro.redirectTo({url:'pages/login/index'});
-  const handleLogout = () => {
-    void post('/users/logout', {});
-    Taro.removeStorageSync('shortToken');
-    Taro.removeStorageSync('visitor');
-    void Taro.removeStorageSync('longToken');
-    void Taro.reLaunch({ url: '/pages/login/index' });
-  };
+  // const handleLogout = () => {
+  //   void post('/users/logout', {});
+  //   Taro.removeStorageSync('shortToken');
+  //   Taro.removeStorageSync('visitor');
+  //   void Taro.removeStorageSync('longToken');
+  //   void Taro.reLaunch({ url: '/pages/login/index' });
+  // };
   return (
-    <View className="mt-24 w-full">
+    <View className="personal_edit_page">
       <NavigationBar title="修改个人信息" isBackToPage />
-      <View className="avatar-container">
-        <View className="avatar-text">修改头像</View>
-        <Image src={avatarUrl} onClick={chooseAvatar} className="avatar1"></Image>
+
+      <View className="avatar_container">
+        <View className="avatar_text">修改头像</View>
+        <Image src={avatarUrl} onClick={chooseAvatar} className="avatar1" />
       </View>
-      <View className="divide-line"></View>
-      <View className="nickname-container">
-        <View className="nickname-text">昵称</View>
+
+      <View className="divide_line" />
+
+      <View className="nickname_container">
+        <View className="nickname_text">昵称</View>
         <View>
           {isEditingNickname ? (
             <View className="nickname">
@@ -154,7 +162,7 @@ const Page: React.FC = () => {
                 value={editableNickName}
                 onInput={handleNicknameChange}
                 onBlur={handleNicknameSave}
-                className="nickname-input"
+                className="nickname_input"
               />
             </View>
           ) : (
@@ -163,50 +171,49 @@ const Page: React.FC = () => {
               <Image
                 src={editIcon}
                 onClick={handleEditIconClick}
-                className="editor-nickname"
-              ></Image>
+                className="editor_nickname"
+              />
             </View>
           )}
         </View>
       </View>
-      <View className="divide-line"></View>
-      <View className="title-container">
-        <View className="title-text">称号</View>
-        <View className="title-container">
+
+      <View className="divide_line" />
+
+      <View className="title_section">
+        <View className="title_text">称号</View>
+        <View className="title_buttons">
           <TitleButton
             title="知心学长"
             onClick={() => handleTitleSelect('CaringSenior')}
             isSelected={selectedTitle === 'CaringSenior'}
             isDisabled={!titleOwnership.CaringSenior}
-          ></TitleButton>
+          />
           <TitleButton
             title="课栈合伙人"
             onClick={() => handleTitleSelect('KeStackPartner')}
             isSelected={selectedTitle === 'KeStackPartner'}
             isDisabled={!titleOwnership.KeStackPartner}
-          ></TitleButton>
+          />
           <TitleButton
             title="华师有我"
             onClick={() => handleTitleSelect('CCNUWithMe')}
             isSelected={selectedTitle === 'CCNUWithMe'}
             isDisabled={!titleOwnership.CCNUWithMe}
-          ></TitleButton>
+          />
         </View>
       </View>
-      <View className="divide-line"></View>
-      <View className="mt-8 flex">
-        <Button className="cancel-button">取消</Button>
-        <Button className="save-button" onClick={handleSave}>
+
+      <View className="divide_line" />
+
+      <View className="button_container">
+        <Button className="action_button action_button_cancel" onClick={handleCancel}>
+          取消
+        </Button>
+        <Button className="action_button action_button_save" onClick={handleSave}>
           保存
         </Button>
       </View>
-      <Button
-        className="b absolute bottom-10 h-11 w-44 rounded-md bg-[#F9B94F] text-white"
-        style={{ left: '50%', transform: 'translateX(-50%)', lineHeight: '44px' }}
-        onClick={handleLogout}
-      >
-        退出登录
-      </Button>
     </View>
   );
 };

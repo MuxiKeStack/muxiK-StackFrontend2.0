@@ -36,14 +36,15 @@ export default function FeedbackDetail() {
     }
   }, [item]);
 
-  const statusClass =
-    feedbackItem.fields.status === '待处理'
+  const statusClass = feedbackItem
+    ? feedbackItem.fields.status === '待处理'
       ? 'pending'
       : feedbackItem.fields.status === '处理中'
         ? 'processing'
         : feedbackItem.fields.status === '已完成'
           ? 'resolved'
-          : 'pending';
+          : 'pending'
+    : '';
 
   useEffect(() => {
     if (!feedbackItem) return;
@@ -94,22 +95,27 @@ export default function FeedbackDetail() {
     !isLongContent || expanded ? contentText : `${contentText.slice(0, 100)}...`;
 
   return (
-    <View className="feedback-container">
+    <View className="feedback_detail_container">
       <NavigationBar title="反馈历史" isBackToPage />
+
       {/* 进度条 */}
-      <View className="feedback-progress-container">
+      <View className="feedback_detail_progress_container">
         {[1, 2, 3].map((step, i) => (
-          <View key={step} className="progress-step">
-            <View className={`circle ${statusStep === step ? 'active' : ''}`}>
-              <Text className="circle-text">{step}</Text>
+          <View key={step} className="feedback_detail_progress_step">
+            <View
+              className={`feedback_detail_circle ${statusStep === step ? 'feedback_detail_active' : ''}`}
+            >
+              <Text className="feedback_detail_circle_text">{step}</Text>
             </View>
-            <Text className={`step-label ${statusStep === step ? 'active' : ''}`}>
+            <Text
+              className={`feedback_detail_step_label ${statusStep === step ? 'feedback_detail_active' : ''}`}
+            >
               {STATUS_LABELS[i]}
             </Text>
             {i < 2 && (
-              <View className="connector-container">
+              <View className="feedback_detail_connector_container">
                 {[1, 2, 3, 4, 5].map((bar) => (
-                  <View key={bar} className="connector-bar" />
+                  <View key={bar} className="feedback_detail_connector_bar" />
                 ))}
               </View>
             )}
@@ -117,57 +123,68 @@ export default function FeedbackDetail() {
         ))}
       </View>
 
-      <ScrollView className="feedback-content">
-        <View className="card">
-          <View className="info-row">
-            <Text className="info-label">问题类型</Text>
-            <View className="type-tags">
-              <View className="tag">
-                <Text className="tag-text">{feedbackItem.fields.source}</Text>
+      <ScrollView className="feedback_detail_content">
+        <View className="feedback_detail_card">
+          <View className="feedback_detail_info_row">
+            <Text className="feedback_detail_info_label">问题类型</Text>
+            <View className="feedback_detail_type_tags">
+              <View className="feedback_detail_tag">
+                <Text className="feedback_detail_tag_text">
+                  {feedbackItem.fields.source}
+                </Text>
               </View>
-              <View className="tag">
-                <Text className="tag-text">{feedbackItem.fields.type}</Text>
+              <View className="feedback_detail_tag">
+                <Text className="feedback_detail_tag_text">
+                  {feedbackItem.fields.type}
+                </Text>
               </View>
             </View>
           </View>
 
-          <View className="info-row">
-            <Text className="info-label">进度</Text>
-            <View className={`status-bg ${statusClass}`}>
-              <Text className={`status-text ${statusClass}`}>
+          <View className="feedback_detail_info_row">
+            <Text className="feedback_detail_info_label">进度</Text>
+            <View className={`feedback_detail_status_bg ${statusClass}`}>
+              <Text className={`feedback_detail_status_text ${statusClass}`}>
                 {feedbackItem.fields.status}
               </Text>
             </View>
           </View>
 
-          <View className="info-row">
-            <Text className="info-label">时间</Text>
-            <Text className="time-text">{feedbackItem.fields.submitTime}</Text>
+          <View className="feedback_detail_info_row">
+            <Text className="feedback_detail_info_label">时间</Text>
+            <Text className="feedback_detail_time_text">
+              {feedbackItem.fields.submitTime}
+            </Text>
           </View>
 
-          <View className="feedback-section">
-            <Text className="section-title">问题描述</Text>
-            <View onTouchStart={() => isLongContent && setExpanded(!expanded)}>
-              <Text className="section-text">{displayText}</Text>
+          <View className="feedback_detail_section">
+            <Text className="feedback_detail_section_title">问题描述</Text>
+            <View onClick={() => isLongContent && setExpanded(!expanded)}>
+              <Text className="feedback_detail_section_text">{displayText}</Text>
               {isLongContent && !expanded && (
-                <Text className="section-expandText">点击查看全部</Text>
+                <Text className="feedback_detail_section_expand_text">点击查看全部</Text>
               )}
+            </View>
+            <View className="feedback_detail_reply_container">
+              <Text className="feedback_detail_reply_text">
+                回复：{feedbackItem.fields.reply}
+              </Text>
             </View>
           </View>
 
-          <View className="feedback-section">
-            <Text className="section-title">问题截图</Text>
+          <View className="feedback_detail_section">
+            <Text className="feedback_detail_section_title">问题截图</Text>
             {imageUrls.length === 0 ? (
-              <Text className="section-text">暂无图片</Text>
+              <Text className="feedback_detail_section_text">暂无图片</Text>
             ) : (
-              <ScrollView scrollX className="image-scroll">
+              <ScrollView scrollX className="feedback_detail_image_scroll">
                 {isLoading ? (
-                  <Text className="loading-text">加载中…</Text>
+                  <Text className="feedback_detail_loading_text">加载中…</Text>
                 ) : (
                   imageUrls.map((uri, idx) => (
                     <Image
                       key={idx}
-                      className="image-item"
+                      className="feedback_detail_image_item"
                       src={uri}
                       onClick={() => {
                         setPreviewUri(uri);
@@ -180,9 +197,9 @@ export default function FeedbackDetail() {
             )}
           </View>
 
-          <View className="feedback-section">
-            <Text className="section-title">联系方式</Text>
-            <Text className="section-text">
+          <View className="feedback_detail_section">
+            <Text className="feedback_detail_section_title">联系方式</Text>
+            <Text className="feedback_detail_section_text">
               {feedbackItem.fields.contact || '暂无联系方式'}
             </Text>
           </View>
@@ -191,10 +208,14 @@ export default function FeedbackDetail() {
 
       {previewVisible && (
         <View
-          className="image-preview-overlay"
-          onTouchStart={() => setPreviewVisible(false)}
+          className="feedback_detail_image_preview_overlay"
+          onClick={() => setPreviewVisible(false)}
         >
-          <Image className="image-preview" src={previewUri} mode="aspectFit" />
+          <Image
+            className="feedback_detail_image_preview"
+            src={previewUri}
+            mode="aspectFit"
+          />
         </View>
       )}
     </View>

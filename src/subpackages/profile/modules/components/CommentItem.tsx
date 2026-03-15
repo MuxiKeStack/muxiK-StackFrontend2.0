@@ -1,13 +1,13 @@
 import Taro from '@tarojs/taro';
 import { memo } from 'react';
 
-import { Comment } from '@/common/components';
+import { CourseReview } from '@/common/components';
 
 const CommentItem = memo(
   ({ id, index, data }: { id: string; index: number; data: CommentInfo[] }) => {
     const item = data[index];
     return (
-      <Comment
+      <CourseReview
         type="inner"
         {...item}
         onClick={(props) => {

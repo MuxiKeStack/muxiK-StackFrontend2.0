@@ -1,0 +1,317 @@
+@mixin line-decoration {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 27%;
+    height: 4rpx;
+    background-color: #d8d8d8;
+    position: absolute;
+  }
+  &::before {
+    left: 5%;
+  }
+  &::after {
+    right: 5%;
+  }
+}
+
+.classInfo_page_unauthorized_container {
+  display: flex;
+  flex-direction: column;
+
+  .classInfo_page_background_image {
+    width: 100%;
+  }
+
+  .classInfo_page_unauthorized_content {
+    position: absolute;
+    top: 0;
+    margin-top: 15vh;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    .classInfo_page_unauthorized_icon_wrapper {
+      height: 160px;
+      width: 160px;
+      overflow: hidden;
+      border-radius: 32px;
+      box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+      .classInfo_page_unauthorized_icon {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    .classInfo_page_unauthorized_text {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #ffd777;
+    }
+  }
+}
+.classInfo_page_container {
+  margin-top: 24%;
+
+  .classInfo_page_header_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16rpx;
+
+    .classInfo_page_course_name {
+      font-size: 43rpx;
+      font-weight: bold;
+      color: #565552;
+      text-align: center;
+    }
+
+    .classInfo_page_collect_icon_wrapper {
+      display: flex;
+      aspect-ratio: 1/1;
+      width: 55rpx;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: transparent;
+    }
+  }
+
+  .classInfo_page_teacher_info {
+    font-size: 33rpx;
+    font-weight: 400;
+    color: #3d3d3d;
+    text-align: center;
+    margin-top: 15rpx;
+    margin-bottom: 27rpx;
+  }
+
+  .classInfo_page_info_row {
+    display: flex;
+    gap: 16rpx;
+    font-size: 29rpx;
+    font-weight: 400;
+    color: #3d3d3d;
+    margin-left: 47rpx;
+    margin-bottom: 36rpx;
+
+    .classInfo_page_placeholder {
+      color: #cccccc;
+    }
+  }
+
+  .classInfo_page_text {
+    font-size: 29rpx;
+    font-weight: 400;
+    color: #3d3d3d;
+  }
+
+  .classInfo_page_grade_title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20rpx;
+    margin-bottom: 8rpx;
+    text-align: center;
+    font-size: 38rpx;
+    color: #3d3d3d;
+
+    @include line-decoration;
+  }
+
+  .classInfo_page_chart_container {
+    width: 90%;
+    margin: 24rpx auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .classInfo_page_questions_section {
+    margin-top: 10rpx;
+    padding: 0 30rpx;
+
+    .classInfo_page_questions_title {
+      padding-top: 20rpx;
+      text-align: center;
+      font-size: 38rpx;
+      color: #3d3d3d;
+
+      @include line-decoration;
+    }
+
+    .classInfo_page_questions_header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24rpx 12rpx;
+
+      .classInfo_page_questions_header_title {
+        font-size: 32rpx;
+        font-weight: bold;
+        color: #3d3d3d;
+      }
+
+      .classInfo_page_questions_header_more {
+        font-size: 28rpx;
+        color: #3d3d3d;
+        position: relative;
+        padding-right: 30rpx;
+
+        &::after {
+          content: '>';
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #3d3d3d;
+        }
+      }
+    }
+
+    .classInfo_page_question_item {
+      border-radius: 16rpx;
+      padding: 24rpx;
+      margin-bottom: 20rpx;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .classInfo_page_question_title_row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12rpx;
+        margin-bottom: 20rpx;
+
+        .classInfo_page_question_mark {
+          width: 32rpx;
+          height: 32rpx;
+          line-height: 32rpx;
+          background-color: #f9b94f;
+          color: #3d3d3d;
+          font-size: 24rpx;
+          font-weight: bold;
+          border-radius: 50%;
+          text-align: center;
+          padding: 4rpx;
+        }
+
+        .classInfo_page_question_title {
+          font-size: 32rpx;
+          font-weight: 500;
+          color: #3d3d3d;
+          flex: 1;
+        }
+
+        .classInfo_page_question_count {
+          font-size: 24rpx;
+          color: #3d3d3d;
+        }
+      }
+
+      .classInfo_page_answer_preview {
+        margin-left: 50rpx;
+
+        .classInfo_page_answer_item {
+          background-color: #ffffff;
+          padding: 16rpx 20rpx;
+          border-radius: 12rpx;
+          margin-bottom: 12rpx;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          .classInfo_page_answer_content {
+            font-size: 28rpx;
+            color: #666666;
+            line-height: 1.5;
+
+            display: -webkit-box;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .classInfo_page_answer_placeholder {
+          font-size: 28rpx;
+          color: #cccccc;
+          font-style: italic;
+          padding: 20rpx 0;
+        }
+      }
+    }
+
+    .classInfo_page_empty_questions {
+      display: flex;
+      height: 5vh;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f8f8;
+      border-radius: 16rpx;
+      margin-top: 20rpx;
+
+      .classInfo_page_empty_text {
+        font-size: 36rpx;
+        color: #999999;
+        padding: 20rpx 0;
+      }
+    }
+  }
+
+  .classInfo_page_comments_section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24rpx;
+
+    .classInfo_page_comments_title {
+      padding-top: 20rpx;
+      text-align: center;
+      font-size: 38rpx;
+      color: #3d3d3d;
+
+      @include line-decoration;
+    }
+
+    .classInfo_page_comments_scroll {
+      height: 100%;
+
+      .classInfo_page_comments_list {
+        display: flex;
+        flex-direction: column;
+        gap: 36rpx;
+        margin-bottom: 5%;
+      }
+    }
+
+    .classInfo_page_empty_comments {
+      display: flex;
+      height: 10vh;
+      align-items: flex-start;
+      justify-content: center;
+
+      .classInfo_page_empty_text {
+        font-size: 36rpx;
+        color: #999999;
+        font-style: italic;
+        padding: 20rpx 0;
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ import { AtFloatLayout } from 'taro-ui';
 
 import './style.scss';
 
-import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
+import { ReviewDiscussion } from '@/common/components';
 import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
 import QuestionDetail from '@/common/components/QuestionDetail/QuestionDetail';
 import { get, post } from '@/common/utils';
@@ -298,7 +298,7 @@ const Page: React.FC = () => {
         >
           <View onClick={handleClearReply} className="relative h-full pb-[60px]">
             {commentsLoaded && (
-              <CommentComponent
+              <ReviewDiscussion
                 comments={allComments}
                 onCommentClick={handleCommentClick}
               />

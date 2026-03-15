@@ -1,0 +1,26 @@
+.title_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: 100rpx;
+  padding: 12rpx 32rpx;
+  border: 1rpx solid #cccccc;
+  background-color: white;
+  color: black;
+
+  .title_button_text {
+    font-size: 24rpx;
+    color: black;
+  }
+
+  &_selected {
+    border-color: #f9b94f;
+    background-color: #f9b94f;
+
+    .title_button_text {
+      font-size: 24rpx;
+      color: white;
+    }
+  }
+}

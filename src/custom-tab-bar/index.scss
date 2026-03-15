@@ -10,22 +10,57 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-}
 
-.add_button {
-  width: 8vh;
-  height: 8vh;
-  background-color: #f18900;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
+  .tab-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    flex: 1;
+    padding: 1vh 0;
 
-.add_sign {
-  color: white;
-  font-size: 8vh;
-  position: relative;
-  bottom: 0.5vh;
+    .tab-text {
+      font-size: 1.5vh;
+      color: #1f1f1f;
+      font-weight: 400;
+      transition: color 0.3s ease;
+
+      &.active {
+        color: #f18900;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .add_button {
+    width: 8vh;
+    height: 8vh;
+    background-color: #f18900;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; // 为伪元素提供定位参考
+
+    // 横线
+    &::before {
+      content: '';
+      position: absolute;
+      width: 4vh;
+      height: 0.6vh;
+      background-color: white;
+      border-radius: 0.2vh;
+    }
+
+    // 竖线
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0.6vh;
+      height: 4vh;
+      background-color: white;
+      border-radius: 0.2vh;
+    }
+  }
 }

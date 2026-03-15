@@ -1,0 +1,25 @@
+.searchLabel {
+  display: inline-flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 40rpx;
+  padding: 0 30rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
+  margin-top: 24rpx;
+  padding: 12rpx 36rpx;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0rpx 2rpx 4rpx rgba(0, 0, 0, 0.05);
+
+  .labeltext {
+    font-size: 26rpx;
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    font-weight: 500;
+    color: #3a3a3a;
+    line-height: 40rpx;
+    white-space: nowrap;
+    text-align: center;
+  }
+}

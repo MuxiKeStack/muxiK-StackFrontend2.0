@@ -2,8 +2,6 @@ import Taro from '@tarojs/taro';
 
 import { TokenConfig } from '@/common/types/requestType';
 
-import { BASE_URL } from '../../constants';
-
 export async function getStoredToken(config?: TokenConfig): Promise<string> {
   try {
     if (!config) {
@@ -62,7 +60,7 @@ export async function refreshToken(config?: TokenConfig): Promise<string> {
       // todos: 未完成,后端貌似没有这个接口,相信后人完成
       const response = await Taro.request({
         method: 'GET',
-        url: `${BASE_URL}/users/refresh_token`,
+        url: `/users/refresh_token`,
         header: { Authorization: `Bearer ${longToken}` },
       });
 

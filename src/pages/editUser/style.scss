@@ -1,94 +1,134 @@
-.avatar-container {
-  display: flex;
-  align-items: center; /* 垂直居中 */
-  justify-content: space-between;
-  width: calc(100% - 10vw);
-  height: 13vh;
-}
-.avatar-text {
-  font-size: 4.5vw;
-  width: 20vw;
-  height: 43.48rpx;
-  align-content: center;
-  color: #565552;
-  margin-left: 10%;
-}
-.title-text {
-  font-size: 4.5vw;
-  width: 20vw;
-  height: 43.48rpx;
-  align-content: center;
-  color: #565552;
-  margin-left: 10%;
-}
+.personal_edit_page {
+  width: 100%;
+  margin-top: 24%;
 
-.avatar1 {
-  background-color: white;
-  width: 10vh;
-  height: 10vh;
-  border-radius: 50%;
-  border: #ffd777 solid 1.81rpx;
-  align-content: center;
-  // margin-right: 25%;
-}
-.nickname-container {
-  display: flex;
-  width: calc(100% - 10vw);
-  height: 13vh;
-  align-items: center; /* 垂直居中 */
-  justify-content: space-between;
-}
-.nickname-text {
-  font-size: 4.5vw;
-  width: 20vw;
-  height: 43.48rpx;
-  align-content: center;
-  color: #565552;
-  margin-left: 10%;
-}
-.nickname {
-  height: 43.48rpx;
-  width: 50vw;
-  font-size: 4.5vw;
-  display: flex;
-  gap: 1vw;
-  align-items: center;
-  justify-content: flex-end;
-}
-.editor-nickname {
-  width: 4vw;
-  height: 4vw;
-}
-.divide-line {
-  border: 3.2rpx dashed #ffd777;
-  width: 90%;
-  margin: 0 auto;
-}
+  .divide_line {
+    width: 94%;
+    margin: 0 auto;
+    border-bottom: 2px solid #ffd777;
+  }
 
-.title-container {
-  display: flex;
-  align-items: center; /* 垂直居中 */
-  justify-content: space-between;
-  width: 100vw;
-  height: 13vh;
-}
-.cancel-button {
-  width: 220rpx;
-  height: 72rpx;
-  line-height: 72rpx;
-  border-radius: 16rpx;
-  background: #c2c2c2;
-}
-.save-button {
-  width: 220rpx;
-  height: 72rpx;
-  line-height: 72rpx;
-  border-radius: 16rpx;
-  background: #f9b94f;
-  color: white;
-}
-.logout-button {
-  margin-top: 10vw;
-  width: 40vw;
-  height: 10vh;
+  .avatar_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 40rpx;
+    width: calc(100% - 80rpx);
+    height: 10vh;
+
+    .avatar_text {
+      font-size: 4.5vw;
+      width: 20vw;
+      height: 43.48rpx;
+      align-content: center;
+      color: #565552;
+    }
+
+    .avatar1 {
+      background-color: white;
+      width: 8vh;
+      height: 8vh;
+      border-radius: 50%;
+      border: #ffd777 solid 1.81rpx;
+      align-content: center;
+    }
+  }
+
+  .nickname_container {
+    display: flex;
+    margin: 0 40rpx;
+    width: calc(100% - 80rpx);
+    height: 10vh;
+    align-items: center;
+    justify-content: space-between;
+
+    .nickname_text {
+      font-size: 4.5vw;
+      width: 20vw;
+      height: 43.48rpx;
+      align-content: center;
+      color: #565552;
+    }
+
+    .nickname {
+      height: 43.48rpx;
+      width: 50vw;
+      font-size: 4.5vw;
+      display: flex;
+      gap: 1vw;
+      align-items: center;
+      justify-content: flex-end;
+
+      .nickname_input {
+        text-align: right;
+        width: 100%;
+      }
+
+      .editor_nickname {
+        width: 4vw;
+        height: 4vw;
+      }
+    }
+  }
+
+  .title_section {
+    display: flex;
+    align-items: center;
+    margin: 0 40rpx;
+    width: calc(100% - 80rpx);
+    height: 10vh;
+
+    .title_text {
+      font-size: 4.5vw;
+      width: 20vw;
+      height: 43.48rpx;
+      align-content: center;
+      color: #565552;
+    }
+
+    .title_buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 20rpx;
+    }
+  }
+
+  .button_container {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    bottom: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 40rpx;
+
+    .action_button {
+      width: 220rpx;
+      height: 72rpx;
+      line-height: 72rpx;
+      border-radius: 36rpx;
+      font-size: 36rpx;
+      border: none;
+
+      &_cancel {
+        background: #c2c2c2;
+        color: #ffffff;
+      }
+
+      &_save {
+        background: #f9b94f;
+        color: #ffffff;
+      }
+    }
+  }
+
+  .logout_button {
+    margin-top: 10vw;
+    width: 40vw;
+    height: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

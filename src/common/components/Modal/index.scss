@@ -1,4 +1,4 @@
-.modal-back {
+.modal_back {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,97 +6,169 @@
   top: 0;
   left: 0;
   right: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   z-index: 9999;
   background-color: rgba(0, 0, 0, 0.2);
-}
 
-.modal-overlay {
-  flex: 1;
-  display: flex;
-}
+  .modal_overlay {
+    flex: 1;
+    display: flex;
 
-.modal-overlay.middle {
-  align-items: center;
-  justify-content: center;
-  padding: 0 40rpx;
-}
+    &.middle {
+      align-items: center;
+      justify-content: center;
+      padding: 0 40rpx;
+    }
 
-.modal-overlay.bottom {
-  align-items: center;
-  justify-content: flex-end;
-}
+    &.bottom {
+      align-items: center;
+      justify-content: flex-end;
+    }
 
-.modal-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: transparent;
-}
+    .modal_background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: transparent;
+    }
 
-.modal-content {
-  width: 92%;
-  border-radius: 20px;
-  margin: 0;
-  overflow: hidden;
-  background-color: #fff;
-}
+    .modal_content {
+      width: 92%;
+      border-radius: 20px;
+      margin: 0;
+      overflow: hidden;
+      background-color: #fff;
 
-.transparent-modal-content {
-  width: 92%;
-  border-radius: 20px;
-  margin: 0;
-}
+      .modal_title_container {
+        margin-top: 24px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
 
-.modal-children {
-  margin-top: 24px;
-  padding: 0 30px;
-  text-align: center;
-}
+        .model_title {
+          font-size: 32rpx;
+          font-weight: 600;
+          color: #000000;
+          line-height: 32rpx;
+        }
+      }
 
-.modal-title {
-  margin-top: 24px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
+      .modal_children_container {
+        margin-top: 24px;
+        padding: 0 30px;
+        text-align: center;
 
-.bottom-choice {
-  margin-top: 20px;
-  flex-direction: row;
-  justify-content: space-evenly;
-  margin-bottom: 30px;
-  display: flex;
-}
+        .modal_children {
+          font-size: 28rpx;
+          line-height: 42rpx;
+          color: #374151;
+        }
+      }
 
-.cancel-view {
-  border: 1px solid #eda335;
-  background-color: #ffffff;
-}
+      .bottom_choice {
+        margin-top: 20px;
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin-bottom: 30px;
+        display: flex;
 
-.cancel-text {
-  color: #eda335;
-}
+        .button_style {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 16rpx 56rpx;
+          border-radius: 50rpx;
+          text-align: center;
+          box-sizing: border-box;
+        }
 
-.confirm-view {
-  background-color: #eda335;
-}
+        .cancel_view {
+          border: 1px solid #eda335;
+          background-color: #ffffff;
 
-.confirm-text {
-  color: #ffffff;
-}
+          .cancel_text {
+            color: #eda335;
+          }
+        }
 
-.button-style {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16rpx 56rpx;
-  border-radius: 50rpx;
-  text-align: center;
+        .confirm_view {
+          background-color: #eda335;
 
-  box-sizing: border-box;
+          .confirm_text {
+            color: #ffffff;
+          }
+        }
+      }
+    }
+
+    .transparent_modal_content {
+      width: 92%;
+      border-radius: 20px;
+      margin: 0;
+
+      .modal_title_container {
+        margin-top: 24px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+
+        .model_title {
+          font-size: 32rpx;
+          font-weight: 600;
+          color: #111827;
+          line-height: 32rpx;
+        }
+      }
+
+      .modal_children_container {
+        margin-top: 24px;
+        padding: 0 30px;
+        text-align: center;
+
+        .modal_children {
+          font-size: 28rpx;
+          line-height: 42rpx;
+          color: #374151;
+        }
+      }
+
+      .bottom_choice {
+        margin-top: 20px;
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin-bottom: 30px;
+        display: flex;
+
+        .button_style {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 16rpx 56rpx;
+          border-radius: 50rpx;
+          text-align: center;
+          box-sizing: border-box;
+        }
+
+        .cancel_view {
+          border: 1px solid #eda335;
+          background-color: #ffffff;
+
+          .cancel_text {
+            color: #eda335;
+          }
+        }
+
+        .confirm_view {
+          background-color: #eda335;
+
+          .confirm_text {
+            color: #ffffff;
+          }
+        }
+      }
+    }
+  }
 }

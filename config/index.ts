@@ -35,6 +35,8 @@ const config = {
   compiler: {
     type: 'webpack5',
     prebundle: {
+      enable: false,
+      force: true,
       exclude: ['taro-ui'],
     },
   },

@@ -11,9 +11,7 @@ import { requestInterceptors, responseInterceptors } from './auth/interceptor';
 
 type ParamsOption = {
   params?: Record<string, string>;
-  query?:
-    | string
-    | Record<string, string | number | boolean | Array<string | number | boolean>>;
+  query?: string | object;
 };
 
 function resolvePathWithParams(
@@ -109,6 +107,8 @@ async function baseRequest(
   }
 
   const res = await responseInterceptors(context);
+
+  if (interceptedConfig.returnFullResponse) return res;
 
   return res.data;
 }

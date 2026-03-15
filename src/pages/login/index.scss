@@ -1,0 +1,26 @@
+// Login.scss
+.login_container {
+  height: 100vh;
+  width: 100%;
+  overflow: auto;
+  position: relative;
+  background-color: #f5f5f5;
+
+  .login_background {
+    position: absolute;
+    left: -400rpx;
+    top: -220rpx;
+    width: 994rpx;
+    height: 734rpx;
+    opacity: 1;
+    background: linear-gradient(
+      180deg,
+      #fea000 90%,
+      rgba(255, 182, 58, 0.546) 95%,
+      #ffe4b7 100%
+    );
+    filter: blur(280rpx);
+    z-index: 0;
+    pointer-events: none;
+  }
+}

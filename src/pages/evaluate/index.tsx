@@ -2,14 +2,23 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Button, Form, Image, Radio, Text, Textarea, View } from '@tarojs/components';
+import {
+  Button,
+  Form,
+  Image,
+  Radio,
+  ScrollView,
+  Text,
+  Textarea,
+  View,
+} from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-import './style.scss';
+import './index.scss';
 
 import { Icon, TopBackground } from '@/common/assets/img/login';
-import Label3 from '@/common/components/label3/label3';
+import FeatureLabel from '@/common/components/FeatureLabel';
 import Star from '@/common/components/star/star';
 import { post } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
@@ -183,36 +192,42 @@ const Page: React.FC = () => {
     }
   };
   return !test ? (
-    <View className="flex flex-col">
-      <Image src={TopBackground as string} className="w-full"></Image>
-      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
-        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
-          <Image src={Icon as string} className="h-full w-full"></Image>
+    <View className="evaluate_page_unauthorized_container">
+      <Image
+        src={TopBackground as string}
+        className="evaluate_page_background_image"
+      ></Image>
+      <View className="evaluate_page_unauthorized_content">
+        <View className="evaluate_page_unauthorized_icon_wrapper">
+          <Image src={Icon as string} className="evaluate_page_unauthorized_icon"></Image>
         </View>
-        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈
-        </Text>
+        <Text className="evaluate_page_unauthorized_text">木犀课栈</Text>
       </View>
     </View>
   ) : (
-    <View className="mt-24">
-      <Form className="view">
+    <ScrollView
+      className="evaluate_page_container"
+      scrollY
+      enhanced
+      showScrollbar={false}
+    >
+      <Form className="evaluate_page_form">
         <NavigationBar title="评课" isBackToPage />
-        <View className="p">
-          <Text> 选择课程 : </Text>
-          <Label3 handleClick={onLableClick} content={courseName}></Label3>
+        <View className="evaluate_page_section">
+          <Text className="evaluate_page_label">课程名字 :</Text>
+          <Text>{courseName}</Text>
         </View>
-        <View className="p">
-          <Text>评价星级 :</Text>
+        <View className="evaluate_page_section">
+          <Text className="evaluate_page_label">评价星级 :</Text>
           <Star onStarClick={onStarClick} />
         </View>
-        <View className="p">
-          <Text>考核方式 :</Text>
-          <View className="ways">
+        <View className="evaluate_page_section">
+          <Text className="evaluate_page_label">考核方式 :</Text>
+          <View className="evaluate_page_ways_container">
             {testways.map((item) => (
               <Radio
                 key={item.value}
-                className="myradio"
+                className="evaluate_page_radio"
                 checked={selectedValues.includes(item.value)}
                 value={item.value}
                 color="transparent"
@@ -223,15 +238,19 @@ const Page: React.FC = () => {
             ))}
           </View>
         </View>
-        <View className="p">
-          <Text>课程特点 :</Text>
-          <View className="fea">
+        <View className="evaluate_page_section">
+          <Text className="evaluate_page_label">课程特点 :</Text>
+          <View className="evaluate_page_features_container">
             {features.map((item) => {
               return (
-                <Label3
+                <FeatureLabel
                   key={item.value}
-                  id={item.value} // 确保 Label3 组件可以访问到 id
+                  id={item.value} // 确保 FeatureLabel 组件可以访问到 id
                   content={item.content}
+                  style={{
+                    width: '150rpx',
+                    textAlign: 'center',
+                  }}
                   checked={selectedFeatureValues.includes(item.value)} // 判断是否包含该项的 id
                   handleChecked={() => handleFeaturesChecked(item.value)} // 传递 handleChecked 函数
                 />
@@ -239,27 +258,31 @@ const Page: React.FC = () => {
             })}
           </View>
         </View>
-        <Textarea
-          maxlength={450}
-          onInput={countContent}
-          placeholderStyle="font-size: 25rpx;"
-          placeholder="输入课程评价"
-          className="myComment"
-        ></Textarea>
-        <Text className="zsxz">字数限制{textLength}/450</Text>
-        <View className="p">
+        <View className="evaluate_textarea_container">
+          <Textarea
+            maxlength={450}
+            onInput={countContent}
+            placeholderStyle="font-size: 25rpx;"
+            placeholder="输入课程评价"
+            className="evaluate_page_textarea"
+          ></Textarea>
+          <Text className="evaluate_page_word_limit">字数限制{textLength}/450</Text>
+        </View>
+        <View className="evaluate_page_anonymous_section">
           <Radio
             value="anonymous"
-            className="myradio h-3 w-3"
+            className="evaluate_page_anonymous_radio"
             checked={isAnonymous}
             onClick={() => setIsAnonymous(!isAnonymous)}
             color="transparent"
           ></Radio>
-          <Text>匿名</Text>
+          <Text className="evaluate_page_anonymous_text">匿名</Text>
         </View>
-        <Button onClick={postEvaluation}>发布</Button>
+        <Button className="evaluate_page_submit_button" onClick={postEvaluation}>
+          发布
+        </Button>
       </Form>
-    </View>
+    </ScrollView>
   );
 };
 

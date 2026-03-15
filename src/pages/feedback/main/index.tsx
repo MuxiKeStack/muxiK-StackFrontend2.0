@@ -2,16 +2,17 @@ import { Button, ScrollView, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useState } from 'react';
 
-import './style.scss';
+import './index.scss';
 
 import { feedbackFAQ, getFAQ } from '@/common/api/feedback';
+import searchIcon from '@/common/assets/img/search.png';
+import { SearchInput } from '@/common/components';
 import Loading from '@/common/components/Loading';
-import SearchBar from '@/common/components/SearchBar';
 import { FAQ_RECORD_NAMES, FAQ_TABLE_IDENTIFY } from '@/common/constants/feedback';
 import { NavigationBar } from '@/modules/navigation';
 
 import { SheetItem } from '../type';
-import FAQItem from './components/normalquestions';
+import FAQItem from './components/normalFAQ';
 
 interface FAQRecord {
   record_id: string;
@@ -154,7 +155,7 @@ const FeedbackPage = () => {
     }
   };
 
-  const debouncedSearch = useCallback(() => {
+  const handleSearch = useCallback(() => {
     let timeoutId: any;
     return (searchValue: string) => {
       setIsLoading(true);
@@ -179,35 +180,47 @@ const FeedbackPage = () => {
     };
   }, [fullSheetData])();
 
-  const navigateToPage = (url: string) => {
+  const handleSearchToggle = () => {
+    // todos: 好像还不知道加什么
+    console.log('搜索状态切换');
+  };
+
+  const handleNavigateToPage = (url: string) => {
     try {
       navigate(url);
     } catch (err) {
-      console.error('导航失败:', err);
+      console.error('跳转失败:', err);
     }
   };
 
   return (
-    <View className="faq-container">
+    <View className="faq_page_container">
       <NavigationBar title="帮助与反馈" isBackToPage />
-
-      <View className="searchBar">
-        <SearchBar
-          placeholder="请输入问题"
-          value={value}
-          onChange={(val) => {
-            setValue(val);
-            debouncedSearch(val);
+      <View className="faq_search_input_container">
+        <SearchInput
+          searchPlaceholder="请输入问题"
+          style={{
+            height: '30rpx',
+            background: '#E5E7EB',
+          }}
+          searchPlaceholderStyle="color: #9CA3AF;"
+          searchIconSrc={searchIcon}
+          searchText={value}
+          setSearchText={setValue}
+          onSearchToggle={handleSearchToggle}
+          onSearch={handleSearch}
+          suffix={{
+            text: '搜索',
           }}
         />
       </View>
 
-      <View className="content">
-        <View className="header">
-          <Text className="header-text">常见问题</Text>
+      <View className="faq_content">
+        <View className="faq_header">
+          <Text className="faq_header_text">常见问题</Text>
         </View>
 
-        <ScrollView scrollY className="scroll">
+        <ScrollView scrollY className="faq_scroll">
           {isLoading ? (
             <Loading text="搜索中..." />
           ) : sheetData.length ? (
@@ -224,27 +237,27 @@ const FeedbackPage = () => {
               />
             ))
           ) : (
-            <View className="empty">
+            <View className="faq_empty">
               <Text>暂无相关问题</Text>
             </View>
           )}
         </ScrollView>
       </View>
 
-      <View className="bottom">
+      <View className="faq_bottom">
         <Button
-          className="button"
-          onClick={() => navigateToPage('/pages/feedback/writefeedback/index')}
+          className="faq_button"
+          onClick={() => handleNavigateToPage('/pages/feedback/writefeedback/index')}
         >
-          <Text className="button-text">我要反馈</Text>
+          <Text className="faq_button_text">我要反馈</Text>
         </Button>
 
-        <View className="group">
+        <View className="faq_group">
           <Text>课栈交流群：</Text>
-          <Text className="group-number">{number}</Text>
+          <Text className="faq_group_number">{number}</Text>
           <Text
-            className="copy"
-            onClick={() => navigateToPage('/pages/feedback/history/index')}
+            className="faq_copy"
+            onClick={() => handleNavigateToPage('/pages/feedback/history/index')}
           >
             点击复制
           </Text>

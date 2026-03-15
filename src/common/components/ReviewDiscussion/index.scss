@@ -1,0 +1,144 @@
+@mixin review_action-text {
+  font-size: 26rpx;
+  color: #ffbf60;
+}
+
+@mixin border-line($position, $color: #4e4e4e) {
+  content: '';
+  position: absolute;
+  #{$position}: 0;
+  left: 50%;
+  width: 85%;
+  height: 1px;
+  background: $color;
+  transform: translateX(-50%) scaleY(0.2);
+  transform-origin: 0 0;
+}
+
+@mixin review_bottom_border {
+  border-bottom: 1rpx solid #4e4e4e;
+}
+
+.review_comments_list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 10px;
+
+  .review_comment_card {
+    .secondary_replies_container {
+      padding-left: 60rpx;
+
+      .secondary_replies_toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6rpx 0;
+
+        .secondary_replies_toggle_text {
+          @include review_action-text;
+        }
+
+        .secondary_replies_toggle_icon {
+          font-size: 32rpx;
+          color: #ffbf60;
+          transform: rotate(0deg);
+          transition: transform 0.3s ease;
+
+          &.expanded {
+            transform: rotate(180deg);
+          }
+        }
+
+        &:active {
+          opacity: 0.7;
+        }
+      }
+
+      .secondary_replies_list {
+        margin-bottom: 8rpx;
+        overflow: hidden;
+        transition: max-height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &.expanded {
+          max-height: 1000rpx;
+        }
+
+        &.collapsing {
+          max-height: 0rpx;
+        }
+
+        .secondary_replies_list_inner {
+          overflow: hidden;
+        }
+
+        .reply_item_wrapper {
+          .comment_card {
+            transform: translateY(-10px);
+            opacity: 0;
+            animation: slideInUp 0.2s ease forwards;
+            animation-delay: calc(0.05s * var(--index, 0));
+          }
+        }
+
+        &:not(.expanded) .reply_item_wrapper .comment_card {
+          animation: slideOutDown 0.2s ease forwards;
+        }
+
+        @keyframes slideInUp {
+          from {
+            transform: translateY(-10px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideOutDown {
+          from {
+            transform: translateY(0);
+            opacity: 1;
+          }
+          to {
+            transform: translateY(-10px);
+            opacity: 0;
+          }
+        }
+      }
+
+      .secondary_replies_footer {
+        .secondary_replies_expanded_footer {
+          display: flex;
+          align-items: center;
+          padding-bottom: 12rpx;
+          gap: 42rpx;
+
+          .secondary_replies_more {
+            .secondary_replies_more_text {
+              @include review_action-text;
+            }
+          }
+
+          .secondary_replies_collapse {
+            .secondary_replies_collapse_text {
+              @include review_action-text;
+            }
+          }
+        }
+      }
+
+      .secondary_replies_divider {
+        position: relative;
+        margin-left: -60rpx;
+        width: calc(100% + 60rpx);
+        height: 1px;
+
+        &::after {
+          @include border-line(bottom);
+        }
+      }
+    }
+  }
+}

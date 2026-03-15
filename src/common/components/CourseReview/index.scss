@@ -1,0 +1,278 @@
+$level-styles: (
+  0: (
+    background: linear-gradient(135deg, #a9a9a9, #8a8a8a),
+    color: #ffffff,
+    shadow: 0 4rpx 8rpx rgba(109, 109, 109, 0.3),
+  ),
+  1: (
+    background: linear-gradient(135deg, #bfbfbf, #d0d0d0),
+    color: #ffffff,
+    shadow: 0 4rpx 8rpx rgba(179, 179, 179, 0.3),
+  ),
+  2: (
+    background: linear-gradient(135deg, #7cc47c, #a8d5a8),
+    color: #ffffff,
+    shadow: 0 4rpx 8rpx rgba(124, 196, 124, 0.3),
+  ),
+  3: (
+    background: linear-gradient(135deg, #fedb5f, #ffe066),
+    color: #ffffff,
+    shadow: 0 4rpx 8rpx rgba(254, 219, 95, 0.3),
+  ),
+  4: (
+    background: linear-gradient(135deg, #ff9f3d, #ffb347),
+    color: #ffffff,
+    shadow: 0 4rpx 8rpx rgba(255, 159, 61, 0.3),
+  ),
+  5: (
+    background: linear-gradient(135deg, #ff7722, #ff8c42),
+    color: #ffffff,
+    shadow: 0 4rpx 8rpx rgba(255, 119, 34, 0.3),
+  ),
+  6: (
+    background: linear-gradient(135deg, #ff6a2b, #ff6b6b),
+    color: #ffffff,
+    shadow: 0 4rpx 8rpx rgba(255, 82, 82, 0.3),
+  ),
+);
+
+$content-line-height: 30;
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 30rpx;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #f18900;
+}
+
+.course_review_container {
+  .review_content_wrapper {
+    position: relative;
+    margin-left: 25rpx;
+    margin-right: 25rpx;
+    background: #ffffff;
+    border-radius: 43rpx 43rpx 43rpx 43rpx;
+    opacity: 1;
+    box-shadow:
+      0 -4rpx 6rpx rgba(0, 0, 0, 0.05),
+      0 4rpx 6rpx rgba(0, 0, 0, 0.05);
+    padding: 24rpx 24rpx 0;
+    display: flex;
+    flex-direction: column;
+
+    .review_header_row {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20rpx;
+
+      .class_title {
+        max-width: 450rpx;
+        font-family:
+          Segoe UI,
+          Segoe UI;
+        font-weight: bold;
+        font-size: 30rpx;
+        color: #3d3d3d;
+        font-style: normal;
+        text-transform: none;
+        margin-right: 20rpx;
+      }
+
+      .header_right_area {
+        position: absolute;
+        right: 24rpx;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8rpx;
+
+        .visibility_btn {
+          padding: 4rpx 12rpx;
+          border-radius: 24rpx;
+          font-size: 24rpx;
+
+          &.public {
+            background-color: #cccccc;
+          }
+
+          &.private {
+            background-color: #f9b94f;
+          }
+
+          .btn_text {
+            color: #ffffff;
+            line-height: 1;
+          }
+        }
+      }
+    }
+
+    .reviewer_info {
+      position: relative;
+
+      .user_detail {
+        display: flex;
+        align-items: center;
+      }
+
+      .user_info {
+        display: flex;
+        align-items: flex-start;
+
+        .user_avatar {
+          width: 80rpx;
+          height: 80rpx;
+          background-color: white;
+          border-radius: 50%;
+          border: #fe9f00 solid 1rpx;
+          background-size: cover;
+          background-position: center;
+          margin-right: 15rpx;
+        }
+
+        .user_meta {
+          margin-top: -12rpx;
+
+          .user_level {
+            display: inline-block;
+            padding: 2rpx 8rpx;
+            font-size: 16rpx;
+            font-weight: 500;
+            line-height: 1.4;
+            white-space: nowrap;
+            position: relative;
+            border-radius: 24rpx;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+
+            &::after {
+              content: '';
+              position: absolute;
+              top: -50%;
+              left: -50%;
+              width: 200%;
+              height: 200%;
+              transform: rotate(30deg);
+              pointer-events: none;
+              border-radius: inherit;
+            }
+
+            @each $level, $styles in $level-styles {
+              &.level-#{$level} {
+                background: map-get($styles, background);
+                color: map-get($styles, color);
+                box-shadow: map-get($styles, shadow);
+              }
+            }
+          }
+
+          .user_name {
+            margin-top: 6rpx;
+            font-size: 24rpx;
+            color: #999999;
+          }
+        }
+      }
+
+      .hot_badge {
+        width: 38rpx;
+        height: 38rpx;
+        position: absolute;
+        top: 50rpx;
+        right: 0rpx;
+      }
+    }
+
+    .review_text {
+      font-size: 28rpx;
+      font-family:
+        Segoe UI-Regular,
+        Segoe UI;
+      font-weight: 400;
+      line-height: calc(#{$content-line-height + 6}rpx);
+      color: #565552;
+      margin: 12rpx 0;
+      overflow: hidden;
+
+      &.text_clamped {
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+      }
+
+      &.text_expanded {
+        height: auto !important;
+      }
+    }
+
+    .feature_tags_container {
+      margin: 12rpx 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12rpx;
+      width: 100%;
+    }
+
+    .review_footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin: 12rpx 0 24rpx;
+
+      .footer_time {
+        white-space: nowrap;
+        font-size: 22rpx;
+        color: #999999;
+      }
+
+      .footer_actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 40rpx;
+
+        .action_item {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 10rpx;
+          font-size: 26rpx;
+          color: #666666;
+
+          .action_icon {
+            position: relative;
+            width: 50rpx;
+            height: 50rpx;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05);
+            opacity: 1;
+            border-radius: 50%;
+            display: inline-block;
+            text-align: center;
+            line-height: 40rpx;
+
+            > Iconfont {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+            }
+          }
+
+          .action_count {
+            font-size: 28rpx;
+            color: #3d3d3d;
+            line-height: 50rpx;
+          }
+        }
+      }
+    }
+  }
+}

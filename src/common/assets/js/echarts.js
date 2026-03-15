@@ -8,10 +8,10 @@
   'use strict';
   /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
-    
+
     Permission to use, copy, modify, and/or distribute this software for any
     purpose with or without fee is hereby granted.
-    
+
     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
     REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
@@ -129,7 +129,7 @@
     }
 
     env.svgSupported = typeof SVGRect !== 'undefined';
-    env.touchEventsSupported = 'ontouchstart' in window && !browser.ie && !browser.edge;
+    env.touchEventsSupported = 'onClick' in window && !browser.ie && !browser.edge;
     env.pointerEventsSupported =
       'onpointerdown' in window &&
       (browser.edge || (browser.ie && +browser.version >= 11));
@@ -10662,10 +10662,10 @@
           !subType
             ? mainType + '.' + 'type should be specified.'
             : 'Component ' +
-              mainType +
-              '.' +
-              (subType || '') +
-              ' is used but not imported.'
+                mainType +
+                '.' +
+                (subType || '') +
+                ' is used but not imported.'
         );
       }
 

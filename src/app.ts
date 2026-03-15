@@ -1,9 +1,9 @@
 /* eslint-disable */
 
+import '@/common/styles/globals.scss';
 import Taro from '@tarojs/taro';
 import { Component, PropsWithChildren } from 'react';
-
-import '@/common/styles/globals.scss';
+import { VISITOR } from './common/constants/auth';
 
 import { checkToken } from '@/common/utils';
 
@@ -24,8 +24,8 @@ const interceptor: Taro.interceptor = function (chain: Taro.Chain) {
   return chain.proceed(requestParams).then((res) => {
     // console.log(Taro.getStorageSync('shortToken'));
 
-    if (res.statusCode === 401 && Taro.getStorageSync('visitor') !== true) {
-      // console.log(res, Taro.getStorageSync('visitor'));
+    if (res.statusCode === 401 && Taro.getStorageSync(VISITOR) !== true) {
+      // console.log(res, Taro.getStorageSync(VISITOR));
 
       void Taro.reLaunch({ url: '/pages/login/index' }).then(() => {
         Taro.showToast({
@@ -38,7 +38,7 @@ const interceptor: Taro.interceptor = function (chain: Taro.Chain) {
   }) as Taro.Chain;
 };
 Taro.onAppShow(() => {
-  Taro.setStorageSync('visitor', false);
+  Taro.setStorageSync(VISITOR, false);
 });
 Taro.addInterceptor(interceptor);
 

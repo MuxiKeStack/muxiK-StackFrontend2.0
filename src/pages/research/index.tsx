@@ -2,18 +2,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable no-console */
+import {
+  deleteSearchHistory,
+  getSearchHistory,
+  searchCourses,
+} from '@/common/api/research';
+import { deleteIcon } from '@/common/assets/img/icons';
+import { SearchInput } from '@/common/components';
+import CourseLabel from '@/common/components/CourseLabel';
+import SearchLabel from '@/common/components/Searchlabel';
+import { getErrorMessage } from '@/common/utils';
+import { NavigationBar } from '@/modules/navigation';
 import { Image, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
-
 import './style.scss';
-
-import Label1 from '@/common/components/label1/label1';
-import Label2 from '@/common/components/label2/label2';
-import SearchInput from '@/common/components/SearchInput/SearchInput';
-import { get } from '@/common/utils';
-import { put } from '@/common/utils/fetch';
-import { NavigationBar } from '@/modules/navigation';
 
 export interface Course {
   id: number;
@@ -45,33 +48,30 @@ const ConditionalRender: React.FC<ConditionalRenderProps> = ({
   handleDelete,
 }) => {
   return isSpread ? (
-    <View className="tj">
+    <View className="course_list_container">
       {classes.map((each) => (
-        <Label2 key={each.id} {...each} />
+        <CourseLabel key={each.id} {...each} />
       ))}
     </View>
   ) : (
-    <View className="relative flex flex-col items-center">
-      <View className="mt-[2vh] flex w-[80vw] flex-row justify-between">
-        <Text className="text-lg">历史搜索</Text>
-        <View className="button" onTouchEnd={handleDelete}>
-          <Image
-            style={{ width: '29.37rpx', height: '30.83rpx' }}
-            src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"
-          />
+    <View className="history_section">
+      <View className="history_header">
+        <Text className="history_title">历史搜索</Text>
+        <View className="clear_history_button" onTouchEnd={handleDelete}>
+          <Image className="delete_icon" src={deleteIcon} />
         </View>
       </View>
       <View
-        className="historyResult"
+        className="history_result_container"
         onTouchEnd={(e) => {
           e.stopPropagation();
         }}
       >
         {hrs.map((hr) => (
-          <Label1
+          <SearchLabel
             key={hr.id}
             content={hr.keyword}
-            onClick={(e) => {
+            onClick={() => {
               handleSearch(hr.keyword);
             }}
           />
@@ -87,13 +87,32 @@ const Page: React.FC = () => {
   const [isSpread, setSpread] = useState<boolean>(false);
   const [globalSearchText, setGlobalSearchText] = useState<string>('');
 
-  useLoad(() => {
+  useLoad(async () => {
     console.log('Page loaded.');
-    get('/search/history?search_location=Home').then((res) => {
-      console.log('获取到历史搜索信息');
-      // console.log(res);
-      setHrs(res.data);
-    });
+
+    const query = {
+      search_location: 'Home',
+    };
+
+    try {
+      const res = await getSearchHistory(query);
+      console.log('获取到历史搜索信息', res);
+
+      if (res.code === 0) {
+        setHrs(res.data);
+      } else {
+        const errorMsg = getErrorMessage(res, '获取历史搜索失败');
+        throw new Error(errorMsg);
+      }
+    } catch (error) {
+      console.error('获取历史搜索异常:', error);
+
+      Taro.showToast({
+        title: '获取历史搜索异常，请稍后重试',
+        icon: 'error',
+        duration: 2000,
+      });
+    }
   });
 
   const handleSearchToggle = () => {
@@ -104,12 +123,14 @@ const Page: React.FC = () => {
     setSpread(false);
   };
 
-  const handleDelete = () => {
-    put('/search/history', {
+  const handleDelete = async () => {
+    const body = {
       remove_all: true,
       remove_history_ids: [],
       search_location: 'Home',
-    }).then((res) => {
+    };
+    try {
+      const res = await deleteSearchHistory(body);
       console.log(res);
       if (res.code === 0) {
         setHrs([]);
@@ -117,34 +138,119 @@ const Page: React.FC = () => {
           title: '删除成功',
           icon: 'success',
         });
+      } else {
+        const errorMsg = getErrorMessage(res, '删除历史记录失败');
+        throw new Error(errorMsg);
       }
-    });
+    } catch (error) {
+      console.error('删除历史记录失败:', error);
+      Taro.showToast({
+        title: '删除失败,请稍后再试',
+        icon: 'error',
+      });
+    }
   };
 
-  const handleSearch = (searchText: string) => {
+  // const handleSearch = (searchText: string) => {
+  //   Taro.showLoading({
+  //     title: '搜索中',
+  //   });
+  //   // console.log('搜索文本:', searchText);
+  //   setSpread(true);
+  //   get(`/search?biz=Course&keyword=${searchText}&search_location=Home`)
+  //     .then((res) => {
+  //       setClasses(res.data);
+  //       console.log(res.data);
+
+  //       Taro.hideLoading();
+  //       if (res.data.length === 0) {
+  //         Taro.showToast({
+  //           title: '暂无内容',
+  //           icon: 'error',
+  //         });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       Taro.hideLoading();
+  //       Taro.showToast({
+  //         title: '搜索失败',
+  //         icon: 'error',
+  //       });
+  //     });
+  // };
+
+  const handleSearch = async (searchText: string) => {
+    setGlobalSearchText(searchText);
+    setHrs((prev) => [{ id: Date.now(), keyword: searchText }, ...prev]);
     Taro.showLoading({
       title: '搜索中',
     });
-    // console.log('搜索文本:', searchText);
     setSpread(true);
-    get(`/search?biz=Course&keyword=${searchText}&search_location=Home`)
-      .then((res) => {
-        setClasses(res.data);
-        Taro.hideLoading();
+    const query = {
+      biz: 'Course',
+      keyword: searchText,
+      search_location: 'Home',
+    };
+    try {
+      const res = await searchCourses(query);
+
+      if (res.code === 0) {
         if (res.data.length === 0) {
           Taro.showToast({
             title: '暂无内容',
             icon: 'error',
           });
         }
-      })
-      .catch((err) => {
-        Taro.hideLoading();
-        Taro.showToast({
-          title: '搜索失败',
-          icon: 'error',
-        });
+        // 临时：为每个课程添加模拟的 features 数据
+
+        const mockFeatures = [
+          '课程简单易学',
+          '作业量适中',
+          '老师讲解清晰',
+          '给分很好',
+          '课堂氛围轻松',
+          '有点名但不多',
+          '期末有论文',
+          '小组合作项目',
+          '适合零基础',
+          '干货满满',
+        ];
+
+        // 课程类型数组
+        const courseTypes = [
+          '专业主干课',
+          '通识选修课',
+          '专业选修课',
+          '公共必修课',
+          '通识核心课',
+          '专业实习',
+        ];
+
+        const enhancedData = res.data.map((course: ClassInfo, index: number) => ({
+          ...course,
+          // 添加课程类型，随机从数组中选取
+          courseType: courseTypes[Math.floor(Math.random() * courseTypes.length)],
+          features: [
+            mockFeatures[index % mockFeatures.length],
+            mockFeatures[(index + 2) % mockFeatures.length],
+            mockFeatures[(index + 4) % mockFeatures.length],
+          ].slice(0, Math.floor(Math.random() * 6) + 1), // 随机取1-3个标签
+        }));
+
+        setClasses(enhancedData);
+      } else {
+        const errorMsg = getErrorMessage(res, '搜索失败');
+        throw new Error(errorMsg);
+      }
+    } catch (error) {
+      console.error('搜索失败:', error);
+      Taro.showToast({
+        title: '搜索失败',
+        icon: 'error',
       });
+    } finally {
+      Taro.hideLoading();
+    }
   };
 
   useEffect(() => {
@@ -152,14 +258,11 @@ const Page: React.FC = () => {
   }, [classes]);
 
   return (
-    <View
-      className="mt-20 flex h-[100vh] w-[100vw] flex-col items-center overflow-auto"
-      // onTouchEnd={() => handleClick()}
-    >
+    <View className="search_page_container">
       <NavigationBar title="搜索查询" isBackToPage />
-      <View className="mt-5 flex w-full items-center justify-center gap-2">
+      <View className="search_input_wrapper">
         <SearchInput
-          style={{ height: '30rpx', width: '500rpx', borderRadius: '30rpx' }}
+          style={{ height: '30rpx' }}
           onSearch={handleSearch} // 传递搜索逻辑
           onSearchToggle={handleSearchToggle}
           searchText={globalSearchText}
@@ -168,10 +271,10 @@ const Page: React.FC = () => {
           searchPlaceholder="搜索课程名/老师名"
           searchPlaceholderStyle="color:#9F9F9C"
           searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
+          suffix={{
+            text: '搜索',
+          }}
         />
-        <Text className="text-center text-lg" onTouchEnd={() => handleSearch(searchText)}>
-          搜索
-        </Text>
       </View>
       <ConditionalRender
         isSpread={isSpread}

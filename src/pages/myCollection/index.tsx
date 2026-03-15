@@ -1,26 +1,22 @@
 /* eslint-disable no-console */
-
-import { Input, Text, View } from '@tarojs/components';
+import CourseLabel from '@/common/components/CourseLabel';
+import { Text, View } from '@tarojs/components';
 import { useLoad } from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
-import { AtIcon } from 'taro-ui';
-
+import { mockCollectionData } from './mock';
 import './style.scss';
 
-import { get } from '@/common/api/get';
-import CollectionCourse from '@/common/components/CollectionCourse/CollectionCourse';
+import { SearchInput } from '@/common/components';
 import { NavigationBar } from '@/modules/navigation';
 
 interface CollectionProps {
-  composite_score?: number;
-  course_id?: number;
-  credit?: number;
-  id?: number;
+  id: number;
+  name: string;
+  teacher: string;
+  composite_score: number;
+  courseType: string;
+  features?: string[];
   is_collected?: boolean;
-  name?: string;
-  school?: string;
-  teacher?: string;
-  type?: string;
 }
 
 const Page: React.FC = () => {
@@ -31,51 +27,44 @@ const Page: React.FC = () => {
   });
 
   useEffect(() => {
-    const fetchCollection = async () => {
-      try {
-        const url = '/courses/collections/list/mine?cur_collection_id=0&limit=10';
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const response = await get(url);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
-        setCollection(response.data);
-      } catch (error) {
-        console.error('Error fetching collection data:', error);
-      }
-    };
-    void fetchCollection();
+    setCollection(mockCollectionData);
   }, []);
 
+  const handleSearch = (value: string) => {
+    console.log('搜索:', value);
+  };
+
+  const handleSearchToggle = () => {};
+
   return (
-    <View className="MyCollection mt-24">
+    <View className="MyCollection">
       <NavigationBar title="我的收藏" isBackToPage />
-      <View className="mycollection_searchbar flex w-full items-center justify-around">
-        <View className="h-full w-[78vw]">
-          <Input
-            className="mycollection_search_input h-full rounded-3xl bg-[#FFFAEC]"
-            placeholder="搜索课程名/老师名"
-          />
-          <AtIcon
-            className="mycollection_search_button"
-            value="search"
-            color="#8C8C8C"
-            // onClick={() => {}}
-          />
-        </View>
-        <Text className="h-full text-base text-[#8C8C8C]" style={{ lineHeight: '72rpx' }}>
-          搜索
-        </Text>
+      <View className="mycollection_searchbar">
+        <SearchInput
+          style={{ height: '30rpx' }}
+          onSearch={handleSearch}
+          onSearchToggle={handleSearchToggle}
+          searchPlaceholder="搜索课程名/老师名"
+          searchPlaceholderStyle="color:#9F9F9C"
+          searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
+          suffix={{
+            text: '搜索',
+          }}
+        />
       </View>
-      <View className="mycollection_text">我的收藏 ({collection.length})</View>
+      <View className="mycollection_info_container">
+        <Text className="mycollection_info_text">我的收藏 ({collection.length})</Text>
+      </View>
       <View className="mycollection_collections">
         {collection.map((course) => (
-          <CollectionCourse
+          <CourseLabel
             key={course.id}
-            courseId={course.course_id}
-            courseType={course.type}
-            courseName={course.name || ''}
-            courseRate={course.composite_score || 0}
-            courseTeacher={course.teacher || '未知'}
-            isCollected={course.is_collected ?? false}
+            id={course.id}
+            name={course.name}
+            teacher={course.teacher}
+            composite_score={course.composite_score}
+            features={course.features}
+            courseType={course.courseType}
           />
         ))}
       </View>

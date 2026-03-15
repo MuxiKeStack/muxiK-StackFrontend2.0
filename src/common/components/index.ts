@@ -1,4 +1,10 @@
+export { default as BottomInput } from './BottomInput';
 export { default as CollectionCourse } from './CollectionCourse/CollectionCourse';
-export { default as Comment } from './Comment';
+export { default as CommentCard } from './CommentCard';
+export { default as CourseReview } from './CourseReview';
+export { default as Drawer } from './Drawer';
+export { default as Loading } from './Loading';
+export { default as ReviewDiscussion } from './ReviewDiscussion';
+export { default as SearchInput } from './SearchInput';
 export { default as TitleButton } from './TitleButton';
 export { default as VirtualList } from './VirtualList';

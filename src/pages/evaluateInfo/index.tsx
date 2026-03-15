@@ -8,16 +8,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Button, Image, Text, Textarea, View } from '@tarojs/components';
+import { getTopLevelComments } from '@/common/api/comment';
+import { Image, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useRef, useState } from 'react';
-
-import './style.scss';
+import './index.scss';
 
 import { Icon, TopBackground } from '@/common/assets/img/login';
-import { Comment } from '@/common/components';
-import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
-import { get } from '@/common/utils';
+import { BottomInput, CourseReview, ReviewDiscussion } from '@/common/components';
 import { postBool } from '@/common/utils/fetch';
 import { NavigationBar } from '@/modules/navigation';
 
@@ -26,184 +24,187 @@ import { useCourseStore } from '../main/store/store';
 import { COMMENT_ACTIONS } from '../main/store/types';
 
 const Page: React.FC = () => {
-  const [allComments, setAllComments] = useState<CommentType[]>([]);
-  const [commentsLoaded, setCommentsLoaded] = useState(false); // 新增状态，标记评论是否已加载
-  const [replyTo, setReplyTo] = useState<CommentType | null>(null); // 新增状态，存储被回复的评论
-  const [replyContent, setReplyContent] = useState(''); // 存储回复内容
-  const [placeholderContent, setplaceholderContent] = useState('写下你的评论...'); // 存储占位内容
-  const inputRef = useRef<typeof Textarea | null>(null);
+  const [reviewComments, setReviewComments] = useState<CommentType[]>([]);
+  const [commentsLoaded, setCommentsLoaded] = useState(false);
+  const [replyTo, setReplyTo] = useState<CommentType | null>(null);
+  const [replyContent, setReplyContent] = useState('');
+  const [placeholderContent, setPlaceholderContent] = useState('写下你的评论...');
+  const textAreaRef = useRef(null);
 
-  const [comment, setComment] = useState<CommentInfoType | null>(null); //获取课评信息
-  // const biz_id = 1;
-  const [biz_id, setBiz_id] = useState<number | null>(null);
+  const [courseReview, setCourseReview] = useState<CommentInfoType | null>(null);
+  const [bizId, setBizId] = useState<number | null>(null);
+  const [test, setTest] = useState(false);
+
   const updateInfo = useCourseStore((state) => state.comment);
-  useEffect(() => {
-    const handleQuery = () => {
-      const query = Taro.getCurrentInstance()?.router?.params; // 获取查询参数
-      const serializedComment = query?.comment;
-      if (serializedComment) {
-        try {
-          // 解析字符串
-          const parsedComment = JSON.parse(decodeURIComponent(serializedComment));
-          setComment(parsedComment);
-          setBiz_id(parsedComment.id);
-        } catch (error) {
-          console.error('解析评论参数失败', error);
-        }
-      }
-    };
 
-    handleQuery();
-  }, []);
-  useEffect(() => {
-    Taro.showLoading({
-      title: '加载中',
-    });
-    const fetchComments = async () => {
-      // console.log(biz_id)
+  const parseRouteComment = () => {
+    const query = Taro.getCurrentInstance()?.router?.params;
+    const serializedComment = query?.comment;
+    if (serializedComment) {
       try {
-        const res = await get(
-          `/comments/list?biz=Evaluation&biz_id=${biz_id}&cur_comment_id=0&limit=100`
-        );
-        // console.log(res.data);
-        setAllComments(res.data);
-        setCommentsLoaded(true);
+        const parsedComment = JSON.parse(decodeURIComponent(serializedComment));
+        setCourseReview(parsedComment);
+        setBizId(parsedComment.id);
       } catch (error) {
-        console.error('加载评论失败', error);
+        console.error('解析评论参数失败', error);
       }
+    }
+  };
+
+  const loadComments = async () => {
+    if (!bizId) return;
+    Taro.showLoading({ title: '加载中' });
+    try {
+      const res = await getTopLevelComments({
+        biz: 'Evaluation',
+        biz_id: bizId,
+        cur_comment_id: 0,
+        limit: 100,
+      });
+
+      setReviewComments(res.data);
+      setCommentsLoaded(true);
+    } catch (error) {
+      console.error('加载评论失败', error);
+    } finally {
       Taro.hideLoading();
-    };
-
-    // 确保 biz_id 设置后再调用 fetchComments
-    if (biz_id !== null) {
-      fetchComments();
-    }
-  }, [biz_id, commentsLoaded]); // 依赖项中添加biz_id
-  const [test, setTest] = useState<boolean>(false);
-  useEffect(() => {
-    const getParams = async () => {
-      try {
-        const res = (await postBool('/checkStatus', {
-          name: 'kestack',
-        })) as StatusResponse;
-
-        setTest(res.data.status);
-      } catch (error) {
-        console.error('Error fetching status:', error);
-      }
-    };
-
-    void getParams();
-  }, []);
-  useEffect(() => {
-    console.log('test status updated:', test);
-  }, [test]);
-  const handleCommentClick = (comment: CommentType | null) => {
-    if (comment) {
-      setReplyTo(comment);
-      // 设置回复目标
-      setplaceholderContent(`回复给${comment.user?.nickname}: `); // 初始化回复内容
-      return;
-    }
-    if (inputRef.current) {
-      (inputRef.current as unknown as { focus: () => void }).focus();
     }
   };
 
-  const handleReplyChange = (e: any) => {
-    setReplyContent(e.target.value);
+  const checkTestStatus = async () => {
+    try {
+      const res = (await postBool('/checkStatus', { name: 'kestack' })) as StatusResponse;
+      setTest(res.data.status);
+    } catch (error) {
+      console.error('Error fetching status:', error);
+    }
   };
 
-  const handleClearReply = () => {
+  const handleCommentClick = (clickedComment: CommentType | null) => {
+    if (clickedComment) {
+      setReplyTo(clickedComment);
+      setPlaceholderContent(`回复给${clickedComment.user?.nickname}: `);
+    }
+
+    if (textAreaRef.current) {
+      (textAreaRef.current as unknown as { focus: () => void }).focus();
+    }
+  };
+
+  const handleReplyChange = (value: string) => {
+    setReplyContent(value);
+  };
+
+  const clearReply = () => {
     setReplyTo(null);
     setReplyContent('');
-    setplaceholderContent('写下你的评论...');
+    setPlaceholderContent('写下你的评论...');
+  };
+
+  const refreshComments = async () => {
+    setCommentsLoaded(false);
+    await loadComments();
   };
 
   const handleReplySubmit = async () => {
-    if (!replyContent.trim()) return; // 忽略空内容
+    if (!replyContent.trim() || !bizId) return;
+
     const res = await updateInfo({
       biz: 'Evaluation',
       action: COMMENT_ACTIONS.COMMENT,
-      id: biz_id ?? 0,
+      id: bizId,
       content: replyContent,
       parentId: replyTo?.id || 0,
       rootId:
         replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
     });
-    setComment(res as CommentInfoType);
-    handleClearReply();
-    // 评论发布成功后，重新加载评论
-    setCommentsLoaded(false); // 先将commentsLoaded设为false，避免useEffect中的fetchComments不被调用
-    const fetchComments = async () => {
-      try {
-        const res = await get(
-          `/comments/list?biz=Evaluation&biz_id=${biz_id}&cur_comment_id=0&limit=100`
-        );
-        setAllComments(res.data);
-        setCommentsLoaded(true);
-      } catch (error) {
-        console.error('加载评论失败', error);
-      }
-    };
-    await fetchComments();
+    setCourseReview(res as CommentInfoType);
+    clearReply();
+    await refreshComments();
   };
 
-  // 仅当评论数据加载完成时渲染CommentComponent
-  return !test ? (
-    <View className="flex flex-col">
-      <Image src={TopBackground as string} className="w-full"></Image>
-      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
-        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
-          <Image src={Icon as string} className="h-full w-full"></Image>
+  const handleLikeClick = (props: any) => {
+    setCourseReview({
+      ...courseReview,
+      total_support_count:
+        props.total_support_count ?? (courseReview?.total_support_count || 0),
+    } as CommentInfoType);
+  };
+
+  useEffect(() => {
+    parseRouteComment();
+    checkTestStatus();
+  }, []);
+
+  useEffect(() => {
+    if (bizId !== null) {
+      loadComments();
+    }
+  }, [bizId]);
+
+  if (!test) {
+    return (
+      <View className="evaluateInfo_page_unauthorized_container">
+        <Image
+          src={TopBackground as string}
+          className="evaluateInfo_page_background_image"
+        />
+        <View className="evaluateInfo_page_unauthorized_content">
+          <View className="evaluateInfo_page_unauthorized_icon_wrapper">
+            <Image src={Icon as string} className="evaluateInfo_page_unauthorized_icon" />
+          </View>
+          <Text className="evaluateInfo_page_unauthorized_text">
+            木犀课栈 此功能敬请期待
+          </Text>
         </View>
-        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈 此功能敬请期待
-        </Text>
       </View>
-    </View>
-  ) : (
-    <View className="evaluateInfo mt-24" onClick={handleClearReply}>
+    );
+  }
+
+  return (
+    <View className="evaluateInfo_page_container" onClick={clearReply}>
       <NavigationBar title="评课详细" isBackToPage />
-      <Comment
-        showAll
-        {...comment}
-        type="inner"
-        onLikeClick={(props) => {
-          setComment({
-            ...comment,
-            total_support_count:
-              props.total_support_count ?? (comment?.total_support_count || 0),
-          } as CommentInfoType);
-        }}
-        onCommentClick={() => handleCommentClick(null)}
-      />
-      <View className="ml-4 mt-3 w-[90vw] text-lg text-[#3D3D3D]">评论区</View>
+      <View className="evaluateInfo_page_comment_wrapper">
+        <CourseReview
+          showAll
+          {...courseReview}
+          type="inner"
+          onLikeClick={handleLikeClick}
+          onCommentClick={() => handleCommentClick(null)}
+        />
+      </View>
+
+      <View className="evaluateInfo_page_comments_title">评论区</View>
+      <View className="evaluateInfo_page_divider" />
       {commentsLoaded && (
-        <CommentComponent comments={allComments} onCommentClick={handleCommentClick} />
+        <View className="evaluateInfo_page_comments_list">
+          <ReviewDiscussion
+            comments={reviewComments}
+            onCommentClick={handleCommentClick}
+          />
+        </View>
       )}
-      <View className="h-[10vh] w-full"></View>
-      <View className="fixed bottom-0 flex h-[8vh] w-full items-center justify-center text-sm">
+      {/* <View className="evaluateInfo_page_reply_input_container">
         <Textarea
-          className="ml-4 mr-4 h-7 w-[70%] rounded-2xl bg-[#D8D8D8] pl-3 pt-2"
+          className="evaluateInfo_page_reply_textarea"
           confirmType="send"
-          ref={inputRef}
-          placeholderClass="flex-1 justify-center text-sm text-gray-500"
+          ref={textAreaRef}
+          placeholderClass="evaluateInfo_page_reply_placeholder"
           placeholder={placeholderContent}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
+          onClick={(e) => e.stopPropagation()}
           value={replyContent}
           onInput={handleReplyChange}
           onConfirm={handleReplySubmit}
         />
-        <Button
-          className="flex h-8 w-[20%] items-center justify-center rounded-2xl bg-[#EDA335] text-center text-base text-[#FFFFFF]"
-          onClick={handleReplySubmit}
-        >
-          发送
+        <Button className="evaluateInfo_page_reply_button" onClick={handleReplySubmit}>
+          <Text className="evaluateInfo_page_reply_button_text">发送</Text>
         </Button>
-      </View>
+      </View> */}
+      <BottomInput
+        value={replyContent}
+        onChange={handleReplyChange}
+        onSubmit={handleReplySubmit}
+      />
     </View>
   );
 };

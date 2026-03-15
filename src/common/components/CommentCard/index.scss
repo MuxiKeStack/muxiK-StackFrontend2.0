@@ -1,0 +1,81 @@
+@mixin border-line($position, $color: #4e4e4e) {
+  content: '';
+  position: absolute;
+  #{$position}: 0;
+  left: 50%;
+  width: 85%;
+  height: 1px;
+  background: $color;
+  transform: translateX(-50%) scaleY(0.2);
+  transform-origin: 0 0;
+}
+
+.comment_card {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+  padding: 16rpx 30rpx 16rpx;
+
+  &::after {
+    @include border-line(bottom);
+  }
+
+  &.no_border::after {
+    display: none;
+  }
+
+  &.comment_card_secondary {
+    padding-left: 0rpx;
+  }
+
+  .comment_card_header {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0rpx;
+
+    .comment_card_header_left {
+      display: flex;
+      align-items: center;
+
+      .comment_card_header_avatar {
+        width: 65rpx;
+        height: 65rpx;
+        border-radius: 100%;
+        margin-right: 10px;
+        border: #d2d5d8 solid 5rpx;
+      }
+
+      .comment_card_header_nickname {
+        font-weight: bold;
+        font-size: 28rpx;
+        color: #3d3d3d;
+      }
+    }
+
+    .comment_card_header_right {
+      .comment_card_header_time {
+        font-weight: 400;
+        font-size: 20rpx;
+        color: #999999;
+      }
+    }
+  }
+
+  .comment_card_content {
+    margin-top: 12rpx;
+    margin-left: 85px;
+    font-weight: 400;
+    font-size: 26rpx;
+    color: #3d3d3d;
+    letter-spacing: 2px;
+    font-family: 'SourceHanSans', sans-serif;
+
+    .comment_card_content_reply_indicator {
+      color: #f18900;
+      margin-right: 4px;
+    }
+  }
+}

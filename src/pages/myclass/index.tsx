@@ -6,7 +6,7 @@ import { Picker, Text, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-import './style.scss';
+import './index.scss';
 
 import { getUserCourses } from '@/common/api/getUserCourses';
 import { generateSemesterOptions } from '@/common/utils/generateSemesterOptions';
@@ -30,9 +30,13 @@ const Page: React.FC = () => {
 
   const [myclasses, setMyclasses] = useState<CouresProps[]>([]);
 
-  const onTimeSemChange = (e) => {
-    const [yearIndex, semIndex] = e.detail.value;
+  const onYearChange = (e) => {
+    const yearIndex = e.detail.value;
     setYear(yearSelector[yearIndex]);
+  };
+
+  const onSemChange = (e) => {
+    const semIndex = e.detail.value;
     setSem(semSelector[semIndex]);
   };
 
@@ -47,13 +51,15 @@ const Page: React.FC = () => {
             : sem === '第三学期'
               ? '3'
               : '0';
-      const classes: Array<CouresProps> = await getUserCourses(yearValue, semValue);
-      setMyclasses(classes);
-      console.log('获取到的课程:', classes);
+
+      const classes = await getUserCourses(yearValue, semValue);
+      setMyclasses(classes || []);
     } catch (error) {
       console.error('Error fetching user courses:', error);
+      setMyclasses([]);
     }
   }
+
   const fetchCourses = () => {
     void Taro.showLoading({
       title: '加载中',
@@ -70,9 +76,11 @@ const Page: React.FC = () => {
         });
       });
   };
+
   useEffect(() => {
     fetchCourses();
   }, [year, sem]);
+
   useDidShow(() => {
     fetchCourses();
     void generateSemesterOptions().then(({ yearOptions, currentSemester }) => {
@@ -93,6 +101,7 @@ const Page: React.FC = () => {
         url: `/pages/evaluate/index${query}`,
       });
   };
+
   const handleNavToCourseInfo = (each) => {
     void Taro.navigateTo({
       url: `/pages/classInfo/index?course_id=${each.id}`,
@@ -100,48 +109,70 @@ const Page: React.FC = () => {
   };
 
   return (
-    <View className="mt-24 w-full overflow-auto" style={{ height: 'cal(100vh - 96px)' }}>
+    <View className="myclass_page_container">
       <NavigationBar
         title="我的课程"
         isBackToPage
         style={{ backgroundColor: '#FFFFFF' }}
       />
-      <View className="select flex-1">
+
+      <View className="myclass_filter_container">
         <Picker
-          mode="multiSelector"
-          range={[yearSelector, semSelector]}
-          value={[yearSelector.indexOf(year), semSelector.indexOf(sem)]}
-          onChange={onTimeSemChange}
+          mode="selector"
+          range={yearSelector}
+          value={yearSelector.indexOf(year) === -1 ? 0 : yearSelector.indexOf(year)}
+          onChange={onYearChange}
         >
-          <View className="selector">
-            <Text className="text">
-              {year} {sem}
-            </Text>
-            <View className="sjx"></View>
+          <View className="myclass_year_selector">
+            <Text className="myclass_year_text">{year}</Text>
+            <View className="myclass_arrow_icon"></View>
+          </View>
+        </Picker>
+
+        <Picker
+          mode="selector"
+          range={semSelector}
+          value={semSelector.indexOf(sem) === -1 ? 0 : semSelector.indexOf(sem)}
+          onChange={onSemChange}
+        >
+          <View className="myclass_semester_selector">
+            <Text className="myclass_semester_text">{sem}</Text>
+            <View className="myclass_arrow_icon"></View>
           </View>
         </Picker>
       </View>
-      <View className="classes">
-        {myclasses.map((each, index) => (
-          <View
-            key={index}
-            className="eachClass"
-            onTouchEnd={() => handleClassClick(each)}
-          >
-            <View className="circle"></View>
+
+      <View className="myclass_list_container">
+        {myclasses && myclasses.length > 0 ? (
+          myclasses.map((each, index) => (
             <View
-              className="flex flex-col"
-              onTouchEnd={() => handleNavToCourseInfo(each)}
+              key={index}
+              className="myclass_item"
+              onClick={() => handleClassClick(each)}
             >
-              <Text className="classname" overflow="ellipsis">
-                {each.name}
-              </Text>
-              <Text className="classteacher">{'（' + each.teacher + '）'}</Text>
+              <View className="myclass_item_left">
+                <View className="myclass_item_circle"></View>
+                <View
+                  className="myclass_item_info"
+                  onClick={() => handleNavToCourseInfo(each)}
+                >
+                  <Text className="myclass_item_name" overflow="ellipsis">
+                    {each.name}
+                  </Text>
+                  <Text className="myclass_item_teacher">{'(' + each.teacher + ')'}</Text>
+                </View>
+              </View>
+              <View className="myclass_item_right">
+                <Text className="myclass_item_status">
+                  {each.evaluated ? '已评课' : '未评课'}
+                </Text>
+                <Text className="myclass_item_icon"> {each.evaluated ? '✔' : '➜'}</Text>
+              </View>
             </View>
-            <Text className="classstatus">{each.evaluated ? '已评课' : '未评课'}</Text>
-            <Text className="jt">➜</Text>
-          </View>
-        ))}
+          ))
+        ) : (
+          <View className="myclass_empty">暂无课程</View>
+        )}
       </View>
     </View>
   );

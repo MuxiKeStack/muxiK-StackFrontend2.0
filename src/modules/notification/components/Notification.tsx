@@ -1,19 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-
 import { VirtualList } from '@/common/components';
-import { formatIsoDate, get, getUserInfo } from '@/common/utils';
+import { formatDate, get, getUserInfo } from '@/common/utils';
 import { postBool } from '@/common/utils/fetch';
 import { NavigationBar } from '@/modules/navigation';
 import { StatusResponse } from '@/pages/evaluate';
-
+import { Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import './index.scss';
 import { MessageItem, OfficialItem } from './Items';
+import {
+  MOCK_COMMENT_MESSAGES,
+  MOCK_OFFICIAL_MESSAGES,
+  MOCK_SUPPORT_MESSAGES,
+} from './mock';
 import TabBar from './TabBar';
 import type { Message as MessageType } from './types';
 
@@ -21,7 +20,12 @@ const Notification: React.FC = memo(() => {
   const [tab, setTab] = useState<string>('提问');
   const [commentMessage, setCommentMessage] = useState<MessageType[]>([]);
   const [supportMessage, setSupportMessage] = useState<MessageType[]>([]);
+  const [officialMessage, setOfficialMessage] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [ctime, setCtime] = useState<number>(0);
+  const [end, setEnd] = useState(false);
+  const [test, setTest] = useState<boolean>(false);
+
   const currentMessage = useMemo(() => {
     const msg = tab === '提问' ? commentMessage : tab === '点赞' ? supportMessage : [];
     if (!msg || !msg.length) {
@@ -32,8 +36,7 @@ const Notification: React.FC = memo(() => {
     }
     return msg;
   }, [tab, commentMessage, supportMessage]);
-  const [ctime, setCtime] = useState<number>(0);
-  const [end, setEnd] = useState(false);
+
   const fetchData = async () => {
     try {
       const res = await get(
@@ -53,7 +56,6 @@ const Notification: React.FC = memo(() => {
               parentRes = await get(
                 `/comments/${detailRes.data?.parent_comment_id ?? 0}/detail`
               );
-              // console.log('tag');
               user = await getUserInfo(item.Ext.commentator);
             } else if (itemType === 'Support') {
               detailRes =
@@ -72,7 +74,7 @@ const Notification: React.FC = memo(() => {
                 itemType === 'Comment'
                   ? parentRes.data?.content
                   : detailRes.data?.content,
-              timestamp: formatIsoDate(item.Ctime as string),
+              timestamp: formatDate(item.Ctime as string),
             };
           })
         );
@@ -104,29 +106,24 @@ const Notification: React.FC = memo(() => {
       Taro.hideLoading();
       setLoading(false);
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error('Error fetching data:', error);
     }
   };
-  const [test, setTest] = useState<boolean>(false);
+
   useEffect(() => {
     const getParams = async () => {
       try {
         const res = (await postBool('/checkStatus', {
           name: 'kestack',
         })) as StatusResponse;
-
         setTest(res.data.status);
       } catch (error) {
         console.error('Error fetching status:', error);
       }
     };
-
     void getParams();
   }, []);
-  useEffect(() => {
-    console.log('test status updated:', test);
-  }, [test]);
+
   const handleScroll = useCallback(
     (event) => {
       if (end) {
@@ -138,7 +135,6 @@ const Notification: React.FC = memo(() => {
       }
       void Taro.showLoading({ title: '加载中 ...' });
       if (!loading) {
-        console.log('fetching', event);
         void fetchData().then(() => {
           void Taro.hideLoading();
         });
@@ -152,45 +148,58 @@ const Notification: React.FC = memo(() => {
       title: '加载中',
     });
     setLoading(true);
-    setCommentMessage([]);
-    setSupportMessage([]);
-    void fetchData();
+    if (tab === '提问') {
+      setCommentMessage(MOCK_COMMENT_MESSAGES as MessageType[]);
+      setSupportMessage([]);
+      setOfficialMessage([]);
+    } else if (tab === '点赞') {
+      setCommentMessage([]);
+      setSupportMessage(MOCK_SUPPORT_MESSAGES as MessageType[]);
+      setOfficialMessage([]);
+    } else if (tab === '官方') {
+      setCommentMessage([]);
+      setSupportMessage([]);
+      setOfficialMessage(MOCK_OFFICIAL_MESSAGES);
+    }
+    Taro.hideLoading();
+    setLoading(false);
   }, [tab]);
 
-  return !test ? (
-    <View className="mt-20 flex flex-col">
-      <NavigationBar title="消息" isTabPage />
-      <View className="flex flex-col gap-4 p-4">
-        {[
-          {
-            title: '如何使用课栈',
-            content: '点击右下角的个人中心，即可查看课程信息',
-            time: '2024-03-20',
-          },
-          {
-            title: '遇到问题如何反馈？',
-            content: '您可以通过设置页面的问题反馈向我们报告使用过程中遇到的问题',
-            time: '2024-03-18',
-          },
-        ].map((item, index) => (
-          <View key={index} className="rounded-lg bg-white p-4 shadow">
-            <Text className="mb-2 text-lg font-bold">{item.title}</Text>
-            <Text className="mb-2 text-gray-600">{item.content}</Text>
-            <Text className="text-sm text-gray-400">{item.time}</Text>
-          </View>
-        ))}
+  if (!test) {
+    return (
+      <View className="notification_fallback_container">
+        <NavigationBar title="消息" isTabPage />
+        <View className="fallback_list_container">
+          {[
+            {
+              title: '如何使用课栈',
+              content: '点击右下角的个人中心，即可查看课程信息',
+              time: '2024-03-20',
+            },
+            {
+              title: '遇到问题如何反馈？',
+              content: '您可以通过设置页面的问题反馈向我们报告使用过程中遇到的问题',
+              time: '2024-03-18',
+            },
+          ].map((item, index) => (
+            <View key={index} className="fallback_item">
+              <Text className="fallback_item_title">{item.title}</Text>
+              <Text className="fallback_item_content">{item.content}</Text>
+              <Text className="fallback_item_time">{item.time}</Text>
+            </View>
+          ))}
+        </View>
       </View>
-    </View>
-  ) : (
-    <View className="mt-5 flex h-screen w-full flex-col items-center gap-4 overflow-y-scroll pb-[13vh]">
+    );
+  }
+
+  return (
+    <View className="notification_main_container">
       <NavigationBar title="消息" isTabPage />
       <TabBar
         tab={tab}
         //eslint-disable-next-line @typescript-eslint/no-shadow
-        setTab={(tab) => {
-          setTab(tab);
-          setCtime(0);
-        }}
+        setTab={() => {}}
       />
       <VirtualList
         height="70%"

@@ -1,0 +1,104 @@
+.message_support_container {
+  position: relative;
+  box-sizing: border-box;
+  width: calc(100% - 48rpx);
+  background-color: #fff;
+  margin: 24rpx 24rpx;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow:
+    0 -4rpx 6rpx rgba(0, 0, 0, 0.05),
+    0 4rpx 6rpx rgba(0, 0, 0, 0.05);
+
+  .header {
+    position: absolute;
+    right: 3%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32rpx;
+
+    .header_time {
+      font-size: 26rpx;
+      color: #999;
+    }
+  }
+
+  .body {
+    display: flex;
+    align-items: flex-start;
+
+    .avatar_wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      height: 100%;
+
+      .avatar_image {
+        width: 100rpx;
+        height: 100rpx;
+        border-radius: 50%;
+        border: 6rpx solid #ffd700;
+        box-sizing: border-box;
+      }
+    }
+
+    .content_wrapper {
+      display: flex;
+      flex: 5;
+      gap: 12rpx;
+
+      .word_cotainer {
+        display: flex;
+        flex-direction: column;
+        flex: 3;
+        height: 100%;
+        padding-left: 24rpx;
+
+        .user_info {
+          margin-bottom: 6rpx;
+
+          .user_name {
+            font-size: 32rpx;
+            font-weight: 600;
+            color: #333;
+          }
+        }
+
+        .action_wrapper {
+          margin-bottom: 6rpx;
+
+          .action_text {
+            font-size: 26rpx;
+            color: #333333;
+          }
+        }
+
+        .content {
+          flex: 1;
+          position: relative;
+          padding-left: 20rpx;
+
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10rpx;
+            bottom: 10rpx;
+            width: 10rpx;
+            background-color: #ffefb7;
+            border-radius: 10rpx;
+          }
+
+          .content_text {
+            font-size: 24rpx;
+            color: #999999;
+            line-height: 1.5;
+            overflow: hidden;
+            max-height: 72rpx;
+          }
+        }
+      }
+    }
+  }
+}

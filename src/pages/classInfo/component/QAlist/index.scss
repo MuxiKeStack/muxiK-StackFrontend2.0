@@ -1,0 +1,95 @@
+@mixin qa_mark {
+  width: 36rpx;
+  height: 36rpx;
+  line-height: 36rpx;
+  text-align: center;
+  background-color: #f9b94f;
+  color: #3d3d3d;
+  font-size: 24rpx;
+  font-weight: bold;
+  border-radius: 50%;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+.qa_list_scroll {
+  height: 100%;
+  background-color: #ffffff;
+
+  .qa_list_container {
+    padding: 20rpx;
+
+    .qa_list_item {
+      margin-bottom: 40rpx;
+      border-bottom: 2rpx solid #d8d8d8; // 加深边框颜色
+      padding-bottom: 20rpx;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .qa_item_header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20rpx;
+
+        .qa_item_mark {
+          @include qa_mark;
+        }
+
+        .qa_item_title {
+          flex: 1;
+          font-size: 28rpx;
+          color: #333;
+          font-weight: 500;
+          word-break: break-word;
+        }
+      }
+
+      .qa_item_replies {
+        // 移除左边距，让问和答在竖直方向对齐
+        // margin-left: 52rpx;
+
+        .qa_reply_item {
+          display: flex;
+          align-items: flex-start;
+          margin-bottom: 16rpx;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          .qa_reply_avatar_image {
+            width: 36rpx;
+            height: 36rpx;
+            border-radius: 50%;
+            margin-right: 16rpx;
+            flex-shrink: 0;
+          }
+
+          .qa_reply_mark {
+            @include qa_mark;
+          }
+
+          .qa_reply_content {
+            flex: 1;
+            font-size: 26rpx;
+            color: #666;
+            line-height: 1.5;
+            word-break: break-word;
+          }
+        }
+      }
+
+      .qa_item_footer {
+        margin-top: 10rpx;
+        // 移除左边距，与问对齐
+        // margin-left: 52rpx;
+
+        .qa_footer_text {
+          font-size: 24rpx;
+          color: #ffbf60; // 改为橙色
+        }
+      }
+    }
+  }
+}

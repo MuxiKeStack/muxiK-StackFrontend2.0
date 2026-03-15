@@ -1,16 +1,29 @@
 .label {
-  width: 145rpx;
-  height: 62rpx;
+  flex: 1;
+  height: 60rpx;
   border-radius: 24rpx;
   font-family: SourceHanSans;
   font-weight: bold;
   font-size: 28rpx;
-  line-height: 62rpx;
+  line-height: 60rpx;
   text-align: center;
   font-style: normal;
   text-transform: none;
   background: #fffaec;
   color: #3d3d3d;
+}
+
+.search {
+  flex: 1;
+  height: 60rpx;
+  border-radius: 24rpx;
+  font-size: 28rpx;
+  background: #ffffff;
+  color: #999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8rpx;
 }
 
 .active {
@@ -20,10 +33,49 @@
 }
 
 .classLine {
+  box-sizing: border-box;
+  padding: 0 32rpx;
   margin-top: 35rpx;
   display: flex;
   margin-bottom: 35rpx;
   justify-content: center;
   width: 100%;
   gap: 28rpx;
+}
+
+.module-tab-item {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 10rpx;
+  gap: 12rpx;
+
+  &.Active {
+    opacity: 0.8;
+  }
+}
+
+.module-tab-text {
+  text-align: center;
+  font-size: 30rpx;
+  line-height: 1;
+
+  &:not(.Active) {
+    color: #999999;
+    font-weight: 400;
+  }
+
+  &.Active {
+    color: #3d3d3d;
+    font-weight: 600;
+  }
+}
+
+.module-indicator {
+  width: 20%;
+  height: 4rpx;
+  background-color: #eda335;
+  border-radius: 2rpx;
 }

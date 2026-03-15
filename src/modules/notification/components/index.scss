@@ -1,0 +1,51 @@
+.notification_fallback_container {
+  margin-top: 160rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.fallback_list_container {
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+  padding: 32rpx;
+}
+
+.fallback_item {
+  border-radius: 16rpx;
+  background-color: white;
+  padding: 32rpx;
+  box-shadow: 0px 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.fallback_item_title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.fallback_item_content {
+  font-size: 28rpx;
+  color: rgb(75, 85, 99);
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.fallback_item_time {
+  font-size: 24rpx;
+  color: rgb(156, 163, 175);
+  display: block;
+}
+
+.notification_main_container {
+  margin-top: 40rpx;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32rpx;
+  overflow-y: scroll;
+  padding-bottom: 169rpx;
+}

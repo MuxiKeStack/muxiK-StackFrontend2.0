@@ -9,14 +9,18 @@ import { AtIcon } from 'taro-ui';
 import './style.scss';
 
 import { Icon, TopBackground } from '@/common/assets/img/login';
-import { Comment } from '@/common/components';
-import SearchInput from '@/common/components/SearchInput/SearchInput';
+import { CourseReview } from '@/common/components';
 import { postBool } from '@/common/utils/fetch';
 import { NavigationBar } from '@/modules/navigation';
 
 import { StatusResponse } from '../evaluate';
 import { useCourseStore } from './store/store';
 import { COURSE_TYPE } from './store/types';
+
+// const PAGE_MODULES_MAP = {
+//   COURSE_REVIEW: '评价课程',
+//   ASK_STUDENTS: '问问同学',
+// };
 
 const COURSE_NAME_MAP = {
   [COURSE_TYPE.ANY]: '全部',
@@ -34,6 +38,7 @@ const Page: React.FC = () => {
   const [refresherTriggered, setRefresherTriggered] = useState(false);
 
   // const [comments, setComments] = useState<CommentInfoType[]>([]);
+  // const [module, setModule] = useState(PAGE_MODULES_MAP['COURSE_REVIEW']);
   const comments = useCourseStore((state) => state.comments);
   const classType = useCourseStore((state) => state.classType);
   const loading = useCourseStore((state) => state.loading);
@@ -138,6 +143,14 @@ const Page: React.FC = () => {
     return geneHandler();
   }, [loading]);
 
+  // const handleChangeModule = (name: string) => {
+  //   setModule(PAGE_MODULES_MAP[name]);
+  //   console.log(name);
+
+  //   // todos: 暂未实装，等后续
+  //   // Module: 孩子们我好像被腰斩了
+  // };
+
   return !test ? (
     <View className="flex flex-col">
       <Image src={TopBackground as string} className="w-full"></Image>
@@ -154,7 +167,24 @@ const Page: React.FC = () => {
     <View className="mt-20 flex flex-col items-center justify-center">
       <NavigationBar title="评课广场" isTabPage />
       <View className="mt-5 flex w-full items-center justify-center gap-2">
-        <SearchInput
+        {/* {Object.entries(PAGE_MODULES_MAP).map(([name, displayName]) => {
+          const isActive = displayName === module;
+
+          return (
+            <View
+              key={name}
+              className={`module-tab-item ${isActive ? 'Active' : ''}`}
+              onClick={() => handleChangeModule(name)}
+            >
+              <Text className={`module-tab-text ${isActive ? 'Active' : ''}`}>
+                {displayName}
+              </Text>
+
+              {isActive && <View className="module-indicator" />}
+            </View>
+          );
+        })} */}
+        {/* <SearchInput
           style={{ height: '30rpx', width: '500rpx', borderRadius: '20rpx' }}
           onSearch={handleSearch} // 传递搜索逻辑
           onSearchToggle={handleSearchToggle}
@@ -163,7 +193,7 @@ const Page: React.FC = () => {
           searchPlaceholderStyle="color:#9F9F9C"
           searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
         />
-        <Text className="text-center text-lg text-[#3D3D3D]">搜索</Text>
+        <Text className="text-center text-lg text-[#3D3D3D]">搜索</Text> */}
       </View>
       <View className="classLine">
         {Object.entries(COURSE_NAME_MAP).map(([name, displayName]) => {
@@ -172,13 +202,23 @@ const Page: React.FC = () => {
               <View
                 className={'label' + ' ' + (classType === name ? 'active' : '')}
                 // onClick={() => handleChangeType(name)}
-                onTouchEnd={() => handleChangeType(name)}
+                onClick={() => handleChangeType(name)}
               >
                 {displayName}
               </View>
             </>
           );
         })}
+        <View className="search" onClick={handleSearchToggle}>
+          <Image
+            style={{
+              width: '34.09rpx',
+              height: '34.09rpx',
+            }}
+            src={'https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png'}
+          />
+          <Text>搜索</Text>
+        </View>
       </View>
       <Swiper
         style={{ height: '70vh', width: '100vw' }}
@@ -207,7 +247,8 @@ const Page: React.FC = () => {
               {comments[name] &&
                 (comments[name] as CommentInfoType[]).map((comment) => (
                   <>
-                    <Comment
+                    <CourseReview
+                      showTag
                       onCommentClick={() => handleComment({ ...comment, type: 'inner' })}
                       onClick={() => handleComment({ ...comment, type: 'inner' })}
                       key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的

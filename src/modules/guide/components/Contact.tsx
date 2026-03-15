@@ -1,7 +1,7 @@
-import { Text, View } from '@tarojs/components';
+import { TASIcon } from '@/common/assets/img/icons';
+import { Image, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo } from 'react';
-import { AtIcon } from 'taro-ui';
 
 const Contact: React.FC = memo(() => {
   const handleCopy = () => {
@@ -17,13 +17,13 @@ const Contact: React.FC = memo(() => {
   };
   return (
     <View
-      className="fixed bottom-[16vh] right-8 flex flex-col items-center gap-2"
-      onTouchEnd={handleCopy}
+      className="fixed right-8 top-[12vh] flex flex-col items-center gap-2"
+      onClick={handleCopy}
     >
-      <View className="flex aspect-square w-14 items-center justify-center rounded-full bg-[#f9f9f2] shadow-xl">
-        <AtIcon value="mail" size={30} color="#f18900" />
+      <View className="flex aspect-square w-10 items-center justify-center rounded-lg bg-[#FFFAEC] shadow-xl">
+        <Image src={TASIcon} style={{ width: '64rpx', height: '64rpx' }} />
       </View>
-      <Text className="text-xs">教秘通讯录</Text>
+      <Text className="text-xs">联系教秘</Text>
     </View>
   );
 });

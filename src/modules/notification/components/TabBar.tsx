@@ -3,6 +3,7 @@ import { memo } from 'react';
 
 import IconFont from '@/common/components/iconfont';
 import { uniqueKey } from '@/common/utils';
+import './TabBar.scss';
 
 interface TabBarProps {
   tab: string;
@@ -25,16 +26,16 @@ const Tabs: { name: string; icon: string }[] = [
 ];
 
 const TabBar: React.FC<TabBarProps> = memo(({ tab, setTab }) => (
-  <View className="mt-20 flex h-28 w-full justify-around">
+  <View className="tab_bar_container">
     {Tabs.map((item) => (
       <View
         key={uniqueKey.nextKey()}
-        className="flex flex-col items-center gap-2"
-        onTouchEnd={() => {
+        className="tab_bar_button"
+        onClick={() => {
           setTab(item.name);
         }}
       >
-        <View className="flex h-16 w-16 items-center justify-center rounded-md bg-[#FEF6DF] shadow-lg">
+        <View className="tab_bar_icon_wrapper">
           <IconFont
             /* @ts-expect-error 轮子问题 */
             name={item.icon}
@@ -42,7 +43,7 @@ const TabBar: React.FC<TabBarProps> = memo(({ tab, setTab }) => (
             color={tab === item.name ? '#f18900' : '#FFD777'}
           ></IconFont>
         </View>
-        <Text className="text-lg">{item.name}</Text>
+        <Text className="tab_bar_text">{item.name}</Text>
       </View>
     ))}
   </View>

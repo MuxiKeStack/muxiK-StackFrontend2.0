@@ -53,7 +53,7 @@ const Select: React.FC<SelectProps> = memo(({ type, value, setIsOpen, style }) =
     <View
       className="flex w-[50%] justify-between rounded-lg bg-[#FFFAEC] px-2 py-2"
       style={{ boxShadow: '0px 4px 10px 0px rgba(185, 185, 185, 0.302)' }}
-      onTouchEnd={() => setIsOpen(true)}
+      onClick={() => setIsOpen(true)}
     >
       <Text className="text-xs">{value}</Text>
       <ArrowDown className="text-xs" style={{ color: '#f18900' }} />

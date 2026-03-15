@@ -1,35 +1,70 @@
-.lsss {
-  width: auto;
-  height: 60rpx;
-  font-size: 45rpx;
-  font-family: Inter-Bold-, Inter-Bold;
-  font-weight: normal;
-  color: #565656;
-}
-.historyResult {
-  width: 80vw;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-.button {
-  background-color: #f9f9f2;
-  height: 48.91rpx;
-  width: 48.91rpx;
-  top: 234rpx;
-  left: 621.38rpx;
-  border-radius: 100%;
-  box-shadow: 0rpx 5.43rpx 10.87rpx 1.81rpx rgba(0, 0, 0, 0.16);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.tj {
-  margin-top: 50rpx;
+.search_page_container {
+  margin-top: 24%;
+  height: 90vh;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  overflow: auto;
+
+  .search_input_wrapper {
+    box-sizing: border-box;
+    margin-top: 10rpx;
+    width: 100%;
+    padding: 32rpx;
+    gap: 8rpx;
+  }
+
+  .history_section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .history_header {
+      margin-top: 2vh;
+      width: 90vw;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .history_title {
+        font-size: 36rpx;
+        font-weight: 500;
+        color: #333333;
+      }
+
+      .clear_history_button {
+        height: 48.91rpx;
+        width: 48.91rpx;
+        top: 234rpx;
+        left: 621.38rpx;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .delete_icon {
+          width: 30rpx;
+          height: 30rpx;
+        }
+      }
+    }
+
+    .history_result_container {
+      width: 90vw;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  .course_list_container {
+    margin-top: 25rpx;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }

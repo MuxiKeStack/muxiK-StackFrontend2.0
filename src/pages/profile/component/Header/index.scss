@@ -1,0 +1,84 @@
+.profile_header {
+  position: relative;
+  height: 35%;
+  width: 100%;
+  background: linear-gradient(170deg, #f9b94f 0%, #facd86 35%, #f8de94 40%, #ffffff 90%);
+
+  .profile_header_background {
+    height: 34vh;
+    width: 100%;
+  }
+
+  .profile_header_container {
+    position: absolute;
+    top: 16vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 32rpx;
+    padding-left: 64rpx;
+
+    .profile_header_avatar_wrapper {
+      aspect-ratio: 1/1;
+      height: 20vw;
+      width: 20vw;
+      border-radius: 50%;
+      background-color: #ffffff;
+      overflow: hidden;
+
+      .profile_header_avatar {
+        aspect-ratio: 1/1;
+        height: 20vw;
+        width: 20vw;
+        border-radius: 50%;
+        background-color: #ffffff;
+      }
+    }
+
+    .profile_header_info {
+      display: flex;
+      flex-direction: column;
+      gap: 16rpx;
+
+      .profile_header_name_section {
+        display: flex;
+        align-items: center;
+        gap: 16rpx;
+
+        .profile_header_nickname {
+          white-space: nowrap;
+          font-size: 36rpx;
+          line-height: 1.5;
+        }
+      }
+
+      .profile_header_points_text {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        font-size: 24rpx;
+        font-weight: 700;
+        color: #fb923c;
+      }
+
+      .profile_header_progress_section {
+        display: flex;
+        align-items: center;
+        gap: 8rpx;
+        margin-top: -24rpx;
+
+        .profile_header_exp_text {
+          display: flex;
+          align-items: center;
+          font-size: 32rpx;
+          font-weight: 700;
+          color: #fb923c;
+        }
+
+        .profile_header_progress {
+          width: 288rpx;
+        }
+      }
+    }
+  }
+}
