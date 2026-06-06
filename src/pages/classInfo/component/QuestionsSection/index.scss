@@ -1,0 +1,145 @@
+.classInfo_page_questions_section {
+  margin-top: 10rpx;
+  padding: 0 30rpx;
+
+  .classInfo_page_questions_title {
+    @include line-decoration;
+
+    padding-top: $space_md;
+    text-align: center;
+    font-size: 38rpx;
+    color: $color_text_primary;
+  }
+
+  .classInfo_page_questions_header {
+    @include flex_between;
+
+    padding: $space_lg 12rpx;
+
+    .classInfo_page_questions_header_title {
+      font-size: $font_size_title;
+      font-weight: bold;
+      color: $color_text_primary;
+    }
+
+    .classInfo_page_questions_header_more {
+      font-size: $font_size_body;
+      color: $color_text_primary;
+      position: relative;
+      padding-right: 30rpx;
+
+      &::after {
+        content: '>';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $color_text_primary;
+      }
+    }
+  }
+
+  .classInfo_page_question_item {
+    border-radius: $radius_md;
+    padding: $space_lg;
+    margin-bottom: $space_md;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .classInfo_page_question_title_row {
+      @include flex_align_start;
+
+      gap: $space_xs;
+      margin-bottom: $space_md;
+
+      .classInfo_page_question_mark {
+        width: 32rpx;
+        height: 32rpx;
+        line-height: 32rpx;
+        background-color: $color_brand_muted;
+        color: $color_text_primary;
+        font-size: $font_size_caption;
+        font-weight: bold;
+        border-radius: $radius_round;
+        text-align: center;
+        padding: 4rpx;
+      }
+
+      .classInfo_page_question_title {
+        font-size: $font_size_title;
+        font-weight: 500;
+        color: $color_text_primary;
+        flex: 1;
+      }
+
+      .classInfo_page_question_count {
+        font-size: $font_size_caption;
+        color: $color_text_primary;
+      }
+    }
+
+    .classInfo_page_answer_preview {
+      .classInfo_page_answer_item {
+        display: flex;
+        align-items: flex-start;
+        background-color: $color_bg_page;
+
+        border-radius: $radius_sm;
+        margin-bottom: $space_xs;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .classInfo_page_answer_mark {
+          width: 32rpx;
+          height: 32rpx;
+          line-height: 32rpx;
+          background-color: $color_brand_muted;
+          color: $color_text_primary;
+          font-size: $font_size_caption;
+          font-weight: bold;
+          border-radius: $radius_round;
+          text-align: center;
+          padding: 4rpx;
+          margin-right: $space_sm;
+          flex-shrink: 0;
+        }
+
+        .classInfo_page_answer_content {
+          flex: 1;
+          font-size: $font_size_body;
+          color: $color_text_medium;
+          line-height: 1.5;
+          display: -webkit-box;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .classInfo_page_answer_placeholder {
+        font-size: $font_size_body;
+        color: $color_text_light;
+        font-style: italic;
+        padding: $space_md 0;
+      }
+    }
+  }
+
+  .classInfo_page_empty_questions {
+    @include flex_center;
+
+    height: 5vh;
+    background-color: #f8f8f8;
+    border-radius: $radius_md;
+    margin-top: $space_md;
+
+    .classInfo_page_empty_text {
+      font-size: $font_size_heading;
+      color: $color_text_secondary;
+      padding: $space_md 0;
+    }
+  }
+}

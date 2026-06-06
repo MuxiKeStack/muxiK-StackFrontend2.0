@@ -1,0 +1,35 @@
+.floatButton_container {
+  @include flex_column_center;
+
+  position: fixed;
+  z-index: 369;
+  min-width: 64rpx;
+  min-height: 64rpx;
+  padding: $space_sm;
+  background-color: $color_bg_page;
+  color: $color_text_primary;
+  border: 2rpx solid transparent;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+
+  .floatButton_icon {
+    font-size: $font_size_title;
+    line-height: 1;
+    color: $color_text_primary;
+  }
+
+  .floatButton_content {
+    margin-top: $space_xxs;
+    font-size: $font_size_caption;
+    color: $color_text_primary;
+    text-align: center;
+  }
+
+  &.floatButton_circle {
+    border-radius: $radius_round;
+  }
+
+  &.floatButton_square {
+    border-radius: $radius_md;
+  }
+}

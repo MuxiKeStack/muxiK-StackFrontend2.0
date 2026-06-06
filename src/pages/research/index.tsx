@@ -1,38 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable no-console */
+import { deleteIcon } from '@/common/assets/img/icons';
+import { SearchInput } from '@/common/components';
+import CourseLabel from '@/common/components/CourseLabel';
+import SearchLabel from '@/common/components/Searchlabel';
+import {
+  translateAssessments,
+  translateCourseProperty,
+  translateFeatures,
+} from '@/common/constants/courseLabels';
+import { NavigationBar } from '@/modules/navigation';
+import { useResearchStore } from '@/store';
 import { Image, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
-import React, { useEffect, useState } from 'react';
-
-import './style.scss';
-
-import Label1 from '@/common/components/label1/label1';
-import Label2 from '@/common/components/label2/label2';
-import SearchInput from '@/common/components/SearchInput/SearchInput';
-import { get } from '@/common/utils';
-import { put } from '@/common/utils/fetch';
-import { NavigationBar } from '@/modules/navigation';
-
-export interface Course {
-  id: number;
-  keyword: string;
-}
-
-export interface ClassInfo {
-  id: number;
-  name: string;
-  teacher: string;
-  composite_score: number; // 确保这个字段是number类型
-  features: string[]; // 这个字段是一个字符串数组
-  assessments?: object; // 使用?表示这个属性是可选的
-}
+import React, { useState } from 'react';
+import './index.scss';
+import type { SearchHistoryItem, SearchResultCourse } from './types';
 
 interface ConditionalRenderProps {
   isSpread: boolean;
-  classes: ClassInfo[];
-  hrs: Course[];
+  classes: SearchResultCourse[];
+  hrs: SearchHistoryItem[];
   handleSearch: (searchText: string) => void;
   handleDelete: () => void;
 }
@@ -44,139 +32,158 @@ const ConditionalRender: React.FC<ConditionalRenderProps> = ({
   handleSearch,
   handleDelete,
 }) => {
-  return isSpread ? (
-    <View className="tj">
-      {classes.map((each) => (
-        <Label2 key={each.id} {...each} />
-      ))}
-    </View>
-  ) : (
-    <View className="relative flex flex-col items-center">
-      <View className="mt-[2vh] flex w-[80vw] flex-row justify-between">
-        <Text className="text-lg">历史搜索</Text>
-        <View className="button" onTouchEnd={handleDelete}>
-          <Image
-            style={{ width: '29.37rpx', height: '30.83rpx' }}
-            src="https://s2.loli.net/2023/08/26/3XBEGlN2UuJdejv.png"
-          />
+  if (!isSpread) {
+    return (
+      <View className="history_section">
+        <View className="history_header">
+          <Text className="history_title">历史搜索</Text>
+          <View className="clear_history_button" onTouchEnd={handleDelete}>
+            <Image className="delete_icon" src={deleteIcon} />
+          </View>
+        </View>
+        <View
+          className="history_result_container"
+          onTouchEnd={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          {hrs.map((hr) => (
+            <SearchLabel
+              key={hr.id}
+              content={hr.keyword}
+              onClick={() => {
+                handleSearch(hr.keyword);
+              }}
+            />
+          ))}
         </View>
       </View>
-      <View
-        className="historyResult"
-        onTouchEnd={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        {hrs.map((hr) => (
-          <Label1
-            key={hr.id}
-            content={hr.keyword}
-            onClick={(e) => {
-              handleSearch(hr.keyword);
-            }}
-          />
-        ))}
+    );
+  }
+
+  if (classes.length === 0) {
+    return (
+      <View className="search_empty_container">
+        <Text className="search_empty_text">没有找到相关课程</Text>
+        <Text className="search_empty_hint">换个关键词试试吧</Text>
       </View>
+    );
+  }
+
+  return (
+    <View className="course_list_container">
+      {classes.map((each) => (
+        <CourseLabel key={each.id} course={each} />
+      ))}
     </View>
   );
 };
 
 const Page: React.FC = () => {
-  const [hrs, setHrs] = useState<Course[]>([]);
-  const [classes, setClasses] = useState<ClassInfo[]>([]);
+  const history = useResearchStore((s) => s.history);
+  const searchResults = useResearchStore((s) => s.searchResults);
+  const loadHistory = useResearchStore((s) => s.loadHistory);
+  const clearHistory = useResearchStore((s) => s.clearHistory);
+  const search = useResearchStore((s) => s.search);
+
   const [isSpread, setSpread] = useState<boolean>(false);
   const [globalSearchText, setGlobalSearchText] = useState<string>('');
 
   useLoad(() => {
-    console.log('Page loaded.');
-    get('/search/history?search_location=Home').then((res) => {
-      console.log('获取到历史搜索信息');
-      // console.log(res);
-      setHrs(res.data);
+    void loadHistory().catch((error) => {
+      console.error('获取历史搜索异常:', error);
+      Taro.showToast({
+        title: '获取历史搜索异常，请稍后重试',
+        icon: 'error',
+        duration: 2000,
+      });
     });
   });
 
   const handleSearchToggle = () => {
-    // setSpread(isSearchActive);
-    // Taro.navigateTo({
-    //   url: '/pages/research/index',
-    // });
     setSpread(false);
   };
 
   const handleDelete = () => {
-    put('/search/history', {
-      remove_all: true,
-      remove_history_ids: [],
-      search_location: 'Home',
-    }).then((res) => {
-      console.log(res);
-      if (res.code === 0) {
-        setHrs([]);
-        Taro.showToast({
-          title: '删除成功',
-          icon: 'success',
-        });
-      }
-    });
-  };
-
-  const handleSearch = (searchText: string) => {
-    Taro.showLoading({
-      title: '搜索中',
-    });
-    // console.log('搜索文本:', searchText);
-    setSpread(true);
-    get(`/search?biz=Course&keyword=${searchText}&search_location=Home`)
-      .then((res) => {
-        setClasses(res.data);
-        Taro.hideLoading();
-        if (res.data.length === 0) {
-          Taro.showToast({
-            title: '暂无内容',
-            icon: 'error',
-          });
+    Taro.showModal({
+      title: '确认清除',
+      content: '确定要清除所有搜索历史吗？',
+      success: async (modalRes) => {
+        if (!modalRes.confirm) return;
+        try {
+          await clearHistory();
+          Taro.showToast({ title: '删除成功', icon: 'success' });
+        } catch (error) {
+          console.error('删除历史记录失败:', error);
+          Taro.showToast({ title: '删除失败,请稍后再试', icon: 'error' });
         }
-      })
-      .catch((err) => {
-        Taro.hideLoading();
-        Taro.showToast({
-          title: '搜索失败',
-          icon: 'error',
-        });
-      });
+      },
+    });
   };
 
-  useEffect(() => {
-    console.log('课程已经被更新');
-  }, [classes]);
+  const enhanceCourses = (courses: SearchResultCourse[]) =>
+    courses.map((course) => ({
+      ...course,
+      courseType: translateCourseProperty(
+        (course as { type?: string; property?: string }).type ??
+          (course as { property?: string }).property
+      ),
+      features: translateFeatures(course.features as string[]),
+      assessments: translateAssessments(course.assessments as string[]),
+    }));
+
+  const handleSearch = async (searchText: string) => {
+    if (!searchText || !searchText.trim()) {
+      Taro.showToast({ title: '请输入搜索内容', icon: 'error' });
+      return;
+    }
+
+    const keyword = searchText.trim();
+    setGlobalSearchText(keyword);
+    useResearchStore.setState((s) => {
+      const filtered = s.history.filter((item) => item.keyword !== keyword);
+      return { history: [{ id: Date.now(), keyword }, ...filtered].slice(0, 20) };
+    });
+
+    Taro.showLoading({ title: '搜索中' });
+    setSpread(true);
+    try {
+      const data = await search(keyword);
+      useResearchStore.setState({ searchResults: enhanceCourses(data) });
+    } catch (error) {
+      console.error('搜索失败:', error);
+      Taro.showToast({
+        title: '搜索失败',
+        icon: 'error',
+      });
+    } finally {
+      Taro.hideLoading();
+    }
+  };
 
   return (
-    <View
-      className="mt-20 flex h-[100vh] w-[100vw] flex-col items-center overflow-auto"
-      // onTouchEnd={() => handleClick()}
-    >
+    <View className="search_page_container">
       <NavigationBar title="搜索查询" isBackToPage />
-      <View className="mt-5 flex w-full items-center justify-center gap-2">
+      <View className="search_input_wrapper">
         <SearchInput
-          style={{ height: '30rpx', width: '500rpx', borderRadius: '30rpx' }}
-          onSearch={handleSearch} // 传递搜索逻辑
+          style={{ height: '30rpx' }}
+          onSearch={handleSearch}
           onSearchToggle={handleSearchToggle}
           searchText={globalSearchText}
           setSearchText={setGlobalSearchText}
-          // disabled
           searchPlaceholder="搜索课程名/老师名"
           searchPlaceholderStyle="color:#9F9F9C"
           searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
+          suffix={{
+            text: '搜索',
+          }}
         />
-        <Text className="text-center text-lg" onTouchEnd={() => handleSearch(searchText)}>
-          搜索
-        </Text>
       </View>
+
       <ConditionalRender
         isSpread={isSpread}
-        classes={classes}
-        hrs={hrs}
+        classes={isSpread ? searchResults : []}
+        hrs={history}
         handleSearch={handleSearch}
         handleDelete={handleDelete}
       />

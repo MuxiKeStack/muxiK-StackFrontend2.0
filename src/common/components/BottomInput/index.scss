@@ -1,0 +1,65 @@
+.bottomInput {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $color_bg_page;
+  border-top: 2rpx solid $color_bg_hover;
+  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.04);
+  z-index: 100;
+
+  &_container {
+    display: flex;
+    align-items: flex-end;
+    gap: $space_md;
+    padding: $space_md 30rpx;
+    box-sizing: border-box;
+  }
+
+  &_textarea {
+    flex: 1;
+    min-height: 80rpx;
+    max-height: 300rpx;
+    padding: $space_md 24rpx;
+    background: $color_bg_input;
+    border-radius: $radius_xl;
+    font-size: $font_size_body;
+    color: $color_text_dark;
+    line-height: 1.4;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  &_placeholder {
+    color: $color_text_secondary;
+  }
+
+  &_sendButton {
+    @include flex_center;
+
+    width: 120rpx;
+    height: 80rpx;
+    background: $color_brand;
+    border-radius: $radius_xl;
+
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+    border: none;
+    outline: none;
+
+    &.disabled {
+      background: $color_text_light;
+      opacity: 0.5;
+    }
+
+    &:active {
+      opacity: 0.8;
+    }
+
+    &_btn_text {
+      font-size: $font_size_body;
+      color: $color_text_light;
+    }
+  }
+}

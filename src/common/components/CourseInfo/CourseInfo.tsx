@@ -1,20 +1,28 @@
 import { View } from '@tarojs/components';
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { useCourseStore } from '@/store/useCourseStore';
 
 import './index.scss';
 
 interface ICourseInfoProps {
-  name?: string;
-  school?: string;
-  teacher?: string;
+  courseId: number;
 }
 
-const CourseInfo: React.FC<ICourseInfoProps> = ({ name, school, teacher }) => {
+const CourseInfo: React.FC<ICourseInfoProps> = ({ courseId }) => {
+  const courseDetail = useCourseStore((s) => s.courseDetail[courseId]);
+
+  useEffect(() => {
+    if (!courseDetail && courseId > 0) {
+      useCourseStore.getState().fetchCourseDetail(courseId).catch(() => {});
+    }
+  }, [courseId, courseDetail]);
+
   return (
     <View>
-      <View className="theClassName">{name}</View>
+      <View className="theClassName">{courseDetail?.name || '加载中...'}</View>
       <View className="teacherName">
-        {school} {teacher}
+        {courseDetail?.school} {courseDetail?.teacher}
       </View>
     </View>
   );

@@ -1,0 +1,151 @@
+.evaluate_page_unauthorized_container {
+  @include flex_column;
+
+  .evaluate_page_background_image {
+    width: 100%;
+  }
+
+  .evaluate_page_unauthorized_content {
+    @include flex_column_align_center;
+
+    position: absolute;
+    top: 0;
+    margin-top: 15vh;
+    width: 100%;
+    gap: 32rpx;
+
+    .evaluate_page_unauthorized_icon_wrapper {
+      height: 320rpx;
+      width: 320rpx;
+      overflow: hidden;
+      border-radius: 64rpx;
+      box-shadow:
+        0 40rpx 52rpx -8rpx rgba(0, 0, 0, 0.1),
+        0 20rpx 20rpx -8rpx rgba(0, 0, 0, 0.04);
+      .evaluate_page_unauthorized_icon {
+        height: 100%;
+        width: 100%;
+      }
+    }
+    .evaluate_page_unauthorized_text {
+      font-size: 72rpx;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: $color_brand_golden;
+    }
+  }
+}
+.evaluate_page_container {
+  margin-top: 25%;
+  height: 85vh;
+  padding: 0 0 24rpx 0;
+  .evaluate_page_form {
+    padding-top: 30rpx;
+    .evaluate_page_section {
+      display: flex;
+      flex-direction: row;
+      margin-top: 30rpx;
+      margin-left: 46rpx;
+      .evaluate_page_label {
+        padding-right: 10rpx;
+        font-size: $font_size_base;
+        font-family:
+          Segoe UI-Bold,
+          Segoe UI;
+        color: $color_text_heading;
+        letter-spacing: 2rpx;
+        font-weight: 600;
+      }
+      .evaluate_page_ways_container {
+        width: 500rpx;
+        margin-top: -4rpx;
+        display: flex;
+        flex-wrap: wrap;
+        gap: $space_md;
+        .evaluate_page_radio {
+          font-size: $font_size_base;
+          margin-right: $space_md;
+          .wx-radio-input {
+            height: 14rpx;
+            width: 14rpx;
+            border: 6rpx solid $color_brand_golden;
+          }
+          .wx-radio-input.wx-radio-input-checked::before {
+            border-radius: $radius_round;
+            width: 18rpx;
+            height: 18rpx;
+            line-height: 18rpx;
+            text-align: center;
+            font-size: 0rpx;
+            background-color: $color_brand_golden;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+      .evaluate_page_features_container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 26rpx;
+        width: 500rpx;
+      }
+    }
+    .evaluate_textarea_container {
+      position: relative;
+      .evaluate_page_textarea {
+        width: 650rpx;
+        height: 30vh;
+        background-color: transparent;
+        border: 1px solid $color_text_light;
+        border-radius: 44rpx;
+        margin: $space_lg auto;
+        padding: $space_lg 24rpx;
+        font-size: $font_size_title;
+      }
+      .evaluate_page_word_limit {
+        font-size: $font_size_caption;
+        color: $color_text_light;
+        position: absolute;
+        right: 8%;
+        bottom: 5%;
+      }
+    }
+    .evaluate_page_anonymous_section {
+      @include flex_align_center;
+      margin: 30rpx 46rpx;
+      .evaluate_page_anonymous_radio {
+        @include flex_align_center;
+        font-size: $font_size_base;
+        .wx-radio-input {
+          height: 24rpx;
+          width: 24rpx;
+          border: 6rpx solid $color_brand_golden;
+        }
+        .wx-radio-input.wx-radio-input-checked::before {
+          border-radius: $radius_round;
+          width: 30rpx;
+          height: 30rpx;
+          line-height: 24rpx;
+          text-align: center;
+          font-size: 0rpx;
+          background-color: $color_brand_golden;
+          transform: translate(-50%, -50%);
+        }
+      }
+      .evaluate_page_anonymous_text {
+        font-size: $font_size_subheading;
+        color: $color_text_light;
+      }
+    }
+    .evaluate_page_submit_button {
+      @include flex_center;
+      margin: 64rpx auto;
+      padding: $space_sm 48rpx;
+      width: 60%;
+      font-size: $font_size_hero;
+      color: white;
+      background-color: $color_brand;
+      border-radius: $radius_xl;
+      border: 0rpx;
+    }
+  }
+}

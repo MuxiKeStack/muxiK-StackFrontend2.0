@@ -26,6 +26,7 @@ export interface FeedbackItem {
     source: string;
     status: string;
     type: string;
+    reply: string;
   };
 }
 
@@ -39,5 +40,6 @@ export interface FeedbackDetailItem {
     source: string;
     status: string;
     type: string;
+    reply: string;
   };
 }

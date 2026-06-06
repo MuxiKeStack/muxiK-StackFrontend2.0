@@ -1,44 +1,18 @@
-import { Button, ScrollView, Text, View } from '@tarojs/components';
+import { Button, Image, ScrollView, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useState } from 'react';
 
-import './style.scss';
+import './index.scss';
 
-import { feedbackFAQ, getFAQ } from '@/common/api/feedback';
+import { FeedbackIcon } from '@/common/assets/img/profile';
+import searchIcon from '@/common/assets/img/search.png';
+import { FloatButton, SearchInput } from '@/common/components';
 import Loading from '@/common/components/Loading';
-import SearchBar from '@/common/components/SearchBar';
-import { FAQ_RECORD_NAMES, FAQ_TABLE_IDENTIFY } from '@/common/constants/feedback';
 import { NavigationBar } from '@/modules/navigation';
+import { sourceLabel, useFeedbackStore } from '@/store';
 
 import { SheetItem } from '../type';
-import FAQItem from './components/normalquestions';
-
-interface FAQRecord {
-  record_id: string;
-  record: {
-    问题名称?: string;
-    问题描述?: string;
-    解决方案?: string;
-  };
-  is_resolved?: '已解决' | '未解决' | '未选择';
-}
-
-const transformFAQToSheetData = (records: FAQRecord[]): SheetItem[] => {
-  return records.map((item) => ({
-    record_id: item.record_id,
-    fields: {
-      title: item.record['问题名称'] || '未命名问题',
-      description: item.record['问题描述'] || '暂无',
-      solution: item.record['解决方案'] || '暂无',
-      resolvedStatus:
-        item.is_resolved === '已解决'
-          ? 'resolved'
-          : item.is_resolved === '未解决'
-            ? 'unresolved'
-            : 'notSelected',
-    },
-  }));
-};
+import FAQItem from './components/normalFAQ';
 
 const FeedbackPage = () => {
   const number = 576225292;
@@ -48,6 +22,7 @@ const FeedbackPage = () => {
 
   const [value, setValue] = useState('');
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const faqSource = useFeedbackStore((s) => s.faqSource);
   const [sheetData, setSheetData] = useState<SheetItem[]>([]);
   const [fullSheetData, setFullSheetData] = useState<SheetItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,26 +39,10 @@ const FeedbackPage = () => {
 
     try {
       setIsLoading(true);
-      const query = {
-        student_id: studentId,
-        record_names: FAQ_RECORD_NAMES,
-        table_identify: FAQ_TABLE_IDENTIFY,
-      };
-
-      const res: any = await getFAQ(query);
-
-      if (res.code === 0) {
-        const FAQDatas = transformFAQToSheetData(res.data.records);
-        setFullSheetData(FAQDatas);
-        setSheetData(FAQDatas);
-      } else {
-        void Taro.showToast({
-          icon: 'error',
-          title: '获取常见问题失败',
-          duration: 1500,
-        });
-      }
-    } catch (err) {
+      const FAQDatas = await useFeedbackStore.getState().loadFaq(studentId);
+      setFullSheetData(FAQDatas);
+      setSheetData(FAQDatas);
+    } catch {
       void Taro.showToast({
         icon: 'error',
         title: '网络异常，请稍后再试',
@@ -100,46 +59,20 @@ const FeedbackPage = () => {
 
   const handleFeedback = async (recordId: string, status: string): Promise<boolean> => {
     try {
-      const params = {
-        table_identify: FAQ_TABLE_IDENTIFY,
-        record_id: recordId,
-        is_resolved: status === 'resolved',
-        resolved_field_name: '已解决',
-        unresolved_field_name: '未解决',
-        user_id: studentId,
-      };
-
-      const res = await feedbackFAQ(params);
-
-      if (res?.code === 0) {
-        void Taro.showToast({
-          icon: 'success',
-          title: '反馈成功',
-          duration: 1000,
-        });
-        return true;
-      }
-
+      await useFeedbackStore
+        .getState()
+        .updateFaqStatus(recordId, status === 'resolved', studentId);
       void Taro.showToast({
-        icon: 'error',
-        title: '反馈失败，请重试',
+        icon: 'success',
+        title: '反馈成功',
         duration: 1000,
       });
-      return false;
-    } catch (err) {
-      if (err.response?.status === 429 && err.response?.data?.code === 200010) {
+      return true;
+    } catch (err: any) {
+      if (err?.code === 200010) {
         void Taro.showToast({
           icon: 'none',
           title: '您已达到反馈次数上限，感谢您的反馈',
-          duration: 1000,
-        });
-        return false;
-      }
-
-      if (err.response?.status === 429) {
-        void Taro.showToast({
-          icon: 'none',
-          title: '操作过于频繁，请稍后再试',
           duration: 1000,
         });
         return false;
@@ -154,7 +87,7 @@ const FeedbackPage = () => {
     }
   };
 
-  const debouncedSearch = useCallback(() => {
+  const handleSearch = useCallback(() => {
     let timeoutId: any;
     return (searchValue: string) => {
       setIsLoading(true);
@@ -179,77 +112,102 @@ const FeedbackPage = () => {
     };
   }, [fullSheetData])();
 
-  const navigateToPage = (url: string) => {
+  const handleSearchToggle = () => {
+    // todos: 好像还不知道加什么
+  };
+
+  const handleNavigateToPage = (url: string) => {
     try {
       navigate(url);
     } catch (err) {
-      console.error('导航失败:', err);
+      console.error('跳转失败:', err);
     }
   };
 
   return (
-    <View className="faq-container">
+    <View className="faq_page_container">
       <NavigationBar title="帮助与反馈" isBackToPage />
-
-      <View className="searchBar">
-        <SearchBar
-          placeholder="请输入问题"
-          value={value}
-          onChange={(val) => {
-            setValue(val);
-            debouncedSearch(val);
+      <View className="faq_search_input_container">
+        <SearchInput
+          searchPlaceholder="请输入问题"
+          style={{
+            height: '30rpx',
+            background: '#E5E7EB',
+          }}
+          searchPlaceholderStyle="color: #9CA3AF;"
+          searchIconSrc={searchIcon}
+          searchText={value}
+          setSearchText={setValue}
+          onSearchToggle={handleSearchToggle}
+          onSearch={handleSearch}
+          suffix={{
+            text: '搜索',
           }}
         />
       </View>
 
-      <View className="content">
-        <View className="header">
-          <Text className="header-text">常见问题</Text>
+      <View className="faq_content">
+        <View className="faq_header">
+          <Text className="faq_header_text">常见问题</Text>
+          {sourceLabel(faqSource) && (
+            <Text className="faq_offline_hint">{sourceLabel(faqSource)}</Text>
+          )}
         </View>
 
-        <ScrollView scrollY className="scroll">
+        <ScrollView scrollY className="faq_scroll">
           {isLoading ? (
             <Loading text="搜索中..." />
           ) : sheetData.length ? (
             sheetData.map((item, index) => (
               <FAQItem
                 key={item.record_id || index}
-                title={item.fields.title}
-                content={item.fields.description}
-                solution={item.fields.solution}
+                item={item}
                 isExpanded={expandedIndex === index}
                 onToggle={() => setExpandedIndex(expandedIndex === index ? null : index)}
-                initialStatus={item.fields.resolvedStatus}
                 onPress={(status) => handleFeedback(item.record_id, status)}
               />
             ))
           ) : (
-            <View className="empty">
+            <View className="faq_empty">
               <Text>暂无相关问题</Text>
             </View>
           )}
         </ScrollView>
       </View>
 
-      <View className="bottom">
+      <View className="faq_bottom">
         <Button
-          className="button"
-          onClick={() => navigateToPage('/pages/feedback/writefeedback/index')}
+          className="faq_button"
+          onClick={() => handleNavigateToPage('/pages/feedback/writefeedback/index')}
         >
-          <Text className="button-text">我要反馈</Text>
+          <Text className="faq_button_text">我要反馈</Text>
         </Button>
 
-        <View className="group">
+        <View className="faq_group">
           <Text>课栈交流群：</Text>
-          <Text className="group-number">{number}</Text>
+          <Text className="faq_group_number">{number}</Text>
           <Text
-            className="copy"
-            onClick={() => navigateToPage('/pages/feedback/history/index')}
+            className="faq_copy"
+            onClick={() => {
+              void Taro.setClipboardData({
+                data: String(number),
+              }).then(() => {
+                void Taro.showToast({ title: '已复制', icon: 'success', duration: 1000 });
+              });
+            }}
           >
             点击复制
           </Text>
         </View>
       </View>
+
+      <FloatButton
+        icon={<Image src={FeedbackIcon} className="faq_float_btn_icon" />}
+        side="right"
+        verticalOffset="78%"
+        halfHidden
+        onClick={() => handleNavigateToPage('/pages/feedback/history/index')}
+      />
     </View>
   );
 };

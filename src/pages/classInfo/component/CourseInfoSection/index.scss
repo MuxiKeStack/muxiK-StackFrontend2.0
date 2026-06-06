@@ -1,0 +1,28 @@
+.classInfo_page_teacher_info {
+  font-size: $font_size_subheading;
+  font-weight: 400;
+  color: $color_text_primary;
+  text-align: center;
+  margin-top: 16rpx;
+  margin-bottom: 28rpx;
+}
+
+.classInfo_page_info_row {
+  @include flex_align_center;
+
+  gap: $space_sm;
+  font-size: $font_size_base;
+  font-weight: 400;
+  color: $color_text_primary;
+  margin-left: 42rpx;
+  margin-bottom: 36rpx;
+  .classInfo_page_placeholder {
+    color: $color_text_light;
+  }
+}
+
+.classInfo_page_text {
+  font-size: $font_size_base;
+  font-weight: 400;
+  color: $color_text_primary;
+}

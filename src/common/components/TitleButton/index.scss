@@ -1,0 +1,21 @@
+.title_button {
+  @include flex_center;
+  white-space: nowrap;
+  border-radius: 100rpx;
+  padding: $space_xs 32rpx;
+  border: 1rpx solid $color_text_light;
+  background-color: white;
+  color: black;
+  .title_button_text {
+    font-size: $font_size_caption;
+    color: black;
+  }
+  &_selected {
+    border-color: $color_brand_muted;
+    background-color: $color_brand_muted;
+    .title_button_text {
+      font-size: $font_size_caption;
+      color: white;
+    }
+  }
+}

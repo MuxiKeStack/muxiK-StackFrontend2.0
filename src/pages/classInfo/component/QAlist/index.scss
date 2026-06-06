@@ -1,0 +1,117 @@
+@mixin qa_mark {
+  width: 36rpx;
+  height: 36rpx;
+  line-height: 36rpx;
+  text-align: center;
+  background-color: $color_brand_muted;
+  color: $color_text_primary;
+  font-size: $font_size_caption;
+  font-weight: bold;
+  border-radius: $radius_round;
+  margin-right: $space_sm;
+  flex-shrink: 0;
+}
+
+.qa_list_container {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  padding: $space_md;
+  overflow: hidden;
+
+  .qa_list_item {
+    margin-bottom: $space_xxl;
+    border-bottom: 2rpx solid $color_border_light;
+    padding-bottom: $space_md;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .qa_item_header {
+      @include flex_align_center;
+
+      margin-bottom: $space_md;
+
+      .qa_item_mark {
+        @include qa_mark;
+      }
+
+      .qa_item_title {
+        flex: 1;
+        font-size: $font_size_body;
+        color: $color_text_dark;
+        font-weight: 500;
+        word-break: break-word;
+      }
+    }
+
+    .qa_item_replies {
+      // 移除左边距，让问和答在竖直方向对齐
+      // margin-left: 52rpx;
+
+      .qa_reply_item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: $space_sm;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .qa_reply_avatar_image {
+          width: 36rpx;
+          height: 36rpx;
+          border-radius: $radius_round;
+          margin-right: $space_sm;
+          flex-shrink: 0;
+        }
+
+        .qa_reply_mark {
+          @include qa_mark;
+        }
+
+        .qa_reply_content {
+          flex: 1;
+          font-size: $font_size_subtitle;
+          color: $color_text_medium;
+          line-height: 1.5;
+          word-break: break-word;
+        }
+      }
+    }
+
+    .qa_item_footer {
+      margin-top: 10rpx;
+
+      .qa_footer_text {
+        font-size: $font_size_caption;
+        color: $color_brand_warm;
+      }
+    }
+  }
+
+  .qa_publish_button_container {
+    display: flex;
+    justify-content: center;
+    margin: 30rpx 0 10rpx;
+    position: absolute;
+    bottom: 20rpx;
+    z-index: 369;
+    width: 100%;
+
+    .qa_publish_button {
+      width: 80%;
+      height: 88rpx;
+      line-height: 88rpx;
+      text-align: center;
+      background: linear-gradient(135deg, #ff9f2f, #ff6a00);
+      color: $color_bg_page;
+      font-size: 30rpx;
+      font-weight: 600;
+      border-radius: 44rpx;
+      box-shadow: 0 8rpx 20rpx rgba(255, 122, 0, 0.25);
+      letter-spacing: 2rpx;
+    }
+  }
+}

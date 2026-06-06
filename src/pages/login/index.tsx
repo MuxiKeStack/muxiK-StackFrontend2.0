@@ -1,9 +1,14 @@
+import { View } from '@tarojs/components';
 import { memo } from 'react';
 
-import './style.scss';
+import { AuthForm } from './component';
+import './index.scss';
 
-import Login from '../../modules/login';
+const Login: React.FC = memo(() => (
+  <View className="login_container">
+    <View className="login_background"></View>
+    <AuthForm />
+  </View>
+));
 
-const Page: React.FC = memo(() => <Login />);
-
-export default Page;
+export default Login;

@@ -9,6 +9,14 @@ import {
   drawRoundedRectangle,
 } from './utils';
 
+export interface GradeChartData {
+  data: number[];
+  xLabels: string[];
+  maxScore: number;
+  minScore: number;
+  avgScore: number;
+}
+
 interface LineChartProps {
   data?: number[];
   style?: CSSProperties;
@@ -23,10 +31,8 @@ interface LineChartProps {
   mappingFunction?: (data: number[], x: [number, number]) => number;
   /** 边距： 左右上下 */
   padding?: number[];
-  /** 最大分、最小分、平均分 */
-  maxScore?: number;
-  minScore?: number;
-  avgScore?: number;
+  /** 成绩分布数据（合并 data/xLabels/max/min/avg 为一个对象） */
+  gradeData?: GradeChartData;
   /** 容器id，默认为lineCanvas */
   id?: string;
   /** 标题 */
@@ -78,9 +84,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     width: propWidth,
     height: propHeight,
     bottomHeight: propBHeight,
-    maxScore = 0,
-    minScore = 0,
-    avgScore = 0,
+    gradeData,
     id,
     data: propData,
     className,
@@ -91,23 +95,29 @@ const LineChart: React.FC<LineChartProps> = (props) => {
     mappingFunction: propMFunc,
     style,
   } = props;
+
+  const maxScore = gradeData?.maxScore ?? 0;
+  const minScore = gradeData?.minScore ?? 0;
+  const avgScore = gradeData?.avgScore ?? 0;
+  const resolvedData = gradeData?.data ?? propData;
+  const resolvedXLabels = gradeData?.xLabels ?? propX;
   useEffect(() => {
-    if (propData) {
+    if (resolvedData) {
       const ctx = Taro.createCanvasContext(id ?? DEFAULT_CHART_ID);
       void drawChart(ctx);
     }
-  }, [propData]);
+  }, [resolvedData]);
   const hasData = useMemo(() => {
-    return !propData?.some((data) => data);
-  }, [propData]);
+    return !resolvedData?.some((data) => data);
+  }, [resolvedData]);
   const drawChart = (ctx: CanvasContext) => {
     // 初始化
-    const data = propData ?? DEFAULT_DATA;
+    const data = resolvedData ?? DEFAULT_DATA;
     const width = propWidth ?? DEFAULT_WIDTH;
     const height = propHeight ?? DEFAULT_HEIGHT;
     const bottomHeight = propBHeight ?? DEFAULT_BOTTOM_HEIGTH;
     const [pl, pr, pt, pb] = propPadding ?? DEFAULT_PADDING;
-    const xLabels = propX ?? DEFAULT_X_LABELS;
+    const xLabels = resolvedXLabels ?? DEFAULT_X_LABELS;
     const yLabels = propY ?? DEFUALT_Y_LABELS;
     const xRange = propXRange ?? DEFAUTL_X_RANGE;
     const mappingFunction = propMFunc ?? DEFAULT_MAPPING_FUNCTION;

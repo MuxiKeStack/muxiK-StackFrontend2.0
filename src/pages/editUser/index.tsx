@@ -1,25 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-console */
 
-import { Button, Image, Input, View } from '@tarojs/components';
+import { Button, Image, Input, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import './style.scss';
+import './index.scss';
 
-import { get } from '@/common/api/get';
-import { fetchQiniuToken, fetchToQiniu } from '@/common/api/qiniu';
 import { editIcon } from '@/common/assets/img/editPersonal';
-import { TitleButton } from '@/common/components';
-import { post } from '@/common/utils';
+import { Avatar, TitleButton } from '@/common/components';
+import { fetchQiniuToken, fetchToQiniu } from '@/common/request/qiniu';
 import { NavigationBar } from '@/modules/navigation';
+import { useUserStore } from '@/store';
+
+const NICKNAME_MAX_LENGTH = 7;
 
 const Page: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
-  const [nickName, setNickName] = useState('请修改昵称');
+  const [nickName, setNickName] = useState('');
   const [isEditingNickname, setIsEditingNickname] = useState(false);
-  const [editableNickName, setEditableNickName] = useState(nickName);
+  const [editableNickName, setEditableNickName] = useState('');
   const [selectedTitle, setSelectedTitle] = useState<string>('None');
+  const saveNavTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [titleOwnership, setTitleOwnership] = useState({
     CCNUWithMe: false,
     CaringSenior: false,
@@ -33,76 +35,82 @@ const Page: React.FC = () => {
     CCNUWithMe: 300,
   };
 
+  const mountedRef = useRef(true);
+
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const url = '/users/profile';
-
-        const response: ResponseUser = await get(url);
-        setNickName(response.data.nickname);
-        setAvatarUrl(response.data.avatar);
-        setSelectedTitle(response.data.using_title);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        setTitleOwnership(response.data.title_ownership);
-      } catch (error) {
-        console.error('Error fetching collection data:', error);
+      const profile = await useUserStore.getState().ensureProfile();
+      if (!mountedRef.current || !profile) return;
+      if (typeof profile.nickname === 'string') {
+        setNickName(profile.nickname);
+        setEditableNickName(profile.nickname);
       }
+      if (typeof profile.avatar === 'string') setAvatarUrl(profile.avatar);
+      if (profile.using_title) setSelectedTitle(profile.using_title);
+      if (profile.title_ownership) setTitleOwnership(profile.title_ownership as any);
     };
     void fetchUser();
+    return () => {
+      mountedRef.current = false;
+      if (saveNavTimerRef.current) clearTimeout(saveNavTimerRef.current);
+    };
   }, []);
+
   const chooseAvatar = () => {
     void Taro.chooseImage({
-      count: 1, // 默认9
+      count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
         void fetchQiniuToken();
         const tempFilePath = res.tempFilePaths[0];
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        void fetchToQiniu(tempFilePath).then((res: string) => setAvatarUrl(res));
+        (fetchToQiniu(tempFilePath) as Promise<string>).then((r) => setAvatarUrl(r));
       },
-      fail: function (res) {
-        console.log(res);
+      fail: () => {
+        //
       },
     });
   };
-  const handleEditIconClick = () => {
-    setIsEditingNickname(!isEditingNickname);
-  };
-  const handleNicknameChange = (e) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const value = e.target.value;
 
-    // 检查字符长度是否超过 7 个字
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (value.length <= 7) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      setEditableNickName(value);
+  const handleEditIconClick = () => {
+    if (!isEditingNickname) {
+      setEditableNickName(nickName);
+      setIsEditingNickname(true);
     } else {
-      void Taro.showToast({
-        icon: 'error',
-        title: '昵称不能超过7个字',
-      });
+      setIsEditingNickname(false);
     }
+  };
+
+  const handleNicknameChange = (e: any) => {
+    setEditableNickName(e.detail.value);
   };
 
   const handleNicknameSave = () => {
     setNickName(editableNickName);
     setIsEditingNickname(false);
   };
+
   const handleSave = () => {
-    void post('/users/edit', {
-      avatar: avatarUrl,
-      nickname: nickName,
-      using_title: selectedTitle,
-    }).then((res) => {
-      void Taro.showToast({ icon: 'success', title: '保存成功' });
-      setTimeout(() => {
-        void Taro.switchTab({ url: '/pages/profile/index' });
-      }, 1000);
-    });
+    void useUserStore
+      .getState()
+      .updateProfile({
+        avatar: avatarUrl,
+        nickname: nickName,
+        using_title: selectedTitle,
+      })
+      .then(() => {
+        void Taro.showToast({ icon: 'success', title: '保存成功' });
+        if (saveNavTimerRef.current) clearTimeout(saveNavTimerRef.current);
+        saveNavTimerRef.current = setTimeout(() => {
+          void Taro.switchTab({ url: '/pages/profile/index' });
+        }, 1000);
+      });
   };
+
+  const handleCancel = () => {
+    void Taro.switchTab({ url: '/pages/profile/index' });
+  };
+
   const handleTitleSelect = (title: string) => {
     if (titleOwnership[title]) {
       setSelectedTitle(title);
@@ -128,85 +136,85 @@ const Page: React.FC = () => {
       });
     }
   };
-  // Taro.redirectTo({url:'pages/login/index'});
-  const handleLogout = () => {
-    void post('/users/logout', {});
-    Taro.removeStorageSync('shortToken');
-    Taro.removeStorageSync('visitor');
-    void Taro.removeStorageSync('longToken');
-    void Taro.reLaunch({ url: '/pages/login/index' });
-  };
+
   return (
-    <View className="mt-24 w-full">
+    <View className="personal_edit_page">
       <NavigationBar title="修改个人信息" isBackToPage />
-      <View className="avatar-container">
-        <View className="avatar-text">修改头像</View>
-        <Image src={avatarUrl} onClick={chooseAvatar} className="avatar1"></Image>
+
+      <View className="avatar_container">
+        <View className="avatar_text">修改头像</View>
+        <Avatar src={avatarUrl} size="8vh" className="eu_avatar" onClick={chooseAvatar} />
       </View>
-      <View className="divide-line"></View>
-      <View className="nickname-container">
-        <View className="nickname-text">昵称</View>
+
+      <View className="divide_line" />
+
+      <View className="nickname_container">
+        <View className="nickname_text">昵称</View>
         <View>
           {isEditingNickname ? (
-            <View className="nickname">
+            <View className="nickname_edit_wrapper">
               <Input
                 type="text"
                 value={editableNickName}
+                placeholder="请修改昵称"
+                maxlength={NICKNAME_MAX_LENGTH}
                 onInput={handleNicknameChange}
                 onBlur={handleNicknameSave}
-                className="nickname-input"
+                className="nickname_input"
               />
+              <Text className="nickname_count">
+                {editableNickName.length}/{NICKNAME_MAX_LENGTH}
+              </Text>
             </View>
           ) : (
             <View className="nickname">
-              {nickName}
+              {nickName || '未设置'}
               <Image
                 src={editIcon}
                 onClick={handleEditIconClick}
-                className="editor-nickname"
-              ></Image>
+                className="editor_nickname"
+              />
             </View>
           )}
         </View>
       </View>
-      <View className="divide-line"></View>
-      <View className="title-container">
-        <View className="title-text">称号</View>
-        <View className="title-container">
+
+      <View className="divide_line" />
+
+      <View className="title_section">
+        <View className="title_text">称号</View>
+        <View className="title_buttons">
           <TitleButton
             title="知心学长"
             onClick={() => handleTitleSelect('CaringSenior')}
             isSelected={selectedTitle === 'CaringSenior'}
             isDisabled={!titleOwnership.CaringSenior}
-          ></TitleButton>
+          />
           <TitleButton
             title="课栈合伙人"
             onClick={() => handleTitleSelect('KeStackPartner')}
             isSelected={selectedTitle === 'KeStackPartner'}
             isDisabled={!titleOwnership.KeStackPartner}
-          ></TitleButton>
+          />
           <TitleButton
             title="华师有我"
             onClick={() => handleTitleSelect('CCNUWithMe')}
             isSelected={selectedTitle === 'CCNUWithMe'}
             isDisabled={!titleOwnership.CCNUWithMe}
-          ></TitleButton>
+          />
         </View>
       </View>
-      <View className="divide-line"></View>
-      <View className="mt-8 flex">
-        <Button className="cancel-button">取消</Button>
-        <Button className="save-button" onClick={handleSave}>
+
+      <View className="divide_line" />
+
+      <View className="button_container">
+        <Button className="action_button action_button_cancel" onClick={handleCancel}>
+          取消
+        </Button>
+        <Button className="action_button action_button_save" onClick={handleSave}>
           保存
         </Button>
       </View>
-      <Button
-        className="b absolute bottom-10 h-11 w-44 rounded-md bg-[#F9B94F] text-white"
-        style={{ left: '50%', transform: 'translateX(-50%)', lineHeight: '44px' }}
-        onClick={handleLogout}
-      >
-        退出登录
-      </Button>
     </View>
   );
 };

@@ -1,0 +1,137 @@
+.message_comment_container {
+  position: relative;
+  box-sizing: border-box;
+  width: calc(100% - 48rpx);
+  background-color: $color_bg_page;
+  margin: $space_lg 24rpx;
+  border-radius: $radius_lg;
+  padding: $space_xl;
+  box-shadow:
+    0 -4rpx 6rpx rgba(0, 0, 0, 0.05),
+    0 4rpx 6rpx rgba(0, 0, 0, 0.05);
+
+  .comment_header {
+    @include flex_between;
+
+    margin-bottom: $space_md;
+    gap: $space_sm;
+
+    .comment_header_left {
+      @include flex_align_center;
+
+      flex: 1;
+      min-width: 0;
+      gap: $space_sm;
+
+      .comment_course_name {
+        font-size: $font_size_body;
+        font-weight: $font_weight_bold;
+        color: $color_text_primary;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex-shrink: 1;
+      }
+
+      .comment_teacher_name {
+        font-size: $font_size_subtitle;
+        color: $color_text_secondary;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+    }
+
+    .comment_header_time {
+      font-size: $font_size_subtitle;
+      color: $color_text_secondary;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+  }
+
+  .comment_body {
+    @include flex_align_start;
+
+    .notif_avatar {
+      border: 6rpx solid #ffd700;
+      border-radius: $radius_round;
+      flex-shrink: 0;
+    }
+
+    .comment_content_wrapper {
+      flex: 1;
+      min-width: 0;
+      padding-left: $space_lg;
+
+      .comment_word_container {
+        @include flex_column;
+
+        .comment_user_info {
+          margin-bottom: 6rpx;
+
+          .comment_user_name {
+            font-size: $font_size_title;
+            font-weight: 600;
+            color: $color_text_dark;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        .comment_action_wrapper {
+          margin-bottom: 6rpx;
+
+          .comment_action_text {
+            font-size: $font_size_subtitle;
+            color: $color_text_dark;
+            word-break: break-word;
+          }
+        }
+
+        .comment_original {
+          position: relative;
+          padding-left: $space_md;
+
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10rpx;
+            bottom: 10rpx;
+            width: 10rpx;
+            background-color: #ffefb7;
+            border-radius: 10rpx;
+          }
+
+          .comment_original_text {
+            font-size: $font_size_caption;
+            color: $color_text_secondary;
+            line-height: 1.5;
+            overflow: hidden;
+            max-height: 72rpx;
+          }
+
+          &.comment_original_empty {
+            .comment_original_text {
+              color: $color_text_hint;
+              font-style: italic;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .comment_footer {
+    @include flex_align_center;
+
+    justify-content: flex-end;
+    margin-top: $space_md;
+
+    .comment_footer_text {
+      font-size: $font_size_subtitle;
+      color: $color_text_hint;
+    }
+  }
+}

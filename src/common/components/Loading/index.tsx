@@ -4,7 +4,16 @@ import React from 'react';
 
 import './index.scss';
 
-import { LoadingProps } from './type';
+export interface LoadingProps {
+  text?: string;
+  type?: 'circular' | 'spinner';
+  direction?: 'horizontal' | 'vertical';
+  size?: number | string;
+  containerStyle?: React.CSSProperties;
+  textStyle?: React.CSSProperties;
+  isCenter?: boolean;
+  showMask?: boolean;
+}
 
 const Loading: React.FC<LoadingProps> = ({
   text = '加载中...',
@@ -14,16 +23,18 @@ const Loading: React.FC<LoadingProps> = ({
   containerStyle,
   textStyle,
   isCenter = true,
+  showMask = false,
 }) => {
   return (
     <View
-      className={`loading-container ${isCenter ? 'loading-center' : 'loading-inline'}`}
-      style={containerStyle}
+      className={`loading_wrapper ${isCenter ? 'loading_center' : 'loading_inline'} ${showMask ? 'loading_overlay' : ''}`}
     >
-      <TaroLoading type={type} size={size} direction={direction} />
-      <Text className="loading-text" style={textStyle}>
-        {text}
-      </Text>
+      <View className="loading_container" style={containerStyle}>
+        <TaroLoading type={type} size={size} direction={direction} />
+        <Text className="loading_text" style={textStyle}>
+          {text}
+        </Text>
+      </View>
     </View>
   );
 };

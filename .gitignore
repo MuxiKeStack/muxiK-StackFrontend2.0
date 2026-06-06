@@ -1,4 +1,6 @@
 dist/
+myrepo.bundle
+graphify-out/
 deploy_versions/
 .temp/
 .rn_temp/

@@ -1,0 +1,65 @@
+.comment_card {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  background: $color_bg_page;
+  padding: $space_md $space_xl $space_sm;
+
+  &::after {
+    @include border-line(bottom);
+  }
+
+  &.no_border::after {
+    display: none;
+  }
+
+  &.comment_card_secondary {
+    padding-left: 0rpx;
+  }
+
+  .comment_card_header {
+    @include flex_between;
+
+    box-sizing: border-box;
+    margin-bottom: $space_xxs;
+
+    .comment_card_header_left {
+      @include flex_align_center;
+
+      .cc_avatar {
+        border: $color_border_light solid 4rpx;
+        border-radius: 100%;
+      }
+
+      .comment_card_identity {
+        .ui_user_name {
+          font-weight: $font_weight_bold;
+          font-size: $font_size_body;
+          color: $color_text_primary;
+        }
+      }
+    }
+
+    .comment_card_header_right {
+      .comment_card_header_time {
+        font-weight: $font_weight_normal;
+        font-size: $font_size_sm;
+        color: $color_text_secondary;
+      }
+    }
+  }
+
+  .comment_card_content {
+    margin-top: 0;
+    margin-left: calc(82rpx + $space_sm);
+    font-weight: $font_weight_normal;
+    font-size: $font_size_subtitle;
+    color: $color_text_primary;
+    line-height: $line_height_body;
+
+    .comment_card_content_reply_indicator {
+      color: $color_brand_accent;
+      margin-right: 8rpx;
+    }
+  }
+}

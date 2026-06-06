@@ -2,26 +2,30 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Button, Form, Image, Radio, Text, Textarea, View } from '@tarojs/components';
+import {
+  Button,
+  Form,
+  Radio,
+  ScrollView,
+  Text,
+  Textarea,
+  View,
+} from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-import './style.scss';
+import './index.scss';
 
-import { Icon, TopBackground } from '@/common/assets/img/login';
-import Label3 from '@/common/components/label3/label3';
+import { GateScreen } from '@/common/components';
+import FeatureLabel from '@/common/components/FeatureLabel';
 import Star from '@/common/components/star/star';
-import { post } from '@/common/utils';
-import { postBool } from '@/common/utils/fetch';
+import { useAuthGuard } from '@/common/hooks/useAuthGuard';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
+import { bus } from '@/common/utils';
+import { useEvaluatePublishStore, useEvaluationHistoryStore } from '@/store';
 import { NavigationBar } from '@/modules/navigation';
 
-export interface StatusResponse {
-  code: number;
-  data: {
-    status: boolean;
-  };
-  msg: string;
-}
+import { ASSESSMENT_MAP, COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
 
 const Page: React.FC = () => {
   // 初始化状态，存储所有选中的 Radio 项的值
@@ -29,43 +33,22 @@ const Page: React.FC = () => {
   // 处理 Radio 变化的函数
   const handleRadioChange = (value: string) => {
     const currentIndex = selectedValues.indexOf(value);
-    console.log(currentIndex);
     if (currentIndex > -1) {
       // 如果值已选中，移除它
-      const newSelectedValues = selectedValues.filter((v, i) => i !== currentIndex);
+      const newSelectedValues = selectedValues.filter((_, i) => i !== currentIndex);
       setSelectedValues(newSelectedValues);
     } else {
       // 否则，添加这个值
       setSelectedValues([...selectedValues, value]);
     }
   };
-  const testways = [
-    { value: 'OpenBookExamination', text: '开卷考试' },
-    { value: 'ClosedBookExamination', text: '闭卷考试' },
-    { value: 'ThesisExamination', text: '论文考核' },
-    { value: 'GroupReporting', text: '小组汇报' },
-    { value: 'NoAssessment', text: '无考核' },
-  ];
-
-  const features = [
-    { value: 'EasyToLearn', content: '课程简单易学' },
-    { value: 'RichInContent', content: '课程干货满满' },
-    { value: 'Challenging', content: '课程很有挑战' },
-    { value: 'RigorousAndResponsible', content: '老师严谨负责' },
-    { value: 'KindAndEasygoing', content: '老师温柔随和' },
-    { value: 'Humorous', content: '老师风趣幽默' },
-    { value: 'LessHomework', content: '平时作业少' },
-    { value: 'KeyPointsForFinal', content: '期末划重点' },
-    { value: 'ComprehensiveOnlineMaterials', content: '云课堂资料全' },
-  ];
-
   const [selectedFeatureValues, setSelectedFeatureValues] = useState<string[]>([]);
   const [isAnonymous, setIsAnonymous] = useState(false);
   const handleFeaturesChecked = (value: string) => {
     const currentIndex = selectedFeatureValues.indexOf(value);
     if (currentIndex > -1) {
       const newSelectedFeatureValues = selectedFeatureValues.filter(
-        (v, i) => i !== currentIndex
+        (_, i) => i !== currentIndex
       );
       setSelectedFeatureValues(newSelectedFeatureValues);
     } else {
@@ -77,7 +60,7 @@ const Page: React.FC = () => {
   const [textLength, setLength] = useState(0);
   const [comment, setComment] = useState('');
 
-  const countContent = (e) => {
+  const countContent = (e: any) => {
     const { value } = e.detail;
     setComment(value); // 更新状态为当前输入框的值
     const length = value.length;
@@ -87,37 +70,21 @@ const Page: React.FC = () => {
   // const course_id = 1; //暂时先指定一个courseId来测试使用
 
   // 更新 id 状态为 number 类型
-  const [courseId, setId] = useState<number | null>(null);
+  const [courseId, setId] = useState<number | undefined>(undefined);
   const [courseName, setName] = useState<string | null>('只能评价自己学过的课程哦');
-  const [test, setTest] = useState<boolean>(false);
+  const gate = useGateGuard();
+  const { guard } = useAuthGuard();
+
   useEffect(() => {
-    const getParams = async () => {
-      try {
-        const res = (await postBool('/checkStatus', {
-          name: 'kestack',
-        })) as StatusResponse;
+    const instance = Taro.getCurrentInstance();
+    const params = instance?.router?.params || {};
 
-        setTest(res.data.status);
-
-        const instance = Taro.getCurrentInstance();
-        const params = instance?.router?.params || {};
-
-        setId(params.id ? Number(params.id) : null);
-        setName(
-          params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦'
-        );
-      } catch (error) {
-        console.error('Error fetching status:', error);
-      }
-    };
-
-    void getParams();
+    setId(params.id ? Number(params.id) : undefined);
+    setName(params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦');
   }, []);
-  useEffect(() => {
-    console.log('test status updated:', test);
-  }, [test]);
 
   const postEvaluation = () => {
+    if (!guard()) return;
     if (selectedStarIndex === -1) {
       void Taro.showToast({
         title: '请为课程选择星级',
@@ -135,10 +102,9 @@ const Page: React.FC = () => {
       assessments: selectedValues,
       features: selectedFeatureValues,
       id: 0,
-      status: 'Public',
+      status: 'Public' as 'Public' | 'Private',
       is_anonymous: isAnonymous,
     };
-    console.log(evaluationobj);
     if (!comment) {
       void Taro.showToast({
         title: '内容不能为空',
@@ -146,21 +112,18 @@ const Page: React.FC = () => {
       });
       return;
     }
-    post(`/evaluations/save`, evaluationobj)
-      .then((res) => {
-        if (res.code === 0) {
-          void Taro.navigateBack().then(() => {
-            void Taro.showToast({
-              title: '课评发布成功',
-              icon: 'none',
-            });
-          });
-        } else {
+    useEvaluatePublishStore
+      .publish(evaluationobj)
+      .then((data) => {
+        const newEvaluation = { ...evaluationobj, ...(data || {}) };
+        useEvaluationHistoryStore.getState().invalidateCache('Public');
+        bus.emit('evaluation', newEvaluation);
+        void Taro.navigateBack().then(() => {
           void Taro.showToast({
-            title: res.msg,
+            title: '课评发布成功',
             icon: 'none',
           });
-        }
+        });
       })
       .catch((error) => {
         console.error('发布课评请求失败:', error);
@@ -169,97 +132,93 @@ const Page: React.FC = () => {
         void Taro.hideLoading();
       });
   };
-  const [selectedStarIndex, setSelectedStarIndex] = useState(-1);
+  const [selectedStarIndex, setSelectedStarIndex] = useState<number>(-1);
 
   const onStarClick = (index) => {
     setSelectedStarIndex(index + 1);
   };
 
-  const onLableClick = () => {
-    if (courseName == '只能评价自己学过的课程哦') {
-      void Taro.navigateTo({
-        url: '/pages/myclass/index',
-      });
-    }
-  };
-  return !test ? (
-    <View className="flex flex-col">
-      <Image src={TopBackground as string} className="w-full"></Image>
-      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
-        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
-          <Image src={Icon as string} className="h-full w-full"></Image>
-        </View>
-        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈
-        </Text>
-      </View>
-    </View>
-  ) : (
-    <View className="mt-24">
-      <Form className="view">
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <GateScreen />;
+  return (
+    <ScrollView
+      className="evaluate_page_container"
+      scrollY
+      enhanced
+      showScrollbar={false}
+    >
+      <Form className="evaluate_page_form">
         <NavigationBar title="评课" isBackToPage />
-        <View className="p">
-          <Text> 选择课程 : </Text>
-          <Label3 handleClick={onLableClick} content={courseName}></Label3>
+        <View className="evaluate_page_section">
+          <Text className="evaluate_page_label">课程名字 :</Text>
+          <Text>{courseName}</Text>
         </View>
-        <View className="p">
-          <Text>评价星级 :</Text>
+        <View className="evaluate_page_section">
+          <Text className="evaluate_page_label">评价星级 :</Text>
           <Star onStarClick={onStarClick} />
         </View>
-        <View className="p">
-          <Text>考核方式 :</Text>
-          <View className="ways">
-            {testways.map((item) => (
+        <View className="evaluate_page_section">
+          <Text className="evaluate_page_label">考核方式 :</Text>
+          <View className="evaluate_page_ways_container">
+            {Object.entries(ASSESSMENT_MAP).map(([value, text]) => (
               <Radio
-                key={item.value}
-                className="myradio"
-                checked={selectedValues.includes(item.value)}
-                value={item.value}
+                key={value}
+                className="evaluate_page_radio"
+                checked={selectedValues.includes(value)}
+                value={value}
                 color="transparent"
-                onClick={() => handleRadioChange(item.value)}
+                onClick={() => handleRadioChange(value)}
               >
-                {item.text}
+                {text}
               </Radio>
             ))}
           </View>
         </View>
-        <View className="p">
-          <Text>课程特点 :</Text>
-          <View className="fea">
-            {features.map((item) => {
+        <View className="evaluate_page_section">
+          <Text className="evaluate_page_label">课程特点 :</Text>
+          <View className="evaluate_page_features_container">
+            {Object.entries(COURSE_FEATURE_MAP).map(([value, content]) => {
               return (
-                <Label3
-                  key={item.value}
-                  id={item.value} // 确保 Label3 组件可以访问到 id
-                  content={item.content}
-                  checked={selectedFeatureValues.includes(item.value)} // 判断是否包含该项的 id
-                  handleChecked={() => handleFeaturesChecked(item.value)} // 传递 handleChecked 函数
+                <FeatureLabel
+                  key={value}
+                  id={value}
+                  content={content}
+                  style={{
+                    width: '150rpx',
+                    textAlign: 'center',
+                  }}
+                  checked={selectedFeatureValues.includes(value)}
+                  handleChecked={() => handleFeaturesChecked(value)}
                 />
               );
             })}
           </View>
         </View>
-        <Textarea
-          maxlength={450}
-          onInput={countContent}
-          placeholderStyle="font-size: 25rpx;"
-          placeholder="输入课程评价"
-          className="myComment"
-        ></Textarea>
-        <Text className="zsxz">字数限制{textLength}/450</Text>
-        <View className="p">
+        <View className="evaluate_textarea_container">
+          <Textarea
+            maxlength={450}
+            onInput={countContent}
+            placeholderStyle="font-size: 25rpx;"
+            placeholder="输入课程评价"
+            className="evaluate_page_textarea"
+          ></Textarea>
+          <Text className="evaluate_page_word_limit">字数限制{textLength}/450</Text>
+        </View>
+        <View className="evaluate_page_anonymous_section">
           <Radio
             value="anonymous"
-            className="myradio h-3 w-3"
+            className="evaluate_page_anonymous_radio"
             checked={isAnonymous}
             onClick={() => setIsAnonymous(!isAnonymous)}
             color="transparent"
           ></Radio>
-          <Text>匿名</Text>
+          <Text className="evaluate_page_anonymous_text">匿名</Text>
         </View>
-        <Button onClick={postEvaluation}>发布</Button>
+        <Button className="evaluate_page_submit_button" onClick={postEvaluation}>
+          发布
+        </Button>
       </Form>
-    </View>
+    </ScrollView>
   );
 };
 

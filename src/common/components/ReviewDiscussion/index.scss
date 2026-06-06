@@ -1,0 +1,6 @@
+.review_comments_list {
+  @include flex_column;
+
+  height: 100%;
+  padding: 20rpx;
+}

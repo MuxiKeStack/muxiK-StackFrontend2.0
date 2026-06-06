@@ -21,38 +21,19 @@ const NavigationBar: React.FC<NavigayionProps> = ({
   title = '',
   style,
 }) => {
-  console.log(style);
   const handleNavigate = () => {
     if (isBackToPage) {
-      navigateBack()
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      void navigateBack();
     } else if (isNavigateToTabPage) {
-      switchTab({ url: url })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      void switchTab({ url });
     } else if (isToPage) {
-      navigateTo({ url: url })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      void navigateTo({ url });
     }
   };
 
   return (
     <View
-      className="fixed left-0 top-0 z-50 w-full"
+      className="bg-red fixed left-0 top-0 z-50 w-full"
       style={{
         fontFamily: 'SourceHanSans',
         height: '180rpx',

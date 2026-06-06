@@ -1,0 +1,87 @@
+@import '@/common/styles/tokens/index';
+
+.avatar_frame {
+  border-radius: $radius_round;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+}
+
+.avatar_frame_default {
+}
+
+.avatar_frame_colorful {
+  background: linear-gradient(
+    135deg,
+    #ff0000,
+    #ff8800,
+    #ffff00,
+    #00ff00,
+    #0088ff,
+    #8800ff,
+    #ff0000
+  );
+  background-size: 400% 400%;
+  animation:
+    avatar_flow 2s linear infinite,
+    avatar_glow 4s ease-in-out infinite;
+  padding: 6rpx;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: $radius_round;
+    background: linear-gradient(
+      135deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 70%
+    );
+    background-size: 300% 300%;
+    animation: avatar_shimmer 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes avatar_flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes avatar_glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 12rpx rgba(255, 0, 100, 0.5),
+      0 0 28rpx rgba(0, 150, 255, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 12rpx rgba(0, 200, 255, 0.5),
+      0 0 28rpx rgba(200, 0, 255, 0.3);
+  }
+}
+
+@keyframes avatar_shimmer {
+  0% {
+    background-position: 150% 150%;
+  }
+  100% {
+    background-position: -50% -50%;
+  }
+}
+
+.avatar_img {
+  width: 100%;
+  height: 100%;
+  border-radius: $radius_round;
+}

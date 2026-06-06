@@ -1,0 +1,36 @@
+.user_identity {
+  @include flex_align_center;
+
+  .ui_user_meta {
+    @include flex_align_center;
+
+    gap: $space_xs;
+    margin-left: 16rpx;
+
+    .ui_user_name {
+      font-size: $font_size_subtitle;
+      color: $color_text_secondary;
+    }
+
+    .ui_user_title {
+      font-size: $font_size_subtitle;
+      color: $color_text_secondary;
+    }
+
+    .ui_user_level {
+      display: inline-block;
+      padding: 2rpx 8rpx;
+      font-size: $font_size_xs;
+      font-weight: 500;
+      height: 24rpx;
+      line-height: 24rpx;
+      color: $color_bg_page;
+      background-color: $color_brand_muted;
+      white-space: nowrap;
+      letter-spacing: 2rpx;
+      border-radius: 8rpx;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+    }
+  }
+}

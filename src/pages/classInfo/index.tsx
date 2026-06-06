@@ -1,385 +1,221 @@
 /* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
-import { Image, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AtIcon } from 'taro-ui';
-
-import './style.scss';
-
-import { Icon, TopBackground } from '@/common/assets/img/login';
-import { Comment } from '@/common/components';
-import AnswerToStudent from '@/common/components/AnswerToStudent';
-import LineChart from '@/common/components/chart';
-import Label3 from '@/common/components/label3/label3';
-import ShowStar from '@/common/components/showStar/showStar';
-import { get, post } from '@/common/utils';
-import { postBool } from '@/common/utils/fetch';
+import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
+import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { StatusResponse } from '../evaluate';
+import { Drawer, GateScreen } from '@/common/components';
+import LineChart from '@/common/components/chart';
+import { useAuthGuard } from '@/common/hooks/useAuthGuard';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
+import type { CommentInfo } from '@/common/types/commentTypes';
+import type { WebQuestionVo } from '@/common/types/userTypes';
+import { useClassInfoStore } from '@/store';
 
-const coursePropertyMap = {
-  CoursePropertyGeneralCore: '通识核心课',
-  CoursePropertyGeneralElective: '通识选修课',
-  CoursePropertyGeneralRequired: '通识必修课',
-  CoursePropertyMajorCore: '专业主干课程',
-  CoursePropertyMajorElective: '个性发展课程',
-};
-
-// 编写一个函数来根据英文描述获取中文描述
-function translateCourseProperty(englishDescription) {
-  // 使用数组的 find 方法查找匹配的项
-  const entry = Object.entries(coursePropertyMap).find(
-    ([key]) => key === englishDescription
-  );
-
-  // 如果找到了匹配项，返回中文描述，否则返回未找到的消息
-  return entry ? entry[1] : '未找到对应的中文描述';
-}
+import CommentsSection from './component/CommentsSection';
+import CourseHeaderSection from './component/CourseHeaderSection';
+import CourseInfoSection from './component/CourseInfoSection';
+import QAlist from './component/QAlist';
+import QuestionsSection from './component/QuestionsSection';
+import './index.scss';
 
 const Page: React.FC = () => {
-  const [course, setCourse] = useState<Course | null>(null);
+  const [drawerOpened, setDrawerOpened] = useState(false);
   const [courseId, setCourseId] = useState<string | null>(null);
-  const [comments, setComments] = useState<CommentInfoType[]>([]);
-  const [grade, setGrade] = useState<GradeChart>();
-  const [questionNum, setQuestionNum] = useState<number>(0);
-  const [questionlist, setQuestionlist] = useState<WebQuestionVo[]>([]);
-  const [collect, setCollect] = useState<boolean | undefined>(course?.is_collected);
-  const [test, setTest] = useState<boolean>(false);
+  const course = useClassInfoStore((s) => s.course);
+  const comments = useClassInfoStore((s) => s.comments);
+  const grade = useClassInfoStore((s) => s.grade);
+  const questionlist = useClassInfoStore((s) => s.questionlist);
+  const collect = useClassInfoStore((s) => s.collect);
+  const load = useClassInfoStore((s) => s.load);
+  const refreshComments = useClassInfoStore((s) => s.refreshComments);
+  const toggleCollect = useClassInfoStore((s) => s.toggleCollect);
+
+  const gate = useGateGuard();
+  const { guard } = useAuthGuard();
+  const bailoutTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
-    const getParams = async () => {
-      try {
-        const res = (await postBool('/checkStatus', {
-          name: 'kestack',
-        })) as StatusResponse;
-
-        setTest(res.data.status);
-
-        // const instance = Taro.getCurrentInstance();
-        // const params = instance?.router?.params || {};
-
-        // setId(params.id ? Number(params.id) : null);
-        // setName(
-        //   params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦'
-        // );
-      } catch (error) {
-        console.error('Error fetching status:', error);
-      }
-    };
-
-    void getParams();
+    const instance = Taro.getCurrentInstance();
+    const params = instance?.router?.params || {};
+    if (params.course_id) setCourseId(params.course_id);
   }, []);
-  useEffect(() => {
-    console.log('test status updated:', test);
-  }, [test]);
-  const getCommentData = async () => {
-    try {
-      await get(
-        `/evaluations/list/courses/${courseId}?cur_evaluation_id=0&limit=100`
-      ).then((res) => {
-        setComments(res.data as CommentInfoType[]);
-      });
-    } catch (error) {
-      console.error('Failed to fetch course data:', error);
-    }
-  };
-  useEffect(() => {
-    const getParams = () => {
-      const instance = Taro.getCurrentInstance();
-      const params = instance?.router?.params || {};
 
-      if (params.course_id) setCourseId(params.course_id);
-    };
-
-    getParams();
+  const bailout = useCallback(() => {
+    void Taro.showToast({ title: '加载课程信息失败，请稍后重试', icon: 'none' });
+    if (bailoutTimerRef.current) clearTimeout(bailoutTimerRef.current);
+    bailoutTimerRef.current = setTimeout(() => {
+      void Taro.switchTab({ url: '/pages/main/index' });
+    }, 2000);
   }, []);
-  //获取问题个数
-  const initData = () => {
-    // eslint-disable-next-line @typescript-eslint/require-await
-    const getCourseData = async () => {
-      try {
-        void get(`/courses/${courseId}/detail`).then((res) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setCourse(res.data);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setCollect(res.data.is_collected);
-          !res.data && bailout();
-        });
-      } catch (error) {
-        console.error('Failed to fetch course data:', error);
-      }
-    };
 
-    if (courseId) void getCourseData();
-
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const getCommentData = () => {
-      try {
-        void get(
-          `/evaluations/list/courses/${courseId}?cur_evaluation_id=${0}&limit=${100}`
-        ).then((res) => {
-          console.log(res);
-          setComments(res.data as CommentInfoType[]);
-        });
-      } catch (error) {
-        console.error('Failed to fetch course data:', error);
-      }
-    };
-
-    if (courseId) void getCommentData();
-  };
-  const fetchAnswer = async () => {
-    try {
-      const res = await get(
-        `/questions/list?biz=Course&biz_id=${courseId}&cur_question_id=${0}&limit=${3}`
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      setQuestionlist(res.data);
-    } catch (e) {
-      console.error('Failed to fetch course data:', e);
-      throw e;
-    }
-  };
-  const fetchGrades = async () => {
-    try {
-      const res = await get(`/grades/courses/${courseId}`);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      setGrade(res.data);
-      if (!res.data) {
-        bailout();
-        return;
-      }
-    } catch (err) {
-      console.error('Failed to fetch grades data', err);
-      throw err;
-    }
-  };
-  const getNumData = () => {
-    try {
-      void get(`/questions/count?biz=Course&biz_id=${courseId}`).then((res) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setQuestionNum(res.data);
-        Taro.hideLoading();
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
   useEffect(() => {
-    initData();
-  }, [courseId]);
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!courseId) return;
+    if (!courseId) return;
+    void Taro.showLoading({ title: '加载中' });
 
-      try {
-        void Taro.showLoading({
-          title: '加载中',
-        });
-
-        // 并行请求数据
-        await Promise.all([fetchGrades(), getNumData(), fetchAnswer()]);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-        void Taro.showToast({
-          title: '加载失败',
-          icon: 'error',
-        });
-      } finally {
+    void load(Number(courseId))
+      .then((data) => {
+        if (!data.course) bailout();
+      })
+      .catch((err) => {
+        console.error(err);
+        void Taro.showToast({ title: '加载失败', icon: 'error' });
+      })
+      .finally(() => {
         void Taro.hideLoading();
-      }
-    };
+      });
+  }, [courseId, load, bailout]);
 
-    void fetchData();
-  }, [courseId]);
-  // 监听 collect 状态更新
-  useEffect(() => {
-    if (collect !== undefined) {
-      console.log('Updated collect:', collect); // 打印最新的 collect 值
+  const handleCollect = useCallback(async () => {
+    if (!courseId || !course) return;
+    if (!guard()) return;
+
+    try {
+      const nextCollect = await toggleCollect(Number(courseId), course, !!collect);
+      const titleText = nextCollect ? '收藏成功' : '取消收藏成功';
+      void Taro.showToast({ title: titleText, icon: 'success' });
+    } catch (err) {
+      console.error(err);
+      void Taro.showToast({ title: '操作失败', icon: 'error' });
     }
-  }, [collect]);
-  function handleCollect() {
-    void post(`/courses/${courseId}/collect`, { collect: !collect }).then((res) => {
-      setCollect(!collect);
-    });
-  }
-  const xLabels = useMemo(() => ['0', '60', '70', '80', '90', '100'], []);
-  const { yData, max, min, avg } = useMemo(() => {
-    const percent = (grade?.avg ?? 0) / 10;
+  }, [courseId, course, collect, toggleCollect, guard]);
+
+  const gradeData = useMemo(() => {
     const customData: number[] = [];
     let maxS = -1,
       minS = Infinity;
     if (grade)
-      grade.grades.map((item) => {
+      grade.grades.forEach((item) => {
         if (item.total_grades) {
           customData.push(...item.total_grades);
-          maxS = Math.max(Math.max(...[...item.total_grades]), maxS);
-          minS = Math.min(Math.min(...[...item.total_grades]), minS);
+          maxS = Math.max(...item.total_grades, maxS);
+          minS = Math.min(...item.total_grades, minS);
         }
       });
     return {
-      yData: customData,
-      max: maxS,
-      min: minS,
-      avg: grade?.avg ?? -1,
+      data: customData,
+      xLabels: ['0', '60', '70', '80', '90', '100'] as string[],
+      maxScore: maxS,
+      minScore: minS,
+      avgScore: grade?.avg ?? -1,
     };
   }, [grade]);
-  const bailout = useCallback(() => {
-    void Taro.showToast({
-      title: '请先在个人主页签约成绩共享计划',
-      icon: 'none',
-    });
-    setTimeout(() => {
-      void Taro.switchTab({
-        url: '/pages/main/index',
-      });
-    }, 2000);
-  }, []);
-  const featuresList = useMemo(() => {
-    if (course?.features && Array.isArray(course?.features)) {
-      return course?.features;
+
+  const onRefreshComments = useCallback(async () => {
+    if (!courseId) return;
+    try {
+      await refreshComments(Number(courseId));
+    } catch (err) {
+      console.error(err);
     }
-    return [];
-  }, [course?.features]);
-  return !test ? (
-    <View className="flex flex-col">
-      <Image src={TopBackground as string} className="w-full"></Image>
-      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
-        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
-          <Image src={Icon as string} className="h-full w-full"></Image>
-        </View>
-        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈
-        </Text>
-      </View>
-    </View>
-  ) : (
-    <View className="classInfo mt-24">
+  }, [courseId, refreshComments]);
+
+  useEffect(() => {
+    const offQuestion = bus.on('question', (q) => {
+      if (q && Number(courseId) && q.biz_id === Number(courseId)) {
+        useClassInfoStore.setState((s) => {
+          const prev = s.questionlist;
+          const idx = prev.findIndex((item) => item.id === q.id);
+          if (idx >= 0) {
+            const updated = [...prev];
+            updated[idx] = { ...prev[idx], ...q };
+            return { questionlist: updated };
+          }
+          return { questionlist: [q, ...prev] };
+        });
+      }
+    });
+    const offEvaluation = bus.on('evaluation', (e) => {
+      if (e && Number(courseId) && e.course_id === Number(courseId)) {
+        useClassInfoStore.setState((s) => ({
+          comments: [e as CommentInfo, ...s.comments],
+        }));
+      }
+    });
+    return () => {
+      offQuestion();
+      offEvaluation();
+    };
+  }, [courseId]);
+
+  useEffect(() => {
+    return () => {
+      if (bailoutTimerRef.current) clearTimeout(bailoutTimerRef.current);
+    };
+  }, []);
+
+  const handleDrawerOpen = useCallback(() => setDrawerOpened(true), []);
+  const handleDrawerClose = useCallback(() => setDrawerOpened(false), []);
+
+  const handleCommentClick = useCallback((props: CommentInfo) => {
+    bus.stickyEmit('evaluation', props);
+    void Taro.navigateTo({ url: '/pages/evaluateInfo/index' });
+  }, []);
+
+  const handleQuestionClick = useCallback(
+    (question: WebQuestionVo) => {
+      void Taro.navigateTo({
+        url: `/pages/questionInfo/index?id=${question.id}&course_id=${courseId}`,
+      });
+    },
+    [courseId]
+  );
+
+  const handleEmptyQuestionClick = useCallback(() => {
+    if (!guard()) return;
+    void Taro.navigateTo({ url: `/pages/publishQuestion/index?course_id=${courseId}` });
+  }, [courseId, guard]);
+
+  const handleEmptyCommentClick = useCallback(() => {
+    if (!guard()) return;
+    void Taro.navigateTo({
+      url: `/pages/evaluate/index?id=${courseId}&name=${course?.name}`,
+    });
+  }, [courseId, course?.name, guard]);
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') {
+    return <GateScreen />;
+  }
+
+  return (
+    <View className="classInfo_page_container">
       <NavigationBar title="课程主页" isBackToPage />
-      <View className="theClassnme">{course?.name}</View>
-      <View className="teacherName">
-        {course?.school}&nbsp;&nbsp;&nbsp;{course?.teacher}
-      </View>
-      <View className="p">
-        综合评分: <ShowStar score={course?.composite_score} />
-        <Text>（共{course?.rater_count}人评价）</Text>
-      </View>
-      <View className="p">
-        课程分类: <Label3 content={translateCourseProperty(course?.type)} />
-      </View>
-      <View className="p">
-        课程特点: {}
-        {featuresList.map((feature, keyindex) => (
-          <Label3 key={keyindex} content={feature} />
-        ))}
-      </View>
-      <View>
-        <View className="line-container mb-2 pt-2.5 text-center text-xl text-[#3D3D3D]">
-          成绩分布
-        </View>
-      </View>
-      <LineChart
-        className="mx-auto text-center"
-        data={yData}
-        xLabels={xLabels}
-        maxScore={max}
-        minScore={min}
-        avgScore={avg}
-        title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
+      <CourseHeaderSection
+        name={course?.name}
+        collect={collect}
+        onCollect={handleCollect}
       />
-      <View>
-        <View>
-          <View className="line-container mt-2 pt-2.5 text-center text-xl text-[#3D3D3D]">
-            问问同学({questionNum})
-          </View>
-        </View>
-        <>
-          {questionlist.length > 0 ? (
-            <>
-              <View className="relative">
-                {questionlist.slice(0, 3).map((question, index) => (
-                  <View key={question.id} style={{ filter: `blur(${index}px)` }}>
-                    <AnswerToStudent
-                      content={question.content}
-                      preview_answers={question.preview_answers}
-                    />
-                  </View>
-                ))}
-              </View>
-              <View
-                className="text-center text-xl"
-                onClick={() => {
-                  void Taro.navigateTo({
-                    url: `/pages/questionList/index?course_id=${courseId}`,
-                  });
-                }}
-              >
-                <Text>查看全部</Text>
-              </View>
-            </>
-          ) : (
-            <View
-              className="flex h-[10vh] items-center justify-center"
-              onTouchEnd={() => {
-                void Taro.navigateTo({
-                  url: `/pages/publishQuestion/index?course_id=${courseId}`,
-                });
-              }}
-            >
-              <Text className="text-center text-xl">暂无问题, 快去提问吧 》</Text>
-            </View>
-          )}
-        </>
-      </View>
-      <View>
-        <View className="line-container pt-5 text-center text-xl text-[#3D3D3D]">
-          评论区
-        </View>
-      </View>
-      {comments &&
-        comments.map((comment) => (
-          <Comment
-            classNames="mt-2"
-            showTag
-            onClick={(props) => {
-              const serializedComment = encodeURIComponent(JSON.stringify(props));
-              void Taro.navigateTo({
-                url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
-              });
-            }}
-            onLikeClick={() => void getCommentData()}
-            key={comment.id}
-            {...comment}
-            type="inner"
+      {course && <CourseInfoSection course={course} />}
+      <View className="classInfo_page_grade_title">成绩分布</View>
+      {!drawerOpened && (
+        <View className="classInfo_page_chart_container">
+          <LineChart
+            gradeData={gradeData}
+            title={`平均分: ${grade?.avg?.toFixed(1) ?? 0}`}
           />
-        ))}
-      {comments.length === 0 && (
-        <View
-          className="flex h-[10vh] items-center justify-center"
-          onTouchEnd={() => {
-            void Taro.navigateTo({
-              url: `pages/evaluate/index?id=${courseId}&name=${course?.name}`,
-            });
-          }}
-        >
-          <Text className="text-center text-xl">暂无课评, 快去评价一下吧 》</Text>
         </View>
       )}
-      <View
-        className="fixed bottom-[12vh] right-8 flex flex-col items-center gap-2"
-        onTouchEnd={handleCollect}
-      >
-        <View className="flex aspect-square w-14 items-center justify-center rounded-full bg-[#f9f9f2] shadow-xl">
-          {collect ? (
-            <AtIcon value="star-2" size={30} color="#f18900" />
-          ) : (
-            <AtIcon value="star" size={30} color="#f18900" />
-          )}
-        </View>
-      </View>
+      <QuestionsSection
+        questionlist={questionlist}
+        onMoreClick={handleDrawerOpen}
+        onEmptyClick={handleEmptyQuestionClick}
+        onQuestionClick={handleQuestionClick}
+      />
+      <CommentsSection
+        comments={comments}
+        onCommentClick={handleCommentClick}
+        onLikeClick={onRefreshComments}
+        onEmptyClick={handleEmptyCommentClick}
+      />
+      <Drawer isOpened={drawerOpened} onClose={handleDrawerClose} title="问问同学">
+        <QAlist
+          qas={questionlist}
+          courseId={courseId}
+          onQuestionClick={handleQuestionClick}
+        />
+      </Drawer>
     </View>
   );
 };

@@ -1,209 +1,243 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
-import { Button, Image, Text, Textarea, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { useEffect, useRef, useState } from 'react';
-
-import './style.scss';
-
-import { Icon, TopBackground } from '@/common/assets/img/login';
-import { Comment } from '@/common/components';
-import CommentComponent from '@/common/components/CommentComponent/CommentComponent';
-import { get } from '@/common/utils';
-import { postBool } from '@/common/utils/fetch';
+import { BottomInput, FeedCard, GateScreen, ReviewDiscussion } from '@/common/components';
+import { useAuthGuard } from '@/common/hooks/useAuthGuard';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
+import { BusinessError } from '@/common/request/errors/BusinessError';
+import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
-
-import { StatusResponse } from '../evaluate';
-import { useCourseStore } from '../main/store/store';
-import { COMMENT_ACTIONS } from '../main/store/types';
+import { useEvaluateDetailStore } from '@/store';
+import { useCourseStore } from '@/store/useCourseStore';
+import { useUserStore } from '@/store/useUserStore';
+import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import './index.scss';
 
 const Page: React.FC = () => {
-  const [allComments, setAllComments] = useState<CommentType[]>([]);
-  const [commentsLoaded, setCommentsLoaded] = useState(false); // 新增状态，标记评论是否已加载
-  const [replyTo, setReplyTo] = useState<CommentType | null>(null); // 新增状态，存储被回复的评论
-  const [replyContent, setReplyContent] = useState(''); // 存储回复内容
-  const [placeholderContent, setplaceholderContent] = useState('写下你的评论...'); // 存储占位内容
-  const inputRef = useRef<typeof Textarea | null>(null);
+  const gate = useGateGuard();
+  const { guard } = useAuthGuard();
+  const urlParams = Taro.getCurrentInstance()?.router?.params || {};
+  const urlBizId = Number(urlParams.bizId);
 
-  const [comment, setComment] = useState<CommentInfoType | null>(null); //获取课评信息
-  // const biz_id = 1;
-  const [biz_id, setBiz_id] = useState<number | null>(null);
-  const updateInfo = useCourseStore((state) => state.comment);
-  useEffect(() => {
-    const handleQuery = () => {
-      const query = Taro.getCurrentInstance()?.router?.params; // 获取查询参数
-      const serializedComment = query?.comment;
-      if (serializedComment) {
-        try {
-          // 解析字符串
-          const parsedComment = JSON.parse(decodeURIComponent(serializedComment));
-          setComment(parsedComment);
-          setBiz_id(parsedComment.id);
-        } catch (error) {
-          console.error('解析评论参数失败', error);
+  const evaluation = useEvaluateDetailStore((s) => s.evaluation);
+  const comments = useEvaluateDetailStore((s) => s.comments);
+  const commentsLoaded = useEvaluateDetailStore((s) => s.commentsLoaded);
+  const hasMore = useEvaluateDetailStore((s) => s.hasMore);
+  const loadEvaluation = useEvaluateDetailStore((s) => s.loadEvaluation);
+  const loadComments = useEvaluateDetailStore((s) => s.loadComments);
+  const loadReplies = useEvaluateDetailStore((s) => s.loadReplies);
+  const publishReply = useEvaluateDetailStore((s) => s.publishReply);
+
+  const [courseReview, setFeedCard] = useState<typeof evaluation>(() =>
+    urlBizId > 0 ? null : bus.getSticky('evaluation') || null
+  );
+  const [bizId, setBizId] = useState<number | null>(null);
+  const [newReplyRootId, setNewReplyRootId] = useState(0);
+
+  const handleLoadReplies = useCallback(
+    async (rootId: number, lastId: number, limit: number) => {
+      try {
+        return await loadReplies(rootId, lastId, limit);
+      } catch (e) {
+        console.error(e);
+        return [];
+      }
+    },
+    [loadReplies]
+  );
+
+  const handleReplySubmit = useCallback(
+    async (value: string, replyTo: Record<string, unknown> | null) => {
+      if (!value.trim() || !bizId) return;
+
+      const rootId =
+        replyTo?.root_comment_id === 0
+          ? (replyTo?.id as number)
+          : (replyTo?.root_comment_id as number) || 0;
+      const parentId = (replyTo?.id as number) || 0;
+      const profile = useUserStore.getState().profile;
+
+      const newComment = {
+        id: -Date.now(),
+        commentator_id: 0,
+        biz: 'Evaluation',
+        biz_id: bizId,
+        content: value,
+        root_comment_id: rootId,
+        parent_comment_id: parentId,
+        reply_to_uid: (replyTo?.commentator_id as number) || 0,
+        ctime: Date.now() / 1000,
+        utime: Date.now() / 1000,
+        user: {
+          id: 0,
+          nickname: profile?.nickname || '我',
+          avatar: profile?.avatar || '',
+        },
+      };
+
+      if (rootId === 0) {
+        useEvaluateDetailStore.setState((s) => ({
+          comments: [newComment, ...s.comments],
+        }));
+      } else {
+        setNewReplyRootId(rootId);
+        useEvaluateDetailStore.setState((s) => ({
+          comments: s.comments.map((c) => {
+            if (c.id === rootId) {
+              return {
+                ...c,
+                reply_count: (c.reply_count || 0) + 1,
+                has_replies: true,
+                replies: c.replies ? [newComment, ...c.replies] : [newComment],
+                total_comment_count: (c.total_comment_count || 0) + 1,
+              };
+            }
+            return c;
+          }),
+        }));
+      }
+
+      try {
+        await publishReply({
+          bizId,
+          content: value,
+          parentId,
+          rootId,
+        });
+        const updated = useCourseStore.getState().incrementEvaluationCommentCount(bizId);
+        if (updated) {
+          setFeedCard(updated);
+          bus.stickyEmit('evaluation', updated);
         }
+      } catch (error) {
+        if (error instanceof BusinessError && error.code === 409002) {
+          Taro.showToast({ title: '不能回答未上过的课', icon: 'none' });
+          return;
+        }
+        Taro.showToast({ title: '评论失败', icon: 'error' });
       }
-    };
+    },
+    [bizId, publishReply]
+  );
 
-    handleQuery();
-  }, []);
-  useEffect(() => {
-    Taro.showLoading({
-      title: '加载中',
-    });
-    const fetchComments = async () => {
-      // console.log(biz_id)
-      try {
-        const res = await get(
-          `/comments/list?biz=Evaluation&biz_id=${biz_id}&cur_comment_id=0&limit=100`
+  const bottomInputRef =
+    useRef<import('@/common/components/BottomInput').BottomInputRef>(null);
+  const replyToRef = useRef<Record<string, unknown> | null>(null);
+
+  const handleLongPress = useCallback(
+    (comment: Record<string, unknown> | null) => {
+      if (!guard()) return;
+      if (comment) {
+        replyToRef.current = comment;
+        bottomInputRef.current?.insertMention(
+          (comment.user as { nickname?: string })?.nickname || ''
         );
-        // console.log(res.data);
-        setAllComments(res.data);
-        setCommentsLoaded(true);
-      } catch (error) {
-        console.error('加载评论失败', error);
+        bottomInputRef.current?.focus();
       }
-      Taro.hideLoading();
-    };
+    },
+    [guard]
+  );
 
-    // 确保 biz_id 设置后再调用 fetchComments
-    if (biz_id !== null) {
-      fetchComments();
-    }
-  }, [biz_id, commentsLoaded]); // 依赖项中添加biz_id
-  const [test, setTest] = useState<boolean>(false);
-  useEffect(() => {
-    const getParams = async () => {
-      try {
-        const res = (await postBool('/checkStatus', {
-          name: 'kestack',
-        })) as StatusResponse;
-
-        setTest(res.data.status);
-      } catch (error) {
-        console.error('Error fetching status:', error);
-      }
-    };
-
-    void getParams();
+  const clearReply = useCallback(() => {
+    replyToRef.current = null;
   }, []);
-  useEffect(() => {
-    console.log('test status updated:', test);
-  }, [test]);
-  const handleCommentClick = (comment: CommentType | null) => {
-    if (comment) {
-      setReplyTo(comment);
-      // 设置回复目标
-      setplaceholderContent(`回复给${comment.user?.nickname}: `); // 初始化回复内容
-      return;
-    }
-    if (inputRef.current) {
-      (inputRef.current as unknown as { focus: () => void }).focus();
-    }
-  };
 
-  const handleReplyChange = (e: any) => {
-    setReplyContent(e.target.value);
-  };
+  const handleMentionRemoved = useCallback(() => {
+    replyToRef.current = null;
+  }, []);
 
-  const handleClearReply = () => {
-    setReplyTo(null);
-    setReplyContent('');
-    setplaceholderContent('写下你的评论...');
-  };
+  const onReplySubmit = useCallback(
+    (value: string) => {
+      if (!guard()) return;
+      void handleReplySubmit(value, replyToRef.current);
+      clearReply();
+      bottomInputRef.current?.clearValue();
+    },
+    [guard, handleReplySubmit, clearReply]
+  );
 
-  const handleReplySubmit = async () => {
-    if (!replyContent.trim()) return; // 忽略空内容
-    const res = await updateInfo({
-      biz: 'Evaluation',
-      action: COMMENT_ACTIONS.COMMENT,
-      id: biz_id ?? 0,
-      content: replyContent,
-      parentId: replyTo?.id || 0,
-      rootId:
-        replyTo?.root_comment_id === 0 ? replyTo?.id : replyTo?.root_comment_id || 0,
-    });
-    setComment(res as CommentInfoType);
-    handleClearReply();
-    // 评论发布成功后，重新加载评论
-    setCommentsLoaded(false); // 先将commentsLoaded设为false，避免useEffect中的fetchComments不被调用
-    const fetchComments = async () => {
-      try {
-        const res = await get(
-          `/comments/list?biz=Evaluation&biz_id=${biz_id}&cur_comment_id=0&limit=100`
-        );
-        setAllComments(res.data);
-        setCommentsLoaded(true);
-      } catch (error) {
-        console.error('加载评论失败', error);
-      }
-    };
-    await fetchComments();
-  };
-
-  // 仅当评论数据加载完成时渲染CommentComponent
-  return !test ? (
-    <View className="flex flex-col">
-      <Image src={TopBackground as string} className="w-full"></Image>
-      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
-        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
-          <Image src={Icon as string} className="h-full w-full"></Image>
-        </View>
-        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈 此功能敬请期待
-        </Text>
-      </View>
-    </View>
-  ) : (
-    <View className="evaluateInfo mt-24" onClick={handleClearReply}>
-      <NavigationBar title="评课详细" isBackToPage />
-      <Comment
-        showAll
-        {...comment}
-        type="inner"
-        onLikeClick={(props) => {
-          setComment({
-            ...comment,
+  const handleLikeClick = useCallback((props: { total_support_count?: number }) => {
+    setFeedCard((prev) =>
+      prev
+        ? {
+            ...prev,
             total_support_count:
-              props.total_support_count ?? (comment?.total_support_count || 0),
-          } as CommentInfoType);
-        }}
-        onCommentClick={() => handleCommentClick(null)}
-      />
-      <View className="ml-4 mt-3 w-[90vw] text-lg text-[#3D3D3D]">评论区</View>
-      {commentsLoaded && (
-        <CommentComponent comments={allComments} onCommentClick={handleCommentClick} />
-      )}
-      <View className="h-[10vh] w-full"></View>
-      <View className="fixed bottom-0 flex h-[8vh] w-full items-center justify-center text-sm">
-        <Textarea
-          className="ml-4 mr-4 h-7 w-[70%] rounded-2xl bg-[#D8D8D8] pl-3 pt-2"
-          confirmType="send"
-          ref={inputRef}
-          placeholderClass="flex-1 justify-center text-sm text-gray-500"
-          placeholder={placeholderContent}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-          value={replyContent}
-          onInput={handleReplyChange}
-          onConfirm={handleReplySubmit}
+              props.total_support_count ?? (prev.total_support_count || 0),
+          }
+        : prev
+    );
+  }, []);
+
+  useEffect(() => {
+    if (urlBizId > 0) {
+      void loadEvaluation(urlBizId).then((data) => {
+        if (data) {
+          setFeedCard(data);
+          setBizId(data.id);
+        }
+      });
+    } else {
+      const offEvaluation = bus.onSticky('evaluation', (e: { id?: number }) => {
+        if (e) {
+          setFeedCard(e);
+          setBizId(e.id ?? null);
+        }
+      });
+      return () => offEvaluation();
+    }
+  }, [urlBizId, loadEvaluation]);
+
+  useEffect(() => {
+    if (evaluation && !courseReview) {
+      setFeedCard(evaluation);
+      setBizId(evaluation.id);
+    }
+  }, [evaluation, courseReview]);
+
+  useEffect(() => {
+    if (bizId !== null) void loadComments(bizId, true);
+  }, [bizId, loadComments]);
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <GateScreen />;
+
+  return (
+    <View className="evaluateInfo_page_container">
+      <NavigationBar isBackToPage title="评课详细" />
+      <View className="evaluateInfo_page_comment_wrapper">
+        <FeedCard
+          comment={courseReview}
+          showAll
+          type="inner"
+          onLikeClick={handleLikeClick}
+          onCommentClick={() => handleLongPress(null)}
         />
-        <Button
-          className="flex h-8 w-[20%] items-center justify-center rounded-2xl bg-[#EDA335] text-center text-base text-[#FFFFFF]"
-          onClick={handleReplySubmit}
-        >
-          发送
-        </Button>
       </View>
+
+      <View className="evaluateInfo_page_comments_title">评论区</View>
+      <View className="evaluateInfo_page_divider" />
+
+      <View className="evaluateInfo_page_comments_list">
+        <ReviewDiscussion
+          comments={comments}
+          hasMore={hasMore}
+          initialLoading={!commentsLoaded}
+          onLoadMore={() => bizId && void loadComments(bizId, false)}
+          onLoadMoreReplies={handleLoadReplies}
+          onCommentLongPress={handleLongPress}
+          supportsReplies={(item) => 'root_comment_id' in item}
+          getReplyIndicator={(reply) => ({
+            show: reply.root_comment_id !== reply.parent_comment_id,
+            nickname: reply.reply_to_user?.nickname,
+          })}
+          newReplyRootId={newReplyRootId}
+        />
+      </View>
+
+      <BottomInput
+        ref={bottomInputRef}
+        onSubmit={onReplySubmit}
+        onMentionRemoved={handleMentionRemoved}
+      />
     </View>
   );
 };

@@ -1,45 +1,180 @@
-import { ScrollView, View } from '@tarojs/components';
+import { Loading } from '@/common/components';
+import { ScrollView, Text, View } from '@tarojs/components';
 import type { VirtualListProps as TaroVirtualListProps } from '@tarojs/components-advanced/dist/components/virtual-list';
-import { memo, useCallback, useRef } from 'react';
+import { memo, ReactNode, useCallback, useRef, useState } from 'react';
 
 interface VirtualListProps extends TaroVirtualListProps {
-  item: React.FC<{ data: any; index: number }>;
+  item: React.FC<{ id: any; data: any; index: number }>;
   itemSize: number;
+  bottomPadding?: number;
+  hasMore?: boolean;
+  FooterChildren?: string | ReactNode;
+  EmptyChildren?: string | ReactNode;
+  initialLoading?: boolean;
+  timeout?: number;
+  onTimeout?: () => void;
+  onLoadMore?: () => void;
+  getItemKey?: (item: any, index: number) => string | number;
 }
 
 const VirtualList: React.FC<VirtualListProps> = memo(
-  ({ height, width, item: Item, itemData, itemSize, onScroll }) => {
-    const scrollTop = useRef<number>(0);
-    const throttle = useCallback((fn, delay) => {
-      let timer: NodeJS.Timeout | null = null;
-      return (...args) => {
-        if (timer) return;
-        timer = setTimeout(() => {
-          fn(...args);
-          timer = null;
-        }, delay);
+  ({
+    height,
+    width,
+    item: Item,
+    itemData,
+    itemSize,
+    hasMore = false,
+    bottomPadding = 0,
+    getItemKey = (_, index) => index,
+    onLoadMore,
+    FooterChildren = '—— 没有更多了 ——',
+    EmptyChildren = '暂无数据',
+    initialLoading = false,
+    timeout = 10000,
+    onTimeout,
+  }) => {
+    const isFirstLoad = useRef(true);
+    const scrollTop = useRef(0);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleScrollToLower = useCallback(async () => {
+      if (!onLoadMore || isLoading) return;
+
+      if (isFirstLoad.current) {
+        isFirstLoad.current = false;
+      } else if (!hasMore) return;
+
+      const IstimeOut = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('加载超时')), timeout)
+      );
+
+      try {
+        setIsLoading(true);
+        await Promise.race([onLoadMore(), IstimeOut]);
+      } catch (error) {
+        console.error('加载更多失败', error);
+        onTimeout?.();
+      } finally {
+        setIsLoading(false);
+      }
+    }, [onLoadMore, isLoading, hasMore, timeout, onTimeout]);
+
+    const renderFooter = () => {
+      const footerStyle = {
+        height: `${bottomPadding}rpx`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        marginTop: '36rpx',
       };
-    }, []);
-    const handleScroll = throttle((event) => {
-      // console.log('fetching');
-      onScroll && onScroll(event);
-    }, 1000);
+
+      if (isLoading) {
+        return (
+          <View style={footerStyle}>
+            <Loading
+              size={32}
+              type="circular"
+              isCenter={false}
+            />
+          </View>
+        );
+      }
+
+      if (!hasMore) {
+        return (
+          <View style={footerStyle}>
+            {typeof FooterChildren === 'string' ? (
+              <Text
+                style={{
+                  color: '#CCCCCC',
+                  fontSize: '24rpx',
+                  fontWeight: '500',
+                  letterSpacing: '2rpx',
+                  padding: '20rpx 0',
+                }}
+              >
+                {FooterChildren}
+              </Text>
+            ) : (
+              FooterChildren
+            )}
+          </View>
+        );
+      }
+
+      return <View style={{ height: `${bottomPadding}rpx`, width: '100%' }} />;
+    };
+
+    if (initialLoading && itemData.length === 0) {
+      return (
+        <View
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Loading type="circular" size={60} isCenter={false} />
+        </View>
+      );
+    }
+
+    if (!initialLoading && itemData.length === 0) {
+      return (
+        <View
+          style={{
+            height,
+            width,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative',
+          }}
+        >
+          <View
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              color: '#999',
+              fontSize: '28rpx',
+            }}
+          >
+            {EmptyChildren}
+          </View>
+        </View>
+      );
+    }
+
     return (
       <ScrollView
         scrollY
-        lowerThreshold={100}
-        style={{ height: height, width: width }}
-        onScrollToLower={handleScroll}
+        lowerThreshold={200}
+        style={{ height, width }}
+        onScrollToLower={handleScrollToLower}
         onScroll={(event) => {
           scrollTop.current = event.detail.scrollTop;
         }}
         scrollTop={scrollTop.current}
       >
-        {itemData.length > 0 &&
-          itemData.map((_, index) => (
-            <Item key={index} data={itemData} index={index}></Item>
-          ))}
-        <View style={{ height: '11.5vh' }}></View>
+        {itemData.map((item, index) => (
+          <Item
+            id={item.id}
+            key={getItemKey(item, index)}
+            data={itemData}
+            index={index}
+          />
+        ))}
+        {renderFooter()}
+        <View style={{ height: '11.5vh' }} />
       </ScrollView>
     );
   }

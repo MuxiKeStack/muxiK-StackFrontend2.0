@@ -1,0 +1,83 @@
+.courseLabel {
+  margin: auto;
+  width: 85%;
+  padding: $space_lg 36rpx;
+  border-radius: 36rpx;
+  opacity: 1;
+  margin-bottom: 48rpx;
+  background: $color_bg_page;
+  box-shadow:
+    0 -4rpx 6rpx rgba(0, 0, 0, 0.07),
+    0 4rpx 6rpx rgba(0, 0, 0, 0.07);
+
+  .class_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 36rpx;
+
+    .class_info {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: $space_sm;
+
+      .class_name {
+        max-width: 330rpx;
+        font-size: $font_size_base;
+        font-family:
+          Segoe UI-Bold,
+          Segoe UI;
+        color: $color_text_primary;
+        font-weight: 600;
+
+        letter-spacing: 0rpx;
+      }
+
+      .class_teacher {
+        font-size: $font_size_subtitle;
+        font-family:
+          Segoe UI-Bold,
+          Segoe UI;
+        color: $color_text_cool_gray;
+        white-space: nowrap;
+        letter-spacing: 4rpx;
+      }
+
+      .star_container {
+        @include flex_align_center;
+
+        margin-left: $space_sm;
+      }
+    }
+  }
+
+  .class_type_container {
+    @include flex_align_center;
+
+    margin: $space_xxs 0 24rpx;
+    width: 100%;
+
+    .class_type_text {
+      font-size: $font_size_sm;
+      color: $color_text_cool_gray;
+      letter-spacing: 4rpx;
+    }
+  }
+
+  .class_feature_container {
+    @include flex_align_center;
+
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 14rpx;
+  }
+
+  .class_footer {
+    @include flex_align_center;
+
+    margin-top: $space_sm;
+    padding-top: $space_sm;
+  }
+}

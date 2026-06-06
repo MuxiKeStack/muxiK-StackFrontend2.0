@@ -45,27 +45,35 @@ export const Modal: React.FC<ModalProps> = ({
 
   const modalContent = useMemo(
     () => (
-      <View className={isTransparent ? 'transparent-modal-content' : 'modal-content'}>
+      <View className={isTransparent ? 'transparent_modal_content' : 'modal_content'}>
         {title && (
-          <View className="modal-title">
-            {typeof title === 'string' ? <Text>{title}</Text> : title}
+          <View className="modal_title_container">
+            {typeof title === 'string' ? (
+              <Text className="modal_title">{title}</Text>
+            ) : (
+              title
+            )}
           </View>
         )}
 
-        <View className="modal-children">
-          {typeof children === 'string' ? <Text>{children}</Text> : children}
+        <View className="modal_children_container">
+          {typeof children === 'string' ? (
+            <Text className="modal_children">{children}</Text>
+          ) : (
+            children
+          )}
         </View>
 
         {showButtons && (
-          <View className="bottom-choice">
+          <View className="bottom_choice">
             {showCancel && (cancelText || onCancel) && (
-              <Button className="cancel-view button-style" onClick={handleCancel}>
-                <Text className="cancel-text">{cancelText || '取消'}</Text>
+              <Button className="cancel_view button_style" onClick={handleCancel}>
+                <Text className="cancel_text">{cancelText || '取消'}</Text>
               </Button>
             )}
             {(confirmText || onConfirm) && (
-              <Button className="confirm-view button-style" onClick={handleConfirm}>
-                <Text className="confirm-text">{confirmText || '确认'}</Text>
+              <Button className="confirm_view button_style" onClick={handleConfirm}>
+                <Text className="confirm_text">{confirmText || '确认'}</Text>
               </Button>
             )}
           </View>
@@ -87,7 +95,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <ModalBack visible={visible}>
-      <View className={`modal-overlay ${mode === 'middle' ? 'middle' : 'bottom'}`}>
+      <View className={`modal_overlay ${mode === 'middle' ? 'middle' : 'bottom'}`}>
         <ModalBackground onPress={handleClose} />
         {modalContent}
       </View>
@@ -97,8 +105,8 @@ export const Modal: React.FC<ModalProps> = ({
 
 const ModalBackground: React.FC<ModalBackgroundProps> = ({ onPress }) => (
   <View
-    className="modal-background"
-    onTouchStart={() => {
+    className="modal_background"
+    onClick={() => {
       onPress();
     }}
   />
@@ -141,7 +149,7 @@ export const ModalBack: React.FC<
 
   return (
     <View
-      className="modal-back"
+      className="modal_back"
       style={{
         opacity,
         transition: 'opacity 0.3s ease-in-out',

@@ -1,16 +1,16 @@
 .theClassName {
-  font-size: 43rpx;
+  font-size: $font_size_hero;
   font-weight: bold;
-  color: #565552;
+  color: $color_text_heading;
   text-align: center;
   margin-top: 22rpx;
 }
 
 .teacherName {
-  font-size: 33rpx;
+  font-size: $font_size_subheading;
   font-weight: 400;
-  color: #9f9f9c;
+  color: $color_text_secondary;
   text-align: center;
-  margin-top: 15rpx;
-  margin-bottom: 27rpx;
+  margin-top: 16rpx;
+  margin-bottom: 28rpx;
 }

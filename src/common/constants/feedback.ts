@@ -23,4 +23,5 @@ export const FEEDBACK_RECORD_NAMES = [
   '问题来源',
   '进度',
   '提交时间',
+  '回复内容',
 ];

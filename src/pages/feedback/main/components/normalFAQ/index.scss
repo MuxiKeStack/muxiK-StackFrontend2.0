@@ -1,0 +1,177 @@
+.faq_wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: $radius_lg;
+  background-color: #e5e7eb;
+  margin-bottom: $space_lg;
+
+  &.expanded {
+    background-color: #fff6e5;
+    border: 2rpx solid $color_brand_hover;
+  }
+
+  .faq_title {
+    @include flex_align_center;
+
+    padding: $space_lg 28rpx;
+
+    .icon_wrapper {
+      @include flex_center;
+
+      width: 34rpx;
+      height: 34rpx;
+      margin-right: $space_sm;
+      border-radius: $radius_round;
+      background-color: #484848;
+      transition: background-color 0.2s ease;
+
+      &.expanded {
+        background-color: $color_brand_muted;
+      }
+
+      .at-icon {
+        transition: transform 0.2s ease;
+      }
+    }
+
+    .faq_text {
+      flex: 1;
+      font-size: $font_size_body;
+      color: black;
+    }
+  }
+
+  .faq_content {
+    @include full_width_border_box;
+
+    margin-top: -18rpx;
+    padding: 0 28rpx 28rpx 28rpx;
+    animation: fadeSlideIn 0.2s ease both;
+
+    .faq_text {
+      font-size: $font_size_body;
+      color: $color_text_medium;
+      line-height: 1.5;
+      margin-left: 50rpx;
+      display: block;
+    }
+
+    .faq_wrapper {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+    }
+
+    > .faq_wrapper {
+      background-color: $color_bg_page;
+      border: 2rpx solid $color_brand;
+      border-radius: $radius_lg;
+      padding: $space_sm 0rpx;
+    }
+  }
+
+  .faq_footer {
+    @include flex_column;
+
+    padding: 0 28rpx 24rpx;
+    margin-top: $space_sm;
+
+    .faq_lines {
+      @include flex_align_center;
+
+      margin-bottom: $space_sm;
+      white-space: nowrap;
+      gap: $space_xs;
+
+      .faq_text {
+        flex: 1;
+        font-size: $font_size_body;
+        color: $color_text_hint;
+      }
+
+      .line {
+        flex: 1;
+        height: 1rpx;
+        background-color: $color_text_hint;
+      }
+    }
+
+    .faq_status_container {
+      width: 100%;
+      margin-top: $space_lg;
+
+      .status_buttons {
+        display: flex;
+        justify-content: space-around;
+        gap: 72rpx;
+        width: 100%;
+
+        .status_button {
+          @include flex_center;
+
+          padding: $space_xs 64rpx;
+          border-radius: 32rpx;
+          background-color: transparent;
+          font-size: $font_size_subtitle;
+          transition: all 0.2s;
+
+          .at-icon {
+            margin-right: 6rpx;
+            transform: scale(0.9);
+            transition: transform 0.2s ease;
+          }
+
+          .btn_text {
+            font-size: $font_size_body;
+          }
+
+          &.unresolved {
+            border: 2rpx solid #e44e7d;
+            color: #e44e7d;
+
+            &.selected {
+              background-color: #e44e7d;
+              color: $color_bg_page;
+            }
+          }
+
+          &.resolved {
+            border: 2rpx solid $color_brand_hover;
+            color: $color_brand_hover;
+
+            &.selected {
+              background-color: $color_brand_hover;
+              color: $color_bg_page;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal_title {
+  font-size: $font_size_title;
+  font-weight: 600;
+  color: #111827;
+  line-height: 32rpx;
+}
+
+.modal_content {
+  margin-top: $space_sm;
+  font-size: $font_size_body;
+  line-height: 42rpx;
+  color: #374151;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

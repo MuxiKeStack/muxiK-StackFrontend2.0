@@ -1,4 +1,4 @@
-import { NavigationBarProps } from '@tarojs/components';
+import type { NavigationBarProps } from '@tarojs/components/types/NavigationBar';
 
 import NavigationBar from './components/NavigationBar';
 

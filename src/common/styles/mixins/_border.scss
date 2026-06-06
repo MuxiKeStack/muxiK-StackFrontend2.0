@@ -1,0 +1,36 @@
+@mixin border_line($position, $color: $color_border_dark) {
+  content: '';
+  position: absolute;
+  #{$position}: 0;
+  left: 50%;
+  width: 85%;
+  height: 1px;
+  background: $color;
+  transform: translateX(-50%) scaleY(0.2);
+  transform-origin: 0 0;
+}
+
+@mixin line_decoration {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 27%;
+    height: 4rpx;
+    background-color: $color_border_light;
+    position: absolute;
+  }
+
+  &::before {
+    left: 5%;
+  }
+
+  &::after {
+    right: 5%;
+  }
+}

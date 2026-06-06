@@ -5,9 +5,10 @@ import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect, useState } from 'react';
 
-import { get } from '@/common/api/get';
 import { VirtualList } from '@/common/components';
+import { request } from '@/common/request';
 
+import type { CommentInfo } from '@/common/types/commentTypes';
 import CommentItem from './CommentItem';
 
 const Item = memo(
@@ -32,14 +33,14 @@ const History: React.FC = memo(() => {
       void Taro.hideLoading();
       return;
     }
-    const res = await get(
+    const res = await request.get(
       `/evaluations/list/mine?cur_evaluation_id=${index}&limit=${10}&status=${'Public'}`
     );
-    setComments(comments.concat(res.data));
-    if (res.data.length < 10) {
+    setComments(comments.concat(res));
+    if (res.length < 10) {
       setEnd(true);
     } else {
-      setIndex(res.data[res.data.length - 1].id);
+      setIndex(res[res.length - 1].id);
     }
     setLoading(false);
     void Taro.hideLoading();
@@ -65,7 +66,6 @@ const History: React.FC = memo(() => {
       itemCount={comments.length}
       itemSize={220}
       onScroll={({ scrollDirection, scrollOffset }) => {
-        console.log(scrollDirection, scrollOffset);
         if (
           !loading &&
           scrollDirection === 'forward' &&

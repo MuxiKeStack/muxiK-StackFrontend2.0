@@ -1,20 +1,20 @@
 import Taro from '@tarojs/taro';
 import { memo } from 'react';
 
-import { Comment } from '@/common/components';
+import { FeedCard } from '@/common/components';
+import type { CommentInfo } from '@/common/types/commentTypes';
+import { bus } from '@/common/utils';
 
 const CommentItem = memo(
   ({ id, index, data }: { id: string; index: number; data: CommentInfo[] }) => {
     const item = data[index];
     return (
-      <Comment
+      <FeedCard
         type="inner"
-        {...item}
-        onClick={(props) => {
-          const serializedComment = encodeURIComponent(JSON.stringify(props));
-          void Taro.navigateTo({
-            url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
-          });
+        comment={item}
+        onClick={(comment) => {
+          bus.stickyEmit('evaluation', comment);
+          void Taro.navigateTo({ url: '/pages/evaluateInfo/index' });
         }}
       />
     );

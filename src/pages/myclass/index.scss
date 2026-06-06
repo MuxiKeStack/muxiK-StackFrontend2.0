@@ -1,0 +1,138 @@
+.myclass_page_container {
+  width: 100%;
+  height: calc(100vh - 192rpx);
+  overflow: auto;
+  margin-top: 24%;
+
+  .myclass_filter_container {
+    @include flex_align_center;
+
+    justify-content: space-around;
+    padding: 32rpx 0;
+    background-color: $color_bg_page;
+    border-bottom: 1px solid rgba(237, 163, 53, 0.15);
+
+    .myclass_year_selector,
+    .myclass_semester_selector {
+      @include flex_center;
+
+      padding: 12rpx 28rpx;
+      border-radius: 48rpx;
+      min-width: 260rpx;
+
+      .myclass_year_text,
+      .myclass_semester_text {
+        color: $color_text_primary;
+        font-family: 'Segoe UI-Bold', 'Segoe UI', serif;
+        font-weight: bold;
+        font-size: $font_size_body;
+        white-space: nowrap;
+        margin-right: 12rpx;
+      }
+
+      .myclass_arrow_icon {
+        width: 0;
+        height: 0;
+        border-left: 10rpx solid transparent;
+        border-right: 10rpx solid transparent;
+        border-top: 14rpx solid $color_brand_accent;
+        margin-left: 6rpx;
+      }
+    }
+  }
+
+  .myclass_list_container {
+    @include flex_column_align_center;
+
+    margin-top: $space_xxs;
+
+    .myclass_item {
+      @include flex_between;
+
+      position: relative;
+      box-sizing: border-box;
+      padding: 0 32rpx;
+      height: 120rpx;
+      width: 100%;
+      background-color: rgb(255, 255, 255);
+      font-size: $font_size_title;
+      white-space: nowrap;
+
+      &::after {
+        @include border-line(bottom, $color_brand_accent);
+      }
+
+      &:active {
+        background-color: #f9f9f9;
+      }
+
+      .myclass_item_left {
+        @include flex_align_start;
+
+        .myclass_item_circle {
+          width: 24rpx;
+          height: 24rpx;
+          background-color: $color_brand_muted;
+          border-radius: $radius_round;
+          margin: 6rpx 20rpx;
+          flex-shrink: 0;
+        }
+
+        .myclass_item_info {
+          @include flex_column;
+
+          flex: 1;
+          min-width: 0;
+
+          .myclass_item_name {
+            font-weight: 500;
+            font-size: $font_size_subtitle;
+            color: $color_text_dark;
+            width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            margin-bottom: 4rpx;
+          }
+
+          .myclass_item_teacher {
+            font-size: $font_size_subtitle;
+            color: #777777;
+            width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            line-height: 1.3;
+          }
+        }
+      }
+
+      .myclass_item_right {
+        @include flex_align_center;
+
+        gap: $space_xxs;
+
+        .myclass_item_status {
+          color: $color_brand_accent;
+          font-size: $font_size_subtitle;
+          flex-shrink: 0;
+        }
+
+        .myclass_item_icon {
+          color: $color_brand_accent;
+          font-size: 48rpx;
+          font-weight: 400;
+        }
+      }
+    }
+
+    .myclass_empty {
+      @include flex_center;
+
+      height: 60vh;
+      width: 100%;
+      color: $color_text_secondary;
+      font-size: $font_size_body;
+    }
+  }
+}

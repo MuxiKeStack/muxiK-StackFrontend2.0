@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import './style.scss';
+import './index.scss';
 
 import Guide from '../../modules/guide';
 

@@ -1,0 +1,53 @@
+// flex 水平居中
+@mixin flex_align_center {
+  display: flex;
+  align-items: center;
+}
+
+// flex 水平垂直居中
+@mixin flex_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// flex 两端对齐 + 垂直居中
+@mixin flex_between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// flex 纵向排列
+@mixin flex_column {
+  display: flex;
+  flex-direction: column;
+}
+
+// flex 纵向 + 水平居中
+@mixin flex_column_align_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+// flex 纵向 + 垂直水平居中
+@mixin flex_column_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// flex 顶部对齐
+@mixin flex_align_start {
+  display: flex;
+  align-items: flex-start;
+}
+
+// flex 换行
+@mixin flex_wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

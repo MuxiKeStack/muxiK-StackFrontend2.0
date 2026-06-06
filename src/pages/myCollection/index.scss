@@ -1,0 +1,40 @@
+.MyCollection {
+  @include flex_column;
+
+  box-sizing: border-box;
+  margin-top: 30%;
+  height: 100vh;
+  background-color: $color_bg_page;
+  overflow: hidden;
+
+  .mycollection_searchbar {
+    @include full_width_border_box;
+
+    height: 72rpx;
+    padding: 0 32rpx;
+  }
+
+  .mycollection_info_container {
+    margin: $space_lg auto;
+    width: 90%;
+
+    .mycollection_info_text {
+      font-size: $font_size_title;
+      color: $color_text_dark;
+      font-weight: 500;
+    }
+  }
+
+  .mycollection_list_container {
+    flex: 1;
+    overflow-y: scroll;
+  }
+
+  .mycollection_empty {
+    @include flex_center;
+
+    font-size: $font_size_title;
+    color: #9a9a9a;
+    font-weight: 500;
+  }
+}

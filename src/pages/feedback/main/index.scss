@@ -1,0 +1,109 @@
+.faq_page_container {
+  @include flex_column;
+
+  margin-top: 25%;
+  height: 85vh;
+  position: relative;
+  padding: $space_xl;
+  box-sizing: border-box;
+  background-color: $color_bg_page;
+
+  .faq_search_input_container {
+    width: 100%;
+  }
+
+  .faq_content {
+    @include flex_column;
+
+    margin-top: $space_xl;
+    flex: 1;
+    overflow: hidden;
+
+    .faq_header {
+      @include flex_align_center;
+
+      margin-bottom: $space_lg;
+
+      .faq_header_text {
+        font-weight: 600;
+        font-size: $font_size_subheading;
+        color: #000;
+      }
+    }
+
+    .faq_scroll {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .faq_empty {
+      @include flex_center;
+
+      flex: 1;
+      color: $color_text_secondary;
+      font-size: $font_size_body;
+    }
+  }
+
+  .faq_bottom {
+    @include flex_column_align_center;
+
+    padding-top: $space_xxl;
+
+    .faq_button {
+      @include flex_center;
+
+      z-index: 100;
+      background-color: $color_brand_hover;
+      border-radius: 44rpx;
+      width: 80%;
+      height: 88rpx;
+      margin-bottom: $space_lg;
+
+      .faq_button_text {
+        color: $color_bg_page;
+        font-size: $font_size_subheading;
+        letter-spacing: 4rpx;
+      }
+    }
+
+    .faq_group {
+      @include flex_align_center;
+
+      font-size: $font_size_subtitle;
+      color: $color_text_secondary;
+
+      .faq_group_number {
+        margin: 0 10rpx;
+        color: $color_text_secondary;
+      }
+
+      .faq_copy {
+        color: $color_brand_hover;
+      }
+    }
+  }
+
+  .floatButton_container {
+    @include flex_column_align_center;
+
+    width: 88rpx;
+    height: 88rpx;
+    min-width: auto;
+    min-height: auto;
+    padding: 0;
+  }
+
+  .faq_float_btn_icon {
+    width: 50rpx;
+    height: 50rpx;
+    display: block;
+  }
+
+  .faq_float_btn_text {
+    font-size: 16rpx;
+    color: $color_bg_page;
+    margin-top: 0;
+    line-height: 1;
+  }
+}

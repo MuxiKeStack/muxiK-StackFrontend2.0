@@ -3,20 +3,19 @@
 
 import { Image, ScrollView, Swiper, SwiperItem, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
-import './style.scss';
+import './index.scss';
 
-import { Icon, TopBackground } from '@/common/assets/img/login';
-import { Comment } from '@/common/components';
-import SearchInput from '@/common/components/SearchInput/SearchInput';
-import { postBool } from '@/common/utils/fetch';
+import { FeedCard, FloatButton, GateScreen } from '@/common/components';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
+import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 
-import { StatusResponse } from '../evaluate';
-import { useCourseStore } from './store/store';
-import { COURSE_TYPE } from './store/types';
+import type { CommentInfo } from '@/common/types/commentTypes';
+import { COURSE_TYPE } from '@/common/types/courseType';
+import { useCourseStore } from '@/store/useCourseStore';
 
 const COURSE_NAME_MAP = {
   [COURSE_TYPE.ANY]: '全部',
@@ -34,48 +33,56 @@ const Page: React.FC = () => {
   const [refresherTriggered, setRefresherTriggered] = useState(false);
 
   // const [comments, setComments] = useState<CommentInfoType[]>([]);
+  // const [module, setModule] = useState(PAGE_MODULES_MAP['COURSE_REVIEW']);
   const comments = useCourseStore((state) => state.comments);
+
   const classType = useCourseStore((state) => state.classType);
-  const loading = useCourseStore((state) => state.loading);
   const dispatch = useCourseStore(
-    ({ loadMoreComments, refershComments, changeType }) => ({
+    ({ loadMoreComments, refreshComments, changeType }) => ({
       loadMoreComments,
-      refershComments,
+      refreshComments,
       changeType,
     })
   );
-  // 存储每个tab的scrollTop
-  const scrollTopMap = useRef({
+
+  const scrollTopMap = useRef<Record<string, number>>({
     [COURSE_TYPE.ANY]: 0,
     [COURSE_TYPE.MAJOR]: 0,
     [COURSE_TYPE.GENERAL_ELECT]: 0,
     [COURSE_TYPE.GENERAL_CORE]: 0,
   });
-  // 用于回到顶部
   const [scrollTop, setScrollTop] = useState(0);
+  const gate = useGateGuard();
 
-  useEffect(() => {
-    void dispatch.loadMoreComments();
-  }, [dispatch.loadMoreComments]);
-  const handleScroll = (e: { detail: { scrollTop: number } }) => {
-    scrollTopMap.current = { ...scrollTopMap.current, [classType]: e.detail.scrollTop };
-  };
-  const handleSwiperChange = (e: { detail: { current: number } }) => {
-    console.log(e.detail.current);
+  // 定时器
+  const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scrollToTopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 生命周期
+  const mountedRef = useRef(true);
+  const loadGenRef = useRef(0);
+
+  const handleScroll = useCallback((e: { detail: { scrollTop: number } }) => {
+    const ct = useCourseStore.getState().classType;
+    scrollTopMap.current = { ...scrollTopMap.current, [ct]: e.detail.scrollTop };
+  }, []);
+
+  const handleSwiperChange = useCallback((e: { detail: { current: number } }) => {
     handleChangeType(Object.keys(COURSE_NAME_MAP)[e.detail.current]);
-  };
-  const handleChangeType = (type) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    dispatch.changeType(type);
-    setScrollTop(scrollTopMap.current[type as string] as number);
-  };
+  }, []);
+
+  const handleChangeType = useCallback((type: string) => {
+    useCourseStore.getState().changeType(type as any);
+    setScrollTop(scrollTopMap.current[type] as number);
+  }, []);
+
   useEffect(() => {
     if (!comments[classType].length) {
       void Taro.showLoading({ title: '加载中' });
       void dispatch
-        .refershComments()
+        .refreshComments()
         .then(() => {
-          setTimeout(() => {
+          loadingTimerRef.current = setTimeout(() => {
             Taro.hideLoading();
           }, 1000);
         })
@@ -84,87 +91,81 @@ const Page: React.FC = () => {
           void Taro.showToast({ title: '加载失败', icon: 'none' });
         });
     }
+    return () => {
+      if (loadingTimerRef.current) {
+        clearTimeout(loadingTimerRef.current);
+        loadingTimerRef.current = null;
+      }
+    };
   }, [classType]);
 
-  const handleSearch = (searchText: string) => {
-    console.log('搜索文本:', searchText);
-  };
-  const [test, setTest] = useState<boolean>(false);
-  useEffect(() => {
-    const getParams = async () => {
-      try {
-        const res = (await postBool('/checkStatus', {
-          name: 'kestack',
-        })) as StatusResponse;
-        setTest(res.data.status);
-      } catch (error) {
-        console.error('Error fetching status:', error);
-      }
-    };
-    void getParams();
+  const handleComment = useCallback((props: any) => {
+    bus.stickyEmit('evaluation', props);
+    void Taro.navigateTo({ url: '/pages/evaluateInfo/index' });
   }, []);
-  useEffect(() => {
-    console.log('test status updated:', test);
-  }, [test]);
-  const geneHandler = () => {
-    let timeNow = Date.now();
-    return (e) => {
-      scrollTopMap.current = {
-        ...scrollTopMap.current,
-        [classType]: scrollTopMap.current[classType] + 200,
-      };
-      if (!useCourseStore.getState().loading && Date.now() - timeNow > 1000) {
-        void Taro.showLoading({ title: '加载中...', mask: true });
-        void dispatch
-          .loadMoreComments()
-          .then(() => {
-            Taro.hideLoading();
-          })
-          .catch(() => {
-            Taro.hideLoading();
-            void Taro.showToast({ title: '加载失败', icon: 'error' });
-          });
-        timeNow = Date.now();
-      }
-    };
-  };
-  const handleComment = useCallback((props) => {
-    const serializedComment = encodeURIComponent(JSON.stringify(props));
-    void Taro.navigateTo({
-      url: `/pages/evaluateInfo/index?comment=${serializedComment}`,
-    });
-  }, []);
-  const loadMoreHandler = useMemo(() => {
-    return geneHandler();
-  }, [loading]);
 
-  return !test ? (
-    <View className="flex flex-col">
-      <Image src={TopBackground as string} className="w-full"></Image>
-      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
-        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
-          <Image src={Icon as string} className="h-full w-full"></Image>
-        </View>
-        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          木犀课栈
-        </Text>
-      </View>
-    </View>
-  ) : (
+  const loadMoreHandler = useCallback(() => {
+    const ct = useCourseStore.getState().classType;
+    scrollTopMap.current = {
+      ...scrollTopMap.current,
+      [ct]: (scrollTopMap.current[ct] || 0) + 200,
+    };
+
+    const gen = ++loadGenRef.current;
+    if (useCourseStore.getState().loading) return;
+
+    void Taro.showLoading({ title: '加载中...', mask: false });
+
+    void dispatch
+      .loadMoreComments()
+      .then(() => {
+        if (gen === loadGenRef.current) Taro.hideLoading();
+      })
+      .catch(() => {
+        if (gen === loadGenRef.current) {
+          Taro.hideLoading();
+          void Taro.showToast({ title: '加载失败', icon: 'error' });
+        }
+      });
+  }, [dispatch]);
+
+  const handleRefresh = useCallback(() => {
+    setRefresherTriggered(true);
+
+    void dispatch.refreshComments().catch((e) => {
+      console.error('[main] 刷新评论失败:', e);
+    }).finally(() => {
+      setRefresherTriggered(false);
+    });
+  }, [dispatch]);
+
+  const handleScrollToTop = useCallback(() => {
+    const ct = useCourseStore.getState().classType;
+    setScrollTop(0);
+    scrollTopMap.current = { ...scrollTopMap.current, [ct]: 0 };
+
+    if (scrollToTopTimerRef.current) clearTimeout(scrollToTopTimerRef.current);
+    scrollToTopTimerRef.current = setTimeout(() => {
+      handleRefresh();
+    }, 600);
+  }, [handleRefresh]);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+      loadGenRef.current = 0;
+
+      if (loadingTimerRef.current) clearTimeout(loadingTimerRef.current);
+      if (scrollToTopTimerRef.current) clearTimeout(scrollToTopTimerRef.current);
+    };
+  }, []);
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <GateScreen />;
+  return (
     <View className="mt-20 flex flex-col items-center justify-center">
       <NavigationBar title="评课广场" isTabPage />
-      <View className="mt-5 flex w-full items-center justify-center gap-2">
-        <SearchInput
-          style={{ height: '30rpx', width: '500rpx', borderRadius: '20rpx' }}
-          onSearch={handleSearch} // 传递搜索逻辑
-          onSearchToggle={handleSearchToggle}
-          disabled
-          searchPlaceholder="搜索课程名/老师名"
-          searchPlaceholderStyle="color:#9F9F9C"
-          searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
-        />
-        <Text className="text-center text-lg text-[#3D3D3D]">搜索</Text>
-      </View>
+      <View className="mt-5 flex w-full items-center justify-center gap-2"></View>
       <View className="classLine">
         {Object.entries(COURSE_NAME_MAP).map(([name, displayName]) => {
           return (
@@ -172,13 +173,23 @@ const Page: React.FC = () => {
               <View
                 className={'label' + ' ' + (classType === name ? 'active' : '')}
                 // onClick={() => handleChangeType(name)}
-                onTouchEnd={() => handleChangeType(name)}
+                onClick={() => handleChangeType(name)}
               >
                 {displayName}
               </View>
             </>
           );
         })}
+        <View className="search" onClick={handleSearchToggle}>
+          <Image
+            style={{
+              width: '34.09rpx',
+              height: '34.09rpx',
+            }}
+            src={'https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png'}
+          />
+          <Text>搜索</Text>
+        </View>
       </View>
       <Swiper
         style={{ height: '70vh', width: '100vw' }}
@@ -197,22 +208,18 @@ const Page: React.FC = () => {
               style={{ height: '70vh' }}
               refresherTriggered={refresherTriggered}
               scrollY
-              onRefresherRefresh={() => {
-                setRefresherTriggered(true);
-                void dispatch.refershComments().then(() => {
-                  setRefresherTriggered(false);
-                });
-              }}
+              onRefresherRefresh={handleRefresh}
             >
               {comments[name] &&
-                (comments[name] as CommentInfoType[]).map((comment) => (
+                (comments[name] as CommentInfo[]).map((comment) => (
                   <>
-                    <Comment
-                      onCommentClick={() => handleComment({ ...comment, type: 'inner' })}
+                    <FeedCard
+                      key={comment.id}
+                      comment={comment}
+                      showTag
+                      type="inner"
                       onClick={() => handleComment({ ...comment, type: 'inner' })}
-                      key={comment.id} // 使用唯一key值来帮助React识别哪些元素是不同的
-                      {...comment} // 展开comment对象，将属性传递给Comment组件
-                      type="inner" // 固定属性，不需要从数组中获取
+                      onCommentClick={() => handleComment({ ...comment, type: 'inner' })}
                     />
                     <View className="h-4 w-full"></View>
                   </>
@@ -222,22 +229,14 @@ const Page: React.FC = () => {
         ))}
       </Swiper>
       {/* 刷新按钮 */}
-      <View
-        className="fixed bottom-[16vh] right-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF] shadow-lg active:opacity-80"
-        onClick={() => {
-          // 设置滚动条回到顶部
-          setScrollTop((prev) => (prev ? 0 : 1));
-          scrollTopMap.current = { ...scrollTopMap.current, [classType]: 0 };
-          setTimeout(() => {
-            setRefresherTriggered(true);
-            void dispatch.refershComments().then(() => {
-              setRefresherTriggered(false);
-            });
-          }, 600);
-        }}
-      >
-        <AtIcon value="chevron-up" size="30" color="#FFD777"></AtIcon>
-      </View>
+      <FloatButton
+        icon={<AtIcon value="chevron-up" size="30" color="#FFD777" />}
+        shape="circle"
+        side="right"
+        verticalOffset="80%"
+        horizontalOffset={16}
+        onClick={handleScrollToTop}
+      />
     </View>
   );
 };

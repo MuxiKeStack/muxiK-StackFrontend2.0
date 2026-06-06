@@ -1,0 +1,73 @@
+.profile_header {
+  position: relative;
+  height: 35%;
+  width: 100%;
+  background: linear-gradient(
+    170deg,
+    $color_brand_muted 0%,
+    #facd86 35%,
+    #f8de94 40%,
+    $color_bg_page 90%
+  );
+
+  .profile_header_background {
+    height: 34vh;
+    width: 100%;
+  }
+
+  .profile_header_container {
+    @include flex_align_center;
+
+    position: absolute;
+    top: 16vh;
+    width: 100%;
+    gap: $space_xl;
+    padding-left: 64rpx;
+
+    .profile_header_info {
+      @include flex_column;
+
+      gap: $space_sm;
+
+      .profile_header_name_section {
+        @include flex_align_center;
+
+        gap: $space_sm;
+
+        .profile_header_nickname {
+          white-space: nowrap;
+          font-size: $font_size_heading;
+          line-height: 1.5;
+        }
+      }
+
+      .profile_header_points_text {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        font-size: $font_size_caption;
+        font-weight: 700;
+        color: #fb923c;
+      }
+
+      .profile_header_progress_section {
+        @include flex_align_center;
+
+        gap: $space_xxs;
+        margin-top: -24rpx;
+
+        .profile_header_exp_text {
+          @include flex_align_center;
+
+          font-size: $font_size_title;
+          font-weight: 700;
+          color: #fb923c;
+        }
+
+        .profile_header_progress {
+          width: 288rpx;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.classInfo_page_header_container {
+  @include flex_center;
+
+  gap: $space_sm;
+
+  .classInfo_page_course_name {
+    font-size: $font_size_hero;
+    font-weight: bold;
+    color: $color_text_heading;
+    text-align: center;
+  }
+
+  .classInfo_page_collect_icon_wrapper {
+    @include flex_center;
+
+    aspect-ratio: 1/1;
+    width: 56rpx;
+    border-radius: $radius_round;
+    background-color: transparent;
+  }
+}

@@ -1,0 +1,24 @@
+.tab_bar_container {
+  margin-top: 25%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.tab_bar_button {
+  @include flex_column_align_center;
+
+  gap: $space_sm;
+}
+.tab_bar_icon_wrapper {
+  @include flex_center;
+
+  height: 120rpx;
+  width: 120rpx;
+  border-radius: $radius_xl;
+  background-color: $color_bg_cream;
+  box-shadow: 0 12rpx 20rpx -4rpx rgba(0, 0, 0, 0.2);
+}
+.tab_bar_text {
+  font-size: $font_size_heading;
+  line-height: 1.5;
+}

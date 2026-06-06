@@ -35,6 +35,8 @@ const config = {
   compiler: {
     type: 'webpack5',
     prebundle: {
+      enable: false,
+      force: true,
       exclude: ['taro-ui'],
     },
   },
@@ -60,6 +62,9 @@ const config = {
           generateScopedName: '[name]__[local]___[hash:base64:5]',
         },
       },
+    },
+    miniCssExtractPluginOption: {
+      ignoreOrder: true,
     },
     optimizeMainPackage: {
       enable: true,
@@ -104,6 +109,13 @@ const config = {
       //   },
       // });
     },
+  },
+  sass: {
+    resource: [
+      path.resolve(__dirname, '..', 'src/common/styles/tokens/_index.scss'),
+      path.resolve(__dirname, '..', 'src/common/styles/functions/_index.scss'),
+      path.resolve(__dirname, '..', 'src/common/styles/mixins/_index.scss'),
+    ],
   },
   h5: {
     publicPath: '/',

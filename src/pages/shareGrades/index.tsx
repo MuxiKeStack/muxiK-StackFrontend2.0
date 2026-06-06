@@ -1,14 +1,15 @@
 import { Button, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 
-import './style.scss';
+import './index.scss';
 
-import { post } from '@/common/utils';
+import { useGradeStore } from '@/store';
 
+// R.I.P，已废弃
 const Page: React.FC = () => {
   const handleSubmit = () => {
     try {
-      void post('/grades/sign', { wants_to_sign: true }).then((r) => {
+      void useGradeStore.signSharing(true).then((r) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (r.msg === '重复签约') {
           void Taro.showToast({

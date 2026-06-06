@@ -12,14 +12,13 @@ import { useCallback, useMemo, useState } from 'react';
 
 import './index.scss';
 
-import { createFeedbackRecord } from '@/common/api/feedback';
-import { uploadFileToFeishuBitable } from '@/common/api/feedback/uploadFeishu';
 import {
   FEEDBACK_TABLE_IDENTIFY,
   ISSUE_TYPE_MAP,
   MODULE_MAP,
 } from '@/common/constants/feedback';
 import { NavigationBar } from '@/modules/navigation';
+import { useFeedbackStore } from '@/store';
 
 type ImageItem = {
   uri: string;
@@ -55,22 +54,8 @@ const WriteFeedback = () => {
   }, []);
 
   const uploadImageToFeishu = async (imagePath: string): Promise<string | null> => {
-    try {
-      const fileName = imagePath.split('/').pop() || `image_${Date.now()}.jpg`;
-
-      const uploadResult = await uploadFileToFeishuBitable(imagePath, fileName);
-      console.log('uploadResult:', uploadResult);
-
-      if (uploadResult && uploadResult.data && uploadResult.data.file_token) {
-        return uploadResult.data.file_token;
-      } else {
-        console.warn('上传缺少token', uploadResult);
-        return null;
-      }
-    } catch (error: unknown) {
-      console.error('上传图片出错:', error);
-      return null;
-    }
+    const fileName = imagePath.split('/').pop() || `image_${Date.now()}.jpg`;
+    return useFeedbackStore.getState().uploadImage(imagePath, fileName);
   };
 
   const handleSelectImage = async () => {
@@ -142,7 +127,6 @@ const WriteFeedback = () => {
 
     try {
       const studentId = Taro.getStorageSync<string>('student_id');
-      console.log(studentId);
 
       const fileTokens = images.map((img) => img.token).filter(Boolean);
 
@@ -158,25 +142,17 @@ const WriteFeedback = () => {
         },
       };
 
-      const res = await createFeedbackRecord(requestData);
-
-      if (res.code === 0 && res.data) {
-        void Taro.showToast({
-          title: '提交成功,感谢您的反馈！',
-          icon: 'success',
-        });
-        setDescription('');
-        setContact('');
-        setImages([]);
-        setTimeout(() => {
-          void Taro.navigateBack();
-        }, 1500);
-      } else {
-        void Taro.showToast({
-          title: '提交失败,请稍后重试',
-          icon: 'error',
-        });
-      }
+      await useFeedbackStore.getState().submitFeedback(requestData);
+      void Taro.showToast({
+        title: '提交成功,感谢您的反馈！',
+        icon: 'success',
+      });
+      setDescription('');
+      setContact('');
+      setImages([]);
+      setTimeout(() => {
+        void Taro.navigateBack();
+      }, 1500);
     } catch (err) {
       console.error(err);
       void Taro.showToast({
@@ -189,40 +165,40 @@ const WriteFeedback = () => {
   };
 
   return (
-    <View className="feedback-container">
+    <View className="feedback_container">
       <NavigationBar title="我要反馈" isBackToPage />
 
-      <ScrollView scrollY className="feedback-scroll">
-        <View className="feedback-section">
-          <Text className="feedback-title">
-            问题类型 <Text className="required">*</Text>
+      <ScrollView scrollY className="feedback_scroll">
+        <View className="feedback_section">
+          <Text className="feedback_title">
+            问题类型 <Text className="feedback_required">*</Text>
           </Text>
-          <View className="options-row">
+          <View className="feedback_options_row">
             <View
-              className={`option ${selectedIssueType === 'function' ? 'selected' : ''}`}
-              onTouchStart={() => handleIssueTypeChange('function')}
+              className={`feedback_option ${selectedIssueType === 'function' ? 'feedback_selected' : ''}`}
+              onClick={() => handleIssueTypeChange('function')}
             >
-              <Text className="option-title">功能异常</Text>
-              <Text className="option-desc">页面加载缓慢、无法使用、闪退</Text>
+              <Text className="feedback_option_title">功能异常</Text>
+              <Text className="feedback_option_desc">页面加载缓慢、无法使用、闪退</Text>
             </View>
             <View
-              className={`option ${selectedIssueType === 'improvement' ? 'selected' : ''}`}
-              onTouchStart={() => handleIssueTypeChange('improvement')}
+              className={`feedback_option ${selectedIssueType === 'improvement' ? 'feedback_selected' : ''}`}
+              onClick={() => handleIssueTypeChange('improvement')}
             >
-              <Text className="option-title">产品改进</Text>
-              <Text className="option-desc">界面优化、功能建议、体验提升</Text>
+              <Text className="feedback_option_title">产品改进</Text>
+              <Text className="feedback_option_desc">界面优化、功能建议、体验提升</Text>
             </View>
           </View>
         </View>
 
         {/* 模块选择 */}
-        <View className="feedback-section">
-          <View className="options-wrap">
+        <View className="feedback_section">
+          <View className="feedback_options_wrap">
             {currentModules.map((module) => (
               <View
                 key={module}
-                className={`option small ${selectedModule === module ? 'selected' : ''}`}
-                onTouchStart={() => handleModuleChange(module)}
+                className={`feedback_option feedback_small ${selectedModule === module ? 'feedback_selected' : ''}`}
+                onClick={() => handleModuleChange(module)}
               >
                 <Text>{module}</Text>
               </View>
@@ -230,39 +206,41 @@ const WriteFeedback = () => {
           </View>
         </View>
 
-        <View className="feedback-section">
-          <Text className="feedback-title">
-            问题描述 <Text className="required">*</Text>
+        <View className="feedback_section">
+          <Text className="feedback_title">
+            问题描述 <Text className="feedback_required">*</Text>
           </Text>
           <Textarea
-            className="feedback-textarea"
+            className="feedback_textarea"
             placeholder="请详细描述您遇到的问题..."
             value={description}
             onInput={handleDescriptionChange}
             maxlength={200}
           />
-          <Text className="counter">{description.length}/200</Text>
+          <Text className="feedback_counter">{description.length}/200</Text>
         </View>
 
-        <View className="feedback-section">
-          <Text className="feedback-title">上传图片</Text>
-          <ScrollView scrollX className="image-scroll">
-            <View className="image-list">
+        <View className="feedback_section">
+          <Text className="feedback_title">上传图片</Text>
+          <ScrollView scrollX className="feedback_image_scroll">
+            <View className="feedback_image_list">
               {images.map((img) => (
-                <View key={img.uri} className="image-wrapper">
-                  <Image src={img.uri} className="image-item" />
-                  {img.uploading && <View className="image-overlay">上传中</View>}
+                <View key={img.uri} className="feedback_image_wrapper">
+                  <Image src={img.uri} className="feedback_image_item" />
+                  {img.uploading && (
+                    <View className="feedback_image_overlay">上传中</View>
+                  )}
                   <View
-                    className="remove-btn"
-                    onTouchStart={() => handleRemoveImage(img.uri)}
+                    className="feedback_remove_btn"
+                    onClick={() => handleRemoveImage(img.uri)}
                   >
                     <Text>×</Text>
                   </View>
                 </View>
               ))}
               <View
-                className={`image-add ${images.some((i) => i.uploading) ? 'disabled' : ''}`}
-                onTouchStart={() => void handleSelectImage()}
+                className={`feedback_image_add ${images.some((i) => i.uploading) ? 'feedback_disabled' : ''}`}
+                onClick={() => void handleSelectImage()}
               >
                 <Text>+</Text>
               </View>
@@ -270,10 +248,10 @@ const WriteFeedback = () => {
           </ScrollView>
         </View>
 
-        <View className="feedback-section">
-          <Text className="feedback-title">联系方式</Text>
+        <View className="feedback_section">
+          <Text className="feedback_title">联系方式</Text>
           <Input
-            className="input"
+            className="feedback_input"
             type="text"
             placeholder="QQ/邮箱"
             value={contact}
@@ -282,10 +260,12 @@ const WriteFeedback = () => {
         </View>
 
         <Button
-          className={`submit-btn ${!isSubmitEnabled || isSubmitting ? 'disabled' : ''}`}
+          className={`feedback_submit_btn ${!isSubmitEnabled || isSubmitting ? 'feedback_disabled' : ''}`}
           onClick={() => void handleSubmit()}
         >
-          <Text className="submit-text">{isSubmitting ? '提交中...' : '提交'}</Text>
+          <Text className="feedback_submit_text">
+            {isSubmitting ? '提交中...' : '提交'}
+          </Text>
         </Button>
       </ScrollView>
     </View>
