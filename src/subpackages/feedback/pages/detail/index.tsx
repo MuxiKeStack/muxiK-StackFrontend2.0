@@ -8,7 +8,7 @@ import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 import { useFeedbackStore } from '@/store';
 
-import { FeedbackDetailItem } from '../type';
+import type { FeedbackDetailItem } from '@/subpackages/feedback/type';
 
 const getStatusStep = (status: string) => {
   if (status === '待处理') return 1;

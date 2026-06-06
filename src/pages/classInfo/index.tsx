@@ -6,6 +6,7 @@ import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Drawer, GateScreen } from '@/common/components';
+import { ROUTES } from '@/common/constants/routes';
 import LineChart from '@/common/components/chart';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
@@ -150,13 +151,13 @@ const Page: React.FC = () => {
 
   const handleCommentClick = useCallback((props: CommentInfo) => {
     bus.stickyEmit('evaluation', props);
-    void Taro.navigateTo({ url: '/pages/evaluateInfo/index' });
+    void Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
   }, []);
 
   const handleQuestionClick = useCallback(
     (question: WebQuestionVo) => {
       void Taro.navigateTo({
-        url: `/pages/questionInfo/index?id=${question.id}&course_id=${courseId}`,
+        url: `${ROUTES.course.questionInfo}?id=${question.id}&course_id=${courseId}`,
       });
     },
     [courseId]
@@ -164,13 +165,13 @@ const Page: React.FC = () => {
 
   const handleEmptyQuestionClick = useCallback(() => {
     if (!guard()) return;
-    void Taro.navigateTo({ url: `/pages/publishQuestion/index?course_id=${courseId}` });
+    void Taro.navigateTo({ url: `${ROUTES.course.publishQuestion}?course_id=${courseId}` });
   }, [courseId, guard]);
 
   const handleEmptyCommentClick = useCallback(() => {
     if (!guard()) return;
     void Taro.navigateTo({
-      url: `/pages/evaluate/index?id=${courseId}&name=${course?.name}`,
+      url: `${ROUTES.course.evaluate}?id=${courseId}&name=${course?.name}`,
     });
   }, [courseId, course?.name, guard]);
 

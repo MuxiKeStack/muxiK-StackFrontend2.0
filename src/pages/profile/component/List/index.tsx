@@ -7,6 +7,7 @@ import {
 } from '@/common/assets/img/profile';
 import { Modal } from '@/common/components/Modal';
 import { LONG_TOKEN, SHORT_TOKEN, VISITOR } from '@/common/constants/auth';
+import { ROUTES } from '@/common/constants/routes';
 import { uniqueKey } from '@/common/utils';
 import { useActiveButtonStore, useAuthStore } from '@/store';
 import { useUserStore } from '@/store/useUserStore';
@@ -70,22 +71,17 @@ const ProfileList: React.FC = memo(() => {
       {
         title: '我的收藏',
         icon: StarIcon as string,
-        onClick: () => navigate('/pages/myCollection/index'),
+        onClick: () => navigate(ROUTES.profile.myCollection),
       },
       {
         title: '评课历史',
         icon: ClockIcon as string,
-        onClick: () => navigate('/pages/evaluationHistory/index'),
+        onClick: () => navigate(ROUTES.profile.evaluationHistory),
       },
-      // {
-      //   title: '成绩共享计划',
-      //   icon: MailIcon as string,
-      //   onClick: () => navigate('/pages/shareGrades/index'),
-      // },
       {
         title: '意见反馈',
         icon: FeedbackIcon as string,
-        onClick: () => navigate('/pages/feedback/main/index'),
+        onClick: () => navigate(ROUTES.feedback.main),
       },
       {
         title: '退出登录',

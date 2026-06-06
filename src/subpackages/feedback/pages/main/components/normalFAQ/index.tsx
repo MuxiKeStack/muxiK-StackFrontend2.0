@@ -10,7 +10,7 @@ import ResolvedShowIcon from '@/common/assets/img/profile/feedback/resolved_show
 import UnresolvedIcon from '@/common/assets/img/profile/feedback/unresolved.svg';
 import UnresolvedSelectedIcon from '@/common/assets/img/profile/feedback/unresolved_selected.svg';
 import { Modal } from '@/common/components/Modal';
-import type { SheetItem } from '../../../type';
+import type { SheetItem } from '@/subpackages/feedback/type';
 
 type Status = 'notSelected' | 'resolved' | 'unresolved';
 

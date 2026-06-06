@@ -17,7 +17,7 @@ import {
   uploadFileToFeishuBitable,
 } from '@/common/request/api/feedback';
 import { createTaroJSONStorage } from '@/common/utils';
-import type { FeedbackItem, SheetItem } from '@/pages/feedback/type';
+import type { FeedbackItem, SheetItem } from '@/subpackages/feedback/type';
 
 import { loadData } from './loadUtils';
 import type { DataSource } from './types';

@@ -11,7 +11,6 @@ export { useEvaluatePublishStore } from './useEvaluatePublishStore';
 export { useEvaluationHistoryStore } from './useEvaluationHistory';
 export type { EvaluationHistoryCache } from './useEvaluationHistory';
 export { useFeedbackStore } from './useFeedbackStore';
-export { useGradeStore } from './useGradeStore';
 export { useGuideStore } from './useGuideStore';
 export { useMyClassStore } from './useMyClasses';
 export { useNotificationStore } from './useNotificationStore';

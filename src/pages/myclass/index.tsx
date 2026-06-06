@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import './index.scss';
 
 import { Loading } from '@/common/components';
+import { ROUTES } from '@/common/constants/routes';
 import {
   getSemesterNumber,
   SEMESTER_ALL,
@@ -128,7 +129,7 @@ const Page: React.FC = () => {
     if (item.evaluated) handleNavToCourseInfo(item);
     else
       void Taro.navigateTo({
-        url: `/pages/evaluate/index${query}`,
+        url: `${ROUTES.course.evaluate}${query}`,
       });
   };
 

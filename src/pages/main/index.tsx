@@ -9,6 +9,7 @@ import { AtIcon } from 'taro-ui';
 import './index.scss';
 
 import { FeedCard, FloatButton, GateScreen } from '@/common/components';
+import { ROUTES } from '@/common/constants/routes';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
@@ -101,7 +102,7 @@ const Page: React.FC = () => {
 
   const handleComment = useCallback((props: any) => {
     bus.stickyEmit('evaluation', props);
-    void Taro.navigateTo({ url: '/pages/evaluateInfo/index' });
+    void Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
   }, []);
 
   const loadMoreHandler = useCallback(() => {

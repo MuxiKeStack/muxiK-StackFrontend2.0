@@ -1,3 +1,5 @@
+import { ROUTES } from '@/common/constants/routes';
+
 import type { MessageItemProps } from './type';
 
 export function getNotificationUrl(message: MessageItemProps): string | null {
@@ -6,12 +8,12 @@ export function getNotificationUrl(message: MessageItemProps): string | null {
 
   if (biz === 'Evaluation') {
     const params = [`bizId=${bizId || ''}`].filter(Boolean).join('&');
-    return `/pages/evaluateInfo/index?${params}`;
+    return `${ROUTES.course.evaluateInfo}?${params}`;
   }
 
   if (biz === 'Answer') {
     const params = [`answerId=${bizId || ''}`].filter(Boolean).join('&');
-    return `/pages/questionInfo/index?${params}`;
+    return `${ROUTES.course.questionInfo}?${params}`;
   }
 
   return null;

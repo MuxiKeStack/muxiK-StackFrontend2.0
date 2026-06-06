@@ -1,3 +1,4 @@
+import { ROUTES } from '@/common/constants/routes';
 import VirtualList from '@/common/components/VirtualList';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import type { WebQuestionVo } from '@/common/types/userTypes';
@@ -48,7 +49,7 @@ const QAList: React.FC<QAListProps> = ({ qas, courseId, onQuestionClick }) => {
   const handleAsk = () => {
     if (!guard()) return;
     void Taro.navigateTo({
-      url: `/pages/publishQuestion/index?course_id=${courseId}`,
+      url: `${ROUTES.course.publishQuestion}?course_id=${courseId}`,
     });
   };
 

@@ -4,6 +4,7 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
 import { Avatar, TitleButton } from '@/common/components';
+import { ROUTES } from '@/common/constants/routes';
 import { useUserStore } from '@/store/useUserStore';
 import './index.scss';
 
@@ -56,7 +57,7 @@ const Header: React.FC = memo(() => {
   }, [translateTitle]);
 
   if (user.newUser) {
-    void Taro.navigateTo({ url: '/pages/editUser/index' });
+    void Taro.navigateTo({ url: ROUTES.profile.editUser });
   }
 
   return (
@@ -64,7 +65,7 @@ const Header: React.FC = memo(() => {
       <View
         className="profile_header_container"
         onClick={() => {
-          void Taro.navigateTo({ url: '/pages/editUser/index' });
+          void Taro.navigateTo({ url: ROUTES.profile.editUser });
         }}
       >
         <Avatar src={user.avatarUrl || ''} username={user.nickName} size="20vw" />

@@ -9,9 +9,9 @@ import searchIcon from '@/common/assets/img/search.png';
 import { FloatButton, SearchInput } from '@/common/components';
 import Loading from '@/common/components/Loading';
 import { NavigationBar } from '@/modules/navigation';
+import { ROUTES } from '@/common/constants/routes';
 import { sourceLabel, useFeedbackStore } from '@/store';
-
-import { SheetItem } from '../type';
+import type { SheetItem } from '@/subpackages/feedback/type';
 import FAQItem from './components/normalFAQ';
 
 const FeedbackPage = () => {
@@ -178,7 +178,7 @@ const FeedbackPage = () => {
       <View className="faq_bottom">
         <Button
           className="faq_button"
-          onClick={() => handleNavigateToPage('/pages/feedback/writefeedback/index')}
+          onClick={() => handleNavigateToPage(ROUTES.feedback.write)}
         >
           <Text className="faq_button_text">我要反馈</Text>
         </Button>
@@ -206,7 +206,7 @@ const FeedbackPage = () => {
         side="right"
         verticalOffset="78%"
         halfHidden
-        onClick={() => handleNavigateToPage('/pages/feedback/history/index')}
+        onClick={() => handleNavigateToPage(ROUTES.feedback.history)}
       />
     </View>
   );

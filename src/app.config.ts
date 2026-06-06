@@ -4,35 +4,44 @@ export default defineAppConfig({
   pages: [
     'pages/login/index',
     'pages/main/index',
-    'pages/publishQuestion/index',
     'pages/classInfo/index',
-    'pages/evaluateInfo/index',
     'pages/profile/index',
-    'pages/myCollection/index',
+    'pages/myclass/index',
     'pages/notification/main/index',
     'pages/notification/list/index',
-    'pages/evaluationHistory/index',
-    // 'pages/notification/index',
-    'pages/feedback/main/index',
-    'pages/feedback/writefeedback/index',
-    'pages/feedback/history/index',
-    'pages/feedback/detail/index',
-    'pages/evaluate/index',
-    'pages/questionInfo/index',
-    'pages/myclass/index',
     'pages/research/index',
-    'pages/editUser/index',
     'pages/guide/index',
-    'pages/shareGrades/index',
   ],
 
-  // todos: 只为history分包对吗，还是说把个人页面都分包比较好？
-  // subpackages: [
-  //   {
-  //     root: 'subpackages/profile',
-  //     pages: ['pages/history/index'],
-  //   },
-  // ],
+  subpackages: [
+    {
+      root: 'subpackages/profile',
+      pages: [
+        'pages/myCollection/index',
+        'pages/evaluationHistory/index',
+        'pages/editUser/index',
+      ],
+    },
+    {
+      root: 'subpackages/feedback',
+      pages: [
+        'pages/main/index',
+        'pages/writefeedback/index',
+        'pages/history/index',
+        'pages/detail/index',
+      ],
+    },
+    {
+      root: 'subpackages/course',
+      pages: [
+        'pages/evaluate/index',
+        'pages/evaluateInfo/index',
+        'pages/questionInfo/index',
+        'pages/publishQuestion/index',
+      ],
+    },
+  ],
+
   usingComponents: Object.assign(useGlobalIconFont()),
   tabBar: {
     custom: true,

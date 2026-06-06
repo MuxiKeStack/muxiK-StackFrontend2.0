@@ -1,4 +1,5 @@
 import { FeedCard, VirtualList } from '@/common/components';
+import { ROUTES } from '@/common/constants/routes';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 import { useEvaluationHistoryStore } from '@/store';
@@ -74,7 +75,7 @@ const CommentItem = memo(({ id, index, data }: CommentItemProps) => {
         onVisibilityChange={handleVisibilityChange}
         onClick={(comment) => {
           bus.stickyEmit('evaluation', comment);
-          Taro.navigateTo({ url: '/pages/evaluateInfo/index' });
+          Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
         }}
       />
       <View className="h-4 w-full"></View>
