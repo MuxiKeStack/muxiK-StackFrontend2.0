@@ -96,9 +96,7 @@ function unwrapResponse(response: Taro.request.SuccessCallbackResult): unknown {
   throw new BusinessError(body.code, message, body.data);
 }
 
-async function handleTokenRefresh(
-  context: InterceptorContext
-): Promise<Taro.request.SuccessCallbackResult> {
+async function handleTokenRefresh(context: InterceptorContext): Promise<unknown> {
   const { config, requestConfig } = context;
 
   if (config.withToken === false) {
@@ -121,8 +119,13 @@ async function handleTokenRefresh(
         },
       });
 
-      if (retryResponse.statusCode === 200 || retryResponse.statusCode === 201) {
-        return retryResponse;
+      if (
+        retryResponse.statusCode === 200 ||
+        retryResponse.statusCode === 201 ||
+        retryResponse.statusCode === 204
+      ) {
+        if (config?.returnFullResponse) return retryResponse;
+        return unwrapResponse(retryResponse);
       } else if (retryResponse.statusCode === 401) {
         continue;
       } else {

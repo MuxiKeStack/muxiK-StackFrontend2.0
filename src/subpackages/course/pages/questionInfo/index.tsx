@@ -1,6 +1,7 @@
 import { BottomInput, FeedCard, ReviewDiscussion } from '@/common/components';
 import type { BottomInputRef } from '@/common/components/BottomInput';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
+import { getAnswerDetail } from '@/common/request/api/answers';
 import { bus } from '@/common/utils';
 import { useCourseStore } from '@/store/useCourseStore';
 import { useQuestionDetailStore } from '@/store/useQuestionDetailStore';
@@ -79,12 +80,24 @@ const Page: React.FC = () => {
   );
 
   useEffect(() => {
-    const params = Taro.getCurrentInstance()?.router?.params || {};
-    const qid = Number(params.id);
-    if (qid > 0) {
-      void useQuestionDetailStore.getState().loadQuestion(qid);
-      void useQuestionDetailStore.getState().loadAnswers(qid);
-    }
+    void (async () => {
+      const params = Taro.getCurrentInstance()?.router?.params || {};
+      let qid = Number(params.id);
+
+      if (!(qid > 0) && params.answerId) {
+        try {
+          const answer = await getAnswerDetail(Number(params.answerId));
+          qid = Number(answer.question_id);
+        } catch (e) {
+          console.error('根据回答加载问题失败:', e);
+        }
+      }
+
+      if (qid > 0) {
+        void useQuestionDetailStore.getState().loadQuestion(qid);
+        void useQuestionDetailStore.getState().loadAnswers(qid);
+      }
+    })();
   }, []);
 
   const loadMoreAnswers = async () => {

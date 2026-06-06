@@ -14,7 +14,7 @@ export type MessageItemProps = {
   teacher?: string;
   // 业务类型: Evaluation / Answer
   biz?: string;
-  // 业务id（课评id或回答id
+  // Evaluation: 课评 id；Answer: 回答 id
   bizId?: string;
   // 评论id（Comment 类型才有，用于定位
   commentId?: string;
