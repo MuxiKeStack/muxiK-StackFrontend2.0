@@ -44,6 +44,11 @@ const config = {
     enable: true, // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
   },
   mini: {
+    sassLoaderOption: {
+      sassOptions: {
+        silenceDeprecations: ['import'],
+      },
+    },
     postcss: {
       pxtransform: {
         enable: true,
@@ -75,6 +80,23 @@ const config = {
       ],
     },
     webpackChain(chain) {
+      const patchSassLoader = (ruleName: string) => {
+        if (!chain.module.rules.has(ruleName)) return;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        chain.module
+          .rule(ruleName)
+          .use('sass-loader')
+          .tap((options: Record<string, unknown>) => ({
+            ...options,
+            sassOptions: {
+              ...(options.sassOptions as Record<string, unknown> | undefined),
+              silenceDeprecations: ['import'],
+            },
+          }));
+      };
+      patchSassLoader('scss');
+      patchSassLoader('sass');
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       chain.merge({
         plugin: {
@@ -120,6 +142,11 @@ const config = {
   h5: {
     publicPath: '/',
     staticDirectory: 'static',
+    sassLoaderOption: {
+      sassOptions: {
+        silenceDeprecations: ['import'],
+      },
+    },
     postcss: {
       autoprefixer: {
         enable: true,

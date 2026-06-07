@@ -134,7 +134,6 @@ const Page: React.FC = () => {
         bottomInputRef.current?.insertMention(
           (comment.user as { nickname?: string })?.nickname || ''
         );
-        bottomInputRef.current?.focus();
       }
     },
     [guard]

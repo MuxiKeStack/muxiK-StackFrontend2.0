@@ -1,4 +1,5 @@
 import { Button, Text, Textarea, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import {
   forwardRef,
   memo,
@@ -54,10 +55,15 @@ const BottomInput = memo(
         insertMention: (nickname: string) => {
           const prefix = `@${nickname} `;
           mentionRef.current = prefix;
-          setInternalValue((prev) => {
-            const withoutMention = prev.replace(/^@\S+\s?/, '');
-            return prefix + withoutMention;
-          });
+          const applyMention = () => {
+            setInternalValue((prev) => {
+              const withoutMention = prev.replace(/^@\S+\s?/, '');
+              return prefix + withoutMention;
+            });
+          };
+          // 先聚焦再插入 @，避免键盘弹起前后宽度变化引发高度重算
+          textareaRef.current?.focus();
+          Taro.nextTick(applyMention);
         },
         removeMention: () => {
           mentionRef.current = null;
@@ -115,7 +121,6 @@ const BottomInput = memo(
               onInput={handleInput}
               placeholder={placeholder}
               placeholderClass="bottomInput_placeholder"
-              autoHeight
               maxlength={-1}
               fixed
               showConfirmBar={false}
