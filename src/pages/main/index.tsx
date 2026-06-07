@@ -1,6 +1,3 @@
-/* eslint-disable simple-import-sort/imports */
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import { Image, ScrollView, Swiper, SwiperItem, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -33,18 +30,8 @@ const Page: React.FC = () => {
   };
   const [refresherTriggered, setRefresherTriggered] = useState(false);
 
-  // const [comments, setComments] = useState<CommentInfoType[]>([]);
-  // const [module, setModule] = useState(PAGE_MODULES_MAP['COURSE_REVIEW']);
   const comments = useCourseStore((state) => state.comments);
-
   const classType = useCourseStore((state) => state.classType);
-  const dispatch = useCourseStore(
-    ({ loadMoreComments, refreshComments, changeType }) => ({
-      loadMoreComments,
-      refreshComments,
-      changeType,
-    })
-  );
 
   const scrollTopMap = useRef<Record<string, number>>({
     [COURSE_TYPE.ANY]: 0,
@@ -55,11 +42,9 @@ const Page: React.FC = () => {
   const [scrollTop, setScrollTop] = useState(0);
   const gate = useGateGuard();
 
-  // 定时器
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollToTopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // 生命周期
   const mountedRef = useRef(true);
   const loadGenRef = useRef(0);
 
@@ -68,19 +53,24 @@ const Page: React.FC = () => {
     scrollTopMap.current = { ...scrollTopMap.current, [ct]: e.detail.scrollTop };
   }, []);
 
-  const handleSwiperChange = useCallback((e: { detail: { current: number } }) => {
-    handleChangeType(Object.keys(COURSE_NAME_MAP)[e.detail.current]);
-  }, []);
-
   const handleChangeType = useCallback((type: string) => {
-    useCourseStore.getState().changeType(type as any);
+    useCourseStore.getState().changeType(type as (typeof COURSE_TYPE)[keyof typeof COURSE_TYPE]);
     setScrollTop(scrollTopMap.current[type] as number);
   }, []);
 
+  const handleSwiperChange = useCallback(
+    (e: { detail: { current: number } }) => {
+      handleChangeType(Object.keys(COURSE_NAME_MAP)[e.detail.current]);
+    },
+    [handleChangeType]
+  );
+
   useEffect(() => {
-    if (!comments[classType].length) {
+    const list = useCourseStore.getState().comments[classType];
+    if (!list.length) {
       void Taro.showLoading({ title: '加载中' });
-      void dispatch
+      void useCourseStore
+        .getState()
         .refreshComments()
         .then(() => {
           loadingTimerRef.current = setTimeout(() => {
@@ -100,7 +90,7 @@ const Page: React.FC = () => {
     };
   }, [classType]);
 
-  const handleComment = useCallback((props: any) => {
+  const handleComment = useCallback((props: CommentInfo) => {
     bus.stickyEmit('evaluation', props);
     void Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
   }, []);
@@ -117,7 +107,8 @@ const Page: React.FC = () => {
 
     void Taro.showLoading({ title: '加载中...', mask: false });
 
-    void dispatch
+    void useCourseStore
+      .getState()
       .loadMoreComments()
       .then(() => {
         if (gen === loadGenRef.current) Taro.hideLoading();
@@ -128,12 +119,13 @@ const Page: React.FC = () => {
           void Taro.showToast({ title: '加载失败', icon: 'error' });
         }
       });
-  }, [dispatch]);
+  }, []);
 
   const handleRefresh = useCallback(() => {
     setRefresherTriggered(true);
 
-    void dispatch
+    void useCourseStore
+      .getState()
       .refreshComments()
       .catch((e) => {
         console.error('[main] 刷新评论失败:', e);
@@ -141,7 +133,7 @@ const Page: React.FC = () => {
       .finally(() => {
         setRefresherTriggered(false);
       });
-  }, [dispatch]);
+  }, []);
 
   const handleScrollToTop = useCallback(() => {
     const ct = useCourseStore.getState().classType;
@@ -173,15 +165,13 @@ const Page: React.FC = () => {
       <View className="classLine">
         {Object.entries(COURSE_NAME_MAP).map(([name, displayName]) => {
           return (
-            <>
-              <View
-                className={'label' + ' ' + (classType === name ? 'active' : '')}
-                // onClick={() => handleChangeType(name)}
-                onClick={() => handleChangeType(name)}
-              >
-                {displayName}
-              </View>
-            </>
+            <View
+              key={name}
+              className={'label' + ' ' + (classType === name ? 'active' : '')}
+              onClick={() => handleChangeType(name)}
+            >
+              {displayName}
+            </View>
           );
         })}
         <View className="search" onClick={handleSearchToggle}>
@@ -200,15 +190,14 @@ const Page: React.FC = () => {
         current={Object.keys(COURSE_NAME_MAP).indexOf(classType)}
         onChange={handleSwiperChange}
       >
-        {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
-        {Object.entries(scrollTopMap.current).map(([name, scrollTop]) => (
+        {Object.entries(scrollTopMap.current).map(([name, tabScrollTop]) => (
           <SwiperItem key={name}>
             <ScrollView
               onScroll={handleScroll}
               onScrollToLower={loadMoreHandler}
               lowerThreshold={200}
               refresherEnabled
-              scrollTop={scrollTop}
+              scrollTop={tabScrollTop}
               style={{ height: '70vh' }}
               refresherTriggered={refresherTriggered}
               scrollY
@@ -216,9 +205,8 @@ const Page: React.FC = () => {
             >
               {comments[name] &&
                 (comments[name] as CommentInfo[]).map((comment) => (
-                  <>
+                  <View key={comment.id}>
                     <FeedCard
-                      key={comment.id}
                       comment={comment}
                       showTag
                       type="inner"
@@ -226,13 +214,12 @@ const Page: React.FC = () => {
                       onCommentClick={() => handleComment({ ...comment, type: 'inner' })}
                     />
                     <View className="h-4 w-full"></View>
-                  </>
+                  </View>
                 ))}
             </ScrollView>
           </SwiperItem>
         ))}
       </Swiper>
-      {/* 刷新按钮 */}
       <FloatButton
         icon={<AtIcon value="chevron-up" size="30" color="#FFD777" />}
         shape="circle"

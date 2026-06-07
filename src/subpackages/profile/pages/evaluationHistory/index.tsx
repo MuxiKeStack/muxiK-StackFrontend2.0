@@ -62,7 +62,7 @@ const CommentItem = memo(({ id, index, data }: CommentItemProps) => {
         console.error('[evaluationHistory] 切换可见性失败:', e);
       }
     },
-    [item.status]
+    [item.id, item.status]
   );
 
   return (
@@ -136,8 +136,7 @@ const History: React.FC = memo(() => {
       return;
     }
     void fetchEvaluationHistory('Public', 0, false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchEvaluationHistory, historyCache]);
 
   useEffect(() => {
     const removeHandler = (payload: { id: number }) => {

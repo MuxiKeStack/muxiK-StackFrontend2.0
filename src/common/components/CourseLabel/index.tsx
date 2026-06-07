@@ -1,16 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 
 import './index.scss';
 
 import FeatureLabel from '../FeatureLabel';
-import ShowStar from '../showStar/showStar';
+import ShowStar from '../ShowStar';
 
 export interface CourseLabelCourse {
   id: number | string;
@@ -33,40 +28,17 @@ export default function CourseLabel({
   FooterComponent,
 }: CourseLabelProps) {
   const { id, name, teacher, composite_score, features, courseType } = course;
-  const star2 = 'https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png';
-  const star1 = 'https://s2.loli.net/2023/08/29/fB8wqj5mcQFiS7V.png';
-  const star0 = 'https://s2.loli.net/2023/08/29/NRLD54kzG9nEOHW.png';
 
-  const [starNum, setstarNum] = useState([star0, star0, star0, star0, star0]);
-
-  const getStar = (num: number) => {
-    const newStar = starNum.map(() => {
-      const star = num >= 1 ? star2 : num > 0 ? star1 : star0;
-      --num;
-      return star;
-    });
-    setstarNum(newStar);
-  };
-
-  // 修正renderFeatures函数
   const renderFeatures = () => {
-    // 检查features是否为数组，并且不为空
     const commentsArray = Array.isArray(features) && features.length > 0 ? features : [];
 
-    // 返回map的结果
     return commentsArray.map((item, index) => {
-      // 确保item存在并且有内容可以显示
       if (item) {
         return <FeatureLabel checked key={index} content={item} />;
       }
       return null;
     });
   };
-
-  // 修正useEffect
-  useEffect(() => {
-    getStar(composite_score);
-  }, [getStar, composite_score]);
 
   return (
     <View

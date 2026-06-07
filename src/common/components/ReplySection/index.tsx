@@ -33,7 +33,13 @@ const ReplySection: React.FC<ReplySectionProps> = ({
   const mergedReplies = useMemo(() => {
     const existingIds = new Set(replies.map((r: any) => r.id));
     const newFromParent = preloadedReplies.filter((r: any) => !existingIds.has(r.id));
-    return [...newFromParent, ...replies];
+    const merged = [...newFromParent, ...replies];
+    const seen = new Set<number>();
+    return merged.filter((r: any) => {
+      if (seen.has(r.id)) return false;
+      seen.add(r.id);
+      return true;
+    });
   }, [replies, preloadedReplies]);
 
   const prevAutoExpandRef = useRef(autoExpand);
@@ -41,7 +47,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({
     if (autoExpand && autoExpand !== prevAutoExpandRef.current) {
       prevAutoExpandRef.current = autoExpand;
       setIsExpanded(true);
-      if (mergedReplies.length === 0) {
+      if (preloadedReplies.length === 0 && mergedReplies.length === 0) {
         setIsLoading(true);
         onLoadReplies(rootId, 0, 3)
           .then((data) => {
@@ -50,7 +56,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({
           .finally(() => setIsLoading(false));
       }
     }
-  }, [autoExpand, rootId, onLoadReplies, mergedReplies.length]);
+  }, [autoExpand, rootId, onLoadReplies, mergedReplies.length, preloadedReplies.length]);
 
   const handleExpand = useCallback(async () => {
     setIsExpanded(true);
@@ -72,7 +78,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [rootId, onLoadReplies, replies]);
+  }, [rootId, onLoadReplies, mergedReplies]);
 
   const handleCollapse = useCallback(() => {
     setIsExpanded(false);

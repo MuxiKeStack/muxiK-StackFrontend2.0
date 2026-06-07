@@ -31,7 +31,7 @@ const ActionItem: React.FC<ActionItemProps> = ({
 }) => {
   const [shouldSupport, setShouldSupport] = useState(stance === 1);
   const [totalCount, setTotalCount] = useState(count);
-  const { endorse } = useCourseStore((state) => ({ endorse: state.endorse }));
+  const endorse = useCourseStore((state) => state.endorse);
   const { guard } = useAuthGuard();
 
   useEffect(() => {

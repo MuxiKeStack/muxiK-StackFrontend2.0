@@ -1,5 +1,5 @@
 import { Button, Text, View, ViewProps } from '@tarojs/components';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
 
@@ -23,20 +23,22 @@ export const Modal: React.FC<ModalProps> = ({
     setVisible(initVisible);
   }, [initVisible]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setVisible(false);
-    if (onClose) onClose();
-  };
+    onClose?.();
+  }, [onClose]);
 
-  const handleConfirm = () => {
-    if (onConfirm) onConfirm();
-    handleClose();
-  };
+  const handleConfirm = useCallback(() => {
+    onConfirm?.();
+    setVisible(false);
+    onClose?.();
+  }, [onConfirm, onClose]);
 
-  const handleCancel = () => {
-    if (onCancel) onCancel();
-    handleClose();
-  };
+  const handleCancel = useCallback(() => {
+    onCancel?.();
+    setVisible(false);
+    onClose?.();
+  }, [onCancel, onClose]);
 
   const showButtons = useMemo(() => {
     const result = confirmText || onConfirm || (showCancel && (cancelText || onCancel));
@@ -86,10 +88,10 @@ export const Modal: React.FC<ModalProps> = ({
       showButtons,
       showCancel,
       cancelText,
-      onCancel,
       confirmText,
-      onConfirm,
       isTransparent,
+      handleCancel,
+      handleConfirm,
     ]
   );
 

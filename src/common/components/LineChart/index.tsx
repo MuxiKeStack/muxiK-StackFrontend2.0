@@ -1,6 +1,6 @@
 import { Canvas, Image, View } from '@tarojs/components';
 import Taro, { CanvasContext } from '@tarojs/taro';
-import React, { CSSProperties, useEffect, useMemo } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useMemo } from 'react';
 
 import {
   drawBottomInfo,
@@ -101,120 +101,140 @@ const LineChart: React.FC<LineChartProps> = (props) => {
   const avgScore = gradeData?.avgScore ?? 0;
   const resolvedData = gradeData?.data ?? propData;
   const resolvedXLabels = gradeData?.xLabels ?? propX;
-  useEffect(() => {
-    if (resolvedData) {
-      const ctx = Taro.createCanvasContext(id ?? DEFAULT_CHART_ID);
-      void drawChart(ctx);
-    }
-  }, [resolvedData]);
+  const canvasId = id ?? DEFAULT_CHART_ID;
+
   const hasData = useMemo(() => {
     return !resolvedData?.some((data) => data);
   }, [resolvedData]);
-  const drawChart = (ctx: CanvasContext) => {
-    // 初始化
-    const data = resolvedData ?? DEFAULT_DATA;
-    const width = propWidth ?? DEFAULT_WIDTH;
-    const height = propHeight ?? DEFAULT_HEIGHT;
-    const bottomHeight = propBHeight ?? DEFAULT_BOTTOM_HEIGTH;
-    const [pl, pr, pt, pb] = propPadding ?? DEFAULT_PADDING;
-    const xLabels = resolvedXLabels ?? DEFAULT_X_LABELS;
-    const yLabels = propY ?? DEFUALT_Y_LABELS;
-    const xRange = propXRange ?? DEFAUTL_X_RANGE;
-    const mappingFunction = propMFunc ?? DEFAULT_MAPPING_FUNCTION;
-    ctx.clearRect(0, 0, width, height);
-    // // 适配不同比例
-    // if (width / height > 2) {
-    //   ctx.scale((height * 2) / width, 1);
-    // } else {
-    //   ctx.scale(1, width / 2 / height);
-    // }
-    // const barWidth = (width - 2 * padding) / data.length;
-    // const lines = 5;
 
-    //绘制背景
-    drawRoundedRectangle(
-      ctx,
-      0,
-      0,
-      width,
-      height,
-      [10, 10, 10, 10],
-      () => null,
-      '#FEF8E4'
-    );
+  const drawChart = useCallback(
+    (ctx: CanvasContext) => {
+      // 初始化
+      const data = resolvedData ?? DEFAULT_DATA;
+      const width = propWidth ?? DEFAULT_WIDTH;
+      const height = propHeight ?? DEFAULT_HEIGHT;
+      const bottomHeight = propBHeight ?? DEFAULT_BOTTOM_HEIGTH;
+      const [pl, pr, pt, pb] = propPadding ?? DEFAULT_PADDING;
+      const xLabels = resolvedXLabels ?? DEFAULT_X_LABELS;
+      const yLabels = propY ?? DEFUALT_Y_LABELS;
+      const xRange = propXRange ?? DEFAUTL_X_RANGE;
+      const mappingFunction = propMFunc ?? DEFAULT_MAPPING_FUNCTION;
+      ctx.clearRect(0, 0, width, height);
+      // // 适配不同比例
+      // if (width / height > 2) {
+      //   ctx.scale((height * 2) / width, 1);
+      // } else {
+      //   ctx.scale(1, width / 2 / height);
+      // }
+      // const barWidth = (width - 2 * padding) / data.length;
+      // const lines = 5;
 
-    //绘制坐标图
-    drawCoordinateDiagram(
-      ctx,
-      data,
-      [pl, height - pb - bottomHeight],
-      [true, false],
-      [height - pb - bottomHeight + 15, width - pr + 8],
-      width - pl - pr,
-      height - pt - pb - bottomHeight,
-      xLabels,
-      yLabels,
-      xRange,
-      mappingFunction,
-      DEFAULT_Axis_LINE_COLOR,
-      DEFAULT_GAP_LINE_COLOR,
-      DEFAULT_AXIS_TEXT_COLOR,
-      DEFAULT_LINE_COLOR
-    );
+      //绘制背景
+      drawRoundedRectangle(
+        ctx,
+        0,
+        0,
+        width,
+        height,
+        [10, 10, 10, 10],
+        () => null,
+        '#FEF8E4'
+      );
 
-    drawBottomInfo(
-      ctx,
+      //绘制坐标图
+      drawCoordinateDiagram(
+        ctx,
+        data,
+        [pl, height - pb - bottomHeight],
+        [true, false],
+        [height - pb - bottomHeight + 15, width - pr + 8],
+        width - pl - pr,
+        height - pt - pb - bottomHeight,
+        xLabels,
+        yLabels,
+        xRange,
+        mappingFunction,
+        DEFAULT_Axis_LINE_COLOR,
+        DEFAULT_GAP_LINE_COLOR,
+        DEFAULT_AXIS_TEXT_COLOR,
+        DEFAULT_LINE_COLOR
+      );
+
+      drawBottomInfo(
+        ctx,
+        avgScore,
+        minScore,
+        maxScore,
+        [pl, height - Math.floor(bottomHeight / 2)],
+        width - pl
+      );
+
+      //高亮平均值
+      const avgXValue = avgScore;
+      const avgXPos = (() => {
+        // 找到avgXValue的区间
+        let rangeIdx = -1;
+        let rangeLength = -1;
+        let property = -1;
+        for (let i = 0; i < xRange.length; i++) {
+          const [min, max] = xRange[i];
+          if (avgXValue >= min && avgXValue <= max) {
+            rangeIdx = i;
+            rangeLength = Math.max(max - min, 1);
+            property = avgXValue - min;
+            break;
+          }
+        }
+
+        if (rangeIdx === -1) return -1; // 不在任何区间，直接不画
+
+        // 计算该区间对应的 x 像素位置
+        const chartWidth = width - pl - pr;
+        const singleWidth = Math.floor(chartWidth / (xLabels.length - 1));
+        //注意[0，0]区间不占长度，所以要-1
+        const posX =
+          pl + (rangeIdx - 1) * singleWidth + singleWidth * (property / rangeLength);
+        return posX;
+      })();
+      if (avgXPos !== -1)
+        drawHightlightScore(
+          ctx,
+          [avgXPos, height - pb - bottomHeight],
+          pl,
+          height - pb - pt - bottomHeight,
+          10,
+          `${avgScore.toFixed(2)}`,
+          DEFAULT_HIGHLIGHT_COLOR,
+          (gradient: Taro.CanvasGradient) => {
+            gradient.addColorStop(0, DEFAULT_HIGHLIGHT_COLOR); // 顶部不透明橙色
+            gradient.addColorStop(1, 'rgba(255, 165, 0, 0)'); // 底部完全透明
+          }
+        );
+
+      void ctx.draw();
+    },
+    [
+      resolvedData,
+      resolvedXLabels,
+      propWidth,
+      propHeight,
+      propBHeight,
+      propPadding,
+      propY,
+      propXRange,
+      propMFunc,
       avgScore,
       minScore,
       maxScore,
-      [pl, height - Math.floor(bottomHeight / 2)],
-      width - pl
-    );
+    ]
+  );
 
-    //高亮平均值
-    const avgXValue = avgScore;
-    const avgXPos = (() => {
-      // 找到avgXValue的区间
-      let rangeIdx = -1;
-      let rangeLength = -1;
-      let property = -1;
-      for (let i = 0; i < xRange.length; i++) {
-        const [min, max] = xRange[i];
-        if (avgXValue >= min && avgXValue <= max) {
-          rangeIdx = i;
-          rangeLength = Math.max(max - min, 1);
-          property = avgXValue - min;
-          break;
-        }
-      }
-
-      if (rangeIdx === -1) return -1; // 不在任何区间，直接不画
-
-      // 计算该区间对应的 x 像素位置
-      const chartWidth = width - pl - pr;
-      const singleWidth = Math.floor(chartWidth / (xLabels.length - 1));
-      //注意[0，0]区间不占长度，所以要-1
-      const posX =
-        pl + (rangeIdx - 1) * singleWidth + singleWidth * (property / rangeLength);
-      return posX;
-    })();
-    if (avgXPos !== -1)
-      drawHightlightScore(
-        ctx,
-        [avgXPos, height - pb - bottomHeight],
-        pl,
-        height - pb - pt - bottomHeight,
-        10,
-        `${avgScore.toFixed(2)}`,
-        DEFAULT_HIGHLIGHT_COLOR,
-        (gradient: Taro.CanvasGradient) => {
-          gradient.addColorStop(0, DEFAULT_HIGHLIGHT_COLOR); // 顶部不透明橙色
-          gradient.addColorStop(1, 'rgba(255, 165, 0, 0)'); // 底部完全透明
-        }
-      );
-
-    void ctx.draw();
-  };
+  useEffect(() => {
+    if (resolvedData) {
+      const ctx = Taro.createCanvasContext(canvasId);
+      void drawChart(ctx);
+    }
+  }, [resolvedData, canvasId, drawChart]);
 
   return (
     <View
@@ -248,8 +268,8 @@ const LineChart: React.FC<LineChartProps> = (props) => {
         />
       ) : (
         <Canvas
-          id={id ?? DEFAULT_CHART_ID}
-          canvasId={id ?? DEFAULT_CHART_ID}
+          id={canvasId}
+          canvasId={canvasId}
           className={className}
           style={{
             ...style,

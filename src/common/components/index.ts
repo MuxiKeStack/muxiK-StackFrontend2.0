@@ -1,7 +1,7 @@
 export { default as ActionItem } from './ActionItem';
 export { default as Avatar } from './Avatar';
 export { default as BottomInput } from './BottomInput';
-export { default as LineChart } from './chart';
+export { default as LineChart } from './LineChart';
 export { default as CommentCard } from './CommentCard';
 export { default as CourseInfo } from './CourseInfo/CourseInfo';
 export { default as CourseLabel } from './CourseLabel';

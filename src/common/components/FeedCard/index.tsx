@@ -13,7 +13,7 @@ import { CourseDetailsType, PublisherDetailsType } from '@/common/types/courseTy
 import { formatDate } from '@/common/utils';
 
 import FeatureLabel from '../FeatureLabel';
-import ShowStar from '../showStar/showStar';
+import ShowStar from '../ShowStar';
 
 interface FeedCardProps {
   comment: CommentInfo;
@@ -76,7 +76,16 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
         level: publisher.level,
       });
     }
-  }, [course_id, course_name, teacher_name, publisher?.nickname]);
+  }, [
+    course_id,
+    course_name,
+    teacher_name,
+    publisher?.id,
+    publisher?.avatar,
+    publisher?.nickname,
+    publisher?.using_title,
+    publisher?.level,
+  ]);
 
   const handleClickToClass = useCallback(
     (e: any) => {
