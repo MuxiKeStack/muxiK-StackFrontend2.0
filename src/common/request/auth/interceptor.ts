@@ -5,6 +5,7 @@ import { isVisitorMode } from '@/common/utils/isVisitor';
 
 import { AuthError } from '../errors/AuthError';
 import { BusinessError } from '../errors/BusinessError';
+import { ClientError } from '../errors/ClientError';
 import { getErrorMeta } from '../errors/errorCodeMap';
 import { NetworkError } from '../errors/NetworkError';
 import { ServerError } from '../errors/ServerError';
@@ -60,7 +61,8 @@ export async function responseInterceptors(
       if (response.statusCode >= 400 && response.statusCode < 500) {
         const body = response.data as { msg?: string; message?: string } | undefined;
         const msg = body?.msg || body?.message || `请求错误 (${response.statusCode})`;
-        throw new AuthError(response.statusCode, msg);
+        // 非 401/403 的 4xx 是普通客户端错误，不是登录态问题，不能抛 AuthError 触发登出
+        throw new ClientError(response.statusCode, msg);
       }
       if (response.statusCode >= 500) {
         throw new ServerError(response.statusCode);
@@ -101,18 +103,60 @@ function unwrapResponse(response: Taro.request.SuccessCallbackResult): unknown {
   throw new BusinessError(body.code, message, body.data);
 }
 
+// 刷新 token 后重发请求：上传请求要走 Taro.uploadFile，普通请求走 Taro.request，
+// 否则用 Taro.request 重发上传请求会丢掉 filePath 导致重试无效
+async function retryWithToken(
+  requestConfig: Taro.request.Option | Taro.uploadFile.Option,
+  newToken: string
+): Promise<Taro.request.SuccessCallbackResult> {
+  const authHeader = {
+    ...requestConfig.header,
+    Authorization: `Bearer ${newToken}`,
+  };
+
+  if ('filePath' in requestConfig && requestConfig.filePath) {
+    const uploaded = await Taro.uploadFile({
+      ...(requestConfig as Taro.uploadFile.Option),
+      header: authHeader,
+    });
+    let parsedData: unknown;
+    try {
+      parsedData = JSON.parse(uploaded.data);
+    } catch {
+      parsedData = uploaded.data;
+    }
+    return {
+      data: parsedData,
+      statusCode: uploaded.statusCode,
+      header: {},
+      cookies: [],
+      errMsg: uploaded.errMsg,
+    } as Taro.request.SuccessCallbackResult;
+  }
+
+  return await Taro.request({
+    ...(requestConfig as Taro.request.Option),
+    header: authHeader,
+  });
+}
+
 async function handleTokenRefresh(context: InterceptorContext): Promise<unknown> {
   const { config, requestConfig } = context;
 
+  // 带 tokenConfig 的请求属于独立 token 域（如反馈表/飞书），
+  // 其 401 不应被当作主登录过期，统一标记为 resource 域，交由 authHandler 跳过登出
+  const tokenConfig = config.tokenConfig;
+  const isResourceScope = !!tokenConfig;
+  const scopeContext = isResourceScope ? { meta: { scope: 'resource' } } : undefined;
+
   if (config.withToken === false) {
-    throw new AuthError(401, '请求不需要token');
+    throw new AuthError(401, '请求不需要token', scopeContext);
   }
 
   if (!requestHadAuthorization(requestConfig) || isVisitorMode()) {
-    throw new AuthError(401, '请先登录');
+    throw new AuthError(401, '请先登录', scopeContext);
   }
 
-  const tokenConfig = config.tokenConfig;
   const maxRetry = tokenConfig?.maxRetry || 1;
 
   for (let retryCount = 0; retryCount < maxRetry; retryCount++) {
@@ -120,13 +164,7 @@ async function handleTokenRefresh(context: InterceptorContext): Promise<unknown>
       const newToken = await refreshToken(tokenConfig);
       tokenConfig?.onRefreshSuccess?.(newToken);
 
-      const retryResponse = await Taro.request({
-        ...requestConfig,
-        header: {
-          ...requestConfig.header,
-          Authorization: `Bearer ${newToken}`,
-        },
-      });
+      const retryResponse = await retryWithToken(requestConfig, newToken);
 
       if (
         retryResponse.statusCode === 200 ||
@@ -156,10 +194,10 @@ async function handleTokenRefresh(context: InterceptorContext): Promise<unknown>
       const isLastAttempt = retryCount === maxRetry - 1;
       if (isLastAttempt) {
         tokenConfig?.onRefreshError?.(refreshError as Error);
-        throw new AuthError(401, '登录已过期，请重新登录');
+        throw new AuthError(401, '登录已过期，请重新登录', scopeContext);
       }
     }
   }
 
-  throw new AuthError(401, '登录已过期，请重新登录');
+  throw new AuthError(401, '登录已过期，请重新登录', scopeContext);
 }

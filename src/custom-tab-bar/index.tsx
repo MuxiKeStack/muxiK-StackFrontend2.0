@@ -50,7 +50,10 @@ const TabBar: React.FC = memo(() => {
   const lastClickTime = useRef(0);
 
   useDidShow(() => {
-    const currentPage = Taro.getCurrentInstance().router?.path || '';
+    // 自定义 tabBar 里 getCurrentInstance().router 不可靠，改用页面栈读当前页，
+    // 保证重登后回到广场时高亮能正确归位
+    const pages = Taro.getCurrentPages();
+    const currentPage = pages[pages.length - 1]?.route || '';
     const matched = TAB_LIST.find(
       (item) => item.matchPath && currentPage.includes(item.matchPath)
     );

@@ -147,12 +147,14 @@ async function handleNormalRequest(
   body: any,
   config: RequestConfig
 ): Promise<InterceptorContext> {
+  // 只透传 Taro.request 真正认识的字段，避免把 tokenConfig/errorConfig/upload 等
+  // 自定义字段塞进原生 API（会被带进 401 重试，且语义不属于网络请求）
   const requestConfig: Taro.request.Option = {
     url,
     method,
     data: body,
+    header: config.header,
     timeout: config.timeout ?? DEFAULT_TIMEOUT,
-    ...config,
   };
 
   const response = await Taro.request(requestConfig);

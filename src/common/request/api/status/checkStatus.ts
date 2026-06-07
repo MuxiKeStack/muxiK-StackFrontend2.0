@@ -23,13 +23,15 @@ const checkStatus = async (): Promise<{ status: boolean }> => {
       )
       .then((res) => {
         const data = res as { status: boolean };
-        const result = { status: typeof data.status === 'boolean' ? data.status : true };
+        // 返回值异常时按拦截处理（fail-closed），避免脏数据绕过门禁
+        const result = { status: typeof data.status === 'boolean' ? data.status : false };
         cachedResult = result;
         return result;
       })
       .catch(() => {
+        // 状态服务异常时拦截（fail-closed）；不缓存失败，下次进入可重试恢复
         cachedPromise = null;
-        return { status: true };
+        return { status: false };
       });
   }
 

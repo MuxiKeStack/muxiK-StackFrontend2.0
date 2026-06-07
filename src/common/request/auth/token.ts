@@ -10,16 +10,6 @@ function isValidToken(token: string | undefined): boolean {
 
 // 有有效 token 则返回，否则返回 null（不抛错，因为可能是游客请求)
 export async function tryGetStoredToken(config?: TokenConfig): Promise<string | null> {
-  if (!config) {
-    try {
-      const result = await Taro.getStorage({ key: 'shortToken' });
-      const shortToken = result.data as string;
-      return isValidToken(shortToken) ? shortToken : null;
-    } catch {
-      return null;
-    }
-  }
-
   try {
     const token = await getStoredToken(config);
     return isValidToken(token) ? token : null;
@@ -29,51 +19,25 @@ export async function tryGetStoredToken(config?: TokenConfig): Promise<string | 
 }
 
 export async function getStoredToken(config?: TokenConfig): Promise<string> {
-  try {
-    if (!config) {
-      const result = await Taro.getStorage({ key: 'shortToken' });
-      const shortToken = result.data as string;
-      if (!isValidToken(shortToken)) {
-        throw new Error('未登录或游客模式，无法获取有效token');
-      }
-      return shortToken;
+  // 主登录态：直接读 shortToken
+  if (!config) {
+    const shortToken = Taro.getStorageSync<string>('shortToken');
+    if (!isValidToken(shortToken)) {
+      throw new Error('未登录或游客模式，无法获取有效token');
     }
-
-    if (config.token) return config.token;
-
-    return new Promise((resolve, reject) => {
-      Taro.getStorage({
-        key: `${config.name}`,
-
-        success: function (res) {
-          const token = res.data as string;
-
-          if (config.onRefreshSuccess) {
-            config.onRefreshSuccess(token);
-          }
-
-          if (isValidToken(token)) {
-            resolve(token);
-          } else {
-            refreshToken(config).then(resolve).catch(reject);
-          }
-        },
-
-        fail: function (err) {
-          const errorMsg = err.errMsg || '';
-
-          if (errorMsg.includes('data not found')) {
-            refreshToken(config).then(resolve).catch(reject);
-          } else {
-            console.error('获取storage失败:', err);
-            reject(new Error(`获取token失败: ${errorMsg}`));
-          }
-        },
-      });
-    });
-  } catch (err) {
-    throw new Error(`获取token失败: ${err}`);
+    return shortToken;
   }
+
+  if (config.token) return config.token;
+
+  // 用 getStorageSync 读取独立域 token：缺 key 时返回 ''，不会触发微信的 getStorage:fail 报错
+  const cached = Taro.getStorageSync<string>(config.name);
+  if (isValidToken(cached)) {
+    config.onRefreshSuccess?.(cached);
+    return cached;
+  }
+
+  return await refreshToken(config);
 }
 
 export async function refreshToken(config?: TokenConfig): Promise<string> {

@@ -10,7 +10,7 @@ export function useGateGuard(): GateStatus {
   useEffect(() => {
     checkStatus()
       .then((res) => setStatus(res.status ? 'pass' : 'block'))
-      .catch(() => setStatus('pass'));
+      .catch(() => setStatus('block'));
   }, []);
 
   return status;
