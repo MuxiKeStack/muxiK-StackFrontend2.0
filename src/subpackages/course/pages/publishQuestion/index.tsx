@@ -7,9 +7,7 @@ import './index.scss';
 import { useQuestionPublishStore } from '@/store';
 
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
-import { GateScreen } from '@/common/components';
-import CourseInfo from '@/common/components/CourseInfo/CourseInfo';
-import PublishHeader from '@/common/components/PublishHeader/PublishHeader';
+import { CourseInfo, GateScreen, PublishHeader } from '@/common/components';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { bus } from '@/common/utils';

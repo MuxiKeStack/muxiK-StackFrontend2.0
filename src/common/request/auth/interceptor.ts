@@ -1,30 +1,35 @@
 import Taro from '@tarojs/taro';
 
 import { InterceptorContext, RequestConfig } from '@/common/types/requestType';
+import { isVisitorMode } from '@/common/utils/isVisitor';
 
 import { AuthError } from '../errors/AuthError';
 import { BusinessError } from '../errors/BusinessError';
 import { getErrorMeta } from '../errors/errorCodeMap';
 import { NetworkError } from '../errors/NetworkError';
 import { ServerError } from '../errors/ServerError';
-import { getStoredToken, refreshToken } from './token';
+import { refreshToken, tryGetStoredToken } from './token';
 
 export async function requestInterceptors(config?: RequestConfig) {
   const cfg = config ?? ({} as RequestConfig);
   if (cfg.withToken === false) return cfg;
 
-  try {
-    const token = await getStoredToken(cfg.tokenConfig);
+  const token = await tryGetStoredToken(cfg.tokenConfig);
 
-    if (token) {
-      cfg.header = cfg.header || {};
-      cfg.header['Authorization'] = `Bearer ${token.trim()}`;
-    }
-  } catch (err) {
-    throw new Error(`token挂载失败: ${err}`);
+  if (token) {
+    cfg.header = cfg.header || {};
+    cfg.header['Authorization'] = `Bearer ${token.trim()}`;
   }
 
   return cfg;
+}
+
+function requestHadAuthorization(
+  requestConfig: Taro.request.Option | Taro.uploadFile.Option
+): boolean {
+  const header = requestConfig.header as Record<string, string> | undefined;
+  const auth = header?.Authorization ?? header?.authorization;
+  return typeof auth === 'string' && auth.trim().length > 0;
 }
 
 export async function responseInterceptors(
@@ -101,6 +106,10 @@ async function handleTokenRefresh(context: InterceptorContext): Promise<unknown>
 
   if (config.withToken === false) {
     throw new AuthError(401, '请求不需要token');
+  }
+
+  if (!requestHadAuthorization(requestConfig) || isVisitorMode()) {
+    throw new AuthError(401, '请先登录');
   }
 
   const tokenConfig = config.tokenConfig;

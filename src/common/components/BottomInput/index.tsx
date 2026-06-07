@@ -27,6 +27,8 @@ export interface BottomInputRef {
   clearValue: () => void;
 }
 
+const MIN_HEIGHT_RPX = 80;
+
 const BottomInput = memo(
   forwardRef<BottomInputRef, BottomInputProps>(
     (
@@ -41,7 +43,18 @@ const BottomInput = memo(
     ) => {
       const textareaRef = useRef<any>(null);
       const [internalValue, setInternalValue] = useState('');
+      const [textareaHeightPx, setTextareaHeightPx] = useState<number | null>(null);
       const mentionRef = useRef<string | null>(null);
+      const focusedRef = useRef(false);
+
+      const clampHeightPx = useCallback(
+        (heightPx: number) => {
+          const minPx = Number(Taro.pxTransform(MIN_HEIGHT_RPX, true));
+          const maxPx = Number(Taro.pxTransform(maxHeight, true));
+          return Math.max(minPx, Math.min(heightPx, maxPx));
+        },
+        [maxHeight]
+      );
 
       const doFocus = () => {
         setTimeout(() => {
@@ -61,9 +74,13 @@ const BottomInput = memo(
               return prefix + withoutMention;
             });
           };
-          // 先聚焦再插入 @，避免键盘弹起前后宽度变化引发高度重算
-          textareaRef.current?.focus();
-          Taro.nextTick(applyMention);
+          // 已聚焦时直接插入；未聚焦时先弹键盘，待布局稳定后再插入，减轻高度跳动
+          if (focusedRef.current) {
+            applyMention();
+          } else {
+            textareaRef.current?.focus();
+            setTimeout(applyMention, 120);
+          }
         },
         removeMention: () => {
           mentionRef.current = null;
@@ -76,6 +93,7 @@ const BottomInput = memo(
         clearValue: () => {
           mentionRef.current = null;
           setInternalValue('');
+          setTextareaHeightPx(null);
         },
       }));
 
@@ -111,6 +129,18 @@ const BottomInput = memo(
         onSubmit(text);
       }, [internalValue, onSubmit]);
 
+      const handleLineChange = useCallback(
+        (e: { detail: { height: number; lineCount: number } }) => {
+          const { height, lineCount } = e.detail;
+          if (lineCount <= 1 && !internalValue.includes('\n')) {
+            setTextareaHeightPx(null);
+            return;
+          }
+          setTextareaHeightPx(clampHeightPx(height));
+        },
+        [clampHeightPx, internalValue]
+      );
+
       return (
         <View className="bottomInput">
           <View className="bottomInput_container">
@@ -121,18 +151,30 @@ const BottomInput = memo(
               onInput={handleInput}
               placeholder={placeholder}
               placeholderClass="bottomInput_placeholder"
+              autoHeight
               maxlength={-1}
               fixed
               showConfirmBar={false}
               onConfirm={handleSubmit}
-              style={{ maxHeight: `${maxHeight}rpx` }}
+              onLineChange={handleLineChange}
+              onFocus={() => {
+                focusedRef.current = true;
+              }}
+              onBlur={() => {
+                focusedRef.current = false;
+              }}
+              style={{
+                minHeight: `${MIN_HEIGHT_RPX}rpx`,
+                maxHeight: `${maxHeight}rpx`,
+                ...(textareaHeightPx != null ? { height: `${textareaHeightPx}px` } : {}),
+              }}
             />
             <Button
               className={`bottomInput_sendButton ${!internalValue.trim() ? 'disabled' : ''}`}
               onClick={handleSubmit}
               disabled={!internalValue.trim()}
             >
-              <Text className="bottomInput_btn_text">发送</Text>
+              <Text className="bottomInput_sendButton_btn_text">发送</Text>
             </Button>
           </View>
         </View>

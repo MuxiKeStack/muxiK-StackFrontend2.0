@@ -3,14 +3,14 @@
 import { Image, View } from '@tarojs/components';
 import { useState } from 'react';
 
-import './star.scss';
+import './index.scss';
 
 interface Props {
   onStarClick: (index: number) => void;
   // ...其他属性...
 }
 
-const Star: React.FC<Props> = ({ onStarClick }) => {
+const StarRating: React.FC<Props> = ({ onStarClick }) => {
   const star0 = 'https://s2.loli.net/2023/08/29/NRLD54kzG9nEOHW.png';
   const star1 = 'https://s2.loli.net/2023/08/29/rENVFz7xU9n2bd6.png';
 
@@ -42,4 +42,4 @@ const Star: React.FC<Props> = ({ onStarClick }) => {
   );
 };
 
-export default Star;
+export default StarRating;

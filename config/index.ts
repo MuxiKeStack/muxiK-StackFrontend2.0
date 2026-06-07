@@ -80,23 +80,6 @@ const config = {
       ],
     },
     webpackChain(chain) {
-      const patchSassLoader = (ruleName: string) => {
-        if (!chain.module.rules.has(ruleName)) return;
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        chain.module
-          .rule(ruleName)
-          .use('sass-loader')
-          .tap((options: Record<string, unknown>) => ({
-            ...options,
-            sassOptions: {
-              ...(options.sassOptions as Record<string, unknown> | undefined),
-              silenceDeprecations: ['import'],
-            },
-          }));
-      };
-      patchSassLoader('scss');
-      patchSassLoader('sass');
-
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       chain.merge({
         plugin: {

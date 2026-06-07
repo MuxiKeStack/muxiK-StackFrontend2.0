@@ -18,9 +18,8 @@ import './index.scss';
 
 import { useEvaluatePublishStore, useEvaluationHistoryStore } from '@/store';
 
-import { GateScreen } from '@/common/components';
+import { GateScreen, StarRating } from '@/common/components';
 import FeatureLabel from '@/common/components/FeatureLabel';
-import Star from '@/common/components/star/star';
 import { ASSESSMENT_MAP, COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
@@ -155,7 +154,7 @@ const Page: React.FC = () => {
         </View>
         <View className="evaluate_page_section">
           <Text className="evaluate_page_label">评价星级 :</Text>
-          <Star onStarClick={onStarClick} />
+          <StarRating onStarClick={onStarClick} />
         </View>
         <View className="evaluate_page_section">
           <Text className="evaluate_page_label">考核方式 :</Text>

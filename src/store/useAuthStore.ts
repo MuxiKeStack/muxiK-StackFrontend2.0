@@ -49,8 +49,8 @@ export const useAuthStore = {
   },
 
   loginVisitor() {
-    Taro.setStorageSync(SHORT_TOKEN, ' ');
-    Taro.setStorageSync(LONG_TOKEN, ' ');
+    Taro.removeStorageSync(SHORT_TOKEN);
+    Taro.removeStorageSync(LONG_TOKEN);
     Taro.setStorageSync(VISITOR, true);
   },
 

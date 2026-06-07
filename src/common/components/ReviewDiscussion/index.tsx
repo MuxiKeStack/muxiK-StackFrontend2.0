@@ -5,7 +5,7 @@ import './index.scss';
 
 import { CommentCard } from '@/common/components';
 import ReplySection from '@/common/components/ReplySection';
-import VirtualList from '@/common/components/VirtualList';
+import VirtualList from '../VirtualList';
 
 interface ReviewDiscussionProps {
   comments: any[];

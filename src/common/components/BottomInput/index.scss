@@ -41,12 +41,17 @@
     height: 80rpx;
     background: $color_brand;
     border-radius: $radius_xl;
+    color: $color_bg_page;
 
     padding: 0;
     margin: 0;
     flex-shrink: 0;
     border: none;
     outline: none;
+
+    &::after {
+      border: none;
+    }
 
     &.disabled {
       background: $color_text_light;
@@ -59,7 +64,8 @@
 
     &_btn_text {
       font-size: $font_size_body;
-      color: $color_text_light;
+      color: $color_bg_page;
+      line-height: 1;
     }
   }
 }

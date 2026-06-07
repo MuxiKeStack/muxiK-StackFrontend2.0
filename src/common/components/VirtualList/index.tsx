@@ -1,4 +1,4 @@
-import { Loading } from '@/common/components';
+import Loading from '../Loading';
 import { ScrollView, Text, View } from '@tarojs/components';
 import type { VirtualListProps as TaroVirtualListProps } from '@tarojs/components-advanced/dist/components/virtual-list';
 import { memo, ReactNode, useCallback, useRef, useState } from 'react';

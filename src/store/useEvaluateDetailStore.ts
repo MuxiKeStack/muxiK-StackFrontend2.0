@@ -56,7 +56,7 @@ interface EvaluateDetailStore {
     content: string;
     parentId: number;
     rootId: number;
-  }) => Promise<void>;
+  }) => Promise<CommentRow>;
 }
 
 export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set, get) => ({
@@ -80,12 +80,16 @@ export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set, get) =
       limit: 10,
     });
     const filled = await attachUserProfiles((data as CommentRow[]) || []);
-    set((state) => ({
-      comments: isRefresh ? filled : [...state.comments, ...filled],
-      hasMore: (data as CommentRow[])?.length === 10,
-      commentsLoaded: true,
-      source: 'network',
-    }));
+    set((state) => {
+      const existingIds = new Set(state.comments.map((c) => c.id));
+      const nextPage = filled.filter((c) => !existingIds.has(c.id));
+      return {
+        comments: isRefresh ? filled : [...state.comments, ...nextPage],
+        hasMore: (data as CommentRow[])?.length === 10,
+        commentsLoaded: true,
+        source: 'network',
+      };
+    });
     return filled;
   },
 
@@ -101,13 +105,15 @@ export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set, get) =
 
   async publishReply({ bizId, content, parentId, rootId }) {
     try {
-      await publishComment({
+      const data = await publishComment({
         biz: 'Evaluation',
         biz_id: bizId,
         content,
         parent_id: parentId,
         root_id: rootId,
       });
+      const [filled] = await attachUserProfiles([data as CommentRow]);
+      return filled ?? (data as CommentRow);
     } catch (error) {
       if (error instanceof BusinessError && error.code === 409002) {
         throw error;

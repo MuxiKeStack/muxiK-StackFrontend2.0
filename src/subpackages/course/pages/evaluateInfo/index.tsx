@@ -59,8 +59,9 @@ const Page: React.FC = () => {
       const parentId = (replyTo?.id as number) || 0;
       const profile = useUserStore.getState().profile;
 
+      const optimisticId = -Date.now();
       const newComment = {
-        id: -Date.now(),
+        id: optimisticId,
         commentator_id: 0,
         biz: 'Evaluation',
         biz_id: bizId,
@@ -68,8 +69,8 @@ const Page: React.FC = () => {
         root_comment_id: rootId,
         parent_comment_id: parentId,
         reply_to_uid: (replyTo?.commentator_id as number) || 0,
-        ctime: Date.now() / 1000,
-        utime: Date.now() / 1000,
+        ctime: Date.now(),
+        utime: Date.now(),
         user: {
           id: 0,
           nickname: profile?.nickname || '我',
@@ -100,18 +101,67 @@ const Page: React.FC = () => {
       }
 
       try {
-        await publishReply({
+        const serverComment = await publishReply({
           bizId,
           content: value,
           parentId,
           rootId,
         });
+
+        const withUser = {
+          ...serverComment,
+          user:
+            serverComment.user ||
+            newComment.user ||
+            ({
+              id: 0,
+              nickname: '我',
+              avatar: '',
+            } as const),
+        };
+
+        if (rootId === 0) {
+          useEvaluateDetailStore.setState((s) => ({
+            comments: s.comments.map((c) => (c.id === optimisticId ? withUser : c)),
+          }));
+        } else {
+          useEvaluateDetailStore.setState((s) => ({
+            comments: s.comments.map((c) => {
+              if (c.id !== rootId) return c;
+              const replies = (c.replies as (typeof newComment)[] | undefined)?.map(
+                (r) => (r.id === optimisticId ? withUser : r)
+              );
+              return { ...c, replies };
+            }),
+          }));
+        }
+
         const updated = useCourseStore.getState().incrementEvaluationCommentCount(bizId);
         if (updated) {
           setFeedCard(updated);
           bus.stickyEmit('evaluation', updated);
         }
       } catch (error) {
+        if (rootId === 0) {
+          useEvaluateDetailStore.setState((s) => ({
+            comments: s.comments.filter((c) => c.id !== optimisticId),
+          }));
+        } else {
+          useEvaluateDetailStore.setState((s) => ({
+            comments: s.comments.map((c) => {
+              if (c.id !== rootId) return c;
+              const replies = (c.replies as (typeof newComment)[] | undefined)?.filter(
+                (r) => r.id !== optimisticId
+              );
+              return {
+                ...c,
+                replies,
+                reply_count: Math.max((c.reply_count || 1) - 1, 0),
+                total_comment_count: Math.max((c.total_comment_count || 1) - 1, 0),
+              };
+            }),
+          }));
+        }
         if (error instanceof BusinessError && error.code === 409002) {
           Taro.showToast({ title: '不能回答未上过的课', icon: 'none' });
           return;
@@ -223,7 +273,11 @@ const Page: React.FC = () => {
           comments={comments}
           hasMore={hasMore}
           initialLoading={!commentsLoaded}
-          onLoadMore={() => bizId && void loadComments(bizId, false)}
+          onLoadMore={() => {
+            if (!bizId) return;
+            const lastId = comments[comments.length - 1]?.id ?? 0;
+            void loadComments(bizId, false, lastId);
+          }}
           onLoadMoreReplies={handleLoadReplies}
           onCommentLongPress={handleLongPress}
           supportsReplies={(item) => 'root_comment_id' in item}

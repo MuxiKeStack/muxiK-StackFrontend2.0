@@ -8,6 +8,26 @@ function isValidToken(token: string | undefined): boolean {
   return !!token && token.trim().length > 0;
 }
 
+// 有有效 token 则返回，否则返回 null（不抛错，因为可能是游客请求)
+export async function tryGetStoredToken(config?: TokenConfig): Promise<string | null> {
+  if (!config) {
+    try {
+      const result = await Taro.getStorage({ key: 'shortToken' });
+      const shortToken = result.data as string;
+      return isValidToken(shortToken) ? shortToken : null;
+    } catch {
+      return null;
+    }
+  }
+
+  try {
+    const token = await getStoredToken(config);
+    return isValidToken(token) ? token : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function getStoredToken(config?: TokenConfig): Promise<string> {
   try {
     if (!config) {

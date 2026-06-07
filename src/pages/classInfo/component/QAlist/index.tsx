@@ -4,7 +4,7 @@ import React from 'react';
 
 import './index.scss';
 
-import VirtualList from '@/common/components/VirtualList';
+import { VirtualList } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import type { WebQuestionVo } from '@/common/types/userTypes';

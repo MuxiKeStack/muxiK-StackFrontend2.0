@@ -8,7 +8,7 @@ import './index.scss';
 import { useClassInfoStore } from '@/store';
 
 import { Drawer, GateScreen } from '@/common/components';
-import LineChart from '@/common/components/chart';
+import { LineChart } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';

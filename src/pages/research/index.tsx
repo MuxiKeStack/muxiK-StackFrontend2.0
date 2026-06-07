@@ -11,7 +11,7 @@ import { useResearchStore } from '@/store';
 import { deleteIcon } from '@/common/assets/img/icons';
 import { SearchInput } from '@/common/components';
 import CourseLabel from '@/common/components/CourseLabel';
-import SearchLabel from '@/common/components/Searchlabel';
+import { SearchLabel } from '@/common/components';
 import {
   translateAssessments,
   translateCourseProperty,

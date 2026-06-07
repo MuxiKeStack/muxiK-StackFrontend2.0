@@ -11,7 +11,7 @@ import { TabItemProps } from '@/common/types/tabBarType';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 
-import TabBar from '../../../common/components/TabBar';
+import { TabBar } from '@/common/components';
 import { MessageItemProps } from '../type';
 import { renderMessageItem } from './component/MessageItem';
 

@@ -37,8 +37,8 @@ const Page: React.FC = () => {
         stance: 0,
         total_support_count: 0,
         total_comment_count: 0,
-        utime: Date.now() / 1000,
-        ctime: Date.now() / 1000,
+        utime: Date.now(),
+        ctime: Date.now(),
         publisher: {
           id: 0,
           avatar: profile?.avatar || '',
