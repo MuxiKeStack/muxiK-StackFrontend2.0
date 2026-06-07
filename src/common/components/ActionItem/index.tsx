@@ -1,14 +1,11 @@
 import { Navigator, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import './index.scss';
 
-import { useCourseStore } from '@/store/useCourseStore';
-
 import IconFont from '@/common/components/iconfont';
-import { useAuthGuard } from '@/common/hooks/useAuthGuard';
-import { COMMENT_ACTIONS } from '@/common/types/courseType';
+import { useLikeAction } from '@/common/hooks/useLikeAction';
+import type { CommentInfo } from '@/common/types/commentTypes';
 
 export type ActionType = 'like' | 'comment' | 'oppose';
 
@@ -19,8 +16,43 @@ interface ActionItemProps {
   disabled?: boolean;
   id?: number;
   stance?: number;
-  onClick?: (res?: any) => void;
+  onClick?: (res?: CommentInfo) => void;
 }
+
+interface LikeActionItemProps {
+  count?: number;
+  disabled?: boolean;
+  id?: number;
+  stance?: number;
+  onClick?: (res?: CommentInfo) => void;
+}
+
+const LikeActionItem: React.FC<LikeActionItemProps> = ({
+  count = 0,
+  disabled = false,
+  id,
+  stance,
+  onClick,
+}) => {
+  const { isLiked, likeCount, toggleLike } = useLikeAction({
+    evaluationId: id ?? 0,
+    stance,
+    count,
+    onSuccess: onClick,
+  });
+
+  return (
+    <View
+      className={`action_item like ${disabled ? 'disabled' : ''}`}
+      onClick={disabled ? undefined : (e) => void toggleLike(e)}
+    >
+      <View className="action_icon">
+        <IconFont name="like" color={isLiked ? '#FD6C61' : ''} />
+      </View>
+      <Text className="action_count">{likeCount}</Text>
+    </View>
+  );
+};
 
 const ActionItem: React.FC<ActionItemProps> = ({
   type,
@@ -30,23 +62,20 @@ const ActionItem: React.FC<ActionItemProps> = ({
   id,
   stance,
 }) => {
-  const [shouldSupport, setShouldSupport] = useState(stance === 1);
-  const [totalCount, setTotalCount] = useState(count);
-  const endorse = useCourseStore((state) => state.endorse);
-  const { guard } = useAuthGuard();
-
-  useEffect(() => {
-    setShouldSupport(stance === 1);
-  }, [stance]);
-
-  useEffect(() => {
-    setTotalCount(count);
-  }, [count]);
+  if (type === 'like') {
+    return (
+      <LikeActionItem
+        count={count}
+        disabled={disabled}
+        id={id}
+        stance={stance}
+        onClick={onClick}
+      />
+    );
+  }
 
   const renderIcon = () => {
     switch (type) {
-      case 'like':
-        return <IconFont name="like" color={shouldSupport ? '#FD6C61' : ''} />;
       case 'comment':
         return <IconFont name="comment" />;
       case 'oppose':
@@ -56,49 +85,19 @@ const ActionItem: React.FC<ActionItemProps> = ({
     }
   };
 
-  const handleClick = async (e) => {
+  const handleClick = (e: { stopPropagation: () => void }) => {
     if (disabled) return;
-
     e.stopPropagation();
-
-    if (!guard()) return;
-
-    if (type === 'like') {
-      const oriSupport = shouldSupport;
-      const oriTotalCount = totalCount;
-      const willSupport = !oriSupport;
-
-      void Taro.showLoading({ title: '点赞中' });
-      try {
-        const res = await endorse(
-          id ?? 0,
-          oriSupport ? COMMENT_ACTIONS.DISLIKE : COMMENT_ACTIONS.LIKE
-        );
-        Taro.hideLoading();
-        setShouldSupport(willSupport);
-        setTotalCount(oriTotalCount + (willSupport ? 1 : -1));
-        void Taro.showToast({
-          title: willSupport ? '点赞成功' : '取消成功',
-          icon: 'success',
-          duration: 1000,
-        });
-        onClick?.(res);
-      } catch {
-        Taro.hideLoading();
-        void Taro.showToast({ title: '服务端错误', icon: 'error' });
-      }
-    } else {
-      onClick?.();
-    }
+    onClick?.();
   };
 
   return (
     <View
       className={`action_item ${type} ${disabled ? 'disabled' : ''}`}
-      onClick={(e) => handleClick(e)}
+      onClick={handleClick}
     >
       <View className="action_icon">{renderIcon()}</View>
-      <Text className="action_count">{totalCount}</Text>
+      <Text className="action_count">{count}</Text>
     </View>
   );
 };

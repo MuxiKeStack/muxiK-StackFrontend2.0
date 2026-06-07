@@ -21,15 +21,22 @@ interface ClassInfoData {
   collect: boolean | undefined;
 }
 
+type QuestionUpsertPayload = Partial<WebQuestionVo> & {
+  id?: number;
+  biz_id: number;
+};
+
 interface ClassInfoStore extends ClassInfoData {
   source: DataSource | null;
   loading: boolean;
   load: (courseId: number) => Promise<ClassInfoData>;
   refreshComments: (courseId: number) => Promise<CommentInfo[]>;
   toggleCollect: (courseId: number, course: Course, collect: boolean) => Promise<boolean>;
+  upsertQuestion: (courseId: number, question: QuestionUpsertPayload) => void;
+  prependEvaluation: (courseId: number, evaluation: CommentInfo) => void;
 }
 
-export const useClassInfoStore = create<ClassInfoStore>()((set, get) => ({
+export const useClassInfoStore = create<ClassInfoStore>()((set) => ({
   course: null,
   comments: [],
   grade: undefined,
@@ -113,5 +120,29 @@ export const useClassInfoStore = create<ClassInfoStore>()((set, get) => ({
 
     set({ collect: nextCollect });
     return nextCollect;
+  },
+
+  upsertQuestion(courseId, question) {
+    if (!question || question.biz_id !== courseId) return;
+    set((s) => {
+      const prev = s.questionlist;
+      if (question.id == null) {
+        return { questionlist: [question as WebQuestionVo, ...prev] };
+      }
+      const idx = prev.findIndex((item) => item.id === question.id);
+      if (idx >= 0) {
+        const updated = [...prev];
+        updated[idx] = { ...prev[idx], ...question };
+        return { questionlist: updated };
+      }
+      return { questionlist: [question as WebQuestionVo, ...prev] };
+    });
+  },
+
+  prependEvaluation(courseId, evaluation) {
+    if (!evaluation || evaluation.course_id !== courseId) return;
+    set((s) => ({
+      comments: [evaluation, ...s.comments],
+    }));
   },
 }));

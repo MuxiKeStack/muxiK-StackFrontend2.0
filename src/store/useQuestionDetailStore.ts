@@ -4,7 +4,6 @@ import { useCourseStore } from '@/store/useCourseStore';
 
 import { getAnswersList, publishAnswer } from '@/common/request/api/answers';
 import { getQuestionDetail } from '@/common/request/api/questions';
-import { bus } from '@/common/utils';
 
 import type { DataSource } from './types';
 
@@ -47,7 +46,7 @@ interface QuestionDetailStore {
   lastAnswerId: number;
   source: DataSource | null;
   loadQuestion: (questionId: number) => Promise<QuestionDetail | null>;
-  loadAnswers: (questionId: number, refresh?: boolean) => Promise<AnswerDetail[]>;
+  loadAnswers: (questionId: number) => Promise<AnswerDetail[]>;
   loadMoreAnswers: (questionId: number) => Promise<AnswerDetail[]>;
   publishReply: (questionId: number, content: string) => Promise<void>;
   getAnswersWithPublishers: () => AnswerDetail[];
@@ -57,8 +56,8 @@ interface QuestionDetailStore {
     content: string;
     publisher: NonNullable<AnswerDetail['publisher']>;
   }) => number;
-  // 请求成功：更新问题的回答数与预览列表，并广播给列表页
-  confirmOptimisticAnswer: (optimisticId: number) => void;
+  // 请求成功：更新问题的回答数与预览列表，返回更新后的问题供页面广播
+  confirmOptimisticAnswer: (optimisticId: number) => QuestionDetail | null;
   // 请求失败：移除临时回答
   removeOptimisticAnswer: (optimisticId: number) => void;
 }
@@ -81,7 +80,7 @@ export const useQuestionDetailStore = create<QuestionDetailStore>()((set, get) =
     return question;
   },
 
-  async loadAnswers(questionId, refresh = true) {
+  async loadAnswers(questionId) {
     const data = await getAnswersList(questionId, { cur_answer_id: 0, limit: 20 });
     const list = (data as AnswerDetail[]) || [];
     const publisherIds = list.map((a) => a.publisher_id).filter((id) => id > 0);
@@ -147,20 +146,20 @@ export const useQuestionDetailStore = create<QuestionDetailStore>()((set, get) =
   },
 
   confirmOptimisticAnswer(optimisticId) {
-    set((s) => {
-      if (!s.question) return s;
-      const answer = s.answers.find((a) => a.id === optimisticId);
-      const updated = {
-        ...s.question,
-        answer_cnt: (s.question.answer_cnt || 0) + 1,
-        preview_answers: [
-          { id: optimisticId, content: answer?.content || '' },
-          ...(s.question.preview_answers || []),
-        ],
-      };
-      bus.emit('question', updated);
-      return { question: updated };
-    });
+    const { question, answers } = get();
+    if (!question) return null;
+
+    const answer = answers.find((a) => a.id === optimisticId);
+    const updated: QuestionDetail = {
+      ...question,
+      answer_cnt: (question.answer_cnt || 0) + 1,
+      preview_answers: [
+        { id: optimisticId, content: answer?.content || '' },
+        ...(question.preview_answers || []),
+      ],
+    };
+    set({ question: updated });
+    return updated;
   },
 
   removeOptimisticAnswer(optimisticId) {

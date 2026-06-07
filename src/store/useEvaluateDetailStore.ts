@@ -17,6 +17,27 @@ import type { DataSource } from './types';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type EvaluationRow = any;
 
+// 将接口返回的子评论并入已有列表：按 id 去重，并跳过与乐观条目同内容的重复
+function mergeRepliesIntoList(
+  existing: CommentType[],
+  incoming: CommentType[]
+): CommentType[] {
+  if (!incoming.length) return existing;
+  const ids = new Set(existing.map((r) => r.id));
+  const pendingKeys = new Set(
+    existing
+      .filter((r) => r.id < 0)
+      .map((r) => `${r.parent_comment_id}:${r.content}`)
+  );
+  const next = incoming.filter((r) => {
+    if (ids.has(r.id)) return false;
+    if (pendingKeys.has(`${r.parent_comment_id}:${r.content}`)) return false;
+    return true;
+  });
+  if (!next.length) return existing;
+  return [...existing, ...next];
+}
+
 async function attachUserProfiles(comments: CommentType[]): Promise<CommentType[]> {
   const ids = [
     ...new Set(
@@ -52,14 +73,20 @@ interface EvaluateDetailStore {
     isRefresh: boolean,
     lastId?: number
   ) => Promise<CommentType[]>;
-  loadReplies: (rootId: number, lastId: number, limit: number) => Promise<CommentType[]>;
+  // 拉取子评论并写入对应根评论的 replies，单一数据源
+  fetchAndMergeReplies: (
+    rootId: number,
+    lastId: number,
+    limit: number
+  ) => Promise<void>;
+  // 仅提交到服务端，成功即完成；本地展示依赖 addOptimisticReply 已插入的数据
   publishReply: (params: {
     bizId: number;
     content: string;
     parentId: number;
     rootId: number;
-  }) => Promise<CommentType>;
-  // 乐观更新：插入临时评论，返回临时 id（负数）供后续确认/回滚
+  }) => Promise<void>;
+  // 乐观更新：插入临时评论，返回临时 id（负数）供失败时回滚
   addOptimisticReply: (params: {
     bizId: number;
     content: string;
@@ -68,14 +95,10 @@ interface EvaluateDetailStore {
     replyToUid: number;
     user: User;
   }) => number;
-  // 请求成功：用服务端返回替换临时评论
-  replaceOptimisticReply: (
-    optimisticId: number,
-    rootId: number,
-    serverComment: CommentType
-  ) => void;
   // 请求失败：移除临时评论并回滚计数
   removeOptimisticReply: (optimisticId: number, rootId: number) => void;
+  expandedReplyRootIds: number[];
+  setReplyExpanded: (rootId: number, expanded: boolean) => void;
 }
 
 export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set) => ({
@@ -84,6 +107,7 @@ export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set) => ({
   commentsLoaded: false,
   hasMore: false,
   source: null,
+  expandedReplyRootIds: [],
 
   async loadEvaluation(bizId) {
     const data = await getEvaluationDetail(bizId);
@@ -100,10 +124,26 @@ export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set) => ({
     });
     const filled = await attachUserProfiles((data as CommentType[]) || []);
     set((state) => {
+      const existingById = new Map(state.comments.map((c) => [c.id, c]));
+      const preserveLoadedReplies = (list: CommentType[]) =>
+        list.map((c) => {
+          const prev = existingById.get(c.id);
+          if (!prev?.replies?.length) return c;
+          return {
+            ...c,
+            replies: prev.replies,
+            reply_count: prev.reply_count ?? c.reply_count,
+            has_replies: prev.has_replies ?? c.has_replies,
+            total_comment_count: prev.total_comment_count ?? c.total_comment_count,
+          };
+        });
+
       const existingIds = new Set(state.comments.map((c) => c.id));
       const nextPage = filled.filter((c) => !existingIds.has(c.id));
       return {
-        comments: isRefresh ? filled : [...state.comments, ...nextPage],
+        comments: isRefresh
+          ? preserveLoadedReplies(filled)
+          : [...state.comments, ...preserveLoadedReplies(nextPage)],
         hasMore: (data as CommentType[])?.length === 10,
         commentsLoaded: true,
         source: 'network',
@@ -112,27 +152,33 @@ export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set) => ({
     return filled;
   },
 
-  async loadReplies(rootId, lastId, limit) {
+  async fetchAndMergeReplies(rootId, lastId, limit) {
     const data = await getCommentReplies({
       root_id: rootId,
       cur_comment_id: lastId,
       limit,
     });
-    if (!Array.isArray(data)) return [];
-    return attachUserProfiles(data);
+    if (!Array.isArray(data) || !data.length) return;
+
+    const filled = await attachUserProfiles(data as CommentType[]);
+    set((s) => ({
+      comments: s.comments.map((c) => {
+        if (c.id !== rootId) return c;
+        const merged = mergeRepliesIntoList(c.replies ?? [], filled);
+        return { ...c, replies: merged, has_replies: merged.length > 0 };
+      }),
+    }));
   },
 
   async publishReply({ bizId, content, parentId, rootId }) {
     try {
-      const data = await publishComment({
+      await publishComment({
         biz: 'Evaluation',
         biz_id: bizId,
         content,
         parent_id: parentId,
         root_id: rootId,
       });
-      const [filled] = await attachUserProfiles([data as CommentType]);
-      return filled ?? (data as CommentType);
     } catch (error) {
       if (error instanceof BusinessError && error.code === 409002) {
         throw error;
@@ -159,7 +205,11 @@ export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set) => ({
     if (rootId === 0) {
       set((s) => ({ comments: [newComment, ...s.comments] }));
     } else {
+      // 乐观插入与展开状态同一次 set，避免 Zustand + React 双更新导致整表闪两次
       set((s) => ({
+        expandedReplyRootIds: s.expandedReplyRootIds.includes(rootId)
+          ? s.expandedReplyRootIds
+          : [...s.expandedReplyRootIds, rootId],
         comments: s.comments.map((c) =>
           c.id === rootId
             ? {
@@ -176,20 +226,19 @@ export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set) => ({
     return optimisticId;
   },
 
-  replaceOptimisticReply(optimisticId, rootId, serverComment) {
-    if (rootId === 0) {
-      set((s) => ({
-        comments: s.comments.map((c) => (c.id === optimisticId ? serverComment : c)),
-      }));
-    } else {
-      set((s) => ({
-        comments: s.comments.map((c) => {
-          if (c.id !== rootId) return c;
-          const replies = c.replies?.map((r) => (r.id === optimisticId ? serverComment : r));
-          return { ...c, replies };
-        }),
-      }));
-    }
+  setReplyExpanded(rootId, expanded) {
+    set((s) => {
+      const has = s.expandedReplyRootIds.includes(rootId);
+      if (expanded && !has) {
+        return { expandedReplyRootIds: [...s.expandedReplyRootIds, rootId] };
+      }
+      if (!expanded && has) {
+        return {
+          expandedReplyRootIds: s.expandedReplyRootIds.filter((id) => id !== rootId),
+        };
+      }
+      return s;
+    });
   },
 
   removeOptimisticReply(optimisticId, rootId) {

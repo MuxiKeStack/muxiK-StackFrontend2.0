@@ -24,60 +24,75 @@ interface NotificationStore {
   load: () => Promise<NotificationData>;
 }
 
-async function buildMessages(feeds: unknown[]): Promise<NotificationData> {
+type CourseDetail = { course_name?: string; teacher_name?: string };
+type CourseDetailIndex = Map<string, CourseDetail>;
+type FeedItem = { type: string; ctime: number; content?: Record<string, unknown> };
+
+// 从评课广场缓存里收集课程名/教师名，供消息列表展示
+function collectCourseDetailsFromComments(): CourseDetailIndex {
+  const index: CourseDetailIndex = new Map();
   const storeComments = useCourseStore.getState().comments;
-  const evaluationCache = new Map<
-    string,
-    { course_name?: string; teacher_name?: string }
-  >();
 
   Object.values(storeComments).forEach((list) => {
-    if (Array.isArray(list)) {
-      list.forEach((c: { id?: number; course_name?: string; teacher_name?: string }) => {
-        if (c.id && (c.course_name || c.teacher_name)) {
-          evaluationCache.set(String(c.id), {
-            course_name: c.course_name,
-            teacher_name: c.teacher_name,
-          });
-        }
-      });
-    }
+    if (!Array.isArray(list)) return;
+    list.forEach((c: { id?: number; course_name?: string; teacher_name?: string }) => {
+      if (c.id && (c.course_name || c.teacher_name)) {
+        index.set(String(c.id), {
+          course_name: c.course_name,
+          teacher_name: c.teacher_name,
+        });
+      }
+    });
   });
+  return index;
+}
 
-  const allBizIds = [
+// 从 feed 列表提取去重后的 bizId
+function collectBizIdsFromFeeds(feeds: unknown[]): string[] {
+  return [
     ...new Set(
       (feeds as Array<{ content?: { bizId?: string } }>).map((item) =>
         String(item.content?.bizId || '')
       )
     ),
   ].filter(Boolean);
+}
 
-  const uncachedBizIds = allBizIds.filter((id) => !evaluationCache.has(id));
-  if (uncachedBizIds.length > 0) {
-    const results = await Promise.allSettled(
-      uncachedBizIds.map((id) => getEvaluationDetail(Number(id)))
-    );
-    results.forEach((r, i) => {
-      if (r.status === 'fulfilled' && r.value) {
-        const detail = r.value as { course_name?: string; teacher_name?: string };
-        evaluationCache.set(uncachedBizIds[i], {
-          course_name: detail.course_name,
-          teacher_name: detail.teacher_name,
-        });
-      }
-    });
-  }
+// 对缓存中缺失的 bizId 批量拉取评课详情并写入索引
+async function fetchMissingCourseDetails(
+  index: CourseDetailIndex,
+  bizIds: string[]
+): Promise<void> {
+  const missingIds = bizIds.filter((id) => !index.has(id));
+  if (!missingIds.length) return;
 
+  const results = await Promise.allSettled(
+    missingIds.map((id) => getEvaluationDetail(Number(id)))
+  );
+  results.forEach((result, i) => {
+    if (result.status === 'fulfilled' && result.value) {
+      const detail = result.value as CourseDetail;
+      index.set(missingIds[i], {
+        course_name: detail.course_name,
+        teacher_name: detail.teacher_name,
+      });
+    }
+  });
+}
+
+// 将 feed 列表按消息类型分组为通知数据结构
+function partitionFeedsIntoMessages(
+  feeds: unknown[],
+  courseDetails: CourseDetailIndex
+): NotificationData {
   const commentList: MessageItemProps[] = [];
   const supportList: MessageItemProps[] = [];
   const officialList: MessageItemProps[] = [];
 
-  (
-    feeds as Array<{ type: string; ctime: number; content?: Record<string, unknown> }>
-  ).forEach((item) => {
+  (feeds as FeedItem[]).forEach((item) => {
     const content = item.content || {};
     const timeStamp = formatDate(new Date(item.ctime).toISOString(), 'yyyy.MM.dd hh:mm');
-    const evaluation = evaluationCache.get(String(content.bizId));
+    const evaluation = courseDetails.get(String(content.bizId));
 
     if (item.type === 'Comment') {
       commentList.push({
@@ -124,6 +139,13 @@ async function buildMessages(feeds: unknown[]): Promise<NotificationData> {
     supportMessage: supportList,
     officialMessage: officialList,
   };
+}
+
+async function buildMessages(feeds: unknown[]): Promise<NotificationData> {
+  const courseDetails = collectCourseDetailsFromComments();
+  const bizIds = collectBizIdsFromFeeds(feeds);
+  await fetchMissingCourseDetails(courseDetails, bizIds);
+  return partitionFeedsIntoMessages(feeds, courseDetails);
 }
 
 const emptyData: NotificationData = {

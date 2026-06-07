@@ -6,24 +6,46 @@ import {
   getSearchHistory,
   searchCourses,
 } from '@/common/request/api/research';
+import {
+  translateAssessments,
+  translateCourseProperty,
+  translateFeatures,
+} from '@/common/constants/courseLabels';
 import { createTaroJSONStorage } from '@/common/utils';
 import type { SearchHistoryItem, SearchResultCourse } from '@/pages/research/types';
 
 import { loadData } from './loadUtils';
 import type { DataSource } from './types';
 
+function enhanceCourses(courses: SearchResultCourse[]): SearchResultCourse[] {
+  return courses.map((course) => ({
+    ...course,
+    courseType: translateCourseProperty(
+      (course as { type?: string; property?: string }).type ??
+        (course as { property?: string }).property
+    ),
+    features: translateFeatures(course.features as string[]),
+    assessments: translateAssessments(course.assessments),
+  }));
+}
+
 interface ResearchStore {
   history: SearchHistoryItem[];
   historySource: DataSource | null;
   searchResults: SearchResultCourse[];
   searchSource: DataSource | null;
+  keyword: string;
+  showResults: boolean;
 
   loadHistory: () => Promise<SearchHistoryItem[]>;
   clearHistory: () => Promise<void>;
+  setKeyword: (keyword: string) => void;
+  collapseResults: () => void;
   search: (
     keyword: string,
     options?: { search_location?: string }
   ) => Promise<SearchResultCourse[]>;
+  searchHome: (keyword: string) => Promise<SearchResultCourse[]>;
 }
 
 export const useResearchStore = create<ResearchStore>()(
@@ -33,6 +55,16 @@ export const useResearchStore = create<ResearchStore>()(
       historySource: null,
       searchResults: [],
       searchSource: null,
+      keyword: '',
+      showResults: false,
+
+      setKeyword(keyword) {
+        set({ keyword });
+      },
+
+      collapseResults() {
+        set({ showResults: false });
+      },
 
       async loadHistory() {
         const result = await loadData({
@@ -78,6 +110,22 @@ export const useResearchStore = create<ResearchStore>()(
         });
         set({ searchResults: result.data, searchSource: result.source });
         return result.data;
+      },
+
+      async searchHome(keyword) {
+        const trimmed = keyword.trim();
+        set({ keyword: trimmed, showResults: true });
+        set((s) => {
+          const filtered = s.history.filter((item) => item.keyword !== trimmed);
+          return {
+            history: [{ id: Date.now(), keyword: trimmed }, ...filtered].slice(0, 20),
+          };
+        });
+
+        const data = await get().search(trimmed);
+        const enhanced = enhanceCourses(data);
+        set({ searchResults: enhanced });
+        return enhanced;
       },
     }),
     {

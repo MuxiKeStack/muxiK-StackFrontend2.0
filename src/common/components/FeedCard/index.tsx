@@ -185,7 +185,7 @@ const ReviewFooter: React.FC<ReviewFooterProps> = ({
           count={total_support_count}
           id={id}
           stance={stance}
-          onClick={() => onLikeClick?.(comment)}
+          onClick={(updated) => onLikeClick?.(updated ?? comment)}
           disabled={!isInner}
         />
         <ActionItem

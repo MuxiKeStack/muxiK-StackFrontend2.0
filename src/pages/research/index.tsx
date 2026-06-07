@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Image, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
-import React, { useState } from 'react';
+import React from 'react';
 
 import './index.scss';
 
@@ -12,17 +12,12 @@ import { deleteIcon } from '@/common/assets/img/icons';
 import { SearchInput } from '@/common/components';
 import CourseLabel from '@/common/components/CourseLabel';
 import { SearchLabel } from '@/common/components';
-import {
-  translateAssessments,
-  translateCourseProperty,
-  translateFeatures,
-} from '@/common/constants/courseLabels';
 import { NavigationBar } from '@/modules/navigation';
 
 import type { SearchHistoryItem, SearchResultCourse } from './types';
 
 interface ConditionalRenderProps {
-  isSpread: boolean;
+  showResults: boolean;
   classes: SearchResultCourse[];
   hrs: SearchHistoryItem[];
   handleSearch: (searchText: string) => void;
@@ -30,13 +25,13 @@ interface ConditionalRenderProps {
 }
 
 const ConditionalRender: React.FC<ConditionalRenderProps> = ({
-  isSpread,
+  showResults,
   classes,
   hrs,
   handleSearch,
   handleDelete,
 }) => {
-  if (!isSpread) {
+  if (!showResults) {
     return (
       <View className="history_section">
         <View className="history_header">
@@ -86,12 +81,13 @@ const ConditionalRender: React.FC<ConditionalRenderProps> = ({
 const Page: React.FC = () => {
   const history = useResearchStore((s) => s.history);
   const searchResults = useResearchStore((s) => s.searchResults);
+  const keyword = useResearchStore((s) => s.keyword);
+  const showResults = useResearchStore((s) => s.showResults);
   const loadHistory = useResearchStore((s) => s.loadHistory);
   const clearHistory = useResearchStore((s) => s.clearHistory);
-  const search = useResearchStore((s) => s.search);
-
-  const [isSpread, setSpread] = useState<boolean>(false);
-  const [globalSearchText, setGlobalSearchText] = useState<string>('');
+  const setKeyword = useResearchStore((s) => s.setKeyword);
+  const collapseResults = useResearchStore((s) => s.collapseResults);
+  const searchHome = useResearchStore((s) => s.searchHome);
 
   useLoad(() => {
     void loadHistory().catch((error) => {
@@ -103,10 +99,6 @@ const Page: React.FC = () => {
       });
     });
   });
-
-  const handleSearchToggle = () => {
-    setSpread(false);
-  };
 
   const handleDelete = () => {
     Taro.showModal({
@@ -125,35 +117,15 @@ const Page: React.FC = () => {
     });
   };
 
-  const enhanceCourses = (courses: SearchResultCourse[]) =>
-    courses.map((course) => ({
-      ...course,
-      courseType: translateCourseProperty(
-        (course as { type?: string; property?: string }).type ??
-          (course as { property?: string }).property
-      ),
-      features: translateFeatures(course.features as string[]),
-      assessments: translateAssessments(course.assessments as string[]),
-    }));
-
   const handleSearch = async (searchText: string) => {
     if (!searchText || !searchText.trim()) {
       Taro.showToast({ title: '请输入搜索内容', icon: 'error' });
       return;
     }
 
-    const keyword = searchText.trim();
-    setGlobalSearchText(keyword);
-    useResearchStore.setState((s) => {
-      const filtered = s.history.filter((item) => item.keyword !== keyword);
-      return { history: [{ id: Date.now(), keyword }, ...filtered].slice(0, 20) };
-    });
-
     Taro.showLoading({ title: '搜索中' });
-    setSpread(true);
     try {
-      const data = await search(keyword);
-      useResearchStore.setState({ searchResults: enhanceCourses(data) });
+      await searchHome(searchText);
     } catch (error) {
       console.error('搜索失败:', error);
       Taro.showToast({
@@ -172,9 +144,9 @@ const Page: React.FC = () => {
         <SearchInput
           style={{ height: '30rpx' }}
           onSearch={handleSearch}
-          onSearchToggle={handleSearchToggle}
-          searchText={globalSearchText}
-          setSearchText={setGlobalSearchText}
+          onSearchToggle={collapseResults}
+          searchText={keyword}
+          setSearchText={setKeyword}
           searchPlaceholder="搜索课程名/老师名"
           searchPlaceholderStyle="color:#9F9F9C"
           searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
@@ -185,8 +157,8 @@ const Page: React.FC = () => {
       </View>
 
       <ConditionalRender
-        isSpread={isSpread}
-        classes={isSpread ? searchResults : []}
+        showResults={showResults}
+        classes={showResults ? searchResults : []}
         hrs={history}
         handleSearch={handleSearch}
         handleDelete={handleDelete}

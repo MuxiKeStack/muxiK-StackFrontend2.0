@@ -1,5 +1,5 @@
 import { Text, View } from '@tarojs/components';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import './index.scss';
 
@@ -9,13 +9,10 @@ import type { DiscussionComment } from '@/common/types/commentTypes';
 interface ReplySectionProps {
   rootId: number;
   replyCount: number;
-  preloadedReplies?: DiscussionComment[];
-  autoExpand?: boolean;
-  onLoadReplies: (
-    rootId: number,
-    lastId: number,
-    limit: number
-  ) => Promise<DiscussionComment[]>;
+  replies?: DiscussionComment[];
+  expanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
+  onLoadReplies: (rootId: number, lastId: number, limit: number) => Promise<void>;
   onCommentClick?: (comment: DiscussionComment) => void;
   onCommentLongPress?: (comment: DiscussionComment) => void;
   getReplyIndicator?: (reply: DiscussionComment) => { show: boolean; nickname?: string };
@@ -24,74 +21,43 @@ interface ReplySectionProps {
 const ReplySection: React.FC<ReplySectionProps> = ({
   rootId,
   replyCount,
-  preloadedReplies = [],
-  autoExpand = false,
+  replies = [],
+  expanded,
+  onExpandedChange,
   onLoadReplies,
   onCommentClick,
   onCommentLongPress,
   getReplyIndicator,
 }) => {
-  const [replies, setReplies] = useState<DiscussionComment[]>([]);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const mergedReplies = useMemo(() => {
-    const existingIds = new Set(replies.map((r) => r.id));
-    const newFromParent = preloadedReplies.filter((r) => !existingIds.has(r.id));
-    const merged = [...newFromParent, ...replies];
-    const seen = new Set<number>();
-    return merged.filter((r) => {
-      if (seen.has(r.id)) return false;
-      seen.add(r.id);
-      return true;
-    });
-  }, [replies, preloadedReplies]);
-
-  const prevAutoExpandRef = useRef(autoExpand);
-  useEffect(() => {
-    if (autoExpand && autoExpand !== prevAutoExpandRef.current) {
-      prevAutoExpandRef.current = autoExpand;
-      setIsExpanded(true);
-      if (preloadedReplies.length === 0 && mergedReplies.length === 0) {
-        setIsLoading(true);
-        onLoadReplies(rootId, 0, 3)
-          .then((data) => {
-            if (Array.isArray(data)) setReplies(data);
-          })
-          .finally(() => setIsLoading(false));
-      }
-    }
-  }, [autoExpand, rootId, onLoadReplies, mergedReplies.length, preloadedReplies.length]);
-
   const handleExpand = useCallback(async () => {
-    setIsExpanded(true);
+    onExpandedChange(true);
     setIsLoading(true);
     try {
-      const data = await onLoadReplies(rootId, 0, 3);
-      if (Array.isArray(data)) setReplies(data);
+      await onLoadReplies(rootId, 0, 3);
     } finally {
       setIsLoading(false);
     }
-  }, [rootId, onLoadReplies]);
+  }, [rootId, onLoadReplies, onExpandedChange]);
 
   const handleLoadMore = useCallback(async () => {
-    const lastId = mergedReplies[mergedReplies.length - 1]?.id || 0;
+    const lastServerId =
+      [...replies].reverse().find((r) => r.id > 0)?.id ?? 0;
     setIsLoading(true);
     try {
-      const data = await onLoadReplies(rootId, lastId, 10);
-      if (Array.isArray(data)) setReplies((prev) => [...prev, ...data]);
+      await onLoadReplies(rootId, lastServerId, 10);
     } finally {
       setIsLoading(false);
     }
-  }, [rootId, onLoadReplies, mergedReplies]);
+  }, [rootId, onLoadReplies, replies]);
 
   const handleCollapse = useCallback(() => {
-    setIsExpanded(false);
-  }, []);
+    onExpandedChange(false);
+  }, [onExpandedChange]);
 
-  const repliesLoaded = replies.length > 0;
-  const showReplies = repliesLoaded && isExpanded;
-  const showExpandOnly = (!repliesLoaded || !isExpanded) && replyCount > 0;
+  const showReplies = expanded && (replies.length > 0 || isLoading);
+  const showExpandOnly = !expanded && replyCount > 0;
   const subHasMore = replyCount > replies.length;
   const remainingCount = replyCount - replies.length;
 
@@ -101,7 +67,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({
     <View className="secondary_replies_container">
       {showReplies && (
         <View className="secondary_replies_list">
-          {mergedReplies.map((reply) => {
+          {replies.map((reply) => {
             const indicator = getReplyIndicator?.(reply);
             return (
               <View className="reply_item_wrapper" key={reply.id}>
@@ -127,7 +93,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({
           </View>
         )}
 
-        {isLoading && <Loading isCenter={false} size={32} type="circular" />}
+        {expanded && isLoading && <Loading isCenter={false} size={32} type="circular" />}
 
         {showReplies && !isLoading && (
           <View className="secondary_replies_expanded_footer">

@@ -9,7 +9,7 @@ export interface SearchResultCourse {
   teacher: string;
   composite_score: number;
   features?: string[] | Record<string, number>;
-  assessments?: Record<string, number>;
+  assessments?: string[] | Record<string, number>;
   type?: number;
   property?: number;
   courseType?: string;

@@ -23,7 +23,6 @@ const VirtualList: React.FC<VirtualListProps> = memo(
     width,
     item: Item,
     itemData,
-    itemSize,
     hasMore = false,
     bottomPadding = 0,
     getItemKey = (_, index) => index,
@@ -159,7 +158,6 @@ const VirtualList: React.FC<VirtualListProps> = memo(
         onScroll={(event) => {
           scrollTop.current = event.detail.scrollTop;
         }}
-        scrollTop={scrollTop.current}
       >
         {itemData.map((item, index) => (
           <Item

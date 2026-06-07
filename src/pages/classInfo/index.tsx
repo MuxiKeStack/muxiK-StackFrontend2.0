@@ -34,6 +34,8 @@ const Page: React.FC = () => {
   const load = useClassInfoStore((s) => s.load);
   const refreshComments = useClassInfoStore((s) => s.refreshComments);
   const toggleCollect = useClassInfoStore((s) => s.toggleCollect);
+  const upsertQuestion = useClassInfoStore((s) => s.upsertQuestion);
+  const prependEvaluation = useClassInfoStore((s) => s.prependEvaluation);
 
   const gate = useGateGuard();
   const { guard } = useAuthGuard();
@@ -115,32 +117,19 @@ const Page: React.FC = () => {
   }, [courseId, refreshComments]);
 
   useEffect(() => {
+    if (!courseId) return;
+    const id = Number(courseId);
     const offQuestion = bus.on('question', (q) => {
-      if (q && Number(courseId) && q.biz_id === Number(courseId)) {
-        useClassInfoStore.setState((s) => {
-          const prev = s.questionlist;
-          const idx = prev.findIndex((item) => item.id === q.id);
-          if (idx >= 0) {
-            const updated = [...prev];
-            updated[idx] = { ...prev[idx], ...q };
-            return { questionlist: updated };
-          }
-          return { questionlist: [q, ...prev] };
-        });
-      }
+      if (q) upsertQuestion(id, q);
     });
     const offEvaluation = bus.on('evaluation', (e) => {
-      if (e && Number(courseId) && e.course_id === Number(courseId)) {
-        useClassInfoStore.setState((s) => ({
-          comments: [e as CommentInfo, ...s.comments],
-        }));
-      }
+      if (e) prependEvaluation(id, e);
     });
     return () => {
       offQuestion();
       offEvaluation();
     };
-  }, [courseId]);
+  }, [courseId, upsertQuestion, prependEvaluation]);
 
   useEffect(() => {
     return () => {

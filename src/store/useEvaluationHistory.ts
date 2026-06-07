@@ -22,8 +22,13 @@ export interface EvaluationHistoryCache {
 interface EvaluationHistoryStore {
   cache: Record<string, EvaluationHistoryCache>;
   source: DataSource | null;
+  activeStatus: EvaluationStatus;
+  loading: boolean;
 
   setCache: (status: EvaluationStatus, data: EvaluationHistoryCache) => void;
+  setActiveStatus: (status: EvaluationStatus) => Promise<void>;
+  fetchPage: (append: boolean) => Promise<CommentInfo[]>;
+  loadMore: () => Promise<void>;
   load: (
     status: EvaluationStatus,
     curLastId: number,
@@ -48,11 +53,51 @@ interface EvaluationHistoryStore {
 
 const PAGE_SIZE = 10;
 
+/** 与 UI 的 loading 分离，避免初始 loading=true 时 fetchPage 被误挡 */
+let fetchInFlight = false;
+
 export const useEvaluationHistoryStore = create<EvaluationHistoryStore>()(
   persist(
     (set, get) => ({
       cache: {},
       source: null,
+      activeStatus: 'Public',
+      loading: true,
+
+      async setActiveStatus(status) {
+        if (status === get().activeStatus) return;
+        const cached = get().cache[status];
+        set({
+          activeStatus: status,
+          loading: !cached?.list?.length,
+        });
+        if (!cached?.list?.length) {
+          await get().fetchPage(false);
+        }
+      },
+
+      async fetchPage(append) {
+        if (fetchInFlight) return [];
+        fetchInFlight = true;
+        const { activeStatus, cache } = get();
+        const cached = cache[activeStatus];
+        const curLastId = append ? (cached?.lastId ?? 0) : 0;
+
+        set({ loading: true });
+        try {
+          return await get().load(activeStatus, curLastId, append);
+        } finally {
+          fetchInFlight = false;
+          set({ loading: false });
+        }
+      },
+
+      async loadMore() {
+        const { cache, activeStatus } = get();
+        const cached = cache[activeStatus];
+        if (fetchInFlight || cached?.hasMore === false) return;
+        await get().fetchPage(true);
+      },
 
       setCache: (status, data) => {
         if (!data.list?.length) return;

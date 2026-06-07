@@ -22,7 +22,6 @@ import { loadData } from './loadUtils';
 import type { DataSource } from './types';
 
 const FAQ_CACHE_KEY = 'feedback-faq-cache';
-const HISTORY_CACHE_KEY = 'feedback-history-cache';
 
 interface FAQRecord {
   record_id: string;

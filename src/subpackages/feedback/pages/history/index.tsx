@@ -126,6 +126,7 @@ const FeedbackHistory = () => {
         width="100%"
         item={HistoryRow}
         itemData={historyList}
+        itemCount={historyList.length}
         itemSize={175}
         getItemKey={(item) => item.record_id}
         onLoadMore={loadMore}

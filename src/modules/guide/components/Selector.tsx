@@ -65,7 +65,7 @@ const Selector: React.FC<SelectorProps> = memo(
   ({ selection, isOpen, setSelection, setIsOpen, children }) => (
     <>
       <View className="mt-4 flex w-full items-center justify-center pt-2">
-        {['学年', '学期'].map((item: SelectType) => (
+        {(['学年', '学期'] as SelectType[]).map((item) => (
           <Select
             style={{ width: '50%' }}
             key={uniqueKey.nextKey()}

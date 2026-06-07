@@ -19,7 +19,7 @@ const getStatusStep = (status: string) => {
 
 export default function FeedbackDetail() {
   const [feedbackItem, setFeedbackItem] = useState<FeedbackDetailItem | null>(
-    () => (bus.getSticky('feedback_detail') as FeedbackDetailItem) || null
+    () => (bus.getSticky('feedback_detail') as unknown as FeedbackDetailItem) || null
   );
   const [previewVisible, setPreviewVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);

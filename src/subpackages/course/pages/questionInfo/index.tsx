@@ -12,6 +12,7 @@ import { BottomInput, FeedCard, ReviewDiscussion } from '@/common/components';
 import type { BottomInputRef } from '@/common/components/BottomInput';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { getAnswerDetail } from '@/common/request/api/answers';
+import { bus } from '@/common/utils';
 
 const Page: React.FC = () => {
   const { guard } = useAuthGuard();
@@ -38,7 +39,8 @@ const Page: React.FC = () => {
       try {
         await store.publishReply(questionId, value);
         bottomInputRef.current?.clearValue();
-        store.confirmOptimisticAnswer(optimisticId);
+        const updated = store.confirmOptimisticAnswer(optimisticId);
+        if (updated) bus.emit('question', updated);
       } catch {
         store.removeOptimisticAnswer(optimisticId);
         Taro.showToast({ title: '发布失败', icon: 'error' });

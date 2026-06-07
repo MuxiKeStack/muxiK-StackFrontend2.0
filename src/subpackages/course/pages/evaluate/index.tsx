@@ -91,9 +91,13 @@ const Page: React.FC = () => {
       });
       return;
     }
-    void Taro.showLoading({
-      title: '提交中',
-    });
+    if (!comment) {
+      void Taro.showToast({
+        title: '内容不能为空',
+        icon: 'none',
+      });
+      return;
+    }
     const evaluationobj = {
       star_rating: selectedStarIndex,
       content: comment,
@@ -104,13 +108,10 @@ const Page: React.FC = () => {
       status: 'Public' as 'Public' | 'Private',
       is_anonymous: isAnonymous,
     };
-    if (!comment) {
-      void Taro.showToast({
-        title: '内容不能为空',
-        icon: 'none',
-      });
-      return;
-    }
+    // showLoading 必须在所有校验通过后再调用，否则校验失败 early return 会漏掉 hideLoading
+    void Taro.showLoading({
+      title: '提交中',
+    });
     useEvaluatePublishStore
       .publish(evaluationobj)
       .then((data) => {

@@ -1,5 +1,12 @@
 import { View } from '@tarojs/components';
-import React, { useCallback, useMemo } from 'react';
+import React, {
+  createContext,
+  memo,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+} from 'react';
 
 import './index.scss';
 
@@ -17,15 +24,73 @@ interface ReviewDiscussionProps {
     rootId: number,
     lastId: number,
     limit: number
-  ) => Promise<DiscussionComment[]>;
+  ) => Promise<void>;
   onCommentClick?: (comment: DiscussionComment) => void;
   onCommentLongPress?: (comment: DiscussionComment) => void;
   supportsReplies?: (item: DiscussionComment) => boolean;
   getReplyIndicator?: (reply: DiscussionComment) => { show: boolean; nickname?: string };
-  newReplyRootId?: number;
+  expandedReplyRootIds?: readonly number[];
+  onReplyExpandedChange?: (rootId: number, expanded: boolean) => void;
 }
 
-const ReviewDiscussion: React.FC<ReviewDiscussionProps> = ({
+type IsReplyExpandedFn = (rootId: number) => boolean;
+
+const ReplyExpandedContext = createContext<IsReplyExpandedFn>(() => false);
+
+interface DiscussionRowProps {
+  item: DiscussionComment;
+  showReplies: boolean;
+  onCommentClick?: (comment: DiscussionComment) => void;
+  onCommentLongPress?: (comment: DiscussionComment) => void;
+  onLoadMoreReplies?: (
+    rootId: number,
+    lastId: number,
+    limit: number
+  ) => Promise<void>;
+  onReplyExpandedChange?: (rootId: number, expanded: boolean) => void;
+  getReplyIndicator?: (reply: DiscussionComment) => { show: boolean; nickname?: string };
+}
+
+const DiscussionRow = memo(function DiscussionRow({
+  item,
+  showReplies,
+  onCommentClick,
+  onCommentLongPress,
+  onLoadMoreReplies,
+  onReplyExpandedChange,
+  getReplyIndicator,
+}: DiscussionRowProps) {
+  const isReplyExpanded = useContext(ReplyExpandedContext);
+  const expanded = isReplyExpanded(item.id);
+
+  return (
+    <View className="review_comment_card">
+      <CommentCard
+        comment={item}
+        level="primary"
+        onClick={onCommentClick}
+        onLongPress={onCommentLongPress}
+        showBorder={false}
+      />
+
+      {showReplies && onLoadMoreReplies && (
+        <ReplySection
+          rootId={item.id}
+          replyCount={item.reply_count || 0}
+          replies={item.replies}
+          expanded={expanded}
+          onExpandedChange={(open) => onReplyExpandedChange?.(item.id, open)}
+          onLoadReplies={onLoadMoreReplies}
+          onCommentClick={onCommentClick}
+          onCommentLongPress={onCommentLongPress}
+          getReplyIndicator={getReplyIndicator}
+        />
+      )}
+    </View>
+  );
+});
+
+const ReviewDiscussion: React.FC<ReviewDiscussionProps> = memo(({
   comments,
   hasMore = false,
   initialLoading = false,
@@ -35,68 +100,86 @@ const ReviewDiscussion: React.FC<ReviewDiscussionProps> = ({
   onCommentLongPress,
   supportsReplies,
   getReplyIndicator,
-  newReplyRootId,
+  expandedReplyRootIds,
+  onReplyExpandedChange,
 }) => {
+  const isReplyExpanded = useMemo<IsReplyExpandedFn>(() => {
+    if (!expandedReplyRootIds?.length) return () => false;
+    const ids = expandedReplyRootIds;
+    return (rootId: number) => ids.includes(rootId);
+  }, [expandedReplyRootIds]);
+
+  const handlersRef = useRef({
+    onCommentClick,
+    onCommentLongPress,
+    supportsReplies,
+    getReplyIndicator,
+    onLoadMoreReplies,
+    onReplyExpandedChange,
+  });
+  handlersRef.current = {
+    onCommentClick,
+    onCommentLongPress,
+    supportsReplies,
+    getReplyIndicator,
+    onLoadMoreReplies,
+    onReplyExpandedChange,
+  };
+
   const Row = useMemo(
     () =>
       ({ data, index }: { id: number; data: DiscussionComment[]; index: number }) => {
         const item = data[index];
         if (!item) return null;
 
-        const showReplies = supportsReplies?.(item) ?? false;
+        const {
+          onCommentClick: onClick,
+          onCommentLongPress: onLongPress,
+          supportsReplies: supports,
+          getReplyIndicator: getIndicator,
+          onLoadMoreReplies: loadReplies,
+          onReplyExpandedChange: onExpandedChange,
+        } = handlersRef.current;
+
+        const showReplies = supports?.(item) ?? false;
 
         return (
-          <View className="review_comment_card" key={item.id}>
-            <CommentCard
-              comment={item}
-              level="primary"
-              onClick={onCommentClick}
-              onLongPress={onCommentLongPress}
-              showBorder={false}
-            />
-
-            {showReplies && onLoadMoreReplies && (
-              <ReplySection
-                rootId={item.id}
-                replyCount={item.reply_count || 0}
-                preloadedReplies={item.replies}
-                autoExpand={item.id === newReplyRootId}
-                onLoadReplies={onLoadMoreReplies}
-                onCommentClick={onCommentClick}
-                onCommentLongPress={onCommentLongPress}
-                getReplyIndicator={getReplyIndicator}
-              />
-            )}
-          </View>
+          <DiscussionRow
+            key={item.id}
+            item={item}
+            showReplies={showReplies}
+            onCommentClick={onClick}
+            onCommentLongPress={onLongPress}
+            onLoadMoreReplies={loadReplies}
+            onReplyExpandedChange={onExpandedChange}
+            getReplyIndicator={getIndicator}
+          />
         );
       },
-    [
-      onCommentClick,
-      onCommentLongPress,
-      supportsReplies,
-      getReplyIndicator,
-      onLoadMoreReplies,
-      newReplyRootId,
-    ]
+    []
   );
 
   const getItemKey = useCallback((item: DiscussionComment) => item.id, []);
 
   return (
-    <VirtualList
-      height="100%"
-      width="100%"
-      item={Row}
-      itemData={comments}
-      itemCount={comments.length}
-      itemSize={280}
-      hasMore={hasMore}
-      initialLoading={initialLoading}
-      onLoadMore={onLoadMore}
-      getItemKey={getItemKey}
-      bottomPadding={40}
-    />
+    <ReplyExpandedContext.Provider value={isReplyExpanded}>
+      <VirtualList
+        height="100%"
+        width="100%"
+        item={Row}
+        itemData={comments}
+        itemCount={comments.length}
+        itemSize={280}
+        hasMore={hasMore}
+        initialLoading={initialLoading}
+        onLoadMore={onLoadMore}
+        getItemKey={getItemKey}
+        bottomPadding={40}
+      />
+    </ReplyExpandedContext.Provider>
   );
-};
+});
+
+ReviewDiscussion.displayName = 'ReviewDiscussion';
 
 export default ReviewDiscussion;

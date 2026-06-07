@@ -49,8 +49,8 @@ const BottomInput = memo(
 
       const clampHeightPx = useCallback(
         (heightPx: number) => {
-          const minPx = Number(Taro.pxTransform(MIN_HEIGHT_RPX, true));
-          const maxPx = Number(Taro.pxTransform(maxHeight, true));
+          const minPx = Number(Taro.pxTransform(MIN_HEIGHT_RPX));
+          const maxPx = Number(Taro.pxTransform(maxHeight));
           return Math.max(minPx, Math.min(heightPx, maxPx));
         },
         [maxHeight]

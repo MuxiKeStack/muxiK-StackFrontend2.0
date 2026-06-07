@@ -20,8 +20,6 @@ export interface ResponseQiniu {
 }
 export const fetchQiniuToken = async () => {
   try {
-    const url = '/tube/access_token';
-
     const response: ResponseQiniu = await getAccessToken();
     return response.data;
   } catch (error) {
