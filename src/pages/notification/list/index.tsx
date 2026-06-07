@@ -1,11 +1,14 @@
+import { Text, View } from '@tarojs/components';
+import { memo, useEffect, useMemo, useState } from 'react';
+
+import './index.scss';
+
 import { VirtualList } from '@/common/components';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
-import { Text, View } from '@tarojs/components';
-import { memo, useEffect, useMemo, useState } from 'react';
+
 import { MessageItemProps } from '../type';
 import { renderMessageItem } from './component/MessageItem';
-import './index.scss';
 
 // 标题映射
 const TITLE_MAP = {

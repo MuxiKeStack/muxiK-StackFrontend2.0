@@ -4,14 +4,16 @@ import { useCallback, useEffect, useState } from 'react';
 
 import './index.scss';
 
+import { sourceLabel, useFeedbackStore } from '@/store';
+
 import { FeedbackIcon } from '@/common/assets/img/profile';
 import searchIcon from '@/common/assets/img/search.png';
 import { FloatButton, SearchInput } from '@/common/components';
 import Loading from '@/common/components/Loading';
-import { NavigationBar } from '@/modules/navigation';
 import { ROUTES } from '@/common/constants/routes';
-import { sourceLabel, useFeedbackStore } from '@/store';
+import { NavigationBar } from '@/modules/navigation';
 import type { SheetItem } from '@/subpackages/feedback/type';
+
 import FAQItem from './components/normalFAQ';
 
 const FeedbackPage = () => {

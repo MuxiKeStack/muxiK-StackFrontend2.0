@@ -1,7 +1,6 @@
 import { StateCreator } from 'zustand';
 
 import { getCourseDetail as getCourseDetailApi } from '@/common/request/api/courses';
-
 import {
   CourseDetailSlice,
   CourseDetailsType,

@@ -1,5 +1,6 @@
 import { Button, Text } from '@tarojs/components';
 import { memo } from 'react';
+
 import './index.scss';
 
 interface TitleButtonProps {

@@ -1,11 +1,12 @@
 import Taro from '@tarojs/taro';
 
+import { useUserStore } from '@/store/useUserStore';
+
 import { LONG_TOKEN, SHORT_TOKEN, VISITOR } from '@/common/constants/auth';
 import { STUDENT_ID, USER_INFO } from '@/common/constants/user';
 import { signGradeSharing } from '@/common/request/api/grade';
 import { userLogin, userLogout } from '@/common/request/api/user';
 import { BusinessError } from '@/common/request/errors/BusinessError';
-import { useUserStore } from '@/store/useUserStore';
 
 type LoginResponseHeaders = {
   'X-Jwt-Token'?: string;

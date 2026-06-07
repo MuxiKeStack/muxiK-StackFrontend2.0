@@ -16,16 +16,16 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
+import { useEvaluatePublishStore, useEvaluationHistoryStore } from '@/store';
+
 import { GateScreen } from '@/common/components';
 import FeatureLabel from '@/common/components/FeatureLabel';
 import Star from '@/common/components/star/star';
+import { ASSESSMENT_MAP, COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { bus } from '@/common/utils';
-import { useEvaluatePublishStore, useEvaluationHistoryStore } from '@/store';
 import { NavigationBar } from '@/modules/navigation';
-
-import { ASSESSMENT_MAP, COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
 
 const Page: React.FC = () => {
   // 初始化状态，存储所有选中的 Radio 项的值

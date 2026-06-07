@@ -21,13 +21,13 @@ interface FAQItemProps {
   onPress: (status: Status) => Promise<boolean>;
 }
 
-const FAQItem: React.FC<FAQItemProps> = ({
-  item,
-  isExpanded,
-  onToggle,
-  onPress,
-}) => {
-  const { title, description: content, solution, resolvedStatus: initialStatus } = item.fields;
+const FAQItem: React.FC<FAQItemProps> = ({ item, isExpanded, onToggle, onPress }) => {
+  const {
+    title,
+    description: content,
+    solution,
+    resolvedStatus: initialStatus,
+  } = item.fields;
   const [selectedStatus, setSelectedStatus] = useState<Status>(
     initialStatus || 'notSelected'
   );

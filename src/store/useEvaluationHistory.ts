@@ -1,3 +1,6 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
 import type { EvaluationStatus } from '@/common/request/api/evaluations';
 import {
   getEvaluationHistory,
@@ -5,8 +8,6 @@ import {
 } from '@/common/request/api/evaluations';
 import type { CommentInfo } from '@/common/types/commentTypes';
 import { createTaroJSONStorage } from '@/common/utils';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 import { loadData } from './loadUtils';
 import type { DataSource } from './types';

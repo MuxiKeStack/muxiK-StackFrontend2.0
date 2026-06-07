@@ -1,10 +1,10 @@
 import { ScrollView, Text, View } from '@tarojs/components';
 import React from 'react';
 
-import { FeedCard } from '@/common/components';
-
-import type { CommentInfo } from '@/common/types/commentTypes';
 import './index.scss';
+
+import { FeedCard } from '@/common/components';
+import type { CommentInfo } from '@/common/types/commentTypes';
 
 interface Props {
   comments: CommentInfo[];

@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { useCourseStore } from '@/store/useCourseStore';
+
 import { getEvaluationDetail } from '@/common/request/api/evaluations';
 import { getFeeds } from '@/common/request/api/feed';
-import { formatDate } from '@/common/utils';
-import { createTaroJSONStorage } from '@/common/utils';
+import { createTaroJSONStorage, formatDate } from '@/common/utils';
 import type { MessageItemProps } from '@/pages/notification/type';
-import { useCourseStore } from '@/store/useCourseStore';
 
 import { loadData } from './loadUtils';
 import type { DataSource } from './types';
@@ -26,7 +26,10 @@ interface NotificationStore {
 
 async function buildMessages(feeds: unknown[]): Promise<NotificationData> {
   const storeComments = useCourseStore.getState().comments;
-  const evaluationCache = new Map<string, { course_name?: string; teacher_name?: string }>();
+  const evaluationCache = new Map<
+    string,
+    { course_name?: string; teacher_name?: string }
+  >();
 
   Object.values(storeComments).forEach((list) => {
     if (Array.isArray(list)) {
@@ -69,52 +72,52 @@ async function buildMessages(feeds: unknown[]): Promise<NotificationData> {
   const supportList: MessageItemProps[] = [];
   const officialList: MessageItemProps[] = [];
 
-  (feeds as Array<{ type: string; ctime: number; content?: Record<string, unknown> }>).forEach(
-    (item) => {
-      const content = item.content || {};
-      const timeStamp = formatDate(new Date(item.ctime).toISOString(), 'yyyy.MM.dd hh:mm');
-      const evaluation = evaluationCache.get(String(content.bizId));
+  (
+    feeds as Array<{ type: string; ctime: number; content?: Record<string, unknown> }>
+  ).forEach((item) => {
+    const content = item.content || {};
+    const timeStamp = formatDate(new Date(item.ctime).toISOString(), 'yyyy.MM.dd hh:mm');
+    const evaluation = evaluationCache.get(String(content.bizId));
 
-      if (item.type === 'Comment') {
-        commentList.push({
-          type: 'comment',
-          userName: (content.nickname as string) || '',
-          avatar: (content.avatar as string) || '',
-          reply: (content.content as string) || '',
-          originalComment: (content.bizContent as string) || '',
-          title: evaluation?.course_name || (content.bizId as string) || '',
-          teacher: evaluation?.teacher_name || '',
-          biz: (content.biz as string) || '',
-          bizId: (content.bizId as string) || '',
-          commentId: (content.commentId as string) || '',
-          ctime: item.ctime,
-          timeStamp,
-        });
-      } else if (item.type === 'Support') {
-        supportList.push({
-          type: 'support',
-          userName: (content.nickname as string) || '',
-          avatar: (content.avatar as string) || '',
-          originalComment: (content.content as string) || '',
-          title: evaluation?.course_name || (content.bizId as string) || '',
-          biz: (content.biz as string) || '',
-          bizId: (content.bizId as string) || '',
-          ctime: item.ctime,
-          timeStamp,
-        });
-      } else {
-        officialList.push({
-          type: 'official',
-          userName: '系统通知',
-          avatar: '',
-          title: (content.title as string) || item.type || '',
-          description: (content.content as string) || '',
-          ctime: item.ctime,
-          timeStamp,
-        });
-      }
+    if (item.type === 'Comment') {
+      commentList.push({
+        type: 'comment',
+        userName: (content.nickname as string) || '',
+        avatar: (content.avatar as string) || '',
+        reply: (content.content as string) || '',
+        originalComment: (content.bizContent as string) || '',
+        title: evaluation?.course_name || (content.bizId as string) || '',
+        teacher: evaluation?.teacher_name || '',
+        biz: (content.biz as string) || '',
+        bizId: (content.bizId as string) || '',
+        commentId: (content.commentId as string) || '',
+        ctime: item.ctime,
+        timeStamp,
+      });
+    } else if (item.type === 'Support') {
+      supportList.push({
+        type: 'support',
+        userName: (content.nickname as string) || '',
+        avatar: (content.avatar as string) || '',
+        originalComment: (content.content as string) || '',
+        title: evaluation?.course_name || (content.bizId as string) || '',
+        biz: (content.biz as string) || '',
+        bizId: (content.bizId as string) || '',
+        ctime: item.ctime,
+        timeStamp,
+      });
+    } else {
+      officialList.push({
+        type: 'official',
+        userName: '系统通知',
+        avatar: '',
+        title: (content.title as string) || item.type || '',
+        description: (content.content as string) || '',
+        ctime: item.ctime,
+        timeStamp,
+      });
     }
-  );
+  });
 
   return {
     commentMessage: commentList,
@@ -144,11 +147,18 @@ export const useNotificationStore = create<NotificationStore>()(
             getCache: () => {
               const d = get().data;
               const hasData =
-                d.commentMessage.length + d.supportMessage.length + d.officialMessage.length > 0;
+                d.commentMessage.length +
+                  d.supportMessage.length +
+                  d.officialMessage.length >
+                0;
               return hasData ? d : null;
             },
             fetch: async () => {
-              const feeds = await getFeeds({ last_time: 0, direction: 'After', limit: 15 });
+              const feeds = await getFeeds({
+                last_time: 0,
+                direction: 'After',
+                limit: 15,
+              });
               if (!Array.isArray(feeds)) return emptyData;
               return buildMessages(feeds);
             },

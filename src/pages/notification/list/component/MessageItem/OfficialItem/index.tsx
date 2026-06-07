@@ -1,7 +1,9 @@
-import { OfficialMessageProps } from '@/pages/notification/type';
 import { Image, Text, View } from '@tarojs/components';
 import { memo } from 'react';
+
 import './index.scss';
+
+import { OfficialMessageProps } from '@/pages/notification/type';
 
 // todos: 暂用
 const DEFAULT_IMAGE =

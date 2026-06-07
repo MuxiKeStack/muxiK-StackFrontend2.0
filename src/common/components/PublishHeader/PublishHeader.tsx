@@ -1,11 +1,12 @@
 import { Text, View } from '@tarojs/components';
 import React, { useEffect } from 'react';
 
-import { Avatar } from '@/common/components';
-import { formatDate } from '@/common/utils';
+import './index.scss';
+
 import { useUserStore } from '@/store/useUserStore';
 
-import './index.scss';
+import { Avatar } from '@/common/components';
+import { formatDate } from '@/common/utils';
 
 interface IPublishHeaderProps {
   publisher?: {

@@ -1,12 +1,14 @@
-import { Icon } from '@/common/assets/img/login';
-import { USER_INFO } from '@/common/constants/user';
 import { Button, Image, Input, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useState } from 'react';
 
-import { useAuthStore } from '@/store';
-import { Popper } from '../index';
 import './index.scss';
+
+import { useAuthStore } from '@/store';
+
+import { Icon } from '@/common/assets/img/login';
+
+import { Popper } from '../index';
 
 type UserData = {
   studentId: string;

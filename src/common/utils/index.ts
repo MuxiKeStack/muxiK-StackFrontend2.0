@@ -1,10 +1,10 @@
-export type { AvatarFrame } from './avatarDecoration';
 export { resolveAvatarFrame } from './avatarDecoration';
+export type { AvatarFrame } from './avatarDecoration';
 export { calculateAdler32 } from './checkSum';
 export { default as checkToken } from './checkToken';
 export { bus } from './eventBus';
 export { formatDate, formatIMTime } from './formatDate';
-export type { FileInfo } from './getFileInfo';
 export { getFileInfo } from './getFileInfo';
+export type { FileInfo } from './getFileInfo';
 export { default as uniqueKey } from './keyGen';
 export { createTaroJSONStorage, taroStorageAdapter } from './storage';

@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro';
 
 import { TokenConfig } from '@/common/types/requestType';
+
 import { BASE_URL } from '../constants';
 
 function isValidToken(token: string | undefined): boolean {

@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 
+import { useMyCollectionsStore } from '@/store/useCollections';
+import { useCourseStore } from '@/store/useCourseStore';
+
 import { collectCourses, getCourseDetail } from '@/common/request/api/courses';
 import { getCourseEvaluations } from '@/common/request/api/evaluations';
 import { getCourseGrades } from '@/common/request/api/grade';
@@ -7,8 +10,6 @@ import { getQuestionsList } from '@/common/request/api/questions';
 import type { CollectionProps } from '@/common/types/collectionsType';
 import type { CommentInfo, Course } from '@/common/types/commentTypes';
 import type { GradeChart, WebQuestionVo } from '@/common/types/userTypes';
-import { useMyCollectionsStore } from '@/store/useCollections';
-import { useCourseStore } from '@/store/useCourseStore';
 
 import type { DataSource } from './types';
 

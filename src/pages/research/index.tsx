@@ -1,5 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { Image, Text, View } from '@tarojs/components';
+import Taro, { useLoad } from '@tarojs/taro';
+import React, { useState } from 'react';
+
+import './index.scss';
+
+import { useResearchStore } from '@/store';
+
 import { deleteIcon } from '@/common/assets/img/icons';
 import { SearchInput } from '@/common/components';
 import CourseLabel from '@/common/components/CourseLabel';
@@ -10,11 +18,7 @@ import {
   translateFeatures,
 } from '@/common/constants/courseLabels';
 import { NavigationBar } from '@/modules/navigation';
-import { useResearchStore } from '@/store';
-import { Image, Text, View } from '@tarojs/components';
-import Taro, { useLoad } from '@tarojs/taro';
-import React, { useState } from 'react';
-import './index.scss';
+
 import type { SearchHistoryItem, SearchResultCourse } from './types';
 
 interface ConditionalRenderProps {

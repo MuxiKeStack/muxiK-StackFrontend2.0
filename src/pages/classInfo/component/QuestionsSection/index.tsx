@@ -1,8 +1,9 @@
 import { Text, View } from '@tarojs/components';
 import React from 'react';
 
-import type { WebQuestionVo } from '@/common/types/userTypes';
 import './index.scss';
+
+import type { WebQuestionVo } from '@/common/types/userTypes';
 
 interface Props {
   questionlist: WebQuestionVo[];

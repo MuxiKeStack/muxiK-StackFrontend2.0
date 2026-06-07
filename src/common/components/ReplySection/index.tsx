@@ -1,7 +1,9 @@
-import { CommentCard, Loading } from '@/common/components';
 import { Text, View } from '@tarojs/components';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import './index.scss';
+
+import { CommentCard, Loading } from '@/common/components';
 
 interface ReplySectionProps {
   rootId: number;
@@ -41,9 +43,11 @@ const ReplySection: React.FC<ReplySectionProps> = ({
       setIsExpanded(true);
       if (mergedReplies.length === 0) {
         setIsLoading(true);
-        onLoadReplies(rootId, 0, 3).then((data) => {
-          if (Array.isArray(data)) setReplies(data);
-        }).finally(() => setIsLoading(false));
+        onLoadReplies(rootId, 0, 3)
+          .then((data) => {
+            if (Array.isArray(data)) setReplies(data);
+          })
+          .finally(() => setIsLoading(false));
       }
     }
   }, [autoExpand, rootId, onLoadReplies, mergedReplies.length]);
@@ -108,9 +112,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({
       <View className="secondary_replies_footer">
         {showExpandOnly && !isLoading && (
           <View className="secondary_replies_toggle" onClick={handleExpand}>
-            <Text className="secondary_replies_toggle_text">
-              展开{replyCount}条回复
-            </Text>
+            <Text className="secondary_replies_toggle_text">展开{replyCount}条回复</Text>
           </View>
         )}
 

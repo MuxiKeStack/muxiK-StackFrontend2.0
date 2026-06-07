@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+import { useCourseStore } from '@/store/useCourseStore';
+
 import {
   getCommentReplies,
   getTopLevelComments,
@@ -7,7 +9,6 @@ import {
 } from '@/common/request/api/comments';
 import { getEvaluationDetail } from '@/common/request/api/evaluations';
 import { BusinessError } from '@/common/request/errors/BusinessError';
-import { useCourseStore } from '@/store/useCourseStore';
 
 import type { DataSource } from './types';
 

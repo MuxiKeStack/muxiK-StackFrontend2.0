@@ -1,8 +1,9 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
 import { getUserCourses } from '@/common/request/api/courses';
 import { MyCourseProps } from '@/common/types/myCourseType';
 import { createTaroJSONStorage } from '@/common/utils';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 import { loadData } from './loadUtils';
 import type { DataSource } from './types';

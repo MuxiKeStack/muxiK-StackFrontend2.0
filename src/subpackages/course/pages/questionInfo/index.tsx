@@ -1,15 +1,18 @@
+import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+
+import './index.scss';
+
+import { useCourseStore } from '@/store/useCourseStore';
+import { useQuestionDetailStore } from '@/store/useQuestionDetailStore';
+import { useUserStore } from '@/store/useUserStore';
+
 import { BottomInput, FeedCard, ReviewDiscussion } from '@/common/components';
 import type { BottomInputRef } from '@/common/components/BottomInput';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { getAnswerDetail } from '@/common/request/api/answers';
 import { bus } from '@/common/utils';
-import { useCourseStore } from '@/store/useCourseStore';
-import { useQuestionDetailStore } from '@/store/useQuestionDetailStore';
-import { useUserStore } from '@/store/useUserStore';
-import { View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import './index.scss';
 
 const Page: React.FC = () => {
   const { guard } = useAuthGuard();

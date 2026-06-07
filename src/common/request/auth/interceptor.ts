@@ -4,9 +4,9 @@ import { InterceptorContext, RequestConfig } from '@/common/types/requestType';
 
 import { AuthError } from '../errors/AuthError';
 import { BusinessError } from '../errors/BusinessError';
+import { getErrorMeta } from '../errors/errorCodeMap';
 import { NetworkError } from '../errors/NetworkError';
 import { ServerError } from '../errors/ServerError';
-import { getErrorMeta } from '../errors/errorCodeMap';
 import { getStoredToken, refreshToken } from './token';
 
 export async function requestInterceptors(config?: RequestConfig) {

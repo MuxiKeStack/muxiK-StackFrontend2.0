@@ -12,13 +12,14 @@ import { useCallback, useMemo, useState } from 'react';
 
 import './index.scss';
 
+import { useFeedbackStore } from '@/store';
+
 import {
   FEEDBACK_TABLE_IDENTIFY,
   ISSUE_TYPE_MAP,
   MODULE_MAP,
 } from '@/common/constants/feedback';
 import { NavigationBar } from '@/modules/navigation';
-import { useFeedbackStore } from '@/store';
 
 type ImageItem = {
   uri: string;

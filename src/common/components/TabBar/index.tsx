@@ -1,10 +1,11 @@
 import { Text, View } from '@tarojs/components';
 import { memo } from 'react';
 
+import './index.scss';
+
 import IconFont from '@/common/components/iconfont';
 import { TabBarProps } from '@/common/types/tabBarType';
 import { uniqueKey } from '@/common/utils';
-import './index.scss';
 
 const TabBar: React.FC<TabBarProps> = memo(({ tabs, onTabClick }) => (
   <View className="tab_bar_container">

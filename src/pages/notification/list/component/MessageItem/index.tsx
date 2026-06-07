@@ -1,4 +1,5 @@
 import { formatDate, formatIMTime } from '@/common/utils';
+
 import { CommentMessageItem } from './CommentItem';
 import { OfficialMessageItem } from './OfficialItem';
 import { SupportMessageItem } from './SupportItem';
@@ -25,7 +26,18 @@ export const renderMessageItem = ({ data, index }: { index: number; data }) => {
     }
 
     case 'comment': {
-      const { title, teacher, reply, originalComment, userName, avatar, ctime, timeStamp, biz, bizId } = message;
+      const {
+        title,
+        teacher,
+        reply,
+        originalComment,
+        userName,
+        avatar,
+        ctime,
+        timeStamp,
+        biz,
+        bizId,
+      } = message;
       return (
         <CommentMessageItem
           key={key}

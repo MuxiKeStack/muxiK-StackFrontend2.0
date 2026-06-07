@@ -1,5 +1,4 @@
-import { calculateAdler32 } from '@/common/utils';
-import { getFileInfo } from '@/common/utils';
+import { calculateAdler32, getFileInfo } from '@/common/utils';
 
 import { request } from '../..';
 import { FeishuUploadTokenConfig, FIXED_CONFIG } from './config';

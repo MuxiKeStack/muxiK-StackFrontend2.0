@@ -4,12 +4,12 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
+import { sourceLabel, useFeedbackStore } from '@/store';
+
 import { VirtualList } from '@/common/components';
-import Loading from '@/common/components/Loading';
 import { ROUTES } from '@/common/constants/routes';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
-import { sourceLabel, useFeedbackStore } from '@/store';
 import type { FeedbackItem } from '@/subpackages/feedback/type';
 
 function spliceText(text: string, maxLength = 45) {
@@ -53,7 +53,9 @@ const HistoryRow = memo(
 
         <View className="feedback_history_item_content">
           <Text className="feedback_history_item_title">反馈内容</Text>
-          <Text className="feedback_history_item_text">{spliceText(item.fields.content)}</Text>
+          <Text className="feedback_history_item_text">
+            {spliceText(item.fields.content)}
+          </Text>
         </View>
 
         <View className="feedback_history_item_footer">

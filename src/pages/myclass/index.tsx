@@ -4,7 +4,10 @@
 import { Picker, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
+
 import './index.scss';
+
+import { useMyClassStore } from '@/store';
 
 import { Loading } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
@@ -16,7 +19,6 @@ import {
 } from '@/common/constants/semester';
 import { MyCourseProps as CourseProps } from '@/common/types/myCourseType';
 import { NavigationBar } from '@/modules/navigation';
-import { useMyClassStore } from '@/store';
 
 const Page: React.FC = () => {
   const [yearSelector, setYearSelector] = useState<string[]>([]);

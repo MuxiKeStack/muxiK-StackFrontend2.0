@@ -1,8 +1,8 @@
-import './index.scss';
-
 import { Button, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { memo, useEffect, useState } from 'react';
+
+import './index.scss';
 
 import { NavigationBar } from '@/modules/navigation';
 

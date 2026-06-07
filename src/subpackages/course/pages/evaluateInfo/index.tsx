@@ -1,16 +1,19 @@
+import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import './index.scss';
+
+import { useEvaluateDetailStore } from '@/store';
+import { useCourseStore } from '@/store/useCourseStore';
+import { useUserStore } from '@/store/useUserStore';
+
 import { BottomInput, FeedCard, GateScreen, ReviewDiscussion } from '@/common/components';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { BusinessError } from '@/common/request/errors/BusinessError';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
-import { useEvaluateDetailStore } from '@/store';
-import { useCourseStore } from '@/store/useCourseStore';
-import { useUserStore } from '@/store/useUserStore';
-import { View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import './index.scss';
 
 const Page: React.FC = () => {
   const gate = useGateGuard();

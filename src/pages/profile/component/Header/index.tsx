@@ -3,10 +3,12 @@ import Taro from '@tarojs/taro';
 import React, { memo, useEffect, useMemo, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
+import './index.scss';
+
+import { useUserStore } from '@/store/useUserStore';
+
 import { Avatar, TitleButton } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
-import { useUserStore } from '@/store/useUserStore';
-import './index.scss';
 
 const TITLE_MAP: Record<string, string> = {
   CaringSenior: '知心学长',

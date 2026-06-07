@@ -73,11 +73,7 @@ const VirtualList: React.FC<VirtualListProps> = memo(
       if (isLoading) {
         return (
           <View style={footerStyle}>
-            <Loading
-              size={32}
-              type="circular"
-              isCenter={false}
-            />
+            <Loading size={32} type="circular" isCenter={false} />
           </View>
         );
       }

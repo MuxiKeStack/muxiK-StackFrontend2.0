@@ -1,5 +1,6 @@
-import type { CommentInfo } from '@/common/types/commentTypes';
 import type { DataSource } from '@/store/types';
+
+import type { CommentInfo } from '@/common/types/commentTypes';
 
 type CourseType = {
   MAJOR: 'CoursePropertyMajorCore';

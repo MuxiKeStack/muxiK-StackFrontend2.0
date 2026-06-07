@@ -1,6 +1,7 @@
 import { ScrollView, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useState } from 'react';
+
 import './index.scss';
 
 const Popper: React.FC<{ onClose: () => void }> = memo(({ onClose }) => {

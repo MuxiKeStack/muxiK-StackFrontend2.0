@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 
+import { useCourseStore } from '@/store/useCourseStore';
+
 import { getAnswersList, publishAnswer } from '@/common/request/api/answers';
 import { getQuestionDetail } from '@/common/request/api/questions';
-import { useCourseStore } from '@/store/useCourseStore';
 
 import type { DataSource } from './types';
 

@@ -1,10 +1,12 @@
-import { Avatar } from '@/common/components';
-import { getNotificationUrl } from '@/pages/notification/utils';
-import { MessageItemProps } from '@/pages/notification/type';
 import { Image, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback } from 'react';
+
 import './index.scss';
+
+import { Avatar } from '@/common/components';
+import { MessageItemProps } from '@/pages/notification/type';
+import { getNotificationUrl } from '@/pages/notification/utils';
 
 const MessageItem: React.FC<MessageItemProps> = memo(
   ({

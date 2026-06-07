@@ -1,15 +1,19 @@
+import { View } from '@tarojs/components';
+import Taro, { useDidShow } from '@tarojs/taro';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+
+import './index.scss';
+
+import { useNotificationStore } from '@/store';
+
 import { VirtualList } from '@/common/components';
 import { TabItemProps } from '@/common/types/tabBarType';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
-import { useNotificationStore } from '@/store';
-import { View } from '@tarojs/components';
-import Taro, { useDidShow } from '@tarojs/taro';
-import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+
 import TabBar from '../../../common/components/TabBar';
 import { MessageItemProps } from '../type';
 import { renderMessageItem } from './component/MessageItem';
-import './index.scss';
 
 const Notification: React.FC = memo(() => {
   const data = useNotificationStore((s) => s.data);

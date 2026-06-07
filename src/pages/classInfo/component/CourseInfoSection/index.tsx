@@ -1,24 +1,26 @@
 import { Text, View } from '@tarojs/components';
 import React, { useMemo } from 'react';
 
+import './index.scss';
+
 import FeatureLabel from '@/common/components/FeatureLabel';
 import ShowStar from '@/common/components/showStar/showStar';
-import { ASSESSMENT_MAP, translateFeatures, translateCourseProperty } from '@/common/constants/courseLabels';
+import {
+  ASSESSMENT_MAP,
+  translateCourseProperty,
+  translateFeatures,
+} from '@/common/constants/courseLabels';
 import type { Course } from '@/common/types/commentTypes';
-
-import './index.scss';
 
 interface Props {
   course: Course;
 }
 
 const CourseInfoSection: React.FC<Props> = React.memo(({ course }) => {
-  const { school, teacher, composite_score, rater_count, type, features, assessments } = course;
+  const { school, teacher, composite_score, rater_count, type, features, assessments } =
+    course;
 
-  const featuresList = useMemo(
-    () => translateFeatures(features),
-    [features]
-  );
+  const featuresList = useMemo(() => translateFeatures(features), [features]);
 
   const assessmentsList = useMemo(() => {
     if (!assessments) return [];

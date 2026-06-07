@@ -1,7 +1,9 @@
-import { Avatar } from '@/common/components';
 import { Text, View } from '@tarojs/components';
 import React from 'react';
+
 import './index.scss';
+
+import { Avatar } from '@/common/components';
 
 interface UserIdentityProps {
   avatar: string;
@@ -32,9 +34,7 @@ const UserIdentity: React.FC<UserIdentityProps> = ({
     <View className="ui_user_meta">
       <Text className="ui_user_name">
         {username || '匿名用户'}
-        {title && title !== 'None' && (
-          <Text className="ui_user_title"> ({title})</Text>
-        )}
+        {title && title !== 'None' && <Text className="ui_user_title"> ({title})</Text>}
       </Text>
       <Text className="ui_user_level">Lv{level}</Text>
     </View>

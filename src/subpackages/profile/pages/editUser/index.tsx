@@ -7,11 +7,12 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
+import { useUserStore } from '@/store';
+
 import { editIcon } from '@/common/assets/img/editPersonal';
 import { Avatar, TitleButton } from '@/common/components';
 import { fetchQiniuToken, fetchToQiniu } from '@/common/request/qiniu';
 import { NavigationBar } from '@/modules/navigation';
-import { useUserStore } from '@/store';
 
 const NICKNAME_MAX_LENGTH = 7;
 

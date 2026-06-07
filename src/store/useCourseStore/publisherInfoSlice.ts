@@ -1,7 +1,6 @@
 import { StateCreator } from 'zustand';
 
 import { getUserProfile } from '@/common/request/api/user';
-
 import {
   CourseInfoStore,
   PublisherDetailsType,

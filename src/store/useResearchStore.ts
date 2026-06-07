@@ -42,7 +42,9 @@ export const useResearchStore = create<ResearchStore>()(
             return h.length ? h : null;
           },
           fetch: async () => {
-            const res = (await getSearchHistory({ search_location: 'Home' })) as SearchHistoryItem[];
+            const res = (await getSearchHistory({
+              search_location: 'Home',
+            })) as SearchHistoryItem[];
             return Array.isArray(res) ? res : [];
           },
           setCache: (history) => set({ history }),

@@ -1,13 +1,15 @@
-import { SearchInput, VirtualList } from '@/common/components';
-import CourseLabel from '@/common/components/CourseLabel';
-import { CollectionProps } from '@/common/types/collectionsType';
-import { NavigationBar } from '@/modules/navigation';
-import { useMyCollectionsStore, useResearchStore } from '@/store';
 import { Text, View } from '@tarojs/components';
 import { useDidShow } from '@tarojs/taro';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import './index.scss';
+
+import { useMyCollectionsStore, useResearchStore } from '@/store';
+
+import { SearchInput, VirtualList } from '@/common/components';
+import CourseLabel from '@/common/components/CourseLabel';
+import { CollectionProps } from '@/common/types/collectionsType';
+import { NavigationBar } from '@/modules/navigation';
 
 const Page: React.FC = () => {
   const [currCollections, setCurrCollections] = useState<CollectionProps[]>([]);

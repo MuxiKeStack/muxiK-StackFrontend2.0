@@ -1,8 +1,10 @@
-import { UserIdentity } from '@/common/components';
-import { formatDate } from '@/common/utils';
 import { Text, View } from '@tarojs/components';
 import React from 'react';
+
 import './index.scss';
+
+import { UserIdentity } from '@/common/components';
+import { formatDate } from '@/common/utils';
 
 interface CommentCardUserInfo {
   id: number;

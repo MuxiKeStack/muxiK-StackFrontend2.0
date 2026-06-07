@@ -1,15 +1,19 @@
+import { Image, Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+
+import './index.scss';
+
+import { useCourseStore } from '@/store/useCourseStore';
+
 import { ActionItem, UserIdentity } from '@/common/components';
 import { COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
 import type { CommentInfo } from '@/common/types/commentTypes';
 import { CourseDetailsType, PublisherDetailsType } from '@/common/types/courseType';
 import { formatDate } from '@/common/utils';
-import { useCourseStore } from '@/store/useCourseStore';
-import { Image, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+
 import FeatureLabel from '../FeatureLabel';
 import ShowStar from '../showStar/showStar';
-import './index.scss';
 
 interface FeedCardProps {
   comment: CommentInfo;
@@ -203,13 +207,13 @@ const FeedCard: React.FC<FeedCardProps> = memo(
     onVisibilityChange,
     hideStar,
   }) => {
+    const handleClick = useCallback(() => {
+      if (comment) onClick?.(comment);
+    }, [onClick, comment]);
+
     if (!comment) return null;
     const { content, id, features } = comment;
     const fatherRecord = useCourseStore.getState().getComment(id ?? 0);
-
-    const handleClick = useCallback(() => {
-      onClick?.(comment);
-    }, [onClick, comment]);
 
     return (
       <View className={`feed_card_container ${classNames || ''}`} onClick={handleClick}>

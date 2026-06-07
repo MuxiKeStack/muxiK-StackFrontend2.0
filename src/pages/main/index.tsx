@@ -133,11 +133,14 @@ const Page: React.FC = () => {
   const handleRefresh = useCallback(() => {
     setRefresherTriggered(true);
 
-    void dispatch.refreshComments().catch((e) => {
-      console.error('[main] 刷新评论失败:', e);
-    }).finally(() => {
-      setRefresherTriggered(false);
-    });
+    void dispatch
+      .refreshComments()
+      .catch((e) => {
+        console.error('[main] 刷新评论失败:', e);
+      })
+      .finally(() => {
+        setRefresherTriggered(false);
+      });
   }, [dispatch]);
 
   const handleScrollToTop = useCallback(() => {
@@ -187,7 +190,7 @@ const Page: React.FC = () => {
               width: '34.09rpx',
               height: '34.09rpx',
             }}
-            src={'https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png'}
+            src="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"
           />
           <Text>搜索</Text>
         </View>

@@ -1,10 +1,13 @@
+import { Navigator, Text, View } from '@tarojs/components';
+import React, { useEffect, useState } from 'react';
+
+import './index.scss';
+
+import { useCourseStore } from '@/store/useCourseStore';
+
 import IconFont from '@/common/components/iconfont';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { COMMENT_ACTIONS } from '@/common/types/courseType';
-import { useCourseStore } from '@/store/useCourseStore';
-import { Navigator, Text, View } from '@tarojs/components';
-import React, { useEffect, useState } from 'react';
-import './index.scss';
 
 export type ActionType = 'like' | 'comment' | 'oppose';
 

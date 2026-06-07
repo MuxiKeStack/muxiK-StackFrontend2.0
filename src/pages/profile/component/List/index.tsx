@@ -1,3 +1,12 @@
+import Taro from '@tarojs/taro';
+import React, { memo, useCallback, useMemo, useState } from 'react';
+import { AtList, AtListItem } from 'taro-ui';
+
+import './index.scss';
+
+import { useActiveButtonStore, useAuthStore } from '@/store';
+import { useUserStore } from '@/store/useUserStore';
+
 import {
   BookIcon,
   ClockIcon,
@@ -9,13 +18,6 @@ import { Modal } from '@/common/components/Modal';
 import { LONG_TOKEN, SHORT_TOKEN, VISITOR } from '@/common/constants/auth';
 import { ROUTES } from '@/common/constants/routes';
 import { uniqueKey } from '@/common/utils';
-import { useActiveButtonStore, useAuthStore } from '@/store';
-import { useUserStore } from '@/store/useUserStore';
-import { Image, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import React, { memo, useCallback, useMemo, useState } from 'react';
-import { AtIcon, AtList, AtListItem } from 'taro-ui';
-import './index.scss';
 
 interface MenuItem {
   title: string;
@@ -94,36 +96,17 @@ const ProfileList: React.FC = memo(() => {
 
   return (
     <>
-      {/* {!test ? ( */}
-      {false ? (
-        <View className="profile_list_container">
-          {menuItems.map((item) => (
-            <View
-              key={uniqueKey.nextKey()}
-              className="profile_list_item"
-              onClick={item.onClick}
-            >
-              <View className="profile_list_item_left">
-                <Image className="profile_list_item_icon" src={item.icon} />
-                <Text className="profile_list_item_title">{item.title}</Text>
-              </View>
-              <AtIcon value="chevron-right" color="#8C8C8C" />
-            </View>
-          ))}
-        </View>
-      ) : (
-        <AtList className="profile_list_atlist">
-          {menuItems.map((item) => (
-            <AtListItem
-              key={uniqueKey.nextKey()}
-              title={item.title}
-              arrow="right"
-              thumb={item.icon}
-              onClick={item.onClick}
-            />
-          ))}
-        </AtList>
-      )}
+      <AtList className="profile_list_atlist">
+        {menuItems.map((item) => (
+          <AtListItem
+            key={uniqueKey.nextKey()}
+            title={item.title}
+            arrow="right"
+            thumb={item.icon}
+            onClick={item.onClick}
+          />
+        ))}
+      </AtList>
 
       <Modal
         visible={showLogoutModal}

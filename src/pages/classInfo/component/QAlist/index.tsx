@@ -1,11 +1,13 @@
-import { ROUTES } from '@/common/constants/routes';
-import VirtualList from '@/common/components/VirtualList';
-import { useAuthGuard } from '@/common/hooks/useAuthGuard';
-import type { WebQuestionVo } from '@/common/types/userTypes';
 import { Button, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React from 'react';
+
 import './index.scss';
+
+import VirtualList from '@/common/components/VirtualList';
+import { ROUTES } from '@/common/constants/routes';
+import { useAuthGuard } from '@/common/hooks/useAuthGuard';
+import type { WebQuestionVo } from '@/common/types/userTypes';
 
 interface QAListProps {
   qas: WebQuestionVo[];

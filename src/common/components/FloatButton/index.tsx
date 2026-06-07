@@ -1,5 +1,6 @@
 import { View } from '@tarojs/components';
 import React, { useState } from 'react';
+
 import './index.scss';
 
 export type FloatButtonProps = {

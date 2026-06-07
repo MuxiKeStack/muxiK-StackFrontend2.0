@@ -1,5 +1,7 @@
-import { LONG_TOKEN, SHORT_TOKEN } from '@/common/constants/auth';
 import Taro from '@tarojs/taro';
+
+import { LONG_TOKEN, SHORT_TOKEN } from '@/common/constants/auth';
+
 import { AuthError } from '../errors/AuthError';
 import type { ErrorHandler } from '../errors/ErrorPipeline';
 

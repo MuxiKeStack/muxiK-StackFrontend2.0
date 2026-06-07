@@ -1,9 +1,9 @@
 import { View } from '@tarojs/components';
 import React, { useEffect } from 'react';
 
-import { useCourseStore } from '@/store/useCourseStore';
-
 import './index.scss';
+
+import { useCourseStore } from '@/store/useCourseStore';
 
 interface ICourseInfoProps {
   courseId: number;
@@ -14,7 +14,10 @@ const CourseInfo: React.FC<ICourseInfoProps> = ({ courseId }) => {
 
   useEffect(() => {
     if (!courseDetail && courseId > 0) {
-      useCourseStore.getState().fetchCourseDetail(courseId).catch(() => {});
+      useCourseStore
+        .getState()
+        .fetchCourseDetail(courseId)
+        .catch(() => {});
     }
   }, [courseId, courseDetail]);
 

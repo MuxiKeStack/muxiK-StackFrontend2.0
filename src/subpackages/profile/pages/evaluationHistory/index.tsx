@@ -1,13 +1,14 @@
-import { FeedCard, VirtualList } from '@/common/components';
-import { ROUTES } from '@/common/constants/routes';
-import { bus } from '@/common/utils';
-import { NavigationBar } from '@/modules/navigation';
-import { useEvaluationHistoryStore } from '@/store';
 import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
+import { useEvaluationHistoryStore } from '@/store';
+
+import { FeedCard, VirtualList } from '@/common/components';
+import { ROUTES } from '@/common/constants/routes';
 import type { CommentInfo } from '@/common/types/commentTypes';
+import { bus } from '@/common/utils';
+import { NavigationBar } from '@/modules/navigation';
 
 type EvalStatus = 'Public' | 'Private' | 'Folded';
 

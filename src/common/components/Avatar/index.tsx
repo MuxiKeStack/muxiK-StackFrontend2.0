@@ -1,10 +1,10 @@
 import { Image, View } from '@tarojs/components';
 import { memo } from 'react';
 
+import './index.scss';
+
 import type { AvatarFrame } from '@/common/utils';
 import { resolveAvatarFrame } from '@/common/utils';
-
-import './index.scss';
 
 interface AvatarProps {
   src: string;

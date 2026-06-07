@@ -1,9 +1,11 @@
+import { View } from '@tarojs/components';
+import React, { useCallback, useMemo } from 'react';
+
+import './index.scss';
+
 import { CommentCard } from '@/common/components';
 import ReplySection from '@/common/components/ReplySection';
 import VirtualList from '@/common/components/VirtualList';
-import { View } from '@tarojs/components';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import './index.scss';
 
 interface ReviewDiscussionProps {
   comments: any[];

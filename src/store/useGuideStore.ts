@@ -34,7 +34,9 @@ export const useGuideStore = create<GuideStore>()(
             return list.length ? list : null;
           },
           fetch: async () => {
-            const res = (await getMatchLabels({ ['labels[type]']: '选课手册' })) as GuideLabelItem[];
+            const res = (await getMatchLabels({
+              ['labels[type]']: '选课手册',
+            })) as GuideLabelItem[];
             return Array.isArray(res) ? res : [];
           },
           setCache: (labels) => set({ labels }),

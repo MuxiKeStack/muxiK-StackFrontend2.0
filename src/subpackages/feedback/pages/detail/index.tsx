@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
+import { useFeedbackStore } from '@/store';
+
 import { STATUS_LABELS } from '@/common/constants/feedback';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
-import { useFeedbackStore } from '@/store';
-
 import type { FeedbackDetailItem } from '@/subpackages/feedback/type';
 
 const getStatusStep = (status: string) => {

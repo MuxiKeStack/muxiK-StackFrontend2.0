@@ -1,25 +1,27 @@
 /* eslint-disable no-console */
-import { bus } from '@/common/utils';
-import { NavigationBar } from '@/modules/navigation';
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import './index.scss';
+
+import { useClassInfoStore } from '@/store';
+
 import { Drawer, GateScreen } from '@/common/components';
-import { ROUTES } from '@/common/constants/routes';
 import LineChart from '@/common/components/chart';
+import { ROUTES } from '@/common/constants/routes';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import type { CommentInfo } from '@/common/types/commentTypes';
 import type { WebQuestionVo } from '@/common/types/userTypes';
-import { useClassInfoStore } from '@/store';
+import { bus } from '@/common/utils';
+import { NavigationBar } from '@/modules/navigation';
 
 import CommentsSection from './component/CommentsSection';
 import CourseHeaderSection from './component/CourseHeaderSection';
 import CourseInfoSection from './component/CourseInfoSection';
 import QAlist from './component/QAlist';
 import QuestionsSection from './component/QuestionsSection';
-import './index.scss';
 
 const Page: React.FC = () => {
   const [drawerOpened, setDrawerOpened] = useState(false);
@@ -165,7 +167,9 @@ const Page: React.FC = () => {
 
   const handleEmptyQuestionClick = useCallback(() => {
     if (!guard()) return;
-    void Taro.navigateTo({ url: `${ROUTES.course.publishQuestion}?course_id=${courseId}` });
+    void Taro.navigateTo({
+      url: `${ROUTES.course.publishQuestion}?course_id=${courseId}`,
+    });
   }, [courseId, guard]);
 
   const handleEmptyCommentClick = useCallback(() => {

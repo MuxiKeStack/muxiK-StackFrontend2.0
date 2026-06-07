@@ -1,12 +1,11 @@
-import Taro from '@tarojs/taro';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import {
-  FEEDBACK_RECORD_NAMES,
-  FEEDBACK_TABLE_IDENTIFY,
   FAQ_RECORD_NAMES,
   FAQ_TABLE_IDENTIFY,
+  FEEDBACK_RECORD_NAMES,
+  FEEDBACK_TABLE_IDENTIFY,
 } from '@/common/constants/feedback';
 import {
   createFeedbackRecord,

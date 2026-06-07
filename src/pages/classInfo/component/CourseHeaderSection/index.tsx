@@ -1,9 +1,9 @@
 import { Image, View } from '@tarojs/components';
 import React from 'react';
 
-import StarIcon from '@/common/assets/img/profile/star_icon.png';
-
 import './index.scss';
+
+import StarIcon from '@/common/assets/img/profile/star_icon.png';
 
 interface Props {
   name?: string;

@@ -4,9 +4,7 @@ import { StateCreator } from 'zustand';
 import { publishComment } from '@/common/request/api/comments';
 import { endorseEvaluation, getEvaluationList } from '@/common/request/api/evaluations';
 import { BusinessError } from '@/common/request/errors/BusinessError';
-
 import type { CommentInfo, CommentType } from '@/common/types/commentTypes';
-
 import {
   COMMENT_ACTIONS,
   CommentInfoSlice,
