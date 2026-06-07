@@ -1,9 +1,7 @@
-import Taro from '@tarojs/taro';
 import { StateCreator } from 'zustand';
 
 import { publishComment } from '@/common/request/api/comments';
 import { endorseEvaluation, getEvaluationList } from '@/common/request/api/evaluations';
-import { BusinessError } from '@/common/request/errors/BusinessError';
 import type { CommentInfo, CommentType } from '@/common/types/commentTypes';
 import {
   COMMENT_ACTIONS,
@@ -34,7 +32,7 @@ export const CreateCommentInfo: StateCreator<
   classType: COURSE_TYPE.ANY,
   lastSource: null,
   async refreshComments() {
-    return await get().updateComments(0);
+    await get().updateComments(0);
   },
   getComment(id) {
     if (id === 0) return undefined;
@@ -46,22 +44,9 @@ export const CreateCommentInfo: StateCreator<
     return await updateComments(currentId);
   },
   async endorse(id, action) {
-    void Taro.showLoading({ title: '点赞中' });
+    // store 只负责请求与本地计数更新，loading/toast 等 UI 反馈交给调用方组件
     const shouldSupport = action === COMMENT_ACTIONS.LIKE;
-    await endorseEvaluation(id, { stance: shouldSupport ? 1 : 0 })
-      .then(() => {
-        Taro.hideLoading();
-        void Taro.showToast({
-          title: !shouldSupport ? '取消成功' : '点赞成功',
-          icon: 'success',
-          duration: 1000,
-        });
-      })
-      .catch(() => {
-        Taro.hideLoading();
-        void Taro.showToast({ title: '服务端错误', icon: 'error' });
-        return undefined;
-      });
+    await endorseEvaluation(id, { stance: shouldSupport ? 1 : 0 });
     const localInfo = get().getComment(id);
     if (localInfo) {
       const delta = shouldSupport ? 1 : -1;
@@ -75,40 +60,25 @@ export const CreateCommentInfo: StateCreator<
     return localInfo;
   },
   async comment({ id: biz_id, biz, parentId: parent_id, rootId: root_id, content }) {
-    Taro.showLoading({ title: '发布课评中' });
-    try {
-      const publishRes = await publishComment({
-        biz,
-        biz_id,
-        content,
-        parent_id,
-        root_id,
-      });
-      Taro.hideLoading();
-      Taro.showToast({ title: '课评发布成功', icon: 'success' });
-      if (parent_id === 0) {
-        const localInfo = get().getComment(biz_id);
-        if (localInfo) {
-          const updated: CommentInfo = {
-            ...localInfo,
-            total_comment_count: (localInfo.total_comment_count || 0) + 1,
-          };
-          get().updateCommentInfo(biz_id, updated);
-        }
+    // store 只负责请求与本地计数更新，loading/toast 交给调用方组件
+    const publishRes = await publishComment({
+      biz,
+      biz_id,
+      content,
+      parent_id,
+      root_id,
+    });
+    if (parent_id === 0) {
+      const localInfo = get().getComment(biz_id);
+      if (localInfo) {
+        const updated: CommentInfo = {
+          ...localInfo,
+          total_comment_count: (localInfo.total_comment_count || 0) + 1,
+        };
+        get().updateCommentInfo(biz_id, updated);
       }
-      return publishRes as CommentType;
-    } catch (e) {
-      Taro.hideLoading();
-      if (e instanceof BusinessError) {
-        Taro.showToast({
-          title: (e as any).message || '课评发布失败',
-          icon: 'error',
-        });
-      } else {
-        Taro.showToast({ title: '课评发布失败', icon: 'error' });
-      }
-      return undefined;
     }
+    return publishRes as CommentType;
   },
   updateCommentInfo(currentId: number, info: CommentInfo) {
     const { comments, classType } = get();
@@ -157,10 +127,10 @@ export const CreateCommentInfo: StateCreator<
           : [];
         const prevId = resDataList.at(-1)?.id;
 
+        // 无更多数据：返回 false 让调用方决定是否提示「没有更多了」
         if (!resDataList.length) {
-          Taro.showToast({ title: '没有更多了' });
           set({ loading: false });
-          return;
+          return false;
         }
 
         // 从内嵌数据提取发布者信息，灌入缓存
@@ -209,6 +179,7 @@ export const CreateCommentInfo: StateCreator<
             lastSource: 'network',
           };
         });
+        return true;
       });
     } catch (e) {
       console.error('[commentInfoSlice] 加载评论失败:', e);

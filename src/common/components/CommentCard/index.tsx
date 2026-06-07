@@ -1,41 +1,23 @@
 import { Text, View } from '@tarojs/components';
-import React from 'react';
+import React, { memo } from 'react';
 
 import './index.scss';
 
 import { UserIdentity } from '@/common/components';
+import type { DiscussionComment } from '@/common/types/commentTypes';
 import { formatDate } from '@/common/utils';
 
-interface CommentCardUserInfo {
-  id: number;
-  avatar: string;
-  nickname: string;
-  using_title?: string;
-  level?: number;
-}
-
-interface CommentCardComment {
-  id: number;
-  content: string;
-  ctime: number;
-  user?: CommentCardUserInfo;
-  publisher?: CommentCardUserInfo;
-  root_comment_id?: number;
-  parent_comment_id?: number;
-  reply_to_uid?: number;
-}
-
 interface CommentCardProps {
-  comment: CommentCardComment;
+  comment: DiscussionComment;
   level?: 'primary' | 'secondary';
-  onClick?: (comment: any) => void;
-  onLongPress?: (comment: any) => void;
+  onClick?: (comment: DiscussionComment) => void;
+  onLongPress?: (comment: DiscussionComment) => void;
   showReplyIndicator?: boolean;
   replyToNickname?: string;
   showBorder?: boolean;
 }
 
-const CommentCard: React.FC<CommentCardProps> = ({
+const CommentCard: React.FC<CommentCardProps> = memo(({
   comment,
   level = 'primary',
   onClick,
@@ -89,6 +71,6 @@ const CommentCard: React.FC<CommentCardProps> = ({
       </View>
     </View>
   );
-};
+});
 
 export default CommentCard;

@@ -12,6 +12,7 @@ import { BottomInput, FeedCard, GateScreen, ReviewDiscussion } from '@/common/co
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { BusinessError } from '@/common/request/errors/BusinessError';
+import type { DiscussionComment } from '@/common/types/commentTypes';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 
@@ -49,92 +50,40 @@ const Page: React.FC = () => {
   );
 
   const handleReplySubmit = useCallback(
-    async (value: string, replyTo: Record<string, unknown> | null) => {
+    async (value: string, replyTo: DiscussionComment | null) => {
       if (!value.trim() || !bizId) return;
 
       const rootId =
         replyTo?.root_comment_id === 0
-          ? (replyTo?.id as number)
-          : (replyTo?.root_comment_id as number) || 0;
-      const parentId = (replyTo?.id as number) || 0;
+          ? (replyTo?.id ?? 0)
+          : (replyTo?.root_comment_id ?? 0);
+      const parentId = replyTo?.id ?? 0;
       const profile = useUserStore.getState().profile;
 
-      const optimisticId = -Date.now();
-      const newComment = {
-        id: optimisticId,
-        commentator_id: 0,
-        biz: 'Evaluation',
-        biz_id: bizId,
-        content: value,
-        root_comment_id: rootId,
-        parent_comment_id: parentId,
-        reply_to_uid: (replyTo?.commentator_id as number) || 0,
-        ctime: Date.now(),
-        utime: Date.now(),
-        user: {
-          id: 0,
-          nickname: profile?.nickname || '我',
-          avatar: profile?.avatar || '',
-        },
+      const selfUser = {
+        id: 0,
+        nickname: profile?.nickname || '我',
+        avatar: profile?.avatar || '',
       };
 
-      if (rootId === 0) {
-        useEvaluateDetailStore.setState((s) => ({
-          comments: [newComment, ...s.comments],
-        }));
-      } else {
-        setNewReplyRootId(rootId);
-        useEvaluateDetailStore.setState((s) => ({
-          comments: s.comments.map((c) => {
-            if (c.id === rootId) {
-              return {
-                ...c,
-                reply_count: (c.reply_count || 0) + 1,
-                has_replies: true,
-                replies: c.replies ? [newComment, ...c.replies] : [newComment],
-                total_comment_count: (c.total_comment_count || 0) + 1,
-              };
-            }
-            return c;
-          }),
-        }));
-      }
+      const store = useEvaluateDetailStore.getState();
+      if (rootId !== 0) setNewReplyRootId(rootId);
+      const optimisticId = store.addOptimisticReply({
+        bizId,
+        content: value,
+        rootId,
+        parentId,
+        replyToUid: replyTo?.commentator_id ?? 0,
+        user: selfUser,
+      });
 
       try {
-        const serverComment = await publishReply({
-          bizId,
-          content: value,
-          parentId,
-          rootId,
-        });
-
-        const withUser = {
+        const serverComment = await publishReply({ bizId, content: value, parentId, rootId });
+        // 自己刚发的评论 publishers 里可能没有，用本地 profile 兜底头像昵称
+        store.replaceOptimisticReply(optimisticId, rootId, {
           ...serverComment,
-          user:
-            serverComment.user ||
-            newComment.user ||
-            ({
-              id: 0,
-              nickname: '我',
-              avatar: '',
-            } as const),
-        };
-
-        if (rootId === 0) {
-          useEvaluateDetailStore.setState((s) => ({
-            comments: s.comments.map((c) => (c.id === optimisticId ? withUser : c)),
-          }));
-        } else {
-          useEvaluateDetailStore.setState((s) => ({
-            comments: s.comments.map((c) => {
-              if (c.id !== rootId) return c;
-              const replies = (c.replies as (typeof newComment)[] | undefined)?.map(
-                (r) => (r.id === optimisticId ? withUser : r)
-              );
-              return { ...c, replies };
-            }),
-          }));
-        }
+          user: serverComment.user || selfUser,
+        });
 
         const updated = useCourseStore.getState().incrementEvaluationCommentCount(bizId);
         if (updated) {
@@ -142,26 +91,7 @@ const Page: React.FC = () => {
           bus.stickyEmit('evaluation', updated);
         }
       } catch (error) {
-        if (rootId === 0) {
-          useEvaluateDetailStore.setState((s) => ({
-            comments: s.comments.filter((c) => c.id !== optimisticId),
-          }));
-        } else {
-          useEvaluateDetailStore.setState((s) => ({
-            comments: s.comments.map((c) => {
-              if (c.id !== rootId) return c;
-              const replies = (c.replies as (typeof newComment)[] | undefined)?.filter(
-                (r) => r.id !== optimisticId
-              );
-              return {
-                ...c,
-                replies,
-                reply_count: Math.max((c.reply_count || 1) - 1, 0),
-                total_comment_count: Math.max((c.total_comment_count || 1) - 1, 0),
-              };
-            }),
-          }));
-        }
+        store.removeOptimisticReply(optimisticId, rootId);
         if (error instanceof BusinessError && error.code === 409002) {
           Taro.showToast({ title: '不能回答未上过的课', icon: 'none' });
           return;
@@ -174,16 +104,14 @@ const Page: React.FC = () => {
 
   const bottomInputRef =
     useRef<import('@/common/components/BottomInput').BottomInputRef>(null);
-  const replyToRef = useRef<Record<string, unknown> | null>(null);
+  const replyToRef = useRef<DiscussionComment | null>(null);
 
   const handleLongPress = useCallback(
-    (comment: Record<string, unknown> | null) => {
+    (comment: DiscussionComment | null) => {
       if (!guard()) return;
       if (comment) {
         replyToRef.current = comment;
-        bottomInputRef.current?.insertMention(
-          (comment.user as { nickname?: string })?.nickname || ''
-        );
+        bottomInputRef.current?.insertMention(comment.user?.nickname || '');
       }
     },
     [guard]

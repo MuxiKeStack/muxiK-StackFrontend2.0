@@ -10,8 +10,33 @@ export type CommentType = {
   utime: number;
   ctime: number;
   user?: User; // 存储用户信息
+  publisher?: User; // 后端可能用 publisher 内嵌返回用户信息
   replies?: CommentType[]; // 存储二级评论
+  reply_count?: number; // 回复数
+  has_replies?: boolean; // 是否有回复
+  total_comment_count?: number; // 含回复的评论总数
+  reply_to_user?: User; // @ 的目标用户
 };
+
+// 讨论区通用条目：评课评论(CommentType)与问答回答共用同一套 UI，
+// 这里取两者结构的交集做超类型，除 id/content/ctime 外均可选
+export interface DiscussionComment {
+  id: number;
+  content: string;
+  ctime: number;
+  utime?: number;
+  user?: User;
+  publisher?: User;
+  commentator_id?: number;
+  root_comment_id?: number;
+  parent_comment_id?: number;
+  reply_to_uid?: number;
+  reply_to_user?: User;
+  replies?: DiscussionComment[];
+  reply_count?: number;
+  has_replies?: boolean;
+  total_comment_count?: number;
+}
 
 // 定义评论详情的类型
 export type CommentInfoType = {

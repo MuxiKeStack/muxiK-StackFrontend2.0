@@ -4,6 +4,7 @@ import { useCourseStore } from '@/store/useCourseStore';
 
 import { getAnswersList, publishAnswer } from '@/common/request/api/answers';
 import { getQuestionDetail } from '@/common/request/api/questions';
+import { bus } from '@/common/utils';
 
 import type { DataSource } from './types';
 
@@ -50,6 +51,16 @@ interface QuestionDetailStore {
   loadMoreAnswers: (questionId: number) => Promise<AnswerDetail[]>;
   publishReply: (questionId: number, content: string) => Promise<void>;
   getAnswersWithPublishers: () => AnswerDetail[];
+  // 乐观更新：插入临时回答，返回临时 id（负数）供后续确认/回滚
+  addOptimisticAnswer: (params: {
+    questionId: number;
+    content: string;
+    publisher: NonNullable<AnswerDetail['publisher']>;
+  }) => number;
+  // 请求成功：更新问题的回答数与预览列表，并广播给列表页
+  confirmOptimisticAnswer: (optimisticId: number) => void;
+  // 请求失败：移除临时回答
+  removeOptimisticAnswer: (optimisticId: number) => void;
 }
 
 export const useQuestionDetailStore = create<QuestionDetailStore>()((set, get) => ({
@@ -115,5 +126,44 @@ export const useQuestionDetailStore = create<QuestionDetailStore>()((set, get) =
       ...a,
       publisher: a.publisher || publishers[a.publisher_id] || undefined,
     }));
+  },
+
+  addOptimisticAnswer({ questionId, content, publisher }) {
+    const optimisticId = -Date.now();
+    const newAnswer: AnswerDetail = {
+      id: optimisticId,
+      publisher_id: 0,
+      question_id: questionId,
+      content,
+      stance: 0,
+      total_support_count: 0,
+      total_comment_count: 0,
+      utime: Date.now(),
+      ctime: Date.now(),
+      publisher,
+    };
+    set((s) => ({ answers: [newAnswer, ...s.answers] }));
+    return optimisticId;
+  },
+
+  confirmOptimisticAnswer(optimisticId) {
+    set((s) => {
+      if (!s.question) return s;
+      const answer = s.answers.find((a) => a.id === optimisticId);
+      const updated = {
+        ...s.question,
+        answer_cnt: (s.question.answer_cnt || 0) + 1,
+        preview_answers: [
+          { id: optimisticId, content: answer?.content || '' },
+          ...(s.question.preview_answers || []),
+        ],
+      };
+      bus.emit('question', updated);
+      return { question: updated };
+    });
+  },
+
+  removeOptimisticAnswer(optimisticId) {
+    set((s) => ({ answers: s.answers.filter((a) => a.id !== optimisticId) }));
   },
 }));

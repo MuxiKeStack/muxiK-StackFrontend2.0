@@ -4,16 +4,21 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './index.scss';
 
 import { CommentCard, Loading } from '@/common/components';
+import type { DiscussionComment } from '@/common/types/commentTypes';
 
 interface ReplySectionProps {
   rootId: number;
   replyCount: number;
-  preloadedReplies?: any[];
+  preloadedReplies?: DiscussionComment[];
   autoExpand?: boolean;
-  onLoadReplies: (rootId: number, lastId: number, limit: number) => Promise<any[]>;
-  onCommentClick?: (comment: any) => void;
-  onCommentLongPress?: (comment: any) => void;
-  getReplyIndicator?: (reply: any) => { show: boolean; nickname?: string };
+  onLoadReplies: (
+    rootId: number,
+    lastId: number,
+    limit: number
+  ) => Promise<DiscussionComment[]>;
+  onCommentClick?: (comment: DiscussionComment) => void;
+  onCommentLongPress?: (comment: DiscussionComment) => void;
+  getReplyIndicator?: (reply: DiscussionComment) => { show: boolean; nickname?: string };
 }
 
 const ReplySection: React.FC<ReplySectionProps> = ({
@@ -26,16 +31,16 @@ const ReplySection: React.FC<ReplySectionProps> = ({
   onCommentLongPress,
   getReplyIndicator,
 }) => {
-  const [replies, setReplies] = useState<any[]>([]);
+  const [replies, setReplies] = useState<DiscussionComment[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const mergedReplies = useMemo(() => {
-    const existingIds = new Set(replies.map((r: any) => r.id));
-    const newFromParent = preloadedReplies.filter((r: any) => !existingIds.has(r.id));
+    const existingIds = new Set(replies.map((r) => r.id));
+    const newFromParent = preloadedReplies.filter((r) => !existingIds.has(r.id));
     const merged = [...newFromParent, ...replies];
     const seen = new Set<number>();
-    return merged.filter((r: any) => {
+    return merged.filter((r) => {
       if (seen.has(r.id)) return false;
       seen.add(r.id);
       return true;
@@ -96,7 +101,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({
     <View className="secondary_replies_container">
       {showReplies && (
         <View className="secondary_replies_list">
-          {mergedReplies.map((reply: any) => {
+          {mergedReplies.map((reply) => {
             const indicator = getReplyIndicator?.(reply);
             return (
               <View className="reply_item_wrapper" key={reply.id}>

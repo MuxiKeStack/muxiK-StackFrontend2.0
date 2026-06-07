@@ -16,7 +16,7 @@ type SuffixConfig = {
 };
 
 type SearchInputProps = {
-  onSearchToggle: () => void;
+  onSearchToggle?: () => void;
   onSearch: (searchText: string) => void; // 添加搜索请求的回调函数
   searchPlaceholder: string;
   searchPlaceholderStyle: string;
@@ -77,8 +77,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   const handleClick = (e: any) => {
     // 阻止事件冒泡
     e.stopPropagation();
-    // 你的其他逻辑...
-    onSearchToggle();
+    onSearchToggle?.();
   };
 
   const handleClear = () => {

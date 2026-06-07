@@ -70,8 +70,8 @@ export interface CommentInfoSlice {
   classType: classType;
   /** 加载中 */
   loading: boolean;
-  /** 更新评论 */
-  loadMoreComments: () => Promise<void>;
+  /** 加载更多评论，返回是否还有更多数据 */
+  loadMoreComments: () => Promise<boolean>;
   /** 刷新评论 */
   refreshComments: () => Promise<void>;
   /** 更新单条评论信息 */
@@ -81,8 +81,8 @@ export interface CommentInfoSlice {
     evaluationId: number,
     delta?: number
   ) => CommentInfo | undefined;
-  /** 更新评论 */
-  updateComments: (currentId: number) => Promise<void>;
+  /** 更新评论，返回是否加载到数据 */
+  updateComments: (currentId: number) => Promise<boolean>;
   /** 修改类型 */
   changeType: (type: classType) => void;
   /** 根据 id 获取 comment */

@@ -92,8 +92,6 @@ const Page: React.FC = () => {
     [fetchSearchCourses]
   );
 
-  const handleSearchToggle = () => {};
-
   const renderCourseItem = ({
     data,
     index,
@@ -112,7 +110,6 @@ const Page: React.FC = () => {
         <SearchInput
           style={{ height: '30rpx' }}
           onSearch={handleSearch}
-          onSearchToggle={handleSearchToggle}
           searchPlaceholder="搜索课程名/老师名"
           searchPlaceholderStyle="color:#9F9F9C"
           searchIconSrc="https://s2.loli.net/2023/08/26/UZrMxiKnlyFOmuX.png"

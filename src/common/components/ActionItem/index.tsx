@@ -1,4 +1,5 @@
 import { Navigator, Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import React, { useEffect, useState } from 'react';
 
 import './index.scss';
@@ -65,17 +66,26 @@ const ActionItem: React.FC<ActionItemProps> = ({
     if (type === 'like') {
       const oriSupport = shouldSupport;
       const oriTotalCount = totalCount;
+      const willSupport = !oriSupport;
 
+      void Taro.showLoading({ title: '点赞中' });
       try {
         const res = await endorse(
           id ?? 0,
           oriSupport ? COMMENT_ACTIONS.DISLIKE : COMMENT_ACTIONS.LIKE
         );
-        setShouldSupport(!oriSupport);
-        setTotalCount(oriTotalCount + (!oriSupport ? 1 : -1));
+        Taro.hideLoading();
+        setShouldSupport(willSupport);
+        setTotalCount(oriTotalCount + (willSupport ? 1 : -1));
+        void Taro.showToast({
+          title: willSupport ? '点赞成功' : '取消成功',
+          icon: 'success',
+          duration: 1000,
+        });
         onClick?.(res);
       } catch {
-        //
+        Taro.hideLoading();
+        void Taro.showToast({ title: '服务端错误', icon: 'error' });
       }
     } else {
       onClick?.();

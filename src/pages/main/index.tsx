@@ -1,6 +1,6 @@
 import { Image, ScrollView, Swiper, SwiperItem, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
 import './index.scss';
@@ -39,7 +39,8 @@ const Page: React.FC = () => {
     [COURSE_TYPE.GENERAL_ELECT]: 0,
     [COURSE_TYPE.GENERAL_CORE]: 0,
   });
-  const [scrollTop, setScrollTop] = useState(0);
+  // scrollTopMap 是 ref，改它不会触发渲染；用 forceRender 在切 tab/置顶后让 ScrollView 重新读取滚动位置
+  const [, forceRender] = useReducer((x: number) => x + 1, 0);
   const gate = useGateGuard();
 
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -55,7 +56,7 @@ const Page: React.FC = () => {
 
   const handleChangeType = useCallback((type: string) => {
     useCourseStore.getState().changeType(type as (typeof COURSE_TYPE)[keyof typeof COURSE_TYPE]);
-    setScrollTop(scrollTopMap.current[type] as number);
+    forceRender();
   }, []);
 
   const handleSwiperChange = useCallback(
@@ -110,8 +111,11 @@ const Page: React.FC = () => {
     void useCourseStore
       .getState()
       .loadMoreComments()
-      .then(() => {
-        if (gen === loadGenRef.current) Taro.hideLoading();
+      .then((hasMore) => {
+        if (gen === loadGenRef.current) {
+          Taro.hideLoading();
+          if (!hasMore) void Taro.showToast({ title: '没有更多了', icon: 'none' });
+        }
       })
       .catch(() => {
         if (gen === loadGenRef.current) {
@@ -137,8 +141,8 @@ const Page: React.FC = () => {
 
   const handleScrollToTop = useCallback(() => {
     const ct = useCourseStore.getState().classType;
-    setScrollTop(0);
     scrollTopMap.current = { ...scrollTopMap.current, [ct]: 0 };
+    forceRender();
 
     if (scrollToTopTimerRef.current) clearTimeout(scrollToTopTimerRef.current);
     scrollToTopTimerRef.current = setTimeout(() => {
@@ -210,8 +214,8 @@ const Page: React.FC = () => {
                       comment={comment}
                       showTag
                       type="inner"
-                      onClick={() => handleComment({ ...comment, type: 'inner' })}
-                      onCommentClick={() => handleComment({ ...comment, type: 'inner' })}
+                      onClick={handleComment}
+                      onCommentClick={handleComment}
                     />
                     <View className="h-4 w-full"></View>
                   </View>

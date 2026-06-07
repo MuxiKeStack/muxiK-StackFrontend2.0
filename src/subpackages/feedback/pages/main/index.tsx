@@ -115,10 +115,6 @@ const FeedbackPage = () => {
     };
   }, [fullSheetData])();
 
-  const handleSearchToggle = () => {
-    // todos: 好像还不知道加什么
-  };
-
   const handleNavigateToPage = (url: string) => {
     try {
       navigate(url);
@@ -141,7 +137,6 @@ const FeedbackPage = () => {
           searchIconSrc={searchIcon}
           searchText={value}
           setSearchText={setValue}
-          onSearchToggle={handleSearchToggle}
           onSearch={handleSearch}
           suffix={{
             text: '搜索',

@@ -12,7 +12,6 @@ import { BottomInput, FeedCard, ReviewDiscussion } from '@/common/components';
 import type { BottomInputRef } from '@/common/components/BottomInput';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { getAnswerDetail } from '@/common/request/api/answers';
-import { bus } from '@/common/utils';
 
 const Page: React.FC = () => {
   const { guard } = useAuthGuard();
@@ -29,44 +28,19 @@ const Page: React.FC = () => {
       if (!value.trim() || !questionId || !guard()) return;
 
       const profile = useUserStore.getState().profile;
-      const newAnswer = {
-        id: -Date.now(),
-        publisher_id: 0,
-        question_id: questionId,
+      const store = useQuestionDetailStore.getState();
+      const optimisticId = store.addOptimisticAnswer({
+        questionId,
         content: value,
-        stance: 0,
-        total_support_count: 0,
-        total_comment_count: 0,
-        utime: Date.now(),
-        ctime: Date.now(),
-        publisher: {
-          id: 0,
-          avatar: profile?.avatar || '',
-          nickname: profile?.nickname || '我',
-        },
-      };
-
-      useQuestionDetailStore.setState((s) => ({
-        answers: [newAnswer, ...s.answers],
-      }));
+        publisher: { id: 0, avatar: profile?.avatar || '', nickname: profile?.nickname || '我' },
+      });
 
       try {
-        await useQuestionDetailStore.getState().publishReply(questionId, value);
+        await store.publishReply(questionId, value);
         bottomInputRef.current?.clearValue();
-        useQuestionDetailStore.setState((s) => {
-          if (!s.question) return s;
-          const updated = {
-            ...s.question,
-            answer_cnt: (s.question.answer_cnt || 0) + 1,
-            preview_answers: [
-              { id: newAnswer.id, content: newAnswer.content },
-              ...(s.question.preview_answers || []),
-            ],
-          };
-          bus.emit('question', updated);
-          return { question: updated };
-        });
+        store.confirmOptimisticAnswer(optimisticId);
       } catch {
+        store.removeOptimisticAnswer(optimisticId);
         Taro.showToast({ title: '发布失败', icon: 'error' });
       }
     },
