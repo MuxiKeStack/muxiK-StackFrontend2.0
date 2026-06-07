@@ -63,11 +63,13 @@ const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   const handleInputChange = (e: any) => {
+    // Taro Input 的输入值在 e.detail.value（与 BottomInput 一致），e.target.value 在 weapp 取不到
+    const nextValue = e.detail?.value ?? e.target?.value ?? '';
     if (setSearchText) {
-      setSearchText(e.target.value);
+      setSearchText(nextValue);
       return;
     }
-    setCustomSearchText(e.target.value); // 更新搜索文本
+    setCustomSearchText(nextValue);
   };
 
   const inputRef = useRef(null);

@@ -1,6 +1,6 @@
 import { Progress, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
 import './index.scss';
@@ -28,6 +28,7 @@ const Header: React.FC = memo(() => {
   });
 
   const translateTitle = useMemo(() => (title: string) => TITLE_MAP[title] || title, []);
+  const navigatedRef = useRef(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -58,9 +59,12 @@ const Header: React.FC = memo(() => {
     void fetchUserData();
   }, [translateTitle]);
 
-  if (user.newUser) {
-    void Taro.navigateTo({ url: ROUTES.profile.editUser });
-  }
+  useEffect(() => {
+    if (user.newUser && !navigatedRef.current) {
+      navigatedRef.current = true;
+      void Taro.navigateTo({ url: ROUTES.profile.editUser });
+    }
+  }, [user.newUser]);
 
   return (
     <View className="profile_header">

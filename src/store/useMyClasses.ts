@@ -22,7 +22,6 @@ interface MyCourseStore {
     query: { yearValue: string; termValue: string },
     options?: { force?: boolean }
   ) => Promise<MyCourseProps[]>;
-  refresh: (year: string, semester: string) => Promise<void>;
   clearAllCache: () => void;
 }
 
@@ -68,23 +67,6 @@ export const useMyClassStore = create<MyCourseStore>()(
         });
         set({ source: result.source });
         return result.data;
-      },
-
-      refresh: async (year, semester) => {
-        try {
-          const data = (await getUserCourses({
-            year,
-            term: semester,
-          })) as MyCourseProps[];
-          if (Array.isArray(data) && data.length > 0) {
-            const key = `${year}-${semester}`;
-            set((state) => ({
-              coursesCache: { ...state.coursesCache, [key]: data },
-            }));
-          }
-        } catch (e) {
-          console.error('[useMyClasses] 刷新失败:', e);
-        }
       },
 
       clearAllCache: () => {

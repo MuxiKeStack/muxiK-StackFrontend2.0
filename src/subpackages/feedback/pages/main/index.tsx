@@ -11,6 +11,7 @@ import searchIcon from '@/common/assets/img/search.png';
 import { FloatButton, SearchInput } from '@/common/components';
 import Loading from '@/common/components/Loading';
 import { ROUTES } from '@/common/constants/routes';
+import { copyToClipboard } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 import type { SheetItem } from '@/subpackages/feedback/type';
 
@@ -190,13 +191,7 @@ const FeedbackPage = () => {
           <Text className="faq_group_number">{number}</Text>
           <Text
             className="faq_copy"
-            onClick={() => {
-              void Taro.setClipboardData({
-                data: String(number),
-              }).then(() => {
-                void Taro.showToast({ title: '已复制', icon: 'success', duration: 1000 });
-              });
-            }}
+            onClick={() => copyToClipboard(String(number), { successText: '已复制' })}
           >
             点击复制
           </Text>

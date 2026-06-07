@@ -2,6 +2,7 @@ export { resolveAvatarFrame } from './avatarDecoration';
 export type { AvatarFrame } from './avatarDecoration';
 export { calculateAdler32 } from './checkSum';
 export { default as checkToken } from './checkToken';
+export { copyToClipboard } from './clipboard';
 export { bus } from './eventBus';
 export { formatDate, formatIMTime } from './formatDate';
 export { getFileInfo } from './getFileInfo';

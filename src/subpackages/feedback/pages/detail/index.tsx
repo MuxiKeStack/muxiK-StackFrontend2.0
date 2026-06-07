@@ -167,7 +167,7 @@ export default function FeedbackDetail() {
                 ) : (
                   imageUrls.map((uri, idx) => (
                     <Image
-                      key={idx}
+                      key={uri || idx}
                       className="feedback_detail_image_item"
                       src={uri}
                       onClick={() => {

@@ -199,7 +199,7 @@ const Page: React.FC = () => {
         ) : myclasses && myclasses.length > 0 ? (
           myclasses.map((each, index) => (
             <View
-              key={index}
+              key={each.id ?? index}
               className="myclass_item"
               onClick={() => handleClassClick(each)}
             >
