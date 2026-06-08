@@ -9,9 +9,8 @@ import './index.scss';
 import { useResearchStore } from '@/store';
 
 import { deleteIcon } from '@/common/assets/img/icons';
-import { SearchInput } from '@/common/components';
+import { SearchInput, SearchLabel } from '@/common/components';
 import CourseLabel from '@/common/components/CourseLabel';
-import { SearchLabel } from '@/common/components';
 import { NavigationBar } from '@/modules/navigation';
 
 import type { SearchHistoryItem, SearchResultCourse } from './types';
@@ -20,6 +19,7 @@ interface ConditionalRenderProps {
   showResults: boolean;
   classes: SearchResultCourse[];
   hrs: SearchHistoryItem[];
+
   handleSearch: (searchText: string) => void;
   handleDelete: () => void;
 }

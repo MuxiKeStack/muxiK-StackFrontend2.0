@@ -1,0 +1,1 @@
+export { useMyClassStore } from './store';

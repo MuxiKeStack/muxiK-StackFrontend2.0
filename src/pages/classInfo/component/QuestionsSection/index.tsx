@@ -7,6 +7,7 @@ import type { WebQuestionVo } from '@/common/types/userTypes';
 
 interface Props {
   questionlist: WebQuestionVo[];
+
   onMoreClick: () => void;
   onEmptyClick: () => void;
   onQuestionClick: (question: WebQuestionVo) => void;

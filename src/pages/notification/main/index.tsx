@@ -4,21 +4,20 @@ import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import './index.scss';
 
+import { loadNotifications } from '@/actions/notification';
 import { useNotificationStore } from '@/store';
 
-import { VirtualList } from '@/common/components';
+import { TabBar, VirtualList } from '@/common/components';
 import { TabItemProps } from '@/common/types/tabBarType';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 
-import { TabBar } from '@/common/components';
 import { MessageItemProps } from '../type';
 import { renderMessageItem } from './component/MessageItem';
 
 const Notification: React.FC = memo(() => {
   const data = useNotificationStore((s) => s.data);
   const isLoading = useNotificationStore((s) => s.loading);
-  const load = useNotificationStore((s) => s.load);
 
   const navigate = useCallback((url: string) => void Taro.navigateTo({ url }), []);
 
@@ -33,8 +32,8 @@ const Notification: React.FC = memo(() => {
   }, [data]);
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    void loadNotifications();
+  }, []);
 
   const isInitialMount = useRef(true);
   useDidShow(() => {
@@ -42,7 +41,7 @@ const Notification: React.FC = memo(() => {
       isInitialMount.current = false;
       return;
     }
-    void load();
+    void loadNotifications();
   });
 
   const handleTabClick = async (key: string) => {

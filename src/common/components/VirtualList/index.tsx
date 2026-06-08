@@ -1,7 +1,7 @@
-import Loading from '../Loading';
 import { ScrollView, Text, View } from '@tarojs/components';
 import type { VirtualListProps as TaroVirtualListProps } from '@tarojs/components-advanced/dist/components/virtual-list';
 import { memo, ReactNode, useCallback, useRef, useState } from 'react';
+import Loading from '../Loading';
 
 interface VirtualListProps extends TaroVirtualListProps {
   item: React.FC<{ id: any; data: any; index: number }>;
@@ -12,6 +12,7 @@ interface VirtualListProps extends TaroVirtualListProps {
   EmptyChildren?: string | ReactNode;
   initialLoading?: boolean;
   timeout?: number;
+
   onTimeout?: () => void;
   onLoadMore?: () => void;
   getItemKey?: (item: any, index: number) => string | number;
@@ -106,17 +107,15 @@ const VirtualList: React.FC<VirtualListProps> = memo(
       return (
         <View
           style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            height,
+            width,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            position: 'relative',
           }}
         >
-          <Loading type="circular" size={60} isCenter={false} />
+          <Loading type="circular" size={60} isCenter />
         </View>
       );
     }

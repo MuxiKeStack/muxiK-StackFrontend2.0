@@ -10,16 +10,18 @@ type SelectType = '学年' | '学期';
 interface SelectProps {
   type: SelectType;
   value: string;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   style?: CSSProperties;
+
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface SelectorProps {
   selection: { year: string; term: string };
   isOpen: boolean;
+  children: React.ReactNode;
+
   setSelection: React.Dispatch<React.SetStateAction<{ year: string; term: string }>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  children: React.ReactNode;
 }
 
 const Times = () => {

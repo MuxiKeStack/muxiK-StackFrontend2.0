@@ -1,27 +1,62 @@
 import { View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import './index.scss';
 
-import { useCourseStore } from '@/store/useCourseStore';
-import { useQuestionDetailStore } from '@/store/useQuestionDetailStore';
-import { useUserStore } from '@/store/useUserStore';
+import {
+  loadMoreQuestionAnswers,
+  publishQuestionAnswer,
+  syncQuestionDetailSession,
+} from '@/actions';
+import { usePublisherStore } from '@/store/publisher';
+import { useQuestionDetailStore } from '@/store/question/detail';
+import {
+  selectActiveAnswers,
+  selectActiveQuestion,
+  selectQuestionBucket,
+} from '@/store/question/detail/selectors';
+import { useUserStore } from '@/store/user';
 
 import { BottomInput, FeedCard, ReviewDiscussion } from '@/common/components';
 import type { BottomInputRef } from '@/common/components/BottomInput';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { getAnswerDetail } from '@/common/request/api/answers';
-import { bus } from '@/common/utils';
 
 const Page: React.FC = () => {
   const { guard } = useAuthGuard();
-  const question = useQuestionDetailStore((s) => s.question);
-  const answers = useQuestionDetailStore((s) => s.answers);
-  const answersHasMore = useQuestionDetailStore((s) => s.answersHasMore);
-  const answersLoaded = useQuestionDetailStore((s) => s.answersLoaded);
-  const publishers = useCourseStore((s) => s.publishers);
+  const question = useQuestionDetailStore(selectActiveQuestion);
+  const answers = useQuestionDetailStore(selectActiveAnswers);
+  const activeQuestionId = useQuestionDetailStore((s) => s.activeQuestionId);
+  const bucket = useQuestionDetailStore((s) => selectQuestionBucket(s, activeQuestionId));
+  const answersHasMore = bucket?.answersHasMore ?? true;
+  const answersLoaded = bucket?.answersLoaded ?? false;
+  const publishers = usePublisherStore((s) => s.publishers);
   const bottomInputRef = useRef<BottomInputRef>(null);
+
+  const syncFromRoute = useCallback(async () => {
+    const params = Taro.getCurrentInstance()?.router?.params || {};
+    let qid = Number(params.id);
+
+    if (!(qid > 0) && params.answerId) {
+      try {
+        const answer = await getAnswerDetail(Number(params.answerId));
+        qid = Number(answer.question_id);
+      } catch (e) {
+        console.error('根据回答加载问题失败:', e);
+      }
+    }
+
+    if (qid > 0) await syncQuestionDetailSession(qid);
+  }, []);
+
+  useEffect(() => {
+    void syncFromRoute();
+  }, [syncFromRoute]);
+
+  useDidShow(() => {
+    void syncFromRoute();
+  });
 
   const handleReplySubmit = useCallback(
     async (value: string) => {
@@ -29,22 +64,21 @@ const Page: React.FC = () => {
       if (!value.trim() || !questionId || !guard()) return;
 
       const profile = useUserStore.getState().profile;
-      const store = useQuestionDetailStore.getState();
-      const optimisticId = store.addOptimisticAnswer({
+      const result = await publishQuestionAnswer({
         questionId,
         content: value,
-        publisher: { id: 0, avatar: profile?.avatar || '', nickname: profile?.nickname || '我' },
+        publisher: {
+          id: 0,
+          avatar: profile?.avatar || '',
+          nickname: profile?.nickname || '我',
+        },
       });
 
-      try {
-        await store.publishReply(questionId, value);
+      if (result.ok) {
         bottomInputRef.current?.clearValue();
-        const updated = store.confirmOptimisticAnswer(optimisticId);
-        if (updated) bus.emit('question', updated);
-      } catch {
-        store.removeOptimisticAnswer(optimisticId);
-        Taro.showToast({ title: '发布失败', icon: 'error' });
+        return;
       }
+      void Taro.showToast({ title: '发布失败', icon: 'error' });
     },
     [question?.id, guard]
   );
@@ -58,32 +92,11 @@ const Page: React.FC = () => {
     [answers, publishers]
   );
 
-  useEffect(() => {
-    void (async () => {
-      const params = Taro.getCurrentInstance()?.router?.params || {};
-      let qid = Number(params.id);
-
-      if (!(qid > 0) && params.answerId) {
-        try {
-          const answer = await getAnswerDetail(Number(params.answerId));
-          qid = Number(answer.question_id);
-        } catch (e) {
-          console.error('根据回答加载问题失败:', e);
-        }
-      }
-
-      if (qid > 0) {
-        void useQuestionDetailStore.getState().loadQuestion(qid);
-        void useQuestionDetailStore.getState().loadAnswers(qid);
-      }
-    })();
-  }, []);
-
   const loadMoreAnswers = async () => {
     const questionId = question?.id;
     if (!questionId) return;
     try {
-      await useQuestionDetailStore.getState().loadMoreAnswers(questionId);
+      await loadMoreQuestionAnswers(questionId);
     } catch (e) {
       console.error('加载更多回答失败:', e);
     }
@@ -114,6 +127,7 @@ const Page: React.FC = () => {
 
       <View className="questionInfo_page_comments_list">
         <ReviewDiscussion
+          key={activeQuestionId ?? 'none'}
           comments={normalizedAnswers}
           hasMore={answersHasMore}
           initialLoading={!answersLoaded}

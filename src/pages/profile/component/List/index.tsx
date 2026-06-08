@@ -5,7 +5,7 @@ import { AtList, AtListItem } from 'taro-ui';
 import './index.scss';
 
 import { useActiveButtonStore, useAuthStore } from '@/store';
-import { useUserStore } from '@/store/useUserStore';
+import { useUserStore } from '@/store/user';
 
 import {
   BookIcon,

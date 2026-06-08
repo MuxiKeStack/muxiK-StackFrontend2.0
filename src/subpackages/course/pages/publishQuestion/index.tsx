@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { useQuestionPublishStore } from '@/store';
+import { publishQuestionAndBroadcast } from '@/actions';
 
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import { CourseInfo, GateScreen, PublishHeader } from '@/common/components';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
-import { bus } from '@/common/utils';
 
 const Page: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);
@@ -54,19 +53,13 @@ const Page: React.FC = () => {
       content,
       is_anonymous: isAnonymous,
     };
-    useQuestionPublishStore
-      .publish(questionobj)
-      .then((res) => {
-        const newQuestion = {
-          ...(res || {}),
-          content,
-          biz_id: Number(courseId),
-          biz: 'Course',
-          answer_cnt: 0,
-          preview_answers: [],
-          is_anonymous: isAnonymous,
-        };
-        bus.emit('question', newQuestion);
+    publishQuestionAndBroadcast(questionobj, {
+      content,
+      biz_id: Number(courseId),
+      biz: 'Course',
+      is_anonymous: isAnonymous,
+    })
+      .then(() => {
         void Taro.showToast({ title: '发布问题成功', icon: 'success' });
         void Taro.navigateBack();
       })

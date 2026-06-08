@@ -12,6 +12,7 @@ import type { WebQuestionVo } from '@/common/types/userTypes';
 interface QAListProps {
   qas: WebQuestionVo[];
   courseId: string | null;
+
   onQuestionClick: (question: WebQuestionVo) => void;
 }
 

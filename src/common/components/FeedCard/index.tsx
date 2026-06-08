@@ -4,7 +4,7 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
-import { useCourseStore } from '@/store/useCourseStore';
+import { useCourseStore } from '@/store/course';
 
 import { ActionItem, UserIdentity } from '@/common/components';
 import { COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
@@ -21,14 +21,14 @@ interface FeedCardProps {
   isHot?: boolean;
   showTag?: boolean;
   showAll?: boolean;
-  onClick?: (comment: CommentInfo) => void;
-  onCommentClick?: (comment: CommentInfo) => void;
-  onLikeClick?: (comment: CommentInfo) => void;
   classNames?: string;
   isEditable?: boolean;
   initialVisibility?: 'public' | 'private';
-  onVisibilityChange?: (id: number, visibility: 'public' | 'private') => void;
   hideStar?: boolean;
+
+  onClick?: (comment: CommentInfo) => void;
+  onCommentClick?: (comment: CommentInfo) => void;
+  onVisibilityChange?: (id: number, visibility: 'public' | 'private') => void;
 }
 
 interface ReviewHeaderProps {
@@ -36,8 +36,17 @@ interface ReviewHeaderProps {
   isHot?: boolean;
   isEditable?: boolean;
   initialVisibility?: 'public' | 'private';
-  onVisibilityChange?: (id: number, visibility: 'public' | 'private') => void;
   hideStar?: boolean;
+
+  onVisibilityChange?: (id: number, visibility: 'public' | 'private') => void;
+}
+
+interface ReviewFooterProps {
+  comment: CommentInfo;
+  type?: string;
+  fatherRecord?: CommentInfo;
+
+  onCommentClick?: (comment: CommentInfo) => void;
 }
 
 const ReviewHeader: React.FC<ReviewHeaderProps> = ({
@@ -149,14 +158,6 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
   );
 };
 
-interface ReviewFooterProps {
-  comment: CommentInfo;
-  type?: string;
-  fatherRecord?: CommentInfo;
-  onLikeClick?: (comment: CommentInfo) => void;
-  onCommentClick?: (comment: CommentInfo) => void;
-}
-
 const ReviewFooter: React.FC<ReviewFooterProps> = ({
   comment: {
     ctime,
@@ -169,7 +170,6 @@ const ReviewFooter: React.FC<ReviewFooterProps> = ({
   comment,
   type,
   fatherRecord,
-  onLikeClick,
   onCommentClick,
 }) => {
   const isInner = type === 'inner';
@@ -185,7 +185,6 @@ const ReviewFooter: React.FC<ReviewFooterProps> = ({
           count={total_support_count}
           id={id}
           stance={stance}
-          onClick={(updated) => onLikeClick?.(updated ?? comment)}
           disabled={!isInner}
         />
         <ActionItem
@@ -207,7 +206,6 @@ const FeedCard: React.FC<FeedCardProps> = memo(
     showAll,
     showTag,
     onClick,
-    onLikeClick,
     onCommentClick,
     classNames,
     isHot,
@@ -253,7 +251,6 @@ const FeedCard: React.FC<FeedCardProps> = memo(
             comment={comment}
             type={type}
             fatherRecord={type === 'inner' ? fatherRecord : undefined}
-            onLikeClick={onLikeClick}
             onCommentClick={onCommentClick}
           />
         </View>

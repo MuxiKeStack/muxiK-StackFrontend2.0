@@ -87,7 +87,7 @@ const Page: React.FC = () => {
       const classes = await load(year, sem, { yearValue, termValue: semValue });
       setMyclasses(classes);
     } catch (error) {
-      console.error('Error fetching user courses:', error);
+      console.error('用户课程信息获取错误:', error);
       setMyclasses([]);
       void Taro.showToast({ icon: 'error', title: '加载失败' });
     } finally {

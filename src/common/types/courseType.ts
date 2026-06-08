@@ -70,10 +70,15 @@ export interface CommentInfoSlice {
   classType: classType;
   /** 加载中 */
   loading: boolean;
-  /** 加载更多评论，返回是否还有更多数据 */
-  loadMoreComments: () => Promise<boolean>;
-  /** 刷新评论 */
-  refreshComments: () => Promise<void>;
+
+  /** 合并一页 feed 数据（由 actions/course/feed 拉取后写入） */
+  applyFeedPage: (params: {
+    classType: classType;
+    resDataList: CommentInfo[];
+    currentId: number;
+    existingList: CommentInfo[];
+    prevId?: number;
+  }) => void;
   /** 更新单条评论信息 */
   updateCommentInfo: (currentId: number, info: CommentInfo) => void;
   /** 广场列表中某条课评的评论数 +1（跨分类 tab 查找） */
@@ -81,14 +86,15 @@ export interface CommentInfoSlice {
     evaluationId: number,
     delta?: number
   ) => CommentInfo | undefined;
-  /** 更新评论，返回是否加载到数据 */
-  updateComments: (currentId: number) => Promise<boolean>;
   /** 修改类型 */
   changeType: (type: classType) => void;
   /** 根据 id 获取 comment */
   getComment: (id: number) => CommentInfo | undefined;
-  /** 点赞 */
-  endorse: (id: number, action: COMMENT_ACTIONS) => Promise<CommentInfo | undefined>;
+  /** 点赞字段局部更新（由 actions 层在 API 成功后调用） */
+  patchEvaluationLike: (
+    evaluationId: number,
+    willLike: boolean
+  ) => CommentInfo | undefined;
   /** 评论 */
   comment: (param: {
     id: number;
@@ -103,6 +109,7 @@ export interface CommentInfoSlice {
 export interface PublisherInfoSlice {
   /** 评课人信息 */
   publishers: Record<number, PublisherDetailsType>;
+
   /** 批量缓存评课人信息（从评论等接口内联 user 数据提取） */
   cachePublishers: (users: PublisherDetailsType[]) => void;
   /** 获取评课人：缓存 → API → 兜底默认值 */
@@ -114,6 +121,7 @@ export interface PublisherInfoSlice {
 export interface CourseDetailSlice {
   /** course信息 */
   courseDetail: Record<number, CourseDetailsType>;
+
   /** 批量缓存课程信息（从评价列表等接口内联数据提取） */
   cacheCourseDetails: (courses: Record<number, CourseDetailsType>) => void;
   /** 从服务端获取Course信息 */
@@ -122,4 +130,4 @@ export interface CourseDetailSlice {
   getCourseDetail: (courseId: number) => Promise<CourseDetailsType | null>;
 }
 
-export type CourseInfoStore = CommentInfoSlice & PublisherInfoSlice & CourseDetailSlice;
+export type CourseInfoStore = CommentInfoSlice & CourseDetailSlice;

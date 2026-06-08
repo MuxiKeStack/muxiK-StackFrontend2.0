@@ -16,28 +16,24 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { useEvaluatePublishStore, useEvaluationHistoryStore } from '@/store';
+import { publishEvaluationAndBroadcast } from '@/actions';
 
 import { GateScreen, StarRating } from '@/common/components';
 import FeatureLabel from '@/common/components/FeatureLabel';
 import { ASSESSMENT_MAP, COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
-import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 
 const Page: React.FC = () => {
-  // 初始化状态，存储所有选中的 Radio 项的值
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  // 处理 Radio 变化的函数
+
   const handleRadioChange = (value: string) => {
     const currentIndex = selectedValues.indexOf(value);
     if (currentIndex > -1) {
-      // 如果值已选中，移除它
       const newSelectedValues = selectedValues.filter((_, i) => i !== currentIndex);
       setSelectedValues(newSelectedValues);
     } else {
-      // 否则，添加这个值
       setSelectedValues([...selectedValues, value]);
     }
   };
@@ -51,7 +47,6 @@ const Page: React.FC = () => {
       );
       setSelectedFeatureValues(newSelectedFeatureValues);
     } else {
-      // 否则，添加这个 id
       setSelectedFeatureValues([...selectedFeatureValues, value]);
     }
   };
@@ -61,14 +56,11 @@ const Page: React.FC = () => {
 
   const countContent = (e: any) => {
     const { value } = e.detail;
-    setComment(value); // 更新状态为当前输入框的值
+    setComment(value);
     const length = value.length;
     setLength(length);
   };
 
-  // const course_id = 1; //暂时先指定一个courseId来测试使用
-
-  // 更新 id 状态为 number 类型
   const [courseId, setId] = useState<number | undefined>(undefined);
   const [courseName, setName] = useState<string | null>('只能评价自己学过的课程哦');
   const gate = useGateGuard();
@@ -108,16 +100,12 @@ const Page: React.FC = () => {
       status: 'Public' as 'Public' | 'Private',
       is_anonymous: isAnonymous,
     };
-    // showLoading 必须在所有校验通过后再调用，否则校验失败 early return 会漏掉 hideLoading
+
     void Taro.showLoading({
       title: '提交中',
     });
-    useEvaluatePublishStore
-      .publish(evaluationobj)
-      .then((data) => {
-        const newEvaluation = { ...evaluationobj, ...(data || {}) };
-        useEvaluationHistoryStore.getState().invalidateCache('Public');
-        bus.emit('evaluation', newEvaluation);
+    publishEvaluationAndBroadcast(evaluationobj)
+      .then(() => {
         void Taro.navigateBack().then(() => {
           void Taro.showToast({
             title: '课评发布成功',

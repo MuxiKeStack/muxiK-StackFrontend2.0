@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 import './index.scss';
 
-import { useUserStore } from '@/store/useUserStore';
+import { useUserStore } from '@/store/user';
 
 import { Avatar } from '@/common/components';
 import { formatDate } from '@/common/utils';

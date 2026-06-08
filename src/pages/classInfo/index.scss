@@ -44,6 +44,8 @@
   margin-top: 24%;
 
   .classInfo_page_grade_title {
+    @include line-decoration;
+
     position: relative;
     display: flex;
     align-items: center;
@@ -53,8 +55,6 @@
     text-align: center;
     font-size: 38rpx;
     color: $color_text_primary;
-
-    @include line-decoration;
   }
 
   .classInfo_page_chart_container {

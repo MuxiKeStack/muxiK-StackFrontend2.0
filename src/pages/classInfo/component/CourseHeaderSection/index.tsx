@@ -8,6 +8,7 @@ import StarIcon from '@/common/assets/img/profile/star_icon.png';
 interface Props {
   name?: string;
   collect?: boolean;
+
   onCollect: () => void;
 }
 

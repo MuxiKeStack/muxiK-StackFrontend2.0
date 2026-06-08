@@ -16,6 +16,7 @@ interface ActionItemProps {
   disabled?: boolean;
   id?: number;
   stance?: number;
+
   onClick?: (res?: CommentInfo) => void;
 }
 
@@ -24,6 +25,7 @@ interface LikeActionItemProps {
   disabled?: boolean;
   id?: number;
   stance?: number;
+
   onClick?: (res?: CommentInfo) => void;
 }
 

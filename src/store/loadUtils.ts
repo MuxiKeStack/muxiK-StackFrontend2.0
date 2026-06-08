@@ -2,10 +2,11 @@ import type { DataSource, LoadResult, LoadStrategy } from './types';
 
 interface LoadOptions<T> {
   strategy: LoadStrategy;
+  force?: boolean;
+
   getCache: () => T | null | undefined;
   fetch: () => Promise<T>;
   setCache: (data: T) => void;
-  force?: boolean;
 }
 
 export async function loadData<T>(options: LoadOptions<T>): Promise<LoadResult<T>> {

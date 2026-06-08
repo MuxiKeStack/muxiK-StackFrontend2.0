@@ -5,7 +5,7 @@ import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
-import { useUserStore } from '@/store/useUserStore';
+import { useUserStore } from '@/store/user';
 
 import { Avatar, TitleButton } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';

@@ -8,13 +8,13 @@ import type { CommentInfo } from '@/common/types/commentTypes';
 
 interface Props {
   comments: CommentInfo[];
+
   onCommentClick: (props: CommentInfo) => void;
-  onLikeClick: () => void;
   onEmptyClick: () => void;
 }
 
 const CommentsSection: React.FC<Props> = React.memo(
-  ({ comments, onCommentClick, onLikeClick, onEmptyClick }) => (
+  ({ comments, onCommentClick, onEmptyClick }) => (
     <View className="classInfo_page_comments_section">
       <View className="classInfo_page_comments_title">评论区</View>
       <ScrollView className="classInfo_page_comments_scroll" scrollY>
@@ -26,7 +26,6 @@ const CommentsSection: React.FC<Props> = React.memo(
               showTag
               comment={comment}
               onClick={onCommentClick}
-              onLikeClick={onLikeClick}
               type="inner"
             />
           ))}

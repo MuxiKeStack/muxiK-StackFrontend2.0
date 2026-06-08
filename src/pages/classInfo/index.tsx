@@ -5,16 +5,21 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import './index.scss';
 
+import {
+  loadClassInfo,
+  openEvaluationDetail,
+  openQuestionDetail,
+  subscribeClassInfoEvents,
+  toggleClassCollect,
+} from '@/actions';
 import { useClassInfoStore } from '@/store';
 
-import { Drawer, GateScreen } from '@/common/components';
-import { LineChart } from '@/common/components';
+import { Drawer, GateScreen, LineChart } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import type { CommentInfo } from '@/common/types/commentTypes';
 import type { WebQuestionVo } from '@/common/types/userTypes';
-import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 
 import CommentsSection from './component/CommentsSection';
@@ -31,11 +36,6 @@ const Page: React.FC = () => {
   const grade = useClassInfoStore((s) => s.grade);
   const questionlist = useClassInfoStore((s) => s.questionlist);
   const collect = useClassInfoStore((s) => s.collect);
-  const load = useClassInfoStore((s) => s.load);
-  const refreshComments = useClassInfoStore((s) => s.refreshComments);
-  const toggleCollect = useClassInfoStore((s) => s.toggleCollect);
-  const upsertQuestion = useClassInfoStore((s) => s.upsertQuestion);
-  const prependEvaluation = useClassInfoStore((s) => s.prependEvaluation);
 
   const gate = useGateGuard();
   const { guard } = useAuthGuard();
@@ -50,6 +50,7 @@ const Page: React.FC = () => {
   const bailout = useCallback(() => {
     void Taro.showToast({ title: '加载课程信息失败，请稍后重试', icon: 'none' });
     if (bailoutTimerRef.current) clearTimeout(bailoutTimerRef.current);
+
     bailoutTimerRef.current = setTimeout(() => {
       void Taro.switchTab({ url: '/pages/main/index' });
     }, 2000);
@@ -59,7 +60,7 @@ const Page: React.FC = () => {
     if (!courseId) return;
     void Taro.showLoading({ title: '加载中' });
 
-    void load(Number(courseId))
+    void loadClassInfo(Number(courseId))
       .then((data) => {
         if (!data.course) bailout();
       })
@@ -70,21 +71,21 @@ const Page: React.FC = () => {
       .finally(() => {
         void Taro.hideLoading();
       });
-  }, [courseId, load, bailout]);
+  }, [courseId, bailout]);
 
   const handleCollect = useCallback(async () => {
     if (!courseId || !course) return;
     if (!guard()) return;
 
     try {
-      const nextCollect = await toggleCollect(Number(courseId), course, !!collect);
+      const nextCollect = await toggleClassCollect(Number(courseId), course, !!collect);
       const titleText = nextCollect ? '收藏成功' : '取消收藏成功';
       void Taro.showToast({ title: titleText, icon: 'success' });
     } catch (err) {
       console.error(err);
       void Taro.showToast({ title: '操作失败', icon: 'error' });
     }
-  }, [courseId, course, collect, toggleCollect, guard]);
+  }, [courseId, course, collect, guard]);
 
   const gradeData = useMemo(() => {
     const customData: number[] = [];
@@ -107,29 +108,12 @@ const Page: React.FC = () => {
     };
   }, [grade]);
 
-  const onRefreshComments = useCallback(async () => {
-    if (!courseId) return;
-    try {
-      await refreshComments(Number(courseId));
-    } catch (err) {
-      console.error(err);
-    }
-  }, [courseId, refreshComments]);
-
   useEffect(() => {
     if (!courseId) return;
     const id = Number(courseId);
-    const offQuestion = bus.on('question', (q) => {
-      if (q) upsertQuestion(id, q);
-    });
-    const offEvaluation = bus.on('evaluation', (e) => {
-      if (e) prependEvaluation(id, e);
-    });
-    return () => {
-      offQuestion();
-      offEvaluation();
-    };
-  }, [courseId, upsertQuestion, prependEvaluation]);
+
+    return subscribeClassInfoEvents(id);
+  }, [courseId]);
 
   useEffect(() => {
     return () => {
@@ -141,14 +125,16 @@ const Page: React.FC = () => {
   const handleDrawerClose = useCallback(() => setDrawerOpened(false), []);
 
   const handleCommentClick = useCallback((props: CommentInfo) => {
-    bus.stickyEmit('evaluation', props);
+    openEvaluationDetail(props);
     void Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
   }, []);
 
   const handleQuestionClick = useCallback(
     (question: WebQuestionVo) => {
-      void Taro.navigateTo({
-        url: `${ROUTES.course.questionInfo}?id=${question.id}&course_id=${courseId}`,
+      void openQuestionDetail(question.id).then(() => {
+        void Taro.navigateTo({
+          url: `${ROUTES.course.questionInfo}?id=${question.id}&course_id=${courseId}`,
+        });
       });
     },
     [courseId]
@@ -200,7 +186,6 @@ const Page: React.FC = () => {
       <CommentsSection
         comments={comments}
         onCommentClick={handleCommentClick}
-        onLikeClick={onRefreshComments}
         onEmptyClick={handleEmptyCommentClick}
       />
       <Drawer isOpened={drawerOpened} onClose={handleDrawerClose} title="问问同学">

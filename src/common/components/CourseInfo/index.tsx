@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 
 import './index.scss';
 
-import { useCourseStore } from '@/store/useCourseStore';
+import { useCourseStore } from '@/store/course';
 
 interface ICourseInfoProps {
   courseId: number;

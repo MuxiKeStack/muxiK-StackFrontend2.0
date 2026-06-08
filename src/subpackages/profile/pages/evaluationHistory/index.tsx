@@ -2,13 +2,13 @@ import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect } from 'react';
 
+import { openEvaluationDetail } from '@/actions';
 import { useEvaluationHistoryStore } from '@/store';
 
 import { FeedCard, VirtualList } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
 import type { EvaluationStatus } from '@/common/request/api/evaluations';
 import type { CommentInfo } from '@/common/types/commentTypes';
-import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 
 const STATUS_OPTIONS: { label: string; value: EvaluationStatus }[] = [
@@ -37,7 +37,8 @@ const CommentItem = memo(({ id, index, data }: CommentItemProps) => {
 
   const handleVisibilityChange = useCallback(
     async (evaluationId: number, visibility: 'public' | 'private') => {
-      const targetStatus: EvaluationStatus = visibility === 'public' ? 'Public' : 'Private';
+      const targetStatus: EvaluationStatus =
+        visibility === 'public' ? 'Public' : 'Private';
       const currentStatus = item.status as EvaluationStatus;
       const actionText = visibility === 'public' ? '公开' : '私密';
 
@@ -69,7 +70,7 @@ const CommentItem = memo(({ id, index, data }: CommentItemProps) => {
         initialVisibility={item.status === 'Public' ? 'public' : 'private'}
         onVisibilityChange={handleVisibilityChange}
         onClick={(comment) => {
-          bus.stickyEmit('evaluation', comment);
+          openEvaluationDetail(comment);
           Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
         }}
       />
@@ -82,7 +83,9 @@ const History: React.FC = memo(() => {
   const activeStatus = useEvaluationHistoryStore((s) => s.activeStatus);
   const loading = useEvaluationHistoryStore((s) => s.loading);
   const comments = useEvaluationHistoryStore((s) => s.cache[s.activeStatus]?.list ?? []);
-  const hasMore = useEvaluationHistoryStore((s) => s.cache[s.activeStatus]?.hasMore ?? true);
+  const hasMore = useEvaluationHistoryStore(
+    (s) => s.cache[s.activeStatus]?.hasMore ?? true
+  );
   const setActiveStatus = useEvaluationHistoryStore((s) => s.setActiveStatus);
   const fetchPage = useEvaluationHistoryStore((s) => s.fetchPage);
   const loadMore = useEvaluationHistoryStore((s) => s.loadMore);

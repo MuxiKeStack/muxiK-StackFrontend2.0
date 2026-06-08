@@ -5,15 +5,15 @@ import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
+import { loadMoreCourseFeed, openEvaluationDetail, refreshCourseFeed } from '@/actions';
 import { FeedCard, FloatButton, GateScreen } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
-import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 
 import type { CommentInfo } from '@/common/types/commentTypes';
 import { COURSE_TYPE } from '@/common/types/courseType';
-import { useCourseStore } from '@/store/useCourseStore';
+import { useCourseStore } from '@/store/course';
 
 const COURSE_NAME_MAP = {
   [COURSE_TYPE.ANY]: '全部',
@@ -39,7 +39,7 @@ const Page: React.FC = () => {
     [COURSE_TYPE.GENERAL_ELECT]: 0,
     [COURSE_TYPE.GENERAL_CORE]: 0,
   });
-  // scrollTopMap 是 ref，改它不会触发渲染；用 forceRender 在切 tab/置顶后让 ScrollView 重新读取滚动位置
+
   const [, forceRender] = useReducer((x: number) => x + 1, 0);
   const gate = useGateGuard();
 
@@ -55,7 +55,9 @@ const Page: React.FC = () => {
   }, []);
 
   const handleChangeType = useCallback((type: string) => {
-    useCourseStore.getState().changeType(type as (typeof COURSE_TYPE)[keyof typeof COURSE_TYPE]);
+    useCourseStore
+      .getState()
+      .changeType(type as (typeof COURSE_TYPE)[keyof typeof COURSE_TYPE]);
     forceRender();
   }, []);
 
@@ -70,9 +72,7 @@ const Page: React.FC = () => {
     const list = useCourseStore.getState().comments[classType];
     if (!list.length) {
       void Taro.showLoading({ title: '加载中' });
-      void useCourseStore
-        .getState()
-        .refreshComments()
+      void refreshCourseFeed()
         .then(() => {
           loadingTimerRef.current = setTimeout(() => {
             Taro.hideLoading();
@@ -92,7 +92,7 @@ const Page: React.FC = () => {
   }, [classType]);
 
   const handleComment = useCallback((props: CommentInfo) => {
-    bus.stickyEmit('evaluation', props);
+    openEvaluationDetail(props);
     void Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
   }, []);
 
@@ -108,9 +108,7 @@ const Page: React.FC = () => {
 
     void Taro.showLoading({ title: '加载中...', mask: false });
 
-    void useCourseStore
-      .getState()
-      .loadMoreComments()
+    void loadMoreCourseFeed()
       .then((hasMore) => {
         if (gen === loadGenRef.current) {
           Taro.hideLoading();
@@ -128,9 +126,7 @@ const Page: React.FC = () => {
   const handleRefresh = useCallback(() => {
     setRefresherTriggered(true);
 
-    void useCourseStore
-      .getState()
-      .refreshComments()
+    void refreshCourseFeed()
       .catch((e) => {
         console.error('[main] 刷新评论失败:', e);
       })

@@ -14,10 +14,11 @@ import './index.scss';
 
 interface BottomInputProps {
   placeholder?: string;
-  onSubmit: (value: string) => Promise<void> | void;
-  onMentionRemoved?: () => void;
   maxHeight?: number;
   autoFocus?: boolean;
+
+  onSubmit: (value: string) => Promise<void> | void;
+  onMentionRemoved?: () => void;
 }
 
 export interface BottomInputRef {
@@ -43,15 +44,15 @@ const BottomInput = memo(
     ) => {
       const textareaRef = useRef<any>(null);
       const [internalValue, setInternalValue] = useState('');
-      const [textareaHeightPx, setTextareaHeightPx] = useState<number | null>(null);
+      const [textareaHeight, setTextareaHeight] = useState<number | null>(null);
       const mentionRef = useRef<string | null>(null);
       const focusedRef = useRef(false);
 
       const clampHeightPx = useCallback(
-        (heightPx: number) => {
+        (height: number) => {
           const minPx = Number(Taro.pxTransform(MIN_HEIGHT_RPX));
           const maxPx = Number(Taro.pxTransform(maxHeight));
-          return Math.max(minPx, Math.min(heightPx, maxPx));
+          return Math.max(minPx, Math.min(height, maxPx));
         },
         [maxHeight]
       );
@@ -93,7 +94,7 @@ const BottomInput = memo(
         clearValue: () => {
           mentionRef.current = null;
           setInternalValue('');
-          setTextareaHeightPx(null);
+          setTextareaHeight(null);
         },
       }));
 
@@ -133,10 +134,10 @@ const BottomInput = memo(
         (e: { detail: { height: number; lineCount: number } }) => {
           const { height, lineCount } = e.detail;
           if (lineCount <= 1 && !internalValue.includes('\n')) {
-            setTextareaHeightPx(null);
+            setTextareaHeight(null);
             return;
           }
-          setTextareaHeightPx(clampHeightPx(height));
+          setTextareaHeight(clampHeightPx(height));
         },
         [clampHeightPx, internalValue]
       );
@@ -166,7 +167,7 @@ const BottomInput = memo(
               style={{
                 minHeight: `${MIN_HEIGHT_RPX}rpx`,
                 maxHeight: `${maxHeight}rpx`,
-                ...(textareaHeightPx != null ? { height: `${textareaHeightPx}px` } : {}),
+                ...(textareaHeight != null ? { height: `${textareaHeight}px` } : {}),
               }}
             />
             <Button

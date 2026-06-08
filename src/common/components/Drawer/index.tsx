@@ -5,13 +5,14 @@ import './index.scss';
 
 interface DrawerProps {
   isOpened: boolean;
-  onClose: () => void;
   title?: string;
   children?: React.ReactNode;
   mode?: 'bottom' | 'side';
   side?: 'left' | 'right';
   height?: string | number;
   width?: string | number;
+
+  onClose: () => void;
 }
 
 const Drawer: React.FC<DrawerProps> = ({

@@ -12,6 +12,7 @@ interface AvatarProps {
   username?: string;
   frame?: AvatarFrame;
   className?: string;
+
   onClick?: () => void;
 }
 

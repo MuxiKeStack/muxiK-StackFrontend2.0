@@ -11,6 +11,7 @@ interface ReplySectionProps {
   replyCount: number;
   replies?: DiscussionComment[];
   expanded: boolean;
+
   onExpandedChange: (expanded: boolean) => void;
   onLoadReplies: (rootId: number, lastId: number, limit: number) => Promise<void>;
   onCommentClick?: (comment: DiscussionComment) => void;
@@ -42,8 +43,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({
   }, [rootId, onLoadReplies, onExpandedChange]);
 
   const handleLoadMore = useCallback(async () => {
-    const lastServerId =
-      [...replies].reverse().find((r) => r.id > 0)?.id ?? 0;
+    const lastServerId = [...replies].reverse().find((r) => r.id > 0)?.id ?? 0;
     setIsLoading(true);
     try {
       await onLoadReplies(rootId, lastServerId, 10);
