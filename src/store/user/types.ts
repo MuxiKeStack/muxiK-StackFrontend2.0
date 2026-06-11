@@ -1,4 +1,4 @@
-import type { DataSource } from '@/store/types';
+import type { DataSource } from '@/common/types/loadType';
 
 export interface UserProfile {
   nickname: string;
@@ -30,4 +30,5 @@ export interface UserStore {
   }) => Promise<UserProfile | null>;
   invalidateProfile: () => void;
   invalidateAll: () => void;
+  reset: () => void;
 }

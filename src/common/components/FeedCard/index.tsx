@@ -5,6 +5,7 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import './index.scss';
 
 import { useCourseStore } from '@/store/course';
+import { useEvaluationStore } from '@/store/evaluations';
 
 import { ActionItem, UserIdentity } from '@/common/components';
 import { COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
@@ -220,7 +221,7 @@ const FeedCard: React.FC<FeedCardProps> = memo(
 
     if (!comment) return null;
     const { content, id, features } = comment;
-    const fatherRecord = useCourseStore.getState().getComment(id ?? 0);
+    const fatherRecord = id ? useEvaluationStore.getState().get(id) : undefined;
 
     return (
       <View className={`feed_card_container ${classNames || ''}`} onClick={handleClick}>

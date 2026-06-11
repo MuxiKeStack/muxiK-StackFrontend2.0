@@ -2,11 +2,10 @@ import { Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { memo, useCallback, useEffect } from 'react';
 
-import { openEvaluationDetail } from '@/actions';
 import { useEvaluationHistoryStore } from '@/store';
 
 import { FeedCard, VirtualList } from '@/common/components';
-import { ROUTES } from '@/common/constants/routes';
+import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
 import type { EvaluationStatus } from '@/common/request/api/evaluations';
 import type { CommentInfo } from '@/common/types/commentTypes';
 import { NavigationBar } from '@/modules/navigation';
@@ -70,8 +69,7 @@ const CommentItem = memo(({ id, index, data }: CommentItemProps) => {
         initialVisibility={item.status === 'Public' ? 'public' : 'private'}
         onVisibilityChange={handleVisibilityChange}
         onClick={(comment) => {
-          openEvaluationDetail(comment);
-          Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
+          navigateToEvaluationDetail(comment);
         }}
       />
       <View className="h-4 w-full"></View>
@@ -91,12 +89,6 @@ const History: React.FC = memo(() => {
   const loadMore = useEvaluationHistoryStore((s) => s.loadMore);
 
   useEffect(() => {
-    const state = useEvaluationHistoryStore.getState();
-    const cached = state.cache.Public;
-    if (cached?.list?.length) {
-      if (state.loading) useEvaluationHistoryStore.setState({ loading: false });
-      return;
-    }
     void fetchPage(false).catch((e) => {
       console.error('[evaluationHistory] 加载失败:', e);
       Taro.showToast({ title: '加载失败', icon: 'error' });
@@ -134,10 +126,12 @@ const History: React.FC = memo(() => {
         itemCount={comments.length}
         itemSize={200}
         getItemKey={(item, index) => `${item.course_id}-${index}`}
-        onLoadMore={() => {
-          void loadMore().catch((e) => {
+        onLoadMore={async () => {
+          try {
+            await loadMore();
+          } catch (e) {
             console.error('[evaluationHistory] 加载更多失败:', e);
-          });
+          }
         }}
         hasMore={hasMore}
         initialLoading={loading}

@@ -28,10 +28,6 @@
         align-items: center;
         display: flex;
 
-        &.feedback_detail_active {
-          background-color: $color_brand_hover;
-        }
-
         .feedback_detail_circle_text {
           color: $color_bg_page;
           font-size: $font_size_base;
@@ -45,9 +41,6 @@
         margin-top: 10rpx;
         text-align: center;
 
-        &.feedback_detail_active {
-          color: $color_brand_hover;
-        }
       }
 
       .feedback_detail_connector_container {
@@ -65,31 +58,6 @@
           border-radius: 4rpx;
           background-color: #e5e7eb;
         }
-      }
-    }
-
-    .feedback_detail_progress_step:nth-child(1) {
-      .feedback_detail_circle.feedback_detail_active {
-        background-color: #a8a8a8;
-      }
-      .feedback_detail_step_label.feedback_detail_active {
-        color: #a8a8a8;
-      }
-    }
-    .feedback_detail_progress_step:nth-child(2) {
-      .feedback_detail_circle.feedback_detail_active {
-        background-color: #ffd248;
-      }
-      .feedback_detail_step_label.feedback_detail_active {
-        color: #ffd248;
-      }
-    }
-    .feedback_detail_progress_step:nth-child(3) {
-      .feedback_detail_circle.feedback_detail_active {
-        background-color: #66d06a;
-      }
-      .feedback_detail_step_label.feedback_detail_active {
-        color: #66d06a;
       }
     }
   }

@@ -6,7 +6,7 @@ import { Text, View } from '@tarojs/components';
 import { memo, useEffect, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
-import { useGuideStore } from '@/store';
+import { useGuideStore } from '@/pages/guide/model';
 
 import { copyToClipboard } from '@/common/utils';
 

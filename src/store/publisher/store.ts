@@ -2,7 +2,12 @@ import { create } from 'zustand';
 
 import { getUserProfile } from '@/common/request/api/user';
 import type { PublisherDetailsType } from '@/common/types/courseType';
+import { useCourseStore } from '@/store/course';
 
+import {
+  extractCourseDetailsFromEvaluations,
+  extractPublishersFromEvaluations,
+} from './extract';
 import type { PublisherStore } from './types';
 
 const MAX_PUBLISHERS = 500;
@@ -83,5 +88,16 @@ export const usePublisherStore = create<PublisherStore>()((set, get) => ({
     const { publishers, fetchPublishers } = get();
     const toFetch = unique.filter((id) => !publishers[id]);
     await Promise.all(toFetch.map((id) => fetchPublishers(id)));
+  },
+
+  ingestFromEvaluations(list) {
+    const publishers = extractPublishersFromEvaluations(list);
+    if (publishers.length) {
+      get().cachePublishers(publishers);
+    }
+    const courseMap = extractCourseDetailsFromEvaluations(list);
+    if (Object.keys(courseMap).length) {
+      useCourseStore.getState().cacheCourseDetails(courseMap);
+    }
   },
 }));

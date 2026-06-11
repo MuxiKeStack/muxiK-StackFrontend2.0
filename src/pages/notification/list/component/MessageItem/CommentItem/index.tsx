@@ -1,5 +1,4 @@
 import { Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
 import { useCallback } from 'react';
 
 import './index.scss';
@@ -7,7 +6,7 @@ import './index.scss';
 import { Avatar } from '@/common/components';
 import { formatDate } from '@/common/utils';
 import { CommentMessageProps } from '@/pages/notification/type';
-import { getNotificationUrl } from '@/pages/notification/utils';
+import { openNotificationTarget } from '../../../../load';
 
 export const CommentMessageItem: React.FC<CommentMessageProps> = ({
   title,
@@ -26,8 +25,7 @@ export const CommentMessageItem: React.FC<CommentMessageProps> = ({
     : timeStamp || '';
 
   const handleClick = useCallback(() => {
-    const url = getNotificationUrl({ type: 'comment', biz, bizId });
-    if (url) void Taro.navigateTo({ url });
+    openNotificationTarget({ type: 'comment', biz, bizId });
   }, [biz, bizId]);
 
   return (

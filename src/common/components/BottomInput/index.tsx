@@ -75,6 +75,7 @@ const BottomInput = memo(
               return prefix + withoutMention;
             });
           };
+
           // 已聚焦时直接插入；未聚焦时先弹键盘，待布局稳定后再插入，减轻高度跳动
           if (focusedRef.current) {
             applyMention();
@@ -83,6 +84,7 @@ const BottomInput = memo(
             setTimeout(applyMention, 120);
           }
         },
+
         removeMention: () => {
           mentionRef.current = null;
           setInternalValue((prev) => {

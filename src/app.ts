@@ -3,7 +3,7 @@
 import '@/common/styles/globals.scss';
 import { Component, PropsWithChildren } from 'react';
 
-import { checkToken } from '@/common/utils';
+import checkToken from '@/common/utils/checkToken';
 
 class App extends Component<PropsWithChildren> {
   async componentDidMount() {

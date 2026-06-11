@@ -1,0 +1,60 @@
+import type { DataSource, LoadResult, LoadStrategy } from '@/common/types/loadType';
+
+interface LoadOptions<T> {
+  strategy: LoadStrategy;
+  force?: boolean;
+  /** network-first 失败时是否允许回退到本地缓存，默认 true */
+  allowStaleFallback?: boolean;
+
+  getCache: () => T | null | undefined;
+  fetch: () => Promise<T>;
+  setCache: (data: T) => void;
+}
+
+export async function loadData<T>(options: LoadOptions<T>): Promise<LoadResult<T>> {
+  const {
+    strategy,
+    getCache,
+    fetch,
+    setCache,
+    force = false,
+    allowStaleFallback = true,
+  } = options;
+
+  if (strategy === 'cache-first') {
+    if (!force) {
+      const cached = getCache();
+      if (cached != null) {
+        return { data: cached, source: 'cache' };
+      }
+    }
+    const data = await fetch();
+    setCache(data);
+    return { data, source: 'network' };
+  }
+
+  if (strategy === 'network-first') {
+    try {
+      const data = await fetch();
+      setCache(data);
+      return { data, source: 'network' };
+    } catch {
+      if (!allowStaleFallback) {
+        throw new Error('网络异常');
+      }
+      const stale = getCache();
+      if (stale != null) {
+        return { data: stale, source: 'fallback' };
+      }
+      throw new Error('网络异常且无本地缓存');
+    }
+  }
+
+  const data = await fetch();
+  return { data, source: 'network' };
+}
+
+export function sourceLabel(source: DataSource | null): string | null {
+  if (source === 'fallback') return '当前为离线内容';
+  return null;
+}

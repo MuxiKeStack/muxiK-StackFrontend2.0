@@ -2,7 +2,6 @@ import { getEvaluationDetail } from '@/common/request/api/evaluations';
 import { formatDate } from '@/common/utils';
 import type { MessageItemProps } from '@/pages/notification/type';
 
-import type { classType } from '@/common/types/courseType';
 import type { CommentInfo } from '@/common/types/commentTypes';
 
 type CourseDetail = { course_name?: string; teacher_name?: string };
@@ -21,21 +20,16 @@ export const emptyNotificationData: NotificationData = {
   officialMessage: [],
 };
 
-function collectCourseDetailsFromComments(
-  storeComments: Record<classType, CommentInfo[]>
-): CourseDetailIndex {
+function collectCourseDetailsFromComments(comments: CommentInfo[]): CourseDetailIndex {
   const index: CourseDetailIndex = new Map();
 
-  Object.values(storeComments).forEach((list) => {
-    if (!Array.isArray(list)) return;
-    list.forEach((c: { id?: number; course_name?: string; teacher_name?: string }) => {
-      if (c.id && (c.course_name || c.teacher_name)) {
-        index.set(String(c.id), {
-          course_name: c.course_name,
-          teacher_name: c.teacher_name,
-        });
-      }
-    });
+  comments.forEach((c) => {
+    if (c.id && (c.course_name || c.teacher_name)) {
+      index.set(String(c.id), {
+        course_name: c.course_name,
+        teacher_name: c.teacher_name,
+      });
+    }
   });
   return index;
 }
@@ -48,6 +42,13 @@ function collectBizIdsFromFeeds(feeds: unknown[]): string[] {
       )
     ),
   ].filter(Boolean);
+}
+
+/** 自评/自赞等场景后端仍会落库，但 nickname/avatar 均为空，前端不展示 */
+function hasSenderProfile(content: Record<string, unknown>): boolean {
+  const nickname = String(content.nickname ?? '').trim();
+  const avatar = String(content.avatar ?? '').trim();
+  return Boolean(nickname || avatar);
 }
 
 async function fetchMissingCourseDetails(
@@ -85,6 +86,7 @@ function partitionFeedsIntoMessages(
     const evaluation = courseDetails.get(String(content.bizId));
 
     if (item.type === 'Comment') {
+      if (!hasSenderProfile(content)) return;
       commentList.push({
         type: 'comment',
         userName: (content.nickname as string) || '',
@@ -100,6 +102,7 @@ function partitionFeedsIntoMessages(
         timeStamp,
       });
     } else if (item.type === 'Support') {
+      if (!hasSenderProfile(content)) return;
       supportList.push({
         type: 'support',
         userName: (content.nickname as string) || '',
@@ -133,9 +136,9 @@ function partitionFeedsIntoMessages(
 
 export async function buildMessages(
   feeds: unknown[],
-  storeComments: Record<classType, CommentInfo[]>
+  comments: CommentInfo[]
 ): Promise<NotificationData> {
-  const courseDetails = collectCourseDetailsFromComments(storeComments);
+  const courseDetails = collectCourseDetailsFromComments(comments);
   const bizIds = collectBizIdsFromFeeds(feeds);
   await fetchMissingCourseDetails(courseDetails, bizIds);
   return partitionFeedsIntoMessages(feeds, courseDetails);

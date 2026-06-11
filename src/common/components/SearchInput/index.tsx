@@ -47,7 +47,6 @@ const SearchInput: React.FC<SearchInputProps> = ({
   const [customSearchText, setCustomSearchText] = useState(searchText || ''); // 添加状态来存储搜索文本
   const [isFocused, setIsFocused] = useState(false);
 
-  // 外部传有searchText时state又外部控制，没传的时候state(customSearchText)内部控制，是不是统一一下比较好?
   const isControlled = searchText !== undefined;
   const value = isControlled ? searchText : customSearchText;
 
@@ -63,7 +62,6 @@ const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   const handleInputChange = (e: any) => {
-    // Taro Input 的输入值在 e.detail.value（与 BottomInput 一致），e.target.value 在 weapp 取不到
     const nextValue = e.detail?.value ?? e.target?.value ?? '';
     if (setSearchText) {
       setSearchText(nextValue);
@@ -97,21 +95,19 @@ const SearchInput: React.FC<SearchInputProps> = ({
     }
   };
 
-  // ...组件的其余部分
-
   return (
     <View className="search_container">
       <Image
         style={{ width: '34rpx', height: '34rpx' }}
         className="search_icon"
         src={searchIconSrc}
-        onClick={handleImageClick} // 绑定点击图片的事件
+        onClick={handleImageClick}
       />
 
       <Input
-        onClick={handleClick} // 点击输入框时切换搜索状态
-        value={searchText || customSearchText} // 绑定输入框的值
-        onInput={handleInputChange} // 绑定输入框的值变化事件
+        onClick={handleClick}
+        value={searchText || customSearchText}
+        onInput={handleInputChange}
         className={`search_input ${isFocused ? `active` : ''}`}
         style={style}
         onFocus={() => setIsFocused(true)}
@@ -120,7 +116,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         placeholder={searchPlaceholder}
         placeholderStyle={searchPlaceholderStyle}
         ref={inputRef}
-        onConfirm={handleImageClick} // 绑定回车事件
+        onConfirm={handleImageClick}
         disabled={disabled}
         confirmType="search"
       />

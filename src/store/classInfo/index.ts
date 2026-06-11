@@ -1,1 +1,0 @@
-export { useClassInfoStore } from './store';

@@ -1,25 +1,36 @@
 import { View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
-import { memo, useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
 
 import './index.scss';
 
-import { loadEvaluationComments } from '@/actions/evaluation/loadComments';
-import {
-  publishEvaluationReply,
-  subscribeEvaluationDetailSticky,
-  syncEvaluationDetailSession,
-} from '@/actions';
-import { useEvaluateDetailStore } from '@/store';
-import { selectActiveEvaluation } from '@/store/evaluation/detail/selectors';
-import { useUserStore } from '@/store/user';
-
 import { BottomInput, FeedCard, GateScreen, ReviewDiscussion } from '@/common/components';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
-import { useEvaluateCommentThread } from '@/store/evaluation/detail';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import type { DiscussionComment } from '@/common/types/commentTypes';
 import { NavigationBar } from '@/modules/navigation';
+import { useEvaluationStore } from '@/store/evaluations';
+import { useUserStore } from '@/store/user';
+
+import {
+  loadEvaluationComments,
+  prepareEvaluationDetail,
+  publishEvaluationReply,
+  useEvaluateCommentThread,
+} from './model';
+import {
+  bumpEvaluationDetailSession,
+  getEvaluationDetailSessionGen,
+} from './model/sessionGen';
+
+/** 页面复用时从页栈顶层读参，比 getCurrentInstance().router.params 更可靠 */
+function readUrlBizId(): number {
+  const pages = Taro.getCurrentPages();
+  const current = pages[pages.length - 1] as
+    | { options?: Record<string, string> }
+    | undefined;
+  return Number(current?.options?.bizId);
+}
 
 interface EvaluateCommentListProps {
   bizId: number | null;
@@ -75,11 +86,12 @@ const EvaluateCommentList = memo(function EvaluateCommentList({
 const Page: React.FC = () => {
   const gate = useGateGuard();
   const { guard } = useAuthGuard();
-  const urlParams = Taro.getCurrentInstance()?.router?.params || {};
-  const urlBizId = Number(urlParams.bizId);
+  const [urlBizId, setUrlBizId] = useState(0);
+  const lastBizIdRef = useRef(0);
 
-  const evaluation = useEvaluateDetailStore(selectActiveEvaluation);
-  const activeBizId = useEvaluateDetailStore((s) => s.activeBizId);
+  const evaluation = useEvaluationStore((s) =>
+    urlBizId > 0 ? (s.byId[urlBizId] ?? null) : null
+  );
 
   const bottomInputRef =
     useRef<import('@/common/components/BottomInput').BottomInputRef>(null);
@@ -91,11 +103,11 @@ const Page: React.FC = () => {
 
   const handleReplySubmit = useCallback(
     async (value: string, replyTo: DiscussionComment | null) => {
-      if (!value.trim() || !activeBizId) return;
+      if (!value.trim() || !urlBizId) return;
 
       const profile = useUserStore.getState().profile;
       const result = await publishEvaluationReply({
-        bizId: activeBizId,
+        bizId: urlBizId,
         content: value,
         replyTo,
         user: {
@@ -115,7 +127,7 @@ const Page: React.FC = () => {
       }
       void Taro.showToast({ title: '评论失败', icon: 'error' });
     },
-    [activeBizId]
+    [urlBizId]
   );
 
   const handleLongPress = useCallback(
@@ -151,20 +163,25 @@ const Page: React.FC = () => {
     [guard, handleReplySubmit, clearReply]
   );
 
-  useEffect(() => {
-    void syncEvaluationDetailSession(urlBizId > 0 ? urlBizId : undefined);
-    return subscribeEvaluationDetailSticky();
-  }, [urlBizId]);
+  const runDetailSession = useCallback(() => {
+    const bizId = readUrlBizId();
+    if (!(bizId > 0)) return;
 
-  useEffect(() => {
-    if (activeBizId !== null) void loadEvaluationComments(activeBizId, true);
-  }, [activeBizId]);
+    let gen = getEvaluationDetailSessionGen();
+    if (bizId !== lastBizIdRef.current) {
+      lastBizIdRef.current = bizId;
+      setUrlBizId(bizId);
+      gen = bumpEvaluationDetailSession();
+    }
 
-  useDidShow(() => {
-    const params = Taro.getCurrentInstance()?.router?.params || {};
-    const urlId = Number(params.bizId);
-    void syncEvaluationDetailSession(urlId > 0 ? urlId : undefined);
-  });
+    void (async () => {
+      await prepareEvaluationDetail(bizId);
+      if (gen !== getEvaluationDetailSessionGen()) return;
+      await loadEvaluationComments(bizId, true, 0, gen);
+    })();
+  }, []);
+
+  useDidShow(runDetailSession);
 
   if (gate === 'loading') return null;
   if (gate === 'block') return <GateScreen />;
@@ -173,12 +190,14 @@ const Page: React.FC = () => {
     <View className="evaluateInfo_page_container">
       <NavigationBar isBackToPage title="评课详细" />
       <View className="evaluateInfo_page_comment_wrapper">
-        <FeedCard
-          comment={evaluation}
-          showAll
-          type="inner"
-          onCommentClick={() => handleLongPress(null)}
-        />
+        {evaluation ? (
+          <FeedCard
+            comment={evaluation}
+            showAll
+            type="inner"
+            onCommentClick={() => handleLongPress(null)}
+          />
+        ) : null}
       </View>
 
       <View className="evaluateInfo_page_comments_title">评论区</View>
@@ -186,8 +205,8 @@ const Page: React.FC = () => {
 
       <View className="evaluateInfo_page_comments_list">
         <EvaluateCommentList
-          key={activeBizId ?? 'none'}
-          bizId={activeBizId}
+          key={urlBizId || 'none'}
+          bizId={urlBizId || null}
           onCommentLongPressRef={onCommentLongPressRef}
           expandRootRef={expandRootRef}
         />

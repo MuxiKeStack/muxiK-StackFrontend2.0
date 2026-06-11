@@ -6,6 +6,8 @@ import { LONG_TOKEN } from '@/common/constants/auth';
 import { getUserIntegral } from '@/common/request/api/integral';
 import { editProfile, getProfile } from '@/common/request/api/user';
 
+import { registerSessionReset } from '@/common/utils/resetSession';
+
 import { taroUserStorage } from './storage';
 import type { UserPoints, UserProfile, UserStore } from './types';
 
@@ -21,14 +23,14 @@ export const useUserStore = create<UserStore>()(
       pointsSource: null,
 
       ensureProfile: async (options) => {
+        if (!Taro.getStorageSync(LONG_TOKEN)) return null;
+
         const force = options?.force ?? false;
         const cached = get().profile;
         if (cached && !force) {
           set({ profileSource: 'cache' });
           return cached;
         }
-
-        if (!Taro.getStorageSync(LONG_TOKEN)) return null;
         if (pendingProfile) return pendingProfile;
 
         pendingProfile = getProfile()
@@ -51,13 +53,14 @@ export const useUserStore = create<UserStore>()(
       },
 
       ensurePoints: async (options) => {
+        if (!Taro.getStorageSync(LONG_TOKEN)) return null;
+
         const force = options?.force ?? false;
         const cached = get().points;
         if (cached && !force) {
           set({ pointsSource: 'cache' });
           return cached;
         }
-        if (!Taro.getStorageSync(LONG_TOKEN)) return null;
         if (pendingPoints) return pendingPoints;
 
         pendingPoints = getUserIntegral()
@@ -87,6 +90,17 @@ export const useUserStore = create<UserStore>()(
 
       invalidateProfile: () => set({ profile: null }),
       invalidateAll: () => set({ profile: null, points: null }),
+
+      reset: () => {
+        pendingProfile = null;
+        pendingPoints = null;
+        set({
+          profile: null,
+          points: null,
+          profileSource: null,
+          pointsSource: null,
+        });
+      },
     }),
     {
       name: 'muxi-user-store',
@@ -95,3 +109,5 @@ export const useUserStore = create<UserStore>()(
     }
   )
 );
+
+registerSessionReset(() => useUserStore.getState().reset());

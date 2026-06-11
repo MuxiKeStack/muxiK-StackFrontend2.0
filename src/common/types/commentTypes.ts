@@ -12,13 +12,14 @@ export type CommentType = {
   user?: User; // 存储用户信息
   publisher?: User; // 后端可能用 publisher 内嵌返回用户信息
   replies?: CommentType[]; // 存储二级评论
-  reply_count?: number; // 回复数
+  reply_count?: number; // 直接回复数（一级评论上不含楼中楼嵌套，勿用于展示整楼总数）
   has_replies?: boolean; // 是否有回复
-  total_comment_count?: number; // 含回复的评论总数
+  total_comment_count?: number; // 整楼回复总数（待后端修正后启用）
+  replies_has_more?: boolean; // 楼中楼分页：上次拉取是否满页
   reply_to_user?: User; // @ 的目标用户
 };
 
-// 讨论区通用条目：评课评论(CommentType)与问答回答共用同一套 UI，
+// 讨论区通用条目：评课评论与问答回答共用同一套 UI，
 // 这里取两者结构的交集做超类型，除 id/content/ctime 外均可选
 export interface DiscussionComment {
   id: number;
@@ -36,6 +37,7 @@ export interface DiscussionComment {
   reply_count?: number;
   has_replies?: boolean;
   total_comment_count?: number;
+  replies_has_more?: boolean;
 }
 
 // 定义评论详情的类型

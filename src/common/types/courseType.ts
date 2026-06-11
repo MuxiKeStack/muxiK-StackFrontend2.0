@@ -1,7 +1,3 @@
-import type { DataSource } from '@/store/types';
-
-import type { CommentInfo } from '@/common/types/commentTypes';
-
 type CourseType = {
   MAJOR: 'CoursePropertyMajorCore';
   GENERAL_ELECT: 'CoursePropertyGeneralElective';
@@ -28,7 +24,6 @@ export type classType =
   | CourseType['MAJOR_ELECTIVE']
   | CourseType['ANY'];
 
-// store的type是不是放store更好？懒得改了
 export type CourseDetailsType = {
   /** 课程名 */
   name: string;
@@ -56,67 +51,6 @@ export enum COMMENT_ACTIONS {
   DISLIKE = 3,
   REMOVE_COMMENT = 4,
 }
-/** 评论 */
-export interface CommentInfoSlice {
-  /** 评论列表 */
-  comments: Record<classType, CommentInfo[]>;
-  /** 最近一次列表加载来源 */
-  lastSource: DataSource | null;
-  /** 当前最新ID */
-  currentId: number;
-  /** 页面大小 */
-  pageSize: number;
-  /** 当前课程类型 */
-  classType: classType;
-  /** 加载中 */
-  loading: boolean;
-
-  /** 合并一页 feed 数据（由 actions/course/feed 拉取后写入） */
-  applyFeedPage: (params: {
-    classType: classType;
-    resDataList: CommentInfo[];
-    currentId: number;
-    existingList: CommentInfo[];
-    prevId?: number;
-  }) => void;
-  /** 更新单条评论信息 */
-  updateCommentInfo: (currentId: number, info: CommentInfo) => void;
-  /** 广场列表中某条课评的评论数 +1（跨分类 tab 查找） */
-  incrementEvaluationCommentCount: (
-    evaluationId: number,
-    delta?: number
-  ) => CommentInfo | undefined;
-  /** 修改类型 */
-  changeType: (type: classType) => void;
-  /** 根据 id 获取 comment */
-  getComment: (id: number) => CommentInfo | undefined;
-  /** 点赞字段局部更新（由 actions 层在 API 成功后调用） */
-  patchEvaluationLike: (
-    evaluationId: number,
-    willLike: boolean
-  ) => CommentInfo | undefined;
-  /** 评论 */
-  comment: (param: {
-    id: number;
-    biz: 'Evaluation' | 'Answer';
-    parentId: number;
-    rootId: number;
-    action: COMMENT_ACTIONS;
-    content: string;
-  }) => Promise<CommentInfo | undefined>;
-}
-/** 评课人 */
-export interface PublisherInfoSlice {
-  /** 评课人信息 */
-  publishers: Record<number, PublisherDetailsType>;
-
-  /** 批量缓存评课人信息（从评论等接口内联 user 数据提取） */
-  cachePublishers: (users: PublisherDetailsType[]) => void;
-  /** 获取评课人：缓存 → API → 兜底默认值 */
-  fetchPublishers: (publisherId: number) => Promise<PublisherDetailsType>;
-  /** 批量确保评课人信息已缓存（cache-first） */
-  ensurePublishers: (publisherIds: number[]) => Promise<void>;
-}
 /** 课程信息 */
 export interface CourseDetailSlice {
   /** course信息 */
@@ -130,4 +64,4 @@ export interface CourseDetailSlice {
   getCourseDetail: (courseId: number) => Promise<CourseDetailsType | null>;
 }
 
-export type CourseInfoStore = CommentInfoSlice & CourseDetailSlice;
+export type CourseInfoStore = CourseDetailSlice;

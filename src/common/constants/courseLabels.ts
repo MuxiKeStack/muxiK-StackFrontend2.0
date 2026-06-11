@@ -63,7 +63,7 @@ const ASSESSMENT_INT_MAP: Record<number, string> = {
   4: '无考核',
 };
 
-// 将 features（数组或对象）翻译为中文标签数组
+// 将 features翻译为中文标签数组
 export const translateFeatures = (
   features?: string[] | Record<string, unknown>
 ): string[] => {
@@ -74,7 +74,7 @@ export const translateFeatures = (
     .filter(Boolean);
 };
 
-// 将 assessments（数组或对象）翻译为中文标签数组
+// 将 assessments翻译为中文标签数组
 export const translateAssessments = (
   assessments?: string[] | Record<string, unknown>
 ): string[] => {
@@ -85,7 +85,7 @@ export const translateAssessments = (
     .filter(Boolean);
 };
 
-// 翻译单个课程属性（支持字符串枚举名、整数枚举值
+// 翻译单个课程属性
 export const translateCourseProperty = (prop?: string | number): string => {
   if (prop === undefined || prop === null) return '未分类';
   if (typeof prop === 'number') return PROPERTY_INT_MAP[prop] || '未分类';

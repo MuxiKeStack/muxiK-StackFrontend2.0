@@ -4,7 +4,7 @@ import { memo, useCallback, useState } from 'react';
 
 import './index.scss';
 
-import { useAuthStore } from '@/store';
+import { loginFormal, loginVisitor, saveUserInfo } from '@/pages/login/session';
 
 import { Icon } from '@/common/assets/img/login';
 
@@ -33,7 +33,7 @@ const AuthForm: React.FC = memo(() => {
         desc: '用于完善用户资料',
         success: (res) => {
           setUserData((prev) => ({ ...prev, userInfo: res.userInfo }));
-          useAuthStore.saveUserInfo(res.userInfo);
+          saveUserInfo(res.userInfo);
           resolve(res.userInfo);
         },
         fail: (err) => {
@@ -64,9 +64,9 @@ const AuthForm: React.FC = memo(() => {
           if (!userData.userInfo) {
             await handleGetUserProfile();
           }
-          await useAuthStore.loginFormal(userData.studentId, userData.password);
+          await loginFormal(userData.studentId, userData.password);
         } else {
-          useAuthStore.loginVisitor();
+          loginVisitor();
         }
 
         Taro.switchTab({ url: '/pages/main/index' });

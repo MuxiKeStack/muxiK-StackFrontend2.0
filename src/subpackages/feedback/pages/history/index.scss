@@ -8,20 +8,30 @@
 
   .feedback_history_list {
     flex: 1;
+    min-height: 0;
     margin-top: 160rpx;
     width: 100%;
   }
 
+  .feedback_history_row {
+    box-sizing: border-box;
+    width: 100%;
+    padding-bottom: 24rpx;
+  }
+
   .feedback_history_item {
+    box-sizing: border-box;
+    width: 100%;
     padding: 30rpx;
     padding-bottom: $space_lg;
-    height: 250rpx;
+    height: 330rpx;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     text-align: left;
     line-height: normal;
     min-height: 160rpx;
+    overflow: hidden;
     background-color: $color_bg_page;
     border-radius: 20rpx;
     box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
@@ -61,7 +71,7 @@
     .feedback_history_item_content {
       @include flex_column;
 
-      height: 130rpx;
+      height: 155rpx;
 
       .feedback_history_item_title {
         font-size: $font_size_title;
@@ -71,7 +81,14 @@
       }
 
       .feedback_history_item_text {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
         font-size: $font_size_body;
+        line-height: $line_height_body;
         color: #4b5563;
       }
     }
@@ -85,6 +102,9 @@
         @include flex_center;
 
         .feedback_history_reply_text {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
           font-size: $font_size_subtitle;
           line-height: 32rpx;
           color: #b3b3b3;

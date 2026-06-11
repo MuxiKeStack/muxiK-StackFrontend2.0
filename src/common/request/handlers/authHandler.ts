@@ -1,8 +1,8 @@
 import Taro from '@tarojs/taro';
 
-import { LONG_TOKEN, SHORT_TOKEN } from '@/common/constants/auth';
 import { isVisitorMode } from '@/common/utils/isVisitor';
 
+import { resetSession } from '@/common/utils/resetSession';
 import { AuthError } from '../errors/AuthError';
 import type { ErrorHandler } from '../errors/ErrorPipeline';
 
@@ -22,12 +22,8 @@ export const authHandler: ErrorHandler = async (ctx) => {
     return;
   }
 
-  try {
-    Taro.removeStorageSync(SHORT_TOKEN);
-    Taro.removeStorageSync(LONG_TOKEN);
-  } catch {
-    //
-  }
+  resetSession('auth-expired');
+
   await Taro.showModal({
     title: '登录过期',
     content: '登录已过期，请重新登录',

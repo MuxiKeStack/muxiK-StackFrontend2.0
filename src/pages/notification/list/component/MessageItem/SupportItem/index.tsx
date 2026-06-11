@@ -1,12 +1,11 @@
 import { Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
 import { useCallback } from 'react';
 
 import './index.scss';
 
 import { Avatar } from '@/common/components';
 import { SupportMessageProps } from '@/pages/notification/type';
-import { getNotificationUrl } from '@/pages/notification/utils';
+import { openNotificationTarget } from '../../../../load';
 
 export const SupportMessageItem: React.FC<SupportMessageProps> = ({
   timeStamp,
@@ -17,8 +16,7 @@ export const SupportMessageItem: React.FC<SupportMessageProps> = ({
   bizId,
 }) => {
   const handleClick = useCallback(() => {
-    const url = getNotificationUrl({ type: 'support', biz, bizId });
-    if (url) void Taro.navigateTo({ url });
+    openNotificationTarget({ type: 'support', biz, bizId });
   }, [biz, bizId]);
 
   return (

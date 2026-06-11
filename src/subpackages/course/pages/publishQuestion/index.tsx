@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { publishQuestionAndBroadcast } from '@/actions';
+import { publishQuestionAndBroadcast } from '@/subpackages/course/pages/publishQuestion/publish';
 
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import { CourseInfo, GateScreen, PublishHeader } from '@/common/components';

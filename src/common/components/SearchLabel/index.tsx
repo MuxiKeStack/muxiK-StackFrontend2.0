@@ -8,7 +8,7 @@ import './index.scss';
 export default function SearchLabel(props) {
   const handleClick = useCallback(
     (event) => {
-      event.stopPropagation(); // 阻止事件冒泡
+      event.stopPropagation();
       props.onClick(props.content);
     },
     [props]

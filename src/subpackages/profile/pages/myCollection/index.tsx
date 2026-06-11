@@ -4,7 +4,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
-import { useMyCollectionsStore, useResearchStore } from '@/store';
+import { useResearchStore } from '@/pages/research/model';
+import { useMyCollectionsStore } from '@/store';
 
 import { SearchInput, VirtualList } from '@/common/components';
 import CourseLabel from '@/common/components/CourseLabel';

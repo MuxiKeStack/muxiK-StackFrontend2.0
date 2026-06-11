@@ -1,4 +1,5 @@
+export { attachUserProfiles, collectCommentPublisherIds } from './attachProfiles';
+export { attachProfilesToComments, ensurePublisherIds } from './enrich';
+export { extractCourseDetailsFromEvaluations, extractPublishersFromEvaluations } from './extract';
 export { usePublisherStore } from './store';
-export { attachProfilesToComments } from './loaders';
-export { attachUserProfiles, collectCommentPublisherIds, displayNickname } from './attachProfiles';
 export type { PublisherStore } from './types';

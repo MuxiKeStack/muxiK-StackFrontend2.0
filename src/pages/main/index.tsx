@@ -5,15 +5,19 @@ import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
-import { loadMoreCourseFeed, openEvaluationDetail, refreshCourseFeed } from '@/actions';
 import { FeedCard, FloatButton, GateScreen } from '@/common/components';
-import { ROUTES } from '@/common/constants/routes';
+import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { NavigationBar } from '@/modules/navigation';
 
 import type { CommentInfo } from '@/common/types/commentTypes';
-import { COURSE_TYPE } from '@/common/types/courseType';
-import { useCourseStore } from '@/store/course';
+import { COURSE_TYPE, type classType } from '@/common/types/courseType';
+import {
+  loadMoreCourseFeed,
+  refreshCourseFeed,
+  useFeed,
+  useFeedStore,
+} from '@/pages/main/model';
 
 const COURSE_NAME_MAP = {
   [COURSE_TYPE.ANY]: '全部',
@@ -30,8 +34,7 @@ const Page: React.FC = () => {
   };
   const [refresherTriggered, setRefresherTriggered] = useState(false);
 
-  const comments = useCourseStore((state) => state.comments);
-  const classType = useCourseStore((state) => state.classType);
+  const { commentsByType: comments, classType } = useFeed();
 
   const scrollTopMap = useRef<Record<string, number>>({
     [COURSE_TYPE.ANY]: 0,
@@ -50,14 +53,12 @@ const Page: React.FC = () => {
   const loadGenRef = useRef(0);
 
   const handleScroll = useCallback((e: { detail: { scrollTop: number } }) => {
-    const ct = useCourseStore.getState().classType;
+    const ct = useFeedStore.getState().classType;
     scrollTopMap.current = { ...scrollTopMap.current, [ct]: e.detail.scrollTop };
   }, []);
 
   const handleChangeType = useCallback((type: string) => {
-    useCourseStore
-      .getState()
-      .changeType(type as (typeof COURSE_TYPE)[keyof typeof COURSE_TYPE]);
+    useFeedStore.getState().setType(type as classType);
     forceRender();
   }, []);
 
@@ -69,7 +70,7 @@ const Page: React.FC = () => {
   );
 
   useEffect(() => {
-    const list = useCourseStore.getState().comments[classType];
+    const list = useFeedStore.getState().idsByType[classType];
     if (!list.length) {
       void Taro.showLoading({ title: '加载中' });
       void refreshCourseFeed()
@@ -92,19 +93,18 @@ const Page: React.FC = () => {
   }, [classType]);
 
   const handleComment = useCallback((props: CommentInfo) => {
-    openEvaluationDetail(props);
-    void Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
+    navigateToEvaluationDetail(props);
   }, []);
 
   const loadMoreHandler = useCallback(() => {
-    const ct = useCourseStore.getState().classType;
+    const ct = useFeedStore.getState().classType;
     scrollTopMap.current = {
       ...scrollTopMap.current,
       [ct]: (scrollTopMap.current[ct] || 0) + 200,
     };
 
     const gen = ++loadGenRef.current;
-    if (useCourseStore.getState().loading) return;
+    if (useFeedStore.getState().loading) return;
 
     void Taro.showLoading({ title: '加载中...', mask: false });
 
@@ -136,7 +136,7 @@ const Page: React.FC = () => {
   }, []);
 
   const handleScrollToTop = useCallback(() => {
-    const ct = useCourseStore.getState().classType;
+    const ct = useFeedStore.getState().classType;
     scrollTopMap.current = { ...scrollTopMap.current, [ct]: 0 };
     forceRender();
 

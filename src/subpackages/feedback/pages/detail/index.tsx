@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { useFeedbackStore } from '@/store';
+import { formatSubmitTime, useFeedbackStore } from '@/subpackages/feedback/model';
 
 import { STATUS_LABELS } from '@/common/constants/feedback';
 import { bus } from '@/common/utils';
@@ -15,6 +15,13 @@ const getStatusStep = (status: string) => {
   if (status === '处理中') return 2;
   if (status === '已完成') return 3;
   return 1;
+};
+
+/** 仅当前阶段高亮；各阶段颜色不同，避免 scss nth-child 在小程序里串色 */
+const PROGRESS_STEP_THEME: Record<number, { circle: string; label: string }> = {
+  1: { circle: '#a8a8a8', label: '#a8a8a8' },
+  2: { circle: '#ffd248', label: '#ffd248' },
+  3: { circle: '#66d06a', label: '#66d06a' },
 };
 
 export default function FeedbackDetail() {
@@ -36,12 +43,12 @@ export default function FeedbackDetail() {
 
   const statusClass = feedbackItem
     ? feedbackItem.fields.status === '待处理'
-      ? 'pending'
+      ? 'feedback_detail_pending'
       : feedbackItem.fields.status === '处理中'
-        ? 'processing'
+        ? 'feedback_detail_processing'
         : feedbackItem.fields.status === '已完成'
-          ? 'resolved'
-          : 'pending'
+          ? 'feedback_detail_resolved'
+          : 'feedback_detail_pending'
     : '';
 
   useEffect(() => {
@@ -84,27 +91,34 @@ export default function FeedbackDetail() {
 
       {/* 进度条 */}
       <View className="feedback_detail_progress_container">
-        {[1, 2, 3].map((step, i) => (
-          <View key={step} className="feedback_detail_progress_step">
-            <View
-              className={`feedback_detail_circle ${statusStep === step ? 'feedback_detail_active' : ''}`}
-            >
-              <Text className="feedback_detail_circle_text">{step}</Text>
-            </View>
-            <Text
-              className={`feedback_detail_step_label ${statusStep === step ? 'feedback_detail_active' : ''}`}
-            >
-              {STATUS_LABELS[i]}
-            </Text>
-            {i < 2 && (
-              <View className="feedback_detail_connector_container">
-                {[1, 2, 3, 4, 5].map((bar) => (
-                  <View key={bar} className="feedback_detail_connector_bar" />
-                ))}
+        {[1, 2, 3].map((step, i) => {
+          const isCurrent = statusStep === step;
+          const theme = isCurrent ? PROGRESS_STEP_THEME[step] : null;
+
+          return (
+            <View key={step} className="feedback_detail_progress_step">
+              <View
+                className="feedback_detail_circle"
+                style={theme ? { backgroundColor: theme.circle } : undefined}
+              >
+                <Text className="feedback_detail_circle_text">{step}</Text>
               </View>
-            )}
-          </View>
-        ))}
+              <Text
+                className="feedback_detail_step_label"
+                style={theme ? { color: theme.label } : undefined}
+              >
+                {STATUS_LABELS[i]}
+              </Text>
+              {i < 2 && (
+                <View className="feedback_detail_connector_container">
+                  {[1, 2, 3, 4, 5].map((bar) => (
+                    <View key={bar} className="feedback_detail_connector_bar" />
+                  ))}
+                </View>
+              )}
+            </View>
+          );
+        })}
       </View>
 
       <ScrollView className="feedback_detail_content">
@@ -137,7 +151,7 @@ export default function FeedbackDetail() {
           <View className="feedback_detail_info_row">
             <Text className="feedback_detail_info_label">时间</Text>
             <Text className="feedback_detail_time_text">
-              {feedbackItem.fields.submitTime}
+              {formatSubmitTime(feedbackItem.fields.submitTime)}
             </Text>
           </View>
 

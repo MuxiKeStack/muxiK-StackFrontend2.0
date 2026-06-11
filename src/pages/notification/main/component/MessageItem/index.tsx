@@ -1,12 +1,11 @@
 import { Image, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
 import { memo, useCallback } from 'react';
 
 import './index.scss';
 
 import { Avatar } from '@/common/components';
 import { MessageItemProps } from '@/pages/notification/type';
-import { getNotificationUrl } from '@/pages/notification/utils';
+import { openNotificationTarget } from '../../../load';
 
 const MessageItem: React.FC<MessageItemProps> = memo(
   ({
@@ -28,8 +27,7 @@ const MessageItem: React.FC<MessageItemProps> = memo(
     };
 
     const handleClick = useCallback(() => {
-      const url = getNotificationUrl({ type, biz, bizId } as MessageItemProps);
-      if (url) void Taro.navigateTo({ url });
+      openNotificationTarget({ type, biz, bizId } as MessageItemProps);
     }, [type, biz, bizId]);
 
     return (

@@ -1,5 +1,5 @@
 import { Text, View } from '@tarojs/components';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import './index.scss';
 
@@ -8,7 +8,9 @@ import type { DiscussionComment } from '@/common/types/commentTypes';
 
 interface ReplySectionProps {
   rootId: number;
+  // replyCount当前后端仅计算直接子评论，存在误差，目前前端仅用来判断是否有子评论
   replyCount: number;
+  repliesHasMore?: boolean;
   replies?: DiscussionComment[];
   expanded: boolean;
 
@@ -22,6 +24,7 @@ interface ReplySectionProps {
 const ReplySection: React.FC<ReplySectionProps> = ({
   rootId,
   replyCount,
+  repliesHasMore = false,
   replies = [],
   expanded,
   onExpandedChange,
@@ -56,10 +59,14 @@ const ReplySection: React.FC<ReplySectionProps> = ({
     onExpandedChange(false);
   }, [onExpandedChange]);
 
+  // store 里子评论按接口顺序旧到新存放；展示层反转为新到旧，分页游标仍用原数组
+  const displayReplies = useMemo(() => [...replies].reverse(), [replies]);
+
   const showReplies = expanded && (replies.length > 0 || isLoading);
   const showExpandOnly = !expanded && replyCount > 0;
-  const subHasMore = replyCount > replies.length;
-  const remainingCount = replyCount - replies.length;
+  // 整楼总数待后端修正；分页以上次拉取是否满页为准，不用 reply_count
+  const subHasMore = repliesHasMore;
+  // const remainingCount = replyCount - replies.length;
 
   if (replyCount === 0) return null;
 
@@ -67,7 +74,7 @@ const ReplySection: React.FC<ReplySectionProps> = ({
     <View className="secondary_replies_container">
       {showReplies && (
         <View className="secondary_replies_list">
-          {replies.map((reply) => {
+          {displayReplies.map((reply) => {
             const indicator = getReplyIndicator?.(reply);
             return (
               <View className="reply_item_wrapper" key={reply.id}>
@@ -89,19 +96,21 @@ const ReplySection: React.FC<ReplySectionProps> = ({
       <View className="secondary_replies_footer">
         {showExpandOnly && !isLoading && (
           <View className="secondary_replies_toggle" onClick={handleExpand}>
-            <Text className="secondary_replies_toggle_text">展开{replyCount}条回复</Text>
+            <Text className="secondary_replies_toggle_text">展开回复</Text>
           </View>
         )}
 
-        {expanded && isLoading && <Loading isCenter={false} size={32} type="circular" />}
+        {expanded && isLoading && (
+          <View className="secondary_replies_loading">
+            <Loading isCenter={false} size={32} type="circular" />
+          </View>
+        )}
 
         {showReplies && !isLoading && (
           <View className="secondary_replies_expanded_footer">
             {subHasMore && (
               <View className="secondary_replies_more" onClick={handleLoadMore}>
-                <Text className="secondary_replies_more_text">
-                  展开{remainingCount}条回复
-                </Text>
+                <Text className="secondary_replies_more_text">展开更多回复</Text>
               </View>
             )}
             <View className="secondary_replies_collapse" onClick={handleCollapse}>

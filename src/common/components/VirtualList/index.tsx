@@ -14,7 +14,7 @@ interface VirtualListProps extends TaroVirtualListProps {
   timeout?: number;
 
   onTimeout?: () => void;
-  onLoadMore?: () => void;
+  onLoadMore?: () => void | Promise<void>;
   getItemKey?: (item: any, index: number) => string | number;
 }
 
@@ -34,31 +34,29 @@ const VirtualList: React.FC<VirtualListProps> = memo(
     timeout = 10000,
     onTimeout,
   }) => {
-    const isFirstLoad = useRef(true);
     const scrollTop = useRef(0);
+    const loadingRef = useRef(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleScrollToLower = useCallback(async () => {
-      if (!onLoadMore || isLoading) return;
+      if (!onLoadMore || loadingRef.current || !hasMore) return;
 
-      if (isFirstLoad.current) {
-        isFirstLoad.current = false;
-      } else if (!hasMore) return;
-
-      const IstimeOut = new Promise((_, reject) =>
+      const IstimeOut = new Promise<never>((_, reject) =>
         setTimeout(() => reject(new Error('加载超时')), timeout)
       );
 
+      loadingRef.current = true;
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-        await Promise.race([onLoadMore(), IstimeOut]);
+        await Promise.race([Promise.resolve(onLoadMore()), IstimeOut]);
       } catch (error) {
         console.error('加载更多失败', error);
         onTimeout?.();
       } finally {
+        loadingRef.current = false;
         setIsLoading(false);
       }
-    }, [onLoadMore, isLoading, hasMore, timeout, onTimeout]);
+    }, [onLoadMore, hasMore, timeout, onTimeout]);
 
     const renderFooter = () => {
       const footerStyle = {
@@ -72,8 +70,17 @@ const VirtualList: React.FC<VirtualListProps> = memo(
 
       if (isLoading) {
         return (
-          <View style={footerStyle}>
-            <Loading size={32} type="circular" isCenter={false} />
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              marginTop: '56rpx',
+              padding: '32rpx 0 40rpx',
+            }}
+          >
+            <Loading type="circular" size={60} isCenter={false} />
           </View>
         );
       }

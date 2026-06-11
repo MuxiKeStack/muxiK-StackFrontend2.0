@@ -3,9 +3,10 @@ import { persist } from 'zustand/middleware';
 
 import { getUserCourses } from '@/common/request/api/courses';
 import { MyCourseProps } from '@/common/types/myCourseType';
-import { createTaroJSONStorage } from '@/common/utils';
-import { loadData } from '@/store/loadUtils';
-import type { DataSource } from '@/store/types';
+import { createTaroJSONStorage } from '@/common/utils/storage';
+import type { DataSource } from '@/common/types/loadType';
+import { loadData } from '@/common/utils/loadData';
+import { registerSessionReset } from '@/common/utils/resetSession';
 
 interface MyCourseStore {
   selectedYear: string;
@@ -22,6 +23,7 @@ interface MyCourseStore {
     options?: { force?: boolean }
   ) => Promise<MyCourseProps[]>;
   clearAllCache: () => void;
+  reset: () => void;
 }
 
 export const useMyClassStore = create<MyCourseStore>()(
@@ -71,6 +73,15 @@ export const useMyClassStore = create<MyCourseStore>()(
       clearAllCache: () => {
         set({ coursesCache: {}, selectedYear: '', selectedSemester: '' });
       },
+
+      reset: () => {
+        set({
+          coursesCache: {},
+          selectedYear: '',
+          selectedSemester: '',
+          source: null,
+        });
+      },
     }),
     {
       name: 'user_myClass_storage',
@@ -84,3 +95,5 @@ export const useMyClassStore = create<MyCourseStore>()(
     }
   )
 );
+
+registerSessionReset(() => useMyClassStore.getState().reset());

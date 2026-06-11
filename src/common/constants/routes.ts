@@ -1,4 +1,3 @@
-/** 分包页面路径（方案 B：页面位于 src/subpackages/<域>/pages/...） */
 export const ROUTES = {
   profile: {
     myCollection: '/subpackages/profile/pages/myCollection/index',

@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 
 import './index.scss';
 
-import FeatureLabel from '@/common/components/FeatureLabel';
 import { ShowStar } from '@/common/components';
+import FeatureLabel from '@/common/components/FeatureLabel';
 import {
   ASSESSMENT_MAP,
   translateCourseProperty,

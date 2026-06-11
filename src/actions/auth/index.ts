@@ -1,1 +1,0 @@
-export { syncUserAfterLogin } from './syncUserAfterLogin';

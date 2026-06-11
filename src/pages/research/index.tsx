@@ -6,7 +6,7 @@ import React from 'react';
 
 import './index.scss';
 
-import { useResearchStore } from '@/store';
+import { useResearchStore } from '@/pages/research/model';
 
 import { deleteIcon } from '@/common/assets/img/icons';
 import { SearchInput, SearchLabel } from '@/common/components';

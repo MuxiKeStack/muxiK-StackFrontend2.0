@@ -5,7 +5,7 @@ import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
-import { ActiveButtonType, useActiveButtonStore } from '@/store';
+import { ActiveButtonType, useActiveButtonStore } from '@/store/app';
 
 const TAB_LIST: Array<{
   pagePath: string;

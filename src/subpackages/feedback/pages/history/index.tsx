@@ -4,7 +4,8 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
-import { sourceLabel, useFeedbackStore } from '@/store';
+import { sourceLabel } from '@/common/utils/loadData';
+import { formatSubmitTime, useFeedbackStore } from '@/subpackages/feedback/model';
 
 import { VirtualList } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
@@ -34,45 +35,49 @@ const HistoryRow = memo(
     };
 
     return (
-      <View className="feedback_history_item" onClick={handleNavi}>
-        <View className="feedback_history_item_header">
-          <View className="feedback_history_item_tags_row">
-            <View className="feedback_history_item_tag">
-              <Text className="feedback_history_item_tag_text">
-                {item.fields.source || '未知来源'}
-              </Text>
+      <View className="feedback_history_row">
+        <View className="feedback_history_item" onClick={handleNavi}>
+          <View className="feedback_history_item_header">
+            <View className="feedback_history_item_tags_row">
+              <View className="feedback_history_item_tag">
+                <Text className="feedback_history_item_tag_text">
+                  {item.fields.source || '未知来源'}
+                </Text>
+              </View>
+              <View className="feedback_history_item_tag">
+                <Text className="feedback_history_item_tag_text">
+                  {item.fields.type || '其他问题'}
+                </Text>
+              </View>
             </View>
-            <View className="feedback_history_item_tag">
-              <Text className="feedback_history_item_tag_text">
-                {item.fields.type || '其他问题'}
-              </Text>
-            </View>
-          </View>
-          <Text className="feedback_history_item_time">{item.fields.submitTime}</Text>
-        </View>
-
-        <View className="feedback_history_item_content">
-          <Text className="feedback_history_item_title">反馈内容</Text>
-          <Text className="feedback_history_item_text">
-            {spliceText(item.fields.content)}
-          </Text>
-        </View>
-
-        <View className="feedback_history_item_footer">
-          <View className="feedback_history_reply_container">
-            <Text className="feedback_history_reply_text">
-              回复: {spliceText(item.fields.reply, 15)}
+            <Text className="feedback_history_item_time">
+              {formatSubmitTime(item.fields.submitTime)}
             </Text>
           </View>
 
-          <View
-            className={`feedback_history_item_status_bg ${getStatusClass(item.fields.status)}`}
-          >
-            <Text
-              className={`feedback_history_item_status_text ${getStatusClass(item.fields.status)}`}
+          <View className="feedback_history_item_content">
+            <Text className="feedback_history_item_title">反馈内容</Text>
+            <Text className="feedback_history_item_text">
+              {spliceText(item.fields.content)}
+            </Text>
+          </View>
+
+          <View className="feedback_history_item_footer">
+            <View className="feedback_history_reply_container">
+              <Text className="feedback_history_reply_text">
+                回复: {spliceText(item.fields.reply, 15)}
+              </Text>
+            </View>
+
+            <View
+              className={`feedback_history_item_status_bg ${getStatusClass(item.fields.status)}`}
             >
-              {item.fields.status}
-            </Text>
+              <Text
+                className={`feedback_history_item_status_text ${getStatusClass(item.fields.status)}`}
+              >
+                {item.fields.status}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -121,19 +126,21 @@ const FeedbackHistory = () => {
       {historySource === 'fallback' && (
         <Text className="faq_offline_hint">{sourceLabel(historySource)}</Text>
       )}
-      <VirtualList
-        height="85vh"
-        width="100%"
-        item={HistoryRow}
-        itemData={historyList}
-        itemCount={historyList.length}
-        itemSize={175}
-        getItemKey={(item) => item.record_id}
-        onLoadMore={loadMore}
-        hasMore={historyHasMore}
-        initialLoading={isLoading && historyList.length === 0}
-        EmptyChildren="暂无反馈记录"
-      />
+      <View className="feedback_history_list">
+        <VirtualList
+          height="100%"
+          width="100%"
+          item={HistoryRow}
+          itemData={historyList}
+          itemCount={historyList.length}
+          itemSize={175}
+          getItemKey={(item) => item.record_id}
+          onLoadMore={loadMore}
+          hasMore={historyHasMore}
+          initialLoading={isLoading && historyList.length === 0}
+          EmptyChildren="暂无反馈记录"
+        />
+      </View>
     </View>
   );
 };

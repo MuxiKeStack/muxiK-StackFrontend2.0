@@ -1,1 +1,2 @@
-export { default as checkStatus, invalidateCheckStatus } from './checkStatus';
+export { invalidateCheckStatus } from './cache';
+export { default as checkStatus } from './checkStatus';

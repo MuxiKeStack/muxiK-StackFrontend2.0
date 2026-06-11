@@ -24,8 +24,7 @@ const ShowStar: React.FC<ShowStarProps> = ({ score }) => {
     let remaining = score;
     setStarNum(
       Array.from({ length: 5 }, () => {
-        const star =
-          remaining >= 1 ? STAR_FULL : remaining > 0 ? STAR_HALF : STAR_EMPTY;
+        const star = remaining >= 1 ? STAR_FULL : remaining > 0 ? STAR_HALF : STAR_EMPTY;
         remaining -= 1;
         return star;
       })

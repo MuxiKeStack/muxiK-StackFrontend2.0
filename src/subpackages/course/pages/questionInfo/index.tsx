@@ -4,33 +4,31 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import './index.scss';
 
-import {
-  loadMoreQuestionAnswers,
-  publishQuestionAnswer,
-  syncQuestionDetailSession,
-} from '@/actions';
-import { usePublisherStore } from '@/store/publisher';
-import { useQuestionDetailStore } from '@/store/question/detail';
-import {
-  selectActiveAnswers,
-  selectActiveQuestion,
-  selectQuestionBucket,
-} from '@/store/question/detail/selectors';
-import { useUserStore } from '@/store/user';
-
 import { BottomInput, FeedCard, ReviewDiscussion } from '@/common/components';
 import type { BottomInputRef } from '@/common/components/BottomInput';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { getAnswerDetail } from '@/common/request/api/answers';
+import { usePublisherStore } from '@/store/publisher';
+import { useUserStore } from '@/store/user';
+
+import {
+  loadMoreQuestionAnswers,
+  publishQuestionAnswer,
+  selectActiveAnswers,
+  selectActiveQuestion,
+  selectQuestionEntry,
+  syncQuestionSession,
+  useQuestionDetailStore,
+} from './model';
 
 const Page: React.FC = () => {
   const { guard } = useAuthGuard();
   const question = useQuestionDetailStore(selectActiveQuestion);
   const answers = useQuestionDetailStore(selectActiveAnswers);
   const activeQuestionId = useQuestionDetailStore((s) => s.activeQuestionId);
-  const bucket = useQuestionDetailStore((s) => selectQuestionBucket(s, activeQuestionId));
-  const answersHasMore = bucket?.answersHasMore ?? true;
-  const answersLoaded = bucket?.answersLoaded ?? false;
+  const entry = useQuestionDetailStore((s) => selectQuestionEntry(s, activeQuestionId));
+  const answersHasMore = entry?.answersHasMore ?? true;
+  const answersLoaded = entry?.answersLoaded ?? false;
   const publishers = usePublisherStore((s) => s.publishers);
   const bottomInputRef = useRef<BottomInputRef>(null);
 
@@ -47,7 +45,7 @@ const Page: React.FC = () => {
       }
     }
 
-    if (qid > 0) await syncQuestionDetailSession(qid);
+    if (qid > 0) await syncQuestionSession(qid);
   }, []);
 
   useEffect(() => {

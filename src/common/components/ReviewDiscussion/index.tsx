@@ -21,7 +21,7 @@ interface ReviewDiscussionProps {
   initialLoading?: boolean;
   expandedReplyRootIds?: readonly number[];
 
-  onLoadMore?: () => void;
+  onLoadMore?: () => void | Promise<void>;
   onLoadMoreReplies?: (rootId: number, lastId: number, limit: number) => Promise<void>;
   onCommentClick?: (comment: DiscussionComment) => void;
   onCommentLongPress?: (comment: DiscussionComment) => void;
@@ -71,6 +71,7 @@ const DiscussionRow = memo(function DiscussionRow({
         <ReplySection
           rootId={item.id}
           replyCount={item.reply_count || 0}
+          repliesHasMore={item.replies_has_more}
           replies={item.replies}
           expanded={expanded}
           onExpandedChange={(open) => onReplyExpandedChange?.(item.id, open)}

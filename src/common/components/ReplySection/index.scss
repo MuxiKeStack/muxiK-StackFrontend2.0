@@ -1,10 +1,12 @@
+$reply_indent: 60rpx;
+
 @mixin reply_action-text {
   font-size: $font_size_subtitle;
   color: $color_brand_warm;
 }
 
 .secondary_replies_container {
-  padding-left: 60rpx;
+  padding-left: $reply_indent;
 
   .secondary_replies_toggle {
     @include flex_between;
@@ -56,6 +58,15 @@
   }
 
   .secondary_replies_footer {
+    .secondary_replies_loading {
+      @include flex_center;
+
+      box-sizing: border-box;
+      width: calc(100% + #{$reply_indent});
+      margin-left: -$reply_indent;
+      padding: $space_md 0;
+    }
+
     .secondary_replies_expanded_footer {
       @include flex_align_center;
 

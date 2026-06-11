@@ -4,8 +4,8 @@ import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import './index.scss';
 
-import { loadNotifications } from '@/actions/notification';
-import { useNotificationStore } from '@/store';
+import { loadNotifications } from '@/pages/notification/load';
+import { useNotificationStore } from '@/store/notification';
 
 import { TabBar, VirtualList } from '@/common/components';
 import { TabItemProps } from '@/common/types/tabBarType';

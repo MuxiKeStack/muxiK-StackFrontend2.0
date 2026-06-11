@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { sourceLabel, useFeedbackStore } from '@/store';
+import { sourceLabel } from '@/common/utils/loadData';
+import { useFeedbackStore } from '@/subpackages/feedback/model';
 
 import { FeedbackIcon } from '@/common/assets/img/profile';
 import searchIcon from '@/common/assets/img/search.png';

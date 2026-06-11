@@ -12,7 +12,7 @@ import { useCallback, useMemo, useState } from 'react';
 
 import './index.scss';
 
-import { useFeedbackStore } from '@/store';
+import { useFeedbackStore } from '@/subpackages/feedback/model';
 
 import {
   FEEDBACK_TABLE_IDENTIFY,

@@ -1,13 +1,5 @@
 import type { CommentType, User } from '@/common/types/commentTypes';
-
-export function displayNickname(nickname?: string): string {
-  const trimmed = nickname?.trim();
-  return trimmed || '匿名用户';
-}
-
-function isNestedReply(c: CommentType): boolean {
-  return c.root_comment_id !== c.parent_comment_id;
-}
+import { displayNickname } from '@/common/utils';
 
 function userFromUid(publishers: Record<number, User>, uid: number): User | undefined {
   if (!uid) return undefined;
@@ -26,9 +18,7 @@ export function collectCommentPublisherIds(comments: CommentType[]): number[] {
     .filter((c) => !c.user?.nickname?.trim() && c.commentator_id > 0)
     .map((c) => c.commentator_id);
   const replyToUids = comments
-    .filter(
-      (c) => isNestedReply(c) && !c.reply_to_user?.nickname?.trim() && c.reply_to_uid > 0
-    )
+    .filter((c) => !c.reply_to_user?.nickname?.trim() && c.reply_to_uid > 0)
     .map((c) => c.reply_to_uid);
   return [...new Set([...commentatorIds, ...replyToUids])];
 }
@@ -45,11 +35,10 @@ export function attachUserProfiles(
     } else if (c.user?.nickname != null && !c.user.nickname.trim()) {
       next = { ...next, user: { ...c.user, nickname: '匿名用户' } };
     }
-    if (isNestedReply(c) && !c.reply_to_user?.nickname?.trim() && c.reply_to_uid > 0) {
+    if (!c.reply_to_user?.nickname?.trim() && c.reply_to_uid > 0) {
       const replyToUser = userFromUid(publishers, c.reply_to_uid);
       if (replyToUser) next = { ...next, reply_to_user: replyToUser };
     } else if (
-      isNestedReply(c) &&
       c.reply_to_user?.nickname != null &&
       !c.reply_to_user.nickname.trim()
     ) {

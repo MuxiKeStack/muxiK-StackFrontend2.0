@@ -7,12 +7,10 @@ import './index.scss';
 
 import {
   loadClassInfo,
-  openEvaluationDetail,
-  openQuestionDetail,
   subscribeClassInfoEvents,
   toggleClassCollect,
-} from '@/actions';
-import { useClassInfoStore } from '@/store';
+  useClassInfo,
+} from '@/pages/classInfo/model';
 
 import { Drawer, GateScreen, LineChart } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
@@ -20,6 +18,7 @@ import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import type { CommentInfo } from '@/common/types/commentTypes';
 import type { WebQuestionVo } from '@/common/types/userTypes';
+import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
 import { NavigationBar } from '@/modules/navigation';
 
 import CommentsSection from './component/CommentsSection';
@@ -31,11 +30,7 @@ import QuestionsSection from './component/QuestionsSection';
 const Page: React.FC = () => {
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [courseId, setCourseId] = useState<string | null>(null);
-  const course = useClassInfoStore((s) => s.course);
-  const comments = useClassInfoStore((s) => s.comments);
-  const grade = useClassInfoStore((s) => s.grade);
-  const questionlist = useClassInfoStore((s) => s.questionlist);
-  const collect = useClassInfoStore((s) => s.collect);
+  const { course, comments, grade, questionlist, collect } = useClassInfo();
 
   const gate = useGateGuard();
   const { guard } = useAuthGuard();
@@ -125,16 +120,13 @@ const Page: React.FC = () => {
   const handleDrawerClose = useCallback(() => setDrawerOpened(false), []);
 
   const handleCommentClick = useCallback((props: CommentInfo) => {
-    openEvaluationDetail(props);
-    void Taro.navigateTo({ url: ROUTES.course.evaluateInfo });
+    navigateToEvaluationDetail(props);
   }, []);
 
   const handleQuestionClick = useCallback(
     (question: WebQuestionVo) => {
-      void openQuestionDetail(question.id).then(() => {
-        void Taro.navigateTo({
-          url: `${ROUTES.course.questionInfo}?id=${question.id}&course_id=${courseId}`,
-        });
+      void Taro.navigateTo({
+        url: `${ROUTES.course.questionInfo}?id=${question.id}&course_id=${courseId}`,
       });
     },
     [courseId]

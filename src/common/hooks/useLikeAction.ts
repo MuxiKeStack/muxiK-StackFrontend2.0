@@ -1,10 +1,9 @@
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useState } from 'react';
 
-import { endorseEvaluation } from '@/actions';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import type { CommentInfo } from '@/common/types/commentTypes';
-import { COMMENT_ACTIONS } from '@/common/types/courseType';
+import { useEvaluationStore } from '@/store/evaluations';
 
 export interface UseLikeActionOptions {
   evaluationId: number;
@@ -43,10 +42,9 @@ export function useLikeAction({
 
       void Taro.showLoading({ title: '点赞中' });
       try {
-        const updated = await endorseEvaluation(
-          evaluationId,
-          wasLiked ? COMMENT_ACTIONS.DISLIKE : COMMENT_ACTIONS.LIKE
-        );
+        const updated = await useEvaluationStore
+          .getState()
+          .endorse(evaluationId, willLike);
         if (updated) {
           setIsLiked(updated.stance === 1);
           if (updated.total_support_count != null) {

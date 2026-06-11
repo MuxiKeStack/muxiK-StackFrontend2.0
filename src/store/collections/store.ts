@@ -3,9 +3,10 @@ import { persist } from 'zustand/middleware';
 
 import { getCollectionList } from '@/common/request/api/courses';
 import { CollectionProps } from '@/common/types/collectionsType';
-import { createTaroJSONStorage } from '@/common/utils';
-import { loadData } from '@/store/loadUtils';
-import type { DataSource } from '@/store/types';
+import type { DataSource } from '@/common/types/loadType';
+import { loadData } from '@/common/utils/loadData';
+import { registerSessionReset } from '@/common/utils/resetSession';
+import { createTaroJSONStorage } from '@/common/utils/storage';
 
 interface CollectionsStore {
   collectionsCache: CollectionProps[];
@@ -20,6 +21,7 @@ interface CollectionsStore {
   ) => Promise<CollectionProps[]>;
   refresh: () => Promise<void>;
   clearCache: () => void;
+  reset: () => void;
 }
 
 export const useMyCollectionsStore = create<CollectionsStore>()(
@@ -81,6 +83,8 @@ export const useMyCollectionsStore = create<CollectionsStore>()(
       },
 
       clearCache: () => set({ collectionsCache: [] }),
+
+      reset: () => set({ collectionsCache: [], source: null }),
     }),
     {
       name: 'user_collections_storage',
@@ -89,3 +93,5 @@ export const useMyCollectionsStore = create<CollectionsStore>()(
     }
   )
 );
+
+registerSessionReset(() => useMyCollectionsStore.getState().reset());

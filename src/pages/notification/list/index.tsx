@@ -22,7 +22,7 @@ const COMMENT_TYPE = {
   QUESTION: 'question',
 } as const;
 
-export { getNotificationUrl } from '../utils';
+export { getNotificationUrl } from '../load';
 
 const ListPage: React.FC = memo(() => {
   const initialPayload = bus.getSticky('notification_list') as

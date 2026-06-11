@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { publishEvaluationAndBroadcast } from '@/actions';
+import { publishEvaluationAndBroadcast } from '@/subpackages/course/pages/evaluate/publish';
 
 import { GateScreen, StarRating } from '@/common/components';
 import FeatureLabel from '@/common/components/FeatureLabel';

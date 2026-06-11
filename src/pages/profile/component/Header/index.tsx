@@ -39,19 +39,30 @@ const Header: React.FC = memo(() => {
           store.ensurePoints(),
         ]);
 
-        if (profile || points) {
-          setUser((prev) => ({
-            level: points?.level ?? prev.level,
-            points: points?.points ?? prev.points,
-            nextLevel: points?.next_level_points ?? prev.nextLevel,
-            avatarUrl: profile?.avatar ?? prev.avatarUrl,
-            nickName: profile?.nickname ?? prev.nickName,
-            selectedTitle: profile?.using_title
-              ? translateTitle(profile.using_title)
-              : 'None',
-            newUser: profile?.new ?? prev.newUser,
-          }));
+        if (!profile && !points) {
+          setUser({
+            level: 1,
+            points: 0,
+            nextLevel: 0,
+            avatarUrl: '',
+            nickName: '未登录',
+            selectedTitle: 'None',
+            newUser: false,
+          });
+          return;
         }
+
+        setUser((prev) => ({
+          level: points?.level ?? prev.level,
+          points: points?.points ?? prev.points,
+          nextLevel: points?.next_level_points ?? prev.nextLevel,
+          avatarUrl: profile?.avatar ?? prev.avatarUrl,
+          nickName: profile?.nickname ?? prev.nickName,
+          selectedTitle: profile?.using_title
+            ? translateTitle(profile.using_title)
+            : 'None',
+          newUser: profile?.new ?? prev.newUser,
+        }));
       } catch (e) {
         console.error('获取用户信息失败:', e);
       }

@@ -18,12 +18,7 @@ const TabBar: React.FC<TabBarProps> = memo(({ tabs, onTabClick }) => (
         }}
       >
         <View className="tab_bar_icon_wrapper">
-          <IconFont
-            /* @ts-expect-error 轮子问题 */
-            name={item.icon}
-            size={35}
-            color="#FE9F00"
-          ></IconFont>
+          <IconFont name={item.icon as any} size={35} color="#FE9F00"></IconFont>
         </View>
         <Text className="tab_bar_text">{item.name}</Text>
       </View>
