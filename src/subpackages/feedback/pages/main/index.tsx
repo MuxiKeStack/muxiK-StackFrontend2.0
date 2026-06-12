@@ -131,7 +131,6 @@ const FeedbackPage = () => {
         <SearchInput
           searchPlaceholder="请输入问题"
           style={{
-            height: '30rpx',
             background: '#E5E7EB',
           }}
           searchPlaceholderStyle="color: #9CA3AF;"

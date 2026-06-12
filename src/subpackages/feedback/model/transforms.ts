@@ -61,7 +61,10 @@ export function transformHistory(records: DetailedFeedbackRecord[]): FeedbackIte
       userId: (item.record['用户ID'] as string) || '',
       contact: (item.record['联系方式（QQ/邮箱）'] as string) || '',
       source: (item.record['问题来源'] as string) || '未知来源',
-      status: (item.record['进度'] as string) || '未知状态',
+      status:
+        (item.record['问题状态'] as string) ||
+        (item.record['进度'] as string) ||
+        '未知状态',
       type: (item.record['问题类型'] as string) || '未知类型',
       reply: (item.record['回复内容'] as string) || '暂无回复',
     },

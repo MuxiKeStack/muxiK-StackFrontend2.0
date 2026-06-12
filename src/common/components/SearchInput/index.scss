@@ -1,6 +1,6 @@
-.search_container {
-  @include flex_align_center;
+$search_field_height: 44rpx;
 
+.search_container {
   position: relative;
   width: 100%;
   margin: 0 auto;
@@ -8,17 +8,22 @@
   .search_icon {
     position: absolute;
     left: 16rpx;
+    top: 50%;
+    z-index: 1;
     width: 32rpx;
     height: 32rpx;
     color: $color_text_cool_gray;
+    transform: translateY(-50%);
   }
 
-  .search_input {
-    background-color: $color_bg_page;
-    flex: 1;
-    height: 2vh;
+  .search_input_box {
+    box-sizing: border-box;
+    overflow: hidden;
+    width: 100%;
+    height: calc(#{$search_field_height} + #{$space_xs} * 2);
+    padding: $space_xs 0;
     border-radius: 30rpx;
-    padding: $space_xs 56rpx;
+    background-color: $color_bg_page;
 
     &:not(.active) {
       border: 1rpx solid $color_border_input;
@@ -32,11 +37,28 @@
   .search_right_area {
     @include flex_align_center;
 
-    position: absolute;
-    right: 16rpx;
+    float: right;
     gap: $space_sm;
-    z-index: 2;
-    height: 100%;
+    height: $search_field_height;
+    padding: 0 16rpx 0 0;
+  }
+
+  .search_input_wrap {
+    overflow: hidden;
+    height: $search_field_height;
+  }
+
+  .search_input {
+    width: 100%;
+    height: $search_field_height;
+    min-height: $search_field_height;
+    max-height: $search_field_height;
+    box-sizing: border-box;
+    line-height: $search_field_height;
+    padding: 0 8rpx 0 56rpx;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
   }
 
   .search_suffix_container {
@@ -51,12 +73,26 @@
     font-size: $font_size_body;
     padding-left: $space_sm;
     border-left: 2rpx solid $color_brand;
-    line-height: 1.2;
+    line-height: $search_field_height;
     background-color: transparent;
   }
 
-  .search_clear_button {
-    color: $color_text_cool_gray;
-    font-size: $font_size_title;
+  .search_clear_area {
+    @include flex_align_center;
+
+    flex-shrink: 0;
+    width: 32rpx;
+    height: 100%;
+    padding: 0;
+
+    &.search_clear_area_hidden {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .search_clear_button {
+      color: $color_text_cool_gray;
+      font-size: $font_size_body;
+    }
   }
 }

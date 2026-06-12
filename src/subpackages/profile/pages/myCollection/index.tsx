@@ -109,7 +109,6 @@ const Page: React.FC = () => {
       <NavigationBar title="我的收藏" isBackToPage />
       <View className="mycollection_searchbar">
         <SearchInput
-          style={{ height: '30rpx' }}
           onSearch={handleSearch}
           searchPlaceholder="搜索课程名/老师名"
           searchPlaceholderStyle="color:#9F9F9C"

@@ -52,13 +52,8 @@ const SearchInput: React.FC<SearchInputProps> = ({
 
   // 添加点击图片时的搜索逻辑
   const handleImageClick = (e: any) => {
-    // 阻止事件冒泡
     e.stopPropagation();
-    if (searchText) {
-      onSearch(searchText);
-      return;
-    }
-    onSearch(customSearchText); // 发送搜索请求
+    onSearch(value);
   };
 
   const handleInputChange = (e: any) => {
@@ -95,6 +90,20 @@ const SearchInput: React.FC<SearchInputProps> = ({
     }
   };
 
+  const { height, background, backgroundColor, ...boxStyle } = style ?? {};
+  const fieldHeight = height ?? '44rpx';
+  const inputStyle: CSSProperties = {
+    height: fieldHeight,
+    minHeight: fieldHeight,
+    maxHeight: fieldHeight,
+    lineHeight: fieldHeight,
+  };
+  const searchBoxStyle: CSSProperties = {
+    ...(background ? { background } : {}),
+    ...(backgroundColor ? { backgroundColor } : {}),
+    ...boxStyle,
+  };
+
   return (
     <View className="search_container">
       <Image
@@ -104,39 +113,50 @@ const SearchInput: React.FC<SearchInputProps> = ({
         onClick={handleImageClick}
       />
 
-      <Input
-        onClick={handleClick}
-        value={searchText || customSearchText}
-        onInput={handleInputChange}
-        className={`search_input ${isFocused ? `active` : ''}`}
-        style={style}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        type="text"
-        placeholder={searchPlaceholder}
-        placeholderStyle={searchPlaceholderStyle}
-        ref={inputRef}
-        onConfirm={handleImageClick}
-        disabled={disabled}
-        confirmType="search"
-      />
+      <View
+        className={`search_input_box ${isFocused ? 'active' : ''}`}
+        style={searchBoxStyle}
+      >
+        <View className="search_right_area">
+          {showClearButton && (
+            <View
+              className={`search_clear_area ${value.length > 0 ? '' : 'search_clear_area_hidden'}`}
+            >
+              <Icon
+                className="search_clear_button"
+                size={12}
+                type="clear"
+                onClick={handleClear}
+              />
+            </View>
+          )}
+          {suffix && (
+            <View className="search_suffix_container" onClick={handleSuffixClick}>
+              <Text className="search_suffix" style={suffix.style}>
+                {suffix.text}
+              </Text>
+            </View>
+          )}
+        </View>
 
-      <View className="search_right_area">
-        {value.length > 0 && showClearButton && (
-          <Icon
-            className="search_clear_button"
-            size={12}
-            type="clear"
-            onClick={handleClear}
+        <View className="search_input_wrap">
+          <Input
+            onClick={handleClick}
+            value={isControlled ? (searchText ?? '') : customSearchText}
+            onInput={handleInputChange}
+            className="search_input"
+            style={inputStyle}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            type="text"
+            placeholder={searchPlaceholder}
+            placeholderStyle={searchPlaceholderStyle}
+            ref={inputRef}
+            onConfirm={handleImageClick}
+            disabled={disabled}
+            confirmType="search"
           />
-        )}
-        {suffix && (
-          <View className="search_suffix_container" onClick={handleSuffixClick}>
-            <Text className="search_suffix" style={suffix.style}>
-              {suffix.text}
-            </Text>
-          </View>
-        )}
+        </View>
       </View>
     </View>
   );

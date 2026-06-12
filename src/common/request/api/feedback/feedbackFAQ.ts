@@ -11,7 +11,7 @@ export interface FeedbackFAQRequest {
 }
 
 const feedbackFAQ = async (body: FeedbackFAQRequest) => {
-  return await request.post('/api/v1/sheet/records/faq', body, {
+  return await request.post('/api/v2/sheet/records/faq', body, {
     tokenConfig: FAQTokenConfig,
     baseUrl: BASE_URL,
   });

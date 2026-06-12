@@ -2,16 +2,15 @@ import { request } from '../..';
 import { BASE_URL, UserSheetTokenConfig } from './config';
 
 export interface GetUserFeedbackSheetRequest {
-  page_token?: string;
-  record_names: string[];
-  key_field: string;
-  key_value: string;
+  student_id: string;
   table_identify: string;
+  page_token?: string;
+  limit_size?: number;
 }
 
 const getUserFeedbackSheet = async (query: GetUserFeedbackSheetRequest) => {
   return await request.get(
-    '/api/v1/sheet/records',
+    '/api/v2/sheet/records',
     {
       query,
     } as any,

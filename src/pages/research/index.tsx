@@ -90,6 +90,8 @@ const Page: React.FC = () => {
   const searchHome = useResearchStore((s) => s.searchHome);
 
   useLoad(() => {
+    setKeyword('');
+    collapseResults();
     void loadHistory().catch((error) => {
       console.error('获取历史搜索异常:', error);
       Taro.showToast({
@@ -142,7 +144,6 @@ const Page: React.FC = () => {
       <NavigationBar title="搜索查询" isBackToPage />
       <View className="search_input_wrapper">
         <SearchInput
-          style={{ height: '30rpx' }}
           onSearch={handleSearch}
           onSearchToggle={collapseResults}
           searchText={keyword}

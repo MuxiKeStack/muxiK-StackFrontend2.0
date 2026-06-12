@@ -2,7 +2,7 @@
   "miniprogramRoot": "dist/",
   "projectname": "muxiK-StackFrontend2.0",
   "description": "muxiK-StackFrontend2.0",
-  "appid": "wx6fb5cad6d7152a3f",
+  "appid": "wx6220588048f6e417",
   "setting": {
     "urlCheck": true,
     "es6": true,
@@ -30,7 +30,7 @@
     "uploadWithSourceMap": true,
     "packNpmManually": false,
     "minifyWXSS": true,
-    "minifyWXML": false,
+    "minifyWXML": true,
     "localPlugins": false,
     "disableUseStrict": false,
     "useCompilerPlugins": false,

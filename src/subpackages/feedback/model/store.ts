@@ -1,12 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import {
-  FAQ_RECORD_NAMES,
-  FAQ_TABLE_IDENTIFY,
-  FEEDBACK_RECORD_NAMES,
-  FEEDBACK_TABLE_IDENTIFY,
-} from '@/common/constants/feedback';
+import { FAQ_TABLE_IDENTIFY, FEEDBACK_TABLE_IDENTIFY } from '@/common/constants/feedback';
 import {
   createFeedbackRecord,
   feedbackFAQ,
@@ -24,6 +19,7 @@ import type { DetailedFeedbackRecord, FAQRecord } from './transforms';
 import { transformFAQ, transformHistory } from './transforms';
 
 const FAQ_CACHE_KEY = 'feedback-faq-cache';
+const FEEDBACK_HISTORY_LIMIT_SIZE = 0;
 
 interface FeedbackStore {
   faqList: SheetItem[];
@@ -65,7 +61,6 @@ export const useFeedbackStore = create<FeedbackStore>()(
           fetch: async () => {
             const data = (await getFAQ({
               student_id: studentId,
-              record_names: FAQ_RECORD_NAMES,
               table_identify: FAQ_TABLE_IDENTIFY,
             })) as { records: FAQRecord[] };
             return transformFAQ(data.records || []);
@@ -97,11 +92,10 @@ export const useFeedbackStore = create<FeedbackStore>()(
           },
           fetch: async () => {
             const data = (await queryUserFeedbackSheet({
-              page_token: pageToken,
-              record_names: FEEDBACK_RECORD_NAMES,
-              key_field: '学号',
-              key_value: studentId,
+              student_id: studentId,
               table_identify: FEEDBACK_TABLE_IDENTIFY,
+              limit_size: FEEDBACK_HISTORY_LIMIT_SIZE,
+              page_token: pageToken,
             })) as {
               records: DetailedFeedbackRecord[];
               has_more: boolean;
