@@ -1,0 +1,81 @@
+.notification_gate {
+  @include flex_column_align_center;
+
+  width: 100%;
+  min-height: 100vh;
+  margin-top: $space_xxl;
+  padding-bottom: 170rpx;
+  background-color: $color_bg_page;
+  box-sizing: border-box;
+}
+
+.notification_gate_header {
+  width: 100%;
+  padding: 0 32rpx;
+  margin-bottom: 24rpx;
+  box-sizing: border-box;
+}
+
+.notification_gate_header_title {
+  display: block;
+  font-size: $font_size_heading;
+  font-weight: 700;
+  color: $color_text_heading;
+  margin-bottom: 8rpx;
+}
+
+.notification_gate_header_desc {
+  display: block;
+  font-size: $font_size_caption;
+  color: $color_text_secondary;
+}
+
+.notification_gate_scroll {
+  width: 100%;
+  flex: 1;
+  padding: 0 32rpx;
+  box-sizing: border-box;
+}
+
+.notification_gate_card {
+  position: relative;
+  margin-bottom: 24rpx;
+  padding: 32rpx;
+  border-radius: $radius_md;
+  background-color: $color_bg_page;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.notification_gate_card_badge {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-bottom: 16rpx;
+  padding: 4rpx 16rpx;
+  border-radius: $radius_round;
+  background: rgba(237, 163, 53, 0.15);
+  font-size: $font_size_caption;
+  color: $color_brand_hover;
+  font-weight: 600;
+}
+
+.notification_gate_card_title {
+  display: block;
+  font-size: $font_size_heading;
+  font-weight: 700;
+  color: $color_text_primary;
+  margin-bottom: 12rpx;
+}
+
+.notification_gate_card_content {
+  display: block;
+  font-size: $font_size_body;
+  color: $color_text_medium;
+  line-height: 1.7;
+  margin-bottom: 16rpx;
+}
+
+.notification_gate_card_time {
+  display: block;
+  font-size: $font_size_caption;
+  color: $color_text_cool_gray;
+}

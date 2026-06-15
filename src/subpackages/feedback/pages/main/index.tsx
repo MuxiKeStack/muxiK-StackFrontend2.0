@@ -9,7 +9,8 @@ import { useFeedbackStore } from '@/subpackages/feedback/model';
 
 import { FeedbackIcon } from '@/common/assets/img/profile';
 import searchIcon from '@/common/assets/img/search.png';
-import { FloatButton, SearchInput } from '@/common/components';
+import { FloatButton, GateScreen, SearchInput } from '@/common/components';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import Loading from '@/common/components/Loading';
 import { ROUTES } from '@/common/constants/routes';
 import { copyToClipboard } from '@/common/utils';
@@ -19,6 +20,7 @@ import type { SheetItem } from '@/subpackages/feedback/type';
 import FAQItem from './components/normalFAQ';
 
 const FeedbackPage = () => {
+  const gate = useGateGuard();
   const number = 576225292;
   const studentId = Taro.getStorageSync<string>('student_id');
 
@@ -123,6 +125,9 @@ const FeedbackPage = () => {
       console.error('跳转失败:', err);
     }
   };
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <GateScreen title="帮助与反馈" />;
 
   return (
     <View className="faq_page_container">

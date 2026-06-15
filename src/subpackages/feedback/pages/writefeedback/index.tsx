@@ -19,6 +19,8 @@ import {
   ISSUE_TYPE_MAP,
   MODULE_MAP,
 } from '@/common/constants/feedback';
+import { GateScreen } from '@/common/components';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { NavigationBar } from '@/modules/navigation';
 
 type ImageItem = {
@@ -28,6 +30,7 @@ type ImageItem = {
 };
 
 const WriteFeedback = () => {
+  const gate = useGateGuard();
   const [selectedIssueType, setSelectedIssueType] = useState('function');
   const [selectedModule, setSelectedModule] = useState(MODULE_MAP.function[0]);
   const [description, setDescription] = useState('');
@@ -164,6 +167,9 @@ const WriteFeedback = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <GateScreen title="我要反馈" />;
 
   return (
     <View className="feedback_container">

@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro';
 
 import { LONG_TOKEN, SHORT_TOKEN, VISITOR } from '@/common/constants/auth';
 import { STUDENT_ID } from '@/common/constants/user';
-import { invalidateCheckStatus } from '@/common/request/api/status/cache';
+import { invalidateGateGuardCache } from '@/common/hooks/useGateGuard';
 
 export type SessionResetReason = 'logout' | 'visitor' | 'auth-expired' | 'login';
 
@@ -10,7 +10,6 @@ type SessionResetHandler = () => void;
 
 const handlers = new Set<SessionResetHandler>();
 
-/** 各 store / 页面 model 在模块加载时注册，resetSession 统一调度 */
 export function registerSessionReset(handler: SessionResetHandler): void {
   handlers.add(handler);
 }
@@ -57,5 +56,5 @@ export function resetSession(reason: SessionResetReason): void {
   }
 
   runSessionResetHandlers();
-  invalidateCheckStatus();
+  invalidateGateGuardCache();
 }

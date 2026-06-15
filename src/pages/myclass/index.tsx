@@ -11,6 +11,7 @@ import { useMyClassStore } from '@/store';
 
 import { Loading } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import {
   getSemesterNumber,
   SEMESTER_ALL,
@@ -21,6 +22,9 @@ import { MyCourseProps as CourseProps } from '@/common/types/myCourseType';
 import { NavigationBar } from '@/modules/navigation';
 
 const Page: React.FC = () => {
+  const gate = useGateGuard();
+  const gatePass = gate === 'pass';
+
   const [yearSelector, setYearSelector] = useState<string[]>([]);
   const [semSelector] = useState([...SEMESTER_NAMES, SEMESTER_ALL]);
 
@@ -127,6 +131,11 @@ const Page: React.FC = () => {
   });
 
   const handleClassClick = (item: CourseProps) => {
+    if (!gatePass) {
+      handleNavToCourseInfo(item);
+      return;
+    }
+
     const query = `?id=${encodeURIComponent(item.id)}&name=${encodeURIComponent(item.name)}`;
     if (item.evaluated) handleNavToCourseInfo(item);
     else
@@ -218,12 +227,14 @@ const Page: React.FC = () => {
                   <Text className="myclass_item_teacher">{'(' + each.teacher + ')'}</Text>
                 </View>
               </View>
-              <View className="myclass_item_right">
-                <Text className="myclass_item_status">
-                  {each.evaluated ? '已评课' : '未评课'}
-                </Text>
-                <Text className="myclass_item_icon"> {each.evaluated ? '✔' : '➜'}</Text>
-              </View>
+              {gatePass ? (
+                <View className="myclass_item_right">
+                  <Text className="myclass_item_status">
+                    {each.evaluated ? '已评课' : '未评课'}
+                  </Text>
+                  <Text className="myclass_item_icon"> {each.evaluated ? '✔' : '➜'}</Text>
+                </View>
+              ) : null}
             </View>
           ))
         ) : (

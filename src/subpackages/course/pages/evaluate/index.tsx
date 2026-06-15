@@ -127,7 +127,7 @@ const Page: React.FC = () => {
   };
 
   if (gate === 'loading') return null;
-  if (gate === 'block') return <GateScreen />;
+  if (gate === 'block') return <GateScreen title="评课" />;
   return (
     <ScrollView
       className="evaluate_page_container"

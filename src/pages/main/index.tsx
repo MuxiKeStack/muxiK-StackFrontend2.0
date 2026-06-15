@@ -5,9 +5,9 @@ import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
-import { FeedCard, FloatButton, GateScreen } from '@/common/components';
-import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
+import { FeedCard, FloatButton, PlazaGateScreen } from '@/common/components';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
+import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
 import { NavigationBar } from '@/modules/navigation';
 
 import type { CommentInfo } from '@/common/types/commentTypes';
@@ -26,7 +26,7 @@ const COURSE_NAME_MAP = {
   [COURSE_TYPE.GENERAL_CORE]: '通核',
 };
 
-const Page: React.FC = () => {
+const MainFeed: React.FC = () => {
   const handleSearchToggle = () => {
     void Taro.navigateTo({
       url: '/pages/research/index',
@@ -44,7 +44,6 @@ const Page: React.FC = () => {
   });
 
   const [, forceRender] = useReducer((x: number) => x + 1, 0);
-  const gate = useGateGuard();
 
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollToTopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -156,8 +155,6 @@ const Page: React.FC = () => {
     };
   }, []);
 
-  if (gate === 'loading') return null;
-  if (gate === 'block') return <GateScreen />;
   return (
     <View className="mt-20 flex flex-col items-center justify-center">
       <NavigationBar title="评课广场" isTabPage />
@@ -230,6 +227,15 @@ const Page: React.FC = () => {
       />
     </View>
   );
+};
+
+const Page: React.FC = () => {
+  const gate = useGateGuard();
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <PlazaGateScreen />;
+
+  return <MainFeed />;
 };
 
 export default Page;

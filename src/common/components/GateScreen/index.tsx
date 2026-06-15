@@ -1,24 +1,32 @@
 import { Image, Text, View } from '@tarojs/components';
 
 import { Icon, TopBackground } from '@/common/assets/img/login';
+import { NavigationBar } from '@/modules/navigation';
+
+import './index.scss';
 
 interface GateScreenProps {
   className?: string;
   message?: string;
+  title?: string;
 }
 
-const GateScreen: React.FC<GateScreenProps> = ({ className, message = '木犀课栈' }) => {
+const GateScreen: React.FC<GateScreenProps> = ({
+  className,
+  message = '木犀课栈',
+  title = '',
+}) => {
   return (
-    <View className={`flex flex-col ${className ?? ''}`}>
-      <Image src={TopBackground as string} className="w-full" />
-      <View className="absolute top-0 mt-[15vh] flex w-full flex-col items-center gap-4">
-        <View className="h-40 w-40 overflow-hidden rounded-2xl shadow-xl">
-          <Image src={Icon as string} className="h-full w-full" />
+    <View className={`gate_screen ${className ?? ''}`}>
+      <NavigationBar title={title} isBackToPage />
+      <Image src={TopBackground as string} className="gate_screen_bg" mode="widthFix" />
+      <View className="gate_screen_header">
+        <View className="gate_screen_logo_wrapper">
+          <Image src={Icon as string} className="gate_screen_logo" />
         </View>
-        <Text className="text-3xl font-semibold tracking-widest text-[#FFD777]">
-          {message}
-        </Text>
+        <Text className="gate_screen_title">{message}</Text>
       </View>
+      <Text className="gate_screen_hint">敬请期待</Text>
     </View>
   );
 };

@@ -6,7 +6,7 @@
 
 // 老登遗留的神秘接口，审核状态检查。关闭后跳过
 export const FEATURES = {
-  CHECK_STATUS: false,
+  CHECK_STATUS: true,
 };
 
 /**

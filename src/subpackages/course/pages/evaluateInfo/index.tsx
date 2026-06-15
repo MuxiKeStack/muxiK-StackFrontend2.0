@@ -184,7 +184,7 @@ const Page: React.FC = () => {
   useDidShow(runDetailSession);
 
   if (gate === 'loading') return null;
-  if (gate === 'block') return <GateScreen />;
+  if (gate === 'block') return <GateScreen title="评课详细" />;
 
   return (
     <View className="evaluateInfo_page_container">

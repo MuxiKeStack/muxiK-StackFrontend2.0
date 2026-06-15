@@ -7,6 +7,8 @@ import { formatSubmitTime, useFeedbackStore } from '@/subpackages/feedback/model
 
 import { STATUS_LABELS } from '@/common/constants/feedback';
 import { bus } from '@/common/utils';
+import { GateScreen } from '@/common/components';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { NavigationBar } from '@/modules/navigation';
 import type { FeedbackDetailItem } from '@/subpackages/feedback/type';
 
@@ -25,6 +27,7 @@ const PROGRESS_STEP_THEME: Record<number, { circle: string; label: string }> = {
 };
 
 export default function FeedbackDetail() {
+  const gate = useGateGuard();
   const [feedbackItem, setFeedbackItem] = useState<FeedbackDetailItem | null>(
     () => (bus.getSticky('feedback_detail') as unknown as FeedbackDetailItem) || null
   );
@@ -70,6 +73,9 @@ export default function FeedbackDetail() {
       .then(setImageUrls)
       .finally(() => setIsLoading(false));
   }, [feedbackItem]);
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <GateScreen title="反馈历史" />;
 
   if (!feedbackItem) {
     return (

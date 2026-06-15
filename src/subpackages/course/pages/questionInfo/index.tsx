@@ -4,9 +4,10 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import './index.scss';
 
-import { BottomInput, FeedCard, ReviewDiscussion } from '@/common/components';
+import { BottomInput, FeedCard, GateScreen, ReviewDiscussion } from '@/common/components';
 import type { BottomInputRef } from '@/common/components/BottomInput';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { getAnswerDetail } from '@/common/request/api/answers';
 import { usePublisherStore } from '@/store/publisher';
 import { useUserStore } from '@/store/user';
@@ -21,7 +22,7 @@ import {
   useQuestionDetailStore,
 } from './model';
 
-const Page: React.FC = () => {
+const QuestionDetailContent: React.FC = () => {
   const { guard } = useAuthGuard();
   const question = useQuestionDetailStore(selectActiveQuestion);
   const answers = useQuestionDetailStore(selectActiveAnswers);
@@ -135,6 +136,15 @@ const Page: React.FC = () => {
       <BottomInput ref={bottomInputRef} onSubmit={handleReplySubmit} />
     </View>
   );
+};
+
+const Page: React.FC = () => {
+  const gate = useGateGuard();
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <GateScreen />;
+
+  return <QuestionDetailContent />;
 };
 
 export default Page;

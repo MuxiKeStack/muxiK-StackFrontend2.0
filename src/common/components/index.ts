@@ -12,6 +12,8 @@ export { default as GateScreen } from './GateScreen';
 export { default as LineChart } from './LineChart';
 export { default as Loading } from './Loading';
 export { default as Modal } from './Modal';
+export { default as NotificationGateScreen } from './NotificationGateScreen';
+export { default as PlazaGateScreen } from './PlazaGateScreen';
 export { default as PublishHeader } from './PublishHeader';
 export { default as ReplySection } from './ReplySection';
 export { default as ReviewDiscussion } from './ReviewDiscussion';

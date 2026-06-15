@@ -7,7 +7,8 @@ import './index.scss';
 import { loadNotifications } from '@/pages/notification/load';
 import { useNotificationStore } from '@/store/notification';
 
-import { TabBar, VirtualList } from '@/common/components';
+import { NotificationGateScreen, TabBar, VirtualList } from '@/common/components';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { TabItemProps } from '@/common/types/tabBarType';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
@@ -15,7 +16,7 @@ import { NavigationBar } from '@/modules/navigation';
 import { MessageItemProps } from '../type';
 import { renderMessageItem } from './component/MessageItem';
 
-const Notification: React.FC = memo(() => {
+const NotificationFeed: React.FC = memo(() => {
   const data = useNotificationStore((s) => s.data);
   const isLoading = useNotificationStore((s) => s.loading);
 
@@ -86,6 +87,15 @@ const Notification: React.FC = memo(() => {
       </View>
     </View>
   );
+});
+
+const Notification: React.FC = memo(() => {
+  const gate = useGateGuard();
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <NotificationGateScreen />;
+
+  return <NotificationFeed />;
 });
 
 export default Notification;

@@ -7,7 +7,8 @@ import './index.scss';
 import { sourceLabel } from '@/common/utils/loadData';
 import { formatSubmitTime, useFeedbackStore } from '@/subpackages/feedback/model';
 
-import { VirtualList } from '@/common/components';
+import { GateScreen, VirtualList } from '@/common/components';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { ROUTES } from '@/common/constants/routes';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
@@ -86,6 +87,7 @@ const HistoryRow = memo(
 );
 
 const FeedbackHistory = () => {
+  const gate = useGateGuard();
   const studentId = Taro.getStorageSync<string>('student_id') || '';
   const historyList = useFeedbackStore((s) => s.historyList);
   const historySource = useFeedbackStore((s) => s.historySource);
@@ -119,6 +121,9 @@ const FeedbackHistory = () => {
   }, [fetchData]);
 
   const loadMore = useCallback(() => fetchData(true), [fetchData]);
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <GateScreen title="反馈历史" />;
 
   return (
     <View className="feedback_history_container">

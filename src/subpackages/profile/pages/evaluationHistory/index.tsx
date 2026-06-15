@@ -4,7 +4,8 @@ import { memo, useCallback, useEffect } from 'react';
 
 import { useEvaluationHistoryStore } from '@/store';
 
-import { FeedCard, VirtualList } from '@/common/components';
+import { FeedCard, GateScreen, VirtualList } from '@/common/components';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
 import type { EvaluationStatus } from '@/common/request/api/evaluations';
 import type { CommentInfo } from '@/common/types/commentTypes';
@@ -21,13 +22,22 @@ interface CommentItemProps {
   data: CommentInfo[];
 }
 
-const Page: React.FC = memo(() => (
+const EvaluationHistoryContent: React.FC = memo(() => (
   <>
     <NavigationBar title="评课历史" isBackToPage />
     <View className="mt-24"></View>
     <History />
   </>
 ));
+
+const Page: React.FC = memo(() => {
+  const gate = useGateGuard();
+
+  if (gate === 'loading') return null;
+  if (gate === 'block') return <GateScreen title="评课历史" />;
+
+  return <EvaluationHistoryContent />;
+});
 
 export default Page;
 

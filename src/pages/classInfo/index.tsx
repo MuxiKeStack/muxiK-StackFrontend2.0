@@ -148,7 +148,7 @@ const Page: React.FC = () => {
 
   if (gate === 'loading') return null;
   if (gate === 'block') {
-    return <GateScreen />;
+    return <GateScreen title="课程主页" />;
   }
 
   return (
