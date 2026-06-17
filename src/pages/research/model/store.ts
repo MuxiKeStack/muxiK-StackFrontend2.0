@@ -4,20 +4,26 @@ import { persist } from 'zustand/middleware';
 import {
   deleteSearchHistory,
   getSearchHistory,
-  searchCourses,
 } from '@/common/request/api/research';
 import type { DataSource } from '@/common/types/loadType';
 import { loadData } from '@/common/utils/loadData';
 import { createTaroJSONStorage } from '@/common/utils/storage';
 import type { SearchHistoryItem, SearchResultCourse } from '@/pages/research/types';
 
-import { enhanceCourses } from './transforms';
+import { fetchSearchPage } from './load';
+import {
+  emptySession,
+  hasMoreFromPage,
+  mergeResults,
+  SEARCH_LOCATION,
+  type SearchLocation,
+  type SearchSession,
+} from './searchSession';
 
 interface ResearchStore {
   history: SearchHistoryItem[];
   historySource: DataSource | null;
-  searchResults: SearchResultCourse[];
-  searchSource: DataSource | null;
+  sessions: Partial<Record<SearchLocation, SearchSession>>;
   keyword: string;
   showResults: boolean;
 
@@ -25,11 +31,35 @@ interface ResearchStore {
   clearHistory: () => Promise<void>;
   setKeyword: (keyword: string) => void;
   collapseResults: () => void;
-  search: (
+  getSession: (search_location: SearchLocation) => SearchSession;
+  searchFirst: (
     keyword: string,
-    options?: { search_location?: string }
+    options?: { search_location?: SearchLocation }
   ) => Promise<SearchResultCourse[]>;
+  loadMore: (options?: { search_location?: SearchLocation }) => Promise<SearchResultCourse[]>;
+  refreshSearch: (options?: { search_location?: SearchLocation }) => Promise<SearchResultCourse[]>;
+  resetSession: (search_location: SearchLocation) => void;
   searchHome: (keyword: string) => Promise<SearchResultCourse[]>;
+}
+
+function locationOf(options?: { search_location?: SearchLocation }): SearchLocation {
+  return options?.search_location ?? SEARCH_LOCATION.HOME;
+}
+
+function patchSession(
+  location: SearchLocation,
+  patch: Partial<SearchSession> | ((session: SearchSession) => Partial<SearchSession>)
+) {
+  return (state: ResearchStore): Partial<ResearchStore> => {
+    const current = state.sessions[location] ?? emptySession();
+    const nextPatch = typeof patch === 'function' ? patch(current) : patch;
+    return {
+      sessions: {
+        ...state.sessions,
+        [location]: { ...current, ...nextPatch },
+      },
+    };
+  };
 }
 
 export const useResearchStore = create<ResearchStore>()(
@@ -37,8 +67,7 @@ export const useResearchStore = create<ResearchStore>()(
     (set, get) => ({
       history: [],
       historySource: null,
-      searchResults: [],
-      searchSource: null,
+      sessions: {},
       keyword: '',
       showResults: false,
 
@@ -50,6 +79,14 @@ export const useResearchStore = create<ResearchStore>()(
         set({ showResults: false });
       },
 
+      getSession(search_location) {
+        return get().sessions[search_location] ?? emptySession();
+      },
+
+      resetSession(search_location) {
+        set(patchSession(search_location, emptySession()));
+      },
+
       async loadHistory() {
         const result = await loadData({
           strategy: 'network-first',
@@ -59,7 +96,7 @@ export const useResearchStore = create<ResearchStore>()(
           },
           fetch: async () => {
             const res = (await getSearchHistory({
-              search_location: 'Home',
+              search_location: SEARCH_LOCATION.HOME,
             })) as SearchHistoryItem[];
             return Array.isArray(res) ? res : [];
           },
@@ -73,27 +110,114 @@ export const useResearchStore = create<ResearchStore>()(
         await deleteSearchHistory({
           remove_all: true,
           remove_history_ids: [],
-          search_location: 'Home',
+          search_location: SEARCH_LOCATION.HOME,
         });
         set({ history: [], historySource: 'network' });
       },
 
-      async search(keyword, options) {
-        const result = await loadData({
-          strategy: 'network-only',
-          getCache: () => null,
-          fetch: async () => {
-            const data = await searchCourses({
-              biz: 'Course',
-              keyword,
-              search_location: options?.search_location || 'Home',
-            });
-            return (data.courses || []) as SearchResultCourse[];
-          },
-          setCache: (searchResults) => set({ searchResults }),
-        });
-        set({ searchResults: result.data, searchSource: result.source });
-        return result.data;
+      async searchFirst(keyword, options) {
+        const location = locationOf(options);
+        const trimmed = keyword.trim();
+        if (!trimmed) {
+          get().resetSession(location);
+          return [];
+        }
+
+        const requestGen = (get().sessions[location]?.requestGen ?? 0) + 1;
+        set(patchSession(location, {
+          keyword: trimmed,
+          results: [],
+          cursor: null,
+          hasMore: true,
+          loading: true,
+          loadingMore: false,
+          refreshing: false,
+          requestGen,
+        }));
+
+        try {
+          const page = await fetchSearchPage(trimmed, location);
+          if (get().sessions[location]?.requestGen !== requestGen) return [];
+
+          const hasMore = hasMoreFromPage(page.courses, page.nextAfter);
+          set(patchSession(location, {
+            results: page.courses,
+            cursor: page.nextAfter,
+            hasMore,
+            loading: false,
+          }));
+          return page.courses;
+        } catch (e) {
+          if (get().sessions[location]?.requestGen === requestGen) {
+            set(patchSession(location, { loading: false, hasMore: false }));
+          }
+          throw e;
+        }
+      },
+
+      async loadMore(options) {
+        const location = locationOf(options);
+        const session = get().getSession(location);
+        if (
+          !session.keyword ||
+          !session.hasMore ||
+          session.loading ||
+          session.loadingMore ||
+          !session.cursor
+        ) {
+          return session.results;
+        }
+
+        const { requestGen, keyword, cursor, results } = session;
+        set(patchSession(location, { loadingMore: true }));
+
+        try {
+          const page = await fetchSearchPage(keyword, location, cursor);
+          if (get().sessions[location]?.requestGen !== requestGen) {
+            return get().getSession(location).results;
+          }
+
+          const merged = mergeResults(results, page.courses);
+          const hasMore = hasMoreFromPage(page.courses, page.nextAfter);
+          set(patchSession(location, {
+            results: merged,
+            cursor: page.nextAfter,
+            hasMore,
+            loadingMore: false,
+          }));
+          return merged;
+        } catch (e) {
+          set(patchSession(location, { loadingMore: false }));
+          throw e;
+        }
+      },
+
+      async refreshSearch(options) {
+        const location = locationOf(options);
+        const session = get().getSession(location);
+        if (!session.keyword) return [];
+
+        const { requestGen, keyword } = session;
+        set(patchSession(location, { refreshing: true }));
+
+        try {
+          const page = await fetchSearchPage(keyword, location);
+          if (get().sessions[location]?.requestGen !== requestGen) {
+            return get().getSession(location).results;
+          }
+
+          const hasMore = hasMoreFromPage(page.courses, page.nextAfter);
+          set(patchSession(location, {
+            results: page.courses,
+            cursor: page.nextAfter,
+            hasMore,
+            refreshing: false,
+          }));
+          return page.courses;
+        } catch (e) {
+          set(patchSession(location, { refreshing: false }));
+          throw e;
+        }
       },
 
       async searchHome(keyword) {
@@ -106,10 +230,7 @@ export const useResearchStore = create<ResearchStore>()(
           };
         });
 
-        const data = await get().search(trimmed);
-        const enhanced = enhanceCourses(data);
-        set({ searchResults: enhanced });
-        return enhanced;
+        return get().searchFirst(trimmed, { search_location: SEARCH_LOCATION.HOME });
       },
     }),
     {

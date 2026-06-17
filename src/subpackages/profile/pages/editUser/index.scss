@@ -49,13 +49,22 @@
       width: 50vw;
       font-size: 4.5vw;
       display: flex;
-      gap: 1vw;
+      gap: 12rpx;
       align-items: center;
       justify-content: flex-end;
+      padding-right: 24rpx;
+
+      .editor_nickname_hit {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20rpx;
+        margin-right: 8rpx;
+      }
 
       .editor_nickname {
-        width: 4vw;
-        height: 4vw;
+        width: 48rpx;
+        height: 48rpx;
       }
     }
 

@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 
 import './index.scss';
 
+import CourseTitleBlock from '../CourseTitleBlock';
 import FeatureLabel from '../FeatureLabel';
 import ShowStar from '../ShowStar';
 
@@ -40,6 +41,8 @@ export default function CourseLabel({
     });
   };
 
+  const starNode = <ShowStar score={composite_score} />;
+
   return (
     <View
       className="courseLabel"
@@ -49,20 +52,15 @@ export default function CourseLabel({
         });
       }}
     >
-      <View className="class_header">
-        <View className="class_info">
-          <View className="class_name">{name}</View>
-          <View className="class_teacher">{teacher}</View>
-          {starPlacement === 'left' && (
-            <View className="star_container">
-              <ShowStar score={composite_score} />
-            </View>
-          )}
-        </View>
-        {(!starPlacement || starPlacement === 'right') && (
-          <ShowStar score={composite_score} />
-        )}
-      </View>
+      <CourseTitleBlock
+        className="courseLabel_header"
+        name={name}
+        teacher={teacher}
+        trailing={starPlacement === 'left' ? undefined : starNode}
+      />
+      {starPlacement === 'left' ? (
+        <View className="courseLabel_star_left">{starNode}</View>
+      ) : null}
       <View className="class_type_container">
         <Text className="class_type_text">{courseType}</Text>
       </View>

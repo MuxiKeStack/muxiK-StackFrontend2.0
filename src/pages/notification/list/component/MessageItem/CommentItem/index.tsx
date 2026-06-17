@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 
 import './index.scss';
 
-import { Avatar } from '@/common/components';
+import { Avatar, CourseTitleBlock, EllipsisText } from '@/common/components';
 import { formatDate } from '@/common/utils';
 import { CommentMessageProps } from '@/pages/notification/type';
 import { openNotificationTarget } from '../../../../load';
@@ -30,13 +30,12 @@ export const CommentMessageItem: React.FC<CommentMessageProps> = ({
 
   return (
     <View className="message_comment_container" onClick={handleClick}>
-      <View className="comment_header">
-        <View className="comment_header_left">
-          <Text className="comment_course_name">{title}</Text>
-          <Text className="comment_teacher_name">{teacher}</Text>
-        </View>
-        <Text className="comment_header_time">{displayTime}</Text>
-      </View>
+      <CourseTitleBlock
+        className="comment_header"
+        name={title}
+        teacher={teacher}
+        trailing={<Text className="comment_header_time">{displayTime}</Text>}
+      />
 
       <View className="comment_body">
         {avatar && (
@@ -45,24 +44,28 @@ export const CommentMessageItem: React.FC<CommentMessageProps> = ({
         <View className="comment_content_wrapper">
           <View className="comment_word_container">
             <View className="comment_user_info">
-              <Text className="comment_user_name">{userName}</Text>
+              <EllipsisText className="comment_user_name">{userName}</EllipsisText>
             </View>
 
             <View className="comment_action_wrapper">
-              <Text className="comment_action_text">回复：{reply || ''}</Text>
+              <EllipsisText className="comment_action_text" lines={2}>
+                回复：{reply || ''}
+              </EllipsisText>
             </View>
 
             <View
               className={`comment_original ${!originalComment ? 'comment_original_empty' : ''}`}
             >
-              <Text className="comment_original_text">{originalComment || '无'}</Text>
+              <EllipsisText className="comment_original_text" lines={2}>
+                {originalComment || '无'}
+              </EllipsisText>
             </View>
           </View>
         </View>
       </View>
 
       <View className="comment_footer">
-        <Text className="comment_footer_text">回复TA:)</Text>
+        <Text className="comment_footer_text">回复TA:</Text>
       </View>
     </View>
   );

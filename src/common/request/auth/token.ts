@@ -1,5 +1,7 @@
 import Taro from '@tarojs/taro';
 
+import { readResponseHeader } from '@/common/auth/session';
+import { LONG_TOKEN, SHORT_TOKEN } from '@/common/constants/auth';
 import { TokenConfig } from '@/common/types/requestType';
 
 import { BASE_URL } from '../constants';
@@ -7,6 +9,8 @@ import { BASE_URL } from '../constants';
 function isValidToken(token: string | undefined): boolean {
   return !!token && token.trim().length > 0;
 }
+
+let pendingMainRefresh: Promise<string> | null = null;
 
 // 有有效 token 则返回，否则返回 null（不抛错，因为可能是游客请求)
 export async function tryGetStoredToken(config?: TokenConfig): Promise<string | null> {
@@ -19,18 +23,16 @@ export async function tryGetStoredToken(config?: TokenConfig): Promise<string | 
 }
 
 export async function getStoredToken(config?: TokenConfig): Promise<string> {
-  // 主登录态：直接读 shortToken
   if (!config) {
-    const shortToken = Taro.getStorageSync<string>('shortToken');
-    if (!isValidToken(shortToken)) {
-      throw new Error('未登录或游客模式，无法获取有效token');
+    const shortToken = Taro.getStorageSync<string>(SHORT_TOKEN);
+    if (isValidToken(shortToken)) {
+      return shortToken;
     }
-    return shortToken;
+    return await refreshToken();
   }
 
   if (config.token) return config.token;
 
-  // 用 getStorageSync 读取独立域 token：缺 key 时返回 ''，不会触发微信的 getStorage:fail 报错
   const cached = Taro.getStorageSync<string>(config.name);
   if (isValidToken(cached)) {
     config.onRefreshSuccess?.(cached);
@@ -43,28 +45,12 @@ export async function getStoredToken(config?: TokenConfig): Promise<string> {
 export async function refreshToken(config?: TokenConfig): Promise<string> {
   try {
     if (!config) {
-      const result = await Taro.getStorage({ key: 'longToken' });
-      const longToken = result.data as string;
+      if (pendingMainRefresh) return pendingMainRefresh;
 
-      if (!isValidToken(longToken)) {
-        throw new Error('未登录或游客模式，无法刷新token');
-      }
-      const response = await Taro.request({
-        method: 'GET',
-        url: `${BASE_URL}/users/refresh_token`,
-        header: { Authorization: `Bearer ${longToken}` },
+      pendingMainRefresh = refreshMainShortToken().finally(() => {
+        pendingMainRefresh = null;
       });
-
-      if (response.statusCode === 200 || response.statusCode === 201) {
-        const newShortToken = response.header['x-jwt-token'] as string;
-        await Taro.setStorage({
-          key: 'shortToken',
-          data: newShortToken,
-        });
-        return newShortToken;
-      }
-
-      throw new Error('刷新短 token 失败');
+      return pendingMainRefresh;
     }
 
     if (config.refresh) {
@@ -75,4 +61,32 @@ export async function refreshToken(config?: TokenConfig): Promise<string> {
   } catch (err) {
     throw new Error(`刷新token失败: ${err}`);
   }
+}
+
+async function refreshMainShortToken(): Promise<string> {
+  const longToken = Taro.getStorageSync<string>(LONG_TOKEN);
+  if (!isValidToken(longToken)) {
+    throw new Error('未登录或游客模式，无法刷新token');
+  }
+
+  const response = await Taro.request({
+    method: 'GET',
+    url: `${BASE_URL}/users/refresh_token`,
+    header: { Authorization: `Bearer ${longToken}` },
+  });
+
+  if (response.statusCode === 200 || response.statusCode === 201) {
+    const newShortToken = readResponseHeader(
+      response.header as Record<string, unknown>,
+      'x-jwt-token'
+    );
+    if (!isValidToken(newShortToken)) {
+      throw new Error('刷新短 token 失败');
+    }
+    Taro.setStorageSync(SHORT_TOKEN, newShortToken);
+
+    return newShortToken as string;
+  }
+
+  throw new Error('刷新短 token 失败');
 }

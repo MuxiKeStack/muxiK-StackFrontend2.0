@@ -68,7 +68,7 @@ const Page: React.FC = () => {
         (fetchToQiniu(tempFilePath) as Promise<string>).then((r) => setAvatarUrl(r));
       },
       fail: () => {
-        //
+        void Taro.showToast({ title: '选择图片失败', icon: 'none' });
       },
     });
   };
@@ -105,6 +105,9 @@ const Page: React.FC = () => {
         saveNavTimerRef.current = setTimeout(() => {
           void Taro.switchTab({ url: '/pages/profile/index' });
         }, 1000);
+      })
+      .catch(() => {
+        void Taro.showToast({ icon: 'error', title: '保存失败' });
       });
   };
 
@@ -170,11 +173,9 @@ const Page: React.FC = () => {
           ) : (
             <View className="nickname">
               {nickName || '未设置'}
-              <Image
-                src={editIcon}
-                onClick={handleEditIconClick}
-                className="editor_nickname"
-              />
+              <View className="editor_nickname_hit" onClick={handleEditIconClick}>
+                <Image src={editIcon} className="editor_nickname" />
+              </View>
             </View>
           )}
         </View>

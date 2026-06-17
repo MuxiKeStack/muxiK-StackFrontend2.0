@@ -1,0 +1,58 @@
+.course_title_block {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space_sm;
+  width: 100%;
+  min-width: 0;
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4rpx;
+  }
+
+  &__main--clickable {
+    cursor: pointer;
+  }
+
+  &__name {
+    display: block;
+    width: 100%;
+    font-size: $font_size_base;
+    font-weight: 600;
+    color: $color_text_primary;
+    @include text_ellipsis;
+  }
+
+  &__teacher {
+    display: block;
+    width: 100%;
+    font-size: $font_size_subtitle;
+    color: $color_text_cool_gray;
+    @include text_ellipsis;
+  }
+
+  &__trailing {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: $space_xxs;
+  }
+
+  &.inline &__main {
+    flex-direction: row;
+    align-items: baseline;
+    gap: $space_sm;
+  }
+
+  &.inline &__name,
+  &.inline &__teacher {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+  }
+}

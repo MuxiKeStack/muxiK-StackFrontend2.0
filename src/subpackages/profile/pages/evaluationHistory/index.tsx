@@ -6,9 +6,9 @@ import { useEvaluationHistoryStore } from '@/store';
 
 import { FeedCard, GateScreen, VirtualList } from '@/common/components';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
-import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
 import type { EvaluationStatus } from '@/common/request/api/evaluations';
 import type { CommentInfo } from '@/common/types/commentTypes';
+import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
 import { NavigationBar } from '@/modules/navigation';
 
 const STATUS_OPTIONS: { label: string; value: EvaluationStatus }[] = [
@@ -64,6 +64,7 @@ const CommentItem = memo(({ id, index, data }: CommentItemProps) => {
           .toggleStatus(evaluationId, targetStatus, currentStatus);
       } catch (e) {
         console.error('[evaluationHistory] 切换可见性失败:', e);
+        Taro.showToast({ title: '操作失败', icon: 'none' });
       }
     },
     [item.id, item.status]
@@ -94,6 +95,7 @@ const History: React.FC = memo(() => {
   const hasMore = useEvaluationHistoryStore(
     (s) => s.cache[s.activeStatus]?.hasMore ?? true
   );
+  const refresh = useEvaluationHistoryStore((s) => s.refresh);
   const setActiveStatus = useEvaluationHistoryStore((s) => s.setActiveStatus);
   const fetchPage = useEvaluationHistoryStore((s) => s.fetchPage);
   const loadMore = useEvaluationHistoryStore((s) => s.loadMore);
@@ -114,6 +116,15 @@ const History: React.FC = memo(() => {
     },
     [setActiveStatus]
   );
+
+  const handleRefresh = useCallback(async () => {
+    try {
+      await refresh(activeStatus);
+    } catch (e) {
+      console.error('[evaluationHistory] 刷新失败:', e);
+      Taro.showToast({ title: '刷新失败', icon: 'error' });
+    }
+  }, [activeStatus, refresh]);
 
   return (
     <View>
@@ -141,10 +152,12 @@ const History: React.FC = memo(() => {
             await loadMore();
           } catch (e) {
             console.error('[evaluationHistory] 加载更多失败:', e);
+            Taro.showToast({ title: '加载更多失败', icon: 'none' });
           }
         }}
         hasMore={hasMore}
         initialLoading={loading}
+        onRefresh={handleRefresh}
         EmptyChildren="暂无评课记录"
       />
     </View>

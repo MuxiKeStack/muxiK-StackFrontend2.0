@@ -1,10 +1,10 @@
 import { Text, View } from '@tarojs/components';
-import { useDidShow } from '@tarojs/taro';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import Taro, { useDidShow } from '@tarojs/taro';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { useResearchStore } from '@/pages/research/model';
+import { emptySession, SEARCH_LOCATION, useResearchStore } from '@/pages/research/model';
 import { useMyCollectionsStore } from '@/store';
 
 import { SearchInput, VirtualList } from '@/common/components';
@@ -12,22 +12,50 @@ import CourseLabel from '@/common/components/CourseLabel';
 import { CollectionProps } from '@/common/types/collectionsType';
 import { NavigationBar } from '@/modules/navigation';
 
+const COURSE_ITEM_SIZE = 369;
+
+const CollectionCourseItem = memo(
+  ({ data, index }: { data: CollectionProps[]; index: number }) => {
+    const course = data[index];
+    return <CourseLabel course={{ ...course, id: course.course_id }} />;
+  }
+);
+
 const Page: React.FC = () => {
-  const [currCollections, setCurrCollections] = useState<CollectionProps[]>([]);
   const totalCollections = useMyCollectionsStore((s) => s.collectionsCache);
   const loadCollections = useMyCollectionsStore((s) => s.load);
-  const searchCourses = useResearchStore((s) => s.search);
+  const searchSession = useResearchStore(
+    (s) => s.sessions[SEARCH_LOCATION.COLLECTIONS] ?? emptySession()
+  );
+  const searchFirst = useResearchStore((s) => s.searchFirst);
+  const loadMoreSearch = useResearchStore((s) => s.loadMore);
+  const refreshSearch = useResearchStore((s) => s.refreshSearch);
+  const resetSearchSession = useResearchStore((s) => s.resetSession);
+
+  const [browseCollections, setBrowseCollections] = useState<CollectionProps[]>([]);
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [collectionLoading, setCollectionLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
-  const searchTimer = useRef<ReturnType<typeof setTimeout>>();
+
+  const isSearchMode = searchKeyword.trim().length > 0;
+
+  const displayList: CollectionProps[] = isSearchMode
+    ? (searchSession.results.map((c) => ({
+        ...c,
+        course_id: c.id,
+        id: c.id,
+      })) as unknown as CollectionProps[])
+    : browseCollections;
 
   const fetchCollectionList = useCallback(
-    async (params: { cur_collection_id: number; limit: number }) => {
+    async (
+      params: { cur_collection_id: number; limit: number },
+      options?: { force?: boolean }
+    ) => {
       setCollectionLoading(true);
       try {
-        await loadCollections(params);
+        await loadCollections(params, options);
       } catch {
-        //
+        Taro.showToast({ title: '加载失败', icon: 'none' });
       } finally {
         setCollectionLoading(false);
       }
@@ -35,39 +63,11 @@ const Page: React.FC = () => {
     [loadCollections]
   );
 
-  const fetchSearchCourses = useCallback(
-    (keyword: string) => {
-      if (searchTimer.current) clearTimeout(searchTimer.current);
-      searchTimer.current = setTimeout(async () => {
-        setSearchLoading(true);
-        try {
-          const list = await searchCourses(keyword, { search_location: 'Collections' });
-          setCurrCollections(
-            list.map((c) => ({
-              ...c,
-              course_id: c.id,
-              id: c.id,
-            })) as unknown as CollectionProps[]
-          );
-        } catch {
-          //
-        } finally {
-          setSearchLoading(false);
-        }
-      }, 300);
-    },
-    [searchCourses]
-  );
-
   useEffect(() => {
-    setCurrCollections(totalCollections);
-  }, [totalCollections]);
-
-  useEffect(() => {
-    return () => {
-      if (searchTimer.current) clearTimeout(searchTimer.current);
-    };
-  }, []);
+    if (!isSearchMode) {
+      setBrowseCollections(totalCollections);
+    }
+  }, [totalCollections, isSearchMode]);
 
   useDidShow(() => {
     void fetchCollectionList({
@@ -76,33 +76,52 @@ const Page: React.FC = () => {
     });
   });
 
-  const handleisLoading = useCallback(
-    (listLoading: boolean, searchLoadingState: boolean) => {
-      if (searchLoadingState) return true;
-      return listLoading && currCollections.length === 0;
-    },
-    [currCollections.length]
-  );
-
-  const isLoading = handleisLoading(collectionLoading, searchLoading);
-
   const handleSearch = useCallback(
-    (value: string) => {
-      fetchSearchCourses(value);
+    async (value: string) => {
+      const trimmed = value.trim();
+      setSearchKeyword(trimmed);
+
+      if (!trimmed) {
+        resetSearchSession(SEARCH_LOCATION.COLLECTIONS);
+        setBrowseCollections(totalCollections);
+        return;
+      }
+
+      try {
+        await searchFirst(trimmed, { search_location: SEARCH_LOCATION.COLLECTIONS });
+      } catch {
+        Taro.showToast({ title: '搜索失败', icon: 'none' });
+      }
     },
-    [fetchSearchCourses]
+    [resetSearchSession, searchFirst, totalCollections]
   );
 
-  const renderCourseItem = ({
-    data,
-    index,
-  }: {
-    data: CollectionProps[];
-    index: number;
-  }) => {
-    const course = data[index];
-    return <CourseLabel key={course.id} course={{ ...course, id: course.course_id }} />;
-  };
+  const handleLoadMore = useCallback(async () => {
+    if (!isSearchMode) return;
+    try {
+      await loadMoreSearch({ search_location: SEARCH_LOCATION.COLLECTIONS });
+    } catch {
+      Taro.showToast({ title: '加载更多失败', icon: 'none' });
+    }
+  }, [isSearchMode, loadMoreSearch]);
+
+  const handleRefresh = useCallback(async () => {
+    try {
+      if (isSearchMode) {
+        await refreshSearch({ search_location: SEARCH_LOCATION.COLLECTIONS });
+      } else {
+        await fetchCollectionList({ cur_collection_id: 0, limit: 20 }, { force: true });
+      }
+    } catch {
+      Taro.showToast({ title: '刷新失败', icon: 'none' });
+    }
+  }, [fetchCollectionList, isSearchMode, refreshSearch]);
+
+  const isLoading = isSearchMode
+    ? searchSession.loading
+    : collectionLoading && browseCollections.length === 0;
+
+  const hasMore = isSearchMode ? searchSession.hasMore : false;
 
   return (
     <View className="MyCollection">
@@ -119,23 +138,26 @@ const Page: React.FC = () => {
 
       <View className="mycollection_info_container">
         <Text className="mycollection_info_text">
-          我的收藏 ({currCollections.length})
+          {isSearchMode
+            ? `搜索结果 (${displayList.length})`
+            : `我的收藏 (${displayList.length})`}
         </Text>
       </View>
       <View className="mycollection_list_container">
         <VirtualList
-          height="70vh"
+          height="100%"
           width="100%"
-          item={renderCourseItem}
-          itemCount={currCollections.length}
-          itemData={currCollections}
-          itemSize={369}
-          hasMore={false}
+          item={CollectionCourseItem}
+          itemCount={displayList.length}
+          itemData={displayList}
+          itemSize={COURSE_ITEM_SIZE}
+          hasMore={hasMore}
           bottomPadding={20}
-          onLoadMore={() => {}}
+          onLoadMore={handleLoadMore}
           getItemKey={(item) => item.id}
           initialLoading={isLoading}
-          EmptyChildren="暂无收藏"
+          onRefresh={handleRefresh}
+          EmptyChildren={isSearchMode ? '没有找到相关课程' : '暂无收藏'}
         />
       </View>
     </View>

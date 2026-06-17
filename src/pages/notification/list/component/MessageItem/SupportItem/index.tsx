@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 
 import './index.scss';
 
-import { Avatar } from '@/common/components';
+import { Avatar, EllipsisText } from '@/common/components';
 import { SupportMessageProps } from '@/pages/notification/type';
 import { openNotificationTarget } from '../../../../load';
 
@@ -32,7 +32,7 @@ export const SupportMessageItem: React.FC<SupportMessageProps> = ({
         <View className="content_wrapper">
           <View className="word_cotainer">
             <View className="user_info">
-              <Text className="user_name">{userName}</Text>
+              <EllipsisText className="user_name">{userName}</EllipsisText>
             </View>
 
             <View className="action_wrapper">
@@ -40,7 +40,9 @@ export const SupportMessageItem: React.FC<SupportMessageProps> = ({
             </View>
 
             <View className="content">
-              <Text className="content_text">{originalComment}</Text>
+              <EllipsisText className="content_text" lines={2}>
+                {originalComment}
+              </EllipsisText>
             </View>
           </View>
         </View>

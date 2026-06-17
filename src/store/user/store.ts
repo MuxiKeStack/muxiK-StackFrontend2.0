@@ -84,8 +84,21 @@ export const useUserStore = create<UserStore>()(
 
       async updateProfile(body) {
         await editProfile(body);
-        set({ profile: null });
-        return get().ensureProfile({ force: true });
+        const current = get().profile;
+        if (current) {
+          set({
+            profile: {
+              ...current,
+              ...(body.nickname !== undefined && { nickname: body.nickname }),
+              ...(body.avatar !== undefined && { avatar: body.avatar }),
+              ...(body.using_title !== undefined && { using_title: body.using_title }),
+            },
+          });
+        }
+        void get()
+          .ensureProfile({ force: true })
+          .catch(() => {});
+        return get().profile;
       },
 
       invalidateProfile: () => set({ profile: null }),

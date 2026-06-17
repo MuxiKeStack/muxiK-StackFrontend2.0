@@ -2,11 +2,11 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { getUserCourses } from '@/common/request/api/courses';
-import { MyCourseProps } from '@/common/types/myCourseType';
-import { createTaroJSONStorage } from '@/common/utils/storage';
 import type { DataSource } from '@/common/types/loadType';
+import { MyCourseProps } from '@/common/types/myCourseType';
 import { loadData } from '@/common/utils/loadData';
 import { registerSessionReset } from '@/common/utils/resetSession';
+import { createTaroJSONStorage } from '@/common/utils/storage';
 
 interface MyCourseStore {
   selectedYear: string;
@@ -15,6 +15,7 @@ interface MyCourseStore {
   source: DataSource | null;
 
   cacheCourses: (courses: MyCourseProps[], year: string, semester: string) => void;
+  markCourseEvaluated: (courseId: number) => void;
   setSelectedYearAndSemester: (year: string, semester: string) => void;
   load: (
     year: string,
@@ -40,6 +41,23 @@ export const useMyClassStore = create<MyCourseStore>()(
         set((state) => ({
           coursesCache: { ...state.coursesCache, [key]: courses },
         }));
+      },
+
+      markCourseEvaluated: (courseId) => {
+        set((state) => {
+          let changed = false;
+          const coursesCache = Object.fromEntries(
+            Object.entries(state.coursesCache).map(([key, courses]) => {
+              const next = courses.map((course) => {
+                if (course.id !== courseId || course.evaluated) return course;
+                changed = true;
+                return { ...course, evaluated: true };
+              });
+              return [key, next];
+            })
+          );
+          return changed ? { coursesCache } : state;
+        });
       },
 
       setSelectedYearAndSemester: (year, semester) => {

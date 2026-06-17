@@ -3,7 +3,7 @@ import { memo, useCallback } from 'react';
 
 import './index.scss';
 
-import { Avatar } from '@/common/components';
+import { Avatar, EllipsisText } from '@/common/components';
 import { MessageItemProps } from '@/pages/notification/type';
 import { openNotificationTarget } from '../../../load';
 
@@ -21,11 +21,6 @@ const MessageItem: React.FC<MessageItemProps> = memo(
     biz,
     bizId,
   }) => {
-    const truncateText = (text: string | undefined, maxLength: number): string => {
-      if (!text) return '';
-      return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
-    };
-
     const handleClick = useCallback(() => {
       openNotificationTarget({ type, biz, bizId } as MessageItemProps);
     }, [type, biz, bizId]);
@@ -33,7 +28,7 @@ const MessageItem: React.FC<MessageItemProps> = memo(
     return (
       <View className="message_container" onClick={handleClick}>
         <View className="message_header">
-          <Text className="message_title">{truncateText(title, 24)}</Text>
+          <EllipsisText className="message_title">{title}</EllipsisText>
           <Text className="message_time">{timeStamp}</Text>
         </View>
 
@@ -44,19 +39,19 @@ const MessageItem: React.FC<MessageItemProps> = memo(
           <View className="message_content_wrapper">
             <View className="message_word_cotainer">
               <View className="message_user_info">
-                <Text
+                <EllipsisText
                   className={`message_user_name ${type === 'official' ? 'official_user' : ''}`}
                 >
                   {userName}
-                </Text>
+                </EllipsisText>
               </View>
 
               {type !== 'official' && (
                 <View className="message_action_wrapper">
-                  <Text className="message_action_text">
+                  <EllipsisText className="message_action_text" lines={2}>
                     {type === 'support' && '赞了你的评论'}
-                    {type === 'comment' && `回复: ${truncateText(reply || '', 24)}`}
-                  </Text>
+                    {type === 'comment' && `回复: ${reply || ''}`}
+                  </EllipsisText>
                 </View>
               )}
 
@@ -64,14 +59,14 @@ const MessageItem: React.FC<MessageItemProps> = memo(
                 {originalComment || description ? (
                   <>
                     {originalComment && (
-                      <Text className="message_content_text">
-                        {truncateText(originalComment, 30)}
-                      </Text>
+                      <EllipsisText className="message_content_text" lines={2}>
+                        {originalComment}
+                      </EllipsisText>
                     )}
                     {description && (
-                      <Text className="message_content_text">
-                        {truncateText(description, 30)}
-                      </Text>
+                      <EllipsisText className="message_content_text" lines={2}>
+                        {description}
+                      </EllipsisText>
                     )}
                   </>
                 ) : (

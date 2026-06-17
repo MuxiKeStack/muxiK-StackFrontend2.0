@@ -11,41 +11,12 @@
     0 4rpx 6rpx rgba(0, 0, 0, 0.05);
 
   .comment_header {
-    @include flex_between;
-
     margin-bottom: $space_md;
-    gap: $space_sm;
-
-    .comment_header_left {
-      @include flex_align_center;
-
-      flex: 1;
-      min-width: 0;
-      gap: $space_sm;
-
-      .comment_course_name {
-        font-size: $font_size_body;
-        font-weight: $font_weight_bold;
-        color: $color_text_primary;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        flex-shrink: 1;
-      }
-
-      .comment_teacher_name {
-        font-size: $font_size_subtitle;
-        color: $color_text_secondary;
-        white-space: nowrap;
-        flex-shrink: 0;
-      }
-    }
 
     .comment_header_time {
       font-size: $font_size_subtitle;
       color: $color_text_secondary;
       white-space: nowrap;
-      flex-shrink: 0;
     }
   }
 
@@ -73,9 +44,6 @@
             font-size: $font_size_title;
             font-weight: 600;
             color: $color_text_dark;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
           }
         }
 
@@ -85,7 +53,6 @@
           .comment_action_text {
             font-size: $font_size_subtitle;
             color: $color_text_dark;
-            word-break: break-word;
           }
         }
 
@@ -108,8 +75,6 @@
             font-size: $font_size_caption;
             color: $color_text_secondary;
             line-height: 1.5;
-            overflow: hidden;
-            max-height: 72rpx;
           }
 
           &.comment_original_empty {

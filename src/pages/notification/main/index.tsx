@@ -67,13 +67,22 @@ const NotificationFeed: React.FC = memo(() => {
     }
   };
 
+  const handleRefresh = useCallback(async () => {
+    try {
+      await loadNotifications();
+    } catch (err) {
+      console.error('刷新消息失败:', err);
+      Taro.showToast({ title: '刷新失败', icon: 'none' });
+    }
+  }, []);
+
   return (
     <View className="notification_main_container">
       <NavigationBar title="消息" isTabPage />
 
       <TabBar tabs={TABS} onTabClick={handleTabClick} />
 
-      <View style={{ flex: 1, width: '100%' }}>
+      <View className="notification_main_list">
         <VirtualList
           height="100%"
           width="100%"
@@ -82,6 +91,7 @@ const NotificationFeed: React.FC = memo(() => {
           itemCount={currentMessage.length}
           itemSize={200}
           initialLoading={isLoading}
+          onRefresh={handleRefresh}
           EmptyChildren="暂无消息"
         />
       </View>

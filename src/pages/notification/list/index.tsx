@@ -1,7 +1,9 @@
 import { Text, View } from '@tarojs/components';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
+
+import { loadNotifications } from '@/pages/notification/load';
 
 import { VirtualList } from '@/common/components';
 import { bus } from '@/common/utils';
@@ -45,7 +47,7 @@ const ListPage: React.FC = memo(() => {
     return () => off();
   }, []);
 
-  // 根据子 tab 筛选评论：评课(Evaluation) / 提问(Answer)
+  // 根据子 tab 筛选评论
   const filteredCommentData = useMemo(() => {
     if (listType !== 'comment') return messageData;
     const bizFilter = activeCommentType === COMMENT_TYPE.COURSE ? 'Evaluation' : 'Answer';
@@ -53,6 +55,23 @@ const ListPage: React.FC = memo(() => {
   }, [messageData, listType, activeCommentType]);
 
   const displayData = listType === 'comment' ? filteredCommentData : messageData;
+
+  const handleRefresh = useCallback(async () => {
+    const data = await loadNotifications();
+    switch (listType) {
+      case 'comment':
+        setMessageData(data.commentMessage);
+        break;
+      case 'support':
+        setMessageData(data.supportMessage);
+        break;
+      case 'official':
+        setMessageData(data.officialMessage);
+        break;
+      default:
+        break;
+    }
+  }, [listType]);
 
   const footerContent = useMemo(() => {
     if (listType === 'comment') {
@@ -101,6 +120,7 @@ const ListPage: React.FC = memo(() => {
         itemCount={displayData.length}
         itemSize={280}
         onScroll={() => {}}
+        onRefresh={handleRefresh}
         FooterChildren={footerContent}
       />
     </View>

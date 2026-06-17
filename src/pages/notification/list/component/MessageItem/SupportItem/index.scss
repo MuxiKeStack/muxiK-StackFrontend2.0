@@ -47,9 +47,6 @@
             font-size: $font_size_title;
             font-weight: 600;
             color: $color_text_dark;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
           }
         }
 
@@ -81,8 +78,6 @@
             font-size: $font_size_caption;
             color: $color_text_secondary;
             line-height: 1.5;
-            overflow: hidden;
-            max-height: 72rpx;
           }
         }
       }

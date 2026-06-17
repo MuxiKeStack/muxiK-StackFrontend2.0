@@ -27,7 +27,8 @@
 
   .mycollection_list_container {
     flex: 1;
-    overflow-y: scroll;
+    min-height: 0;
+    width: 100%;
   }
 
   .mycollection_empty {

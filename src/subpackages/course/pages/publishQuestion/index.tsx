@@ -1,4 +1,4 @@
-import { Button, Image, Radio, Text, Textarea, View } from '@tarojs/components';
+import { Button, Image, Radio, ScrollView, Text, Textarea, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
@@ -68,38 +68,45 @@ const Page: React.FC = () => {
         console.error('发布问题请求失败:', error);
       });
   };
+
   if (gate === 'loading') return null;
   if (gate === 'block') return <GateScreen />;
+
   return (
-    <View className="publish_question_page">
-      {courseId && <CourseInfo courseId={Number(courseId)} />}
-      <View className="publish_question_card">
-        <PublishHeader />
-        <Image src={askicon} className="publish_question_icon" />
-        <View className="publish_question_textarea_wrapper">
-          <Textarea
-            maxlength={450}
-            onInput={onInput}
-            placeholderStyle="font-size: 25rpx; color: #cccccc;"
-            placeholder="关于课程你有什么要了解的？"
-            className="publish_question_textarea"
-          />
-          <Text className="publish_question_word_count">{textLength}/450</Text>
+    <View className="publish_question_shell">
+      {courseId ? <CourseInfo courseId={Number(courseId)} /> : null}
+      <ScrollView className="publish_question_scroll" scrollY showScrollbar={false}>
+        <View className="publish_question_card">
+          <PublishHeader />
+          <Image src={askicon} className="publish_question_icon" />
+          <View className="publish_question_textarea_wrapper">
+            <Textarea
+              maxlength={450}
+              onInput={onInput}
+              adjustPosition
+              cursorSpacing={80}
+              showConfirmBar={false}
+              placeholderStyle="font-size: 25rpx; color: #cccccc;"
+              placeholder="关于课程你有什么要了解的？"
+              className="publish_question_textarea"
+            />
+            <Text className="publish_question_word_count">{textLength}/450</Text>
+          </View>
         </View>
-      </View>
-      <View className="publish_question_anonymous_section">
-        <Radio
-          value="anonymous"
-          className="publish_question_anonymous_radio"
-          checked={isAnonymous}
-          onClick={() => setIsAnonymous(!isAnonymous)}
-          color="transparent"
-        />
-        <Text className="publish_question_anonymous_text">匿名提问</Text>
-      </View>
-      <Button onClick={postQuestion} className="publish_question_submit_btn">
-        发布问题
-      </Button>
+        <View className="publish_question_anonymous_section">
+          <Radio
+            value="anonymous"
+            className="publish_question_anonymous_radio"
+            checked={isAnonymous}
+            onClick={() => setIsAnonymous(!isAnonymous)}
+            color="transparent"
+          />
+          <Text className="publish_question_anonymous_text">匿名提问</Text>
+        </View>
+        <Button onClick={postQuestion} className="publish_question_submit_btn">
+          发布问题
+        </Button>
+      </ScrollView>
     </View>
   );
 };

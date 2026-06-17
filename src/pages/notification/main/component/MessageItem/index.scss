@@ -12,18 +12,23 @@
   .message_header {
     @include flex_between;
 
+    align-items: flex-start;
+    gap: $space_sm;
     margin-bottom: $space_xl;
 
     .message_title {
+      flex: 1;
+      min-width: 0;
       font-size: $font_size_title;
-      max-width: 400rpx;
       font-weight: bold;
       color: $color_text_dark;
     }
 
     .message_time {
+      flex-shrink: 0;
       font-size: $font_size_subtitle;
       color: $color_text_secondary;
+      white-space: nowrap;
     }
   }
 
@@ -57,13 +62,10 @@
             font-size: $font_size_title;
             font-weight: 700;
             color: $color_text_dark;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
 
-          .official_user {
-            color: #ff8f1f;
+            &.official_user {
+              color: #ff8f1f;
+            }
           }
         }
 
@@ -73,9 +75,6 @@
           .message_action_text {
             font-size: $font_size_subtitle;
             color: $color_text_dark;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
           }
         }
 
@@ -98,8 +97,6 @@
             font-size: $font_size_caption;
             color: $color_text_secondary;
             line-height: 1.5;
-            overflow: hidden;
-            max-height: 72rpx;
           }
 
           .message_content_empty {

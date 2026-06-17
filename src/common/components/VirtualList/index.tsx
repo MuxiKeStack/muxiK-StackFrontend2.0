@@ -1,6 +1,9 @@
 import { ScrollView, Text, View } from '@tarojs/components';
 import type { VirtualListProps as TaroVirtualListProps } from '@tarojs/components-advanced/dist/components/virtual-list';
 import { memo, ReactNode, useCallback, useRef, useState } from 'react';
+
+import { usePullToRefresh } from '@/common/hooks/usePullToRefresh';
+
 import Loading from '../Loading';
 
 interface VirtualListProps extends TaroVirtualListProps {
@@ -15,6 +18,7 @@ interface VirtualListProps extends TaroVirtualListProps {
 
   onTimeout?: () => void;
   onLoadMore?: () => void | Promise<void>;
+  onRefresh?: () => void | Promise<void>;
   getItemKey?: (item: any, index: number) => string | number;
 }
 
@@ -28,6 +32,7 @@ const VirtualList: React.FC<VirtualListProps> = memo(
     bottomPadding = 0,
     getItemKey = (_, index) => index,
     onLoadMore,
+    onRefresh,
     FooterChildren = '—— 没有更多了 ——',
     EmptyChildren = '暂无数据',
     initialLoading = false,
@@ -38,8 +43,18 @@ const VirtualList: React.FC<VirtualListProps> = memo(
     const loadingRef = useRef(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    const pullRefresh = usePullToRefresh(onRefresh ?? (async () => {}));
+    const refreshEnabled = !!onRefresh;
+
     const handleScrollToLower = useCallback(async () => {
-      if (!onLoadMore || loadingRef.current || !hasMore) return;
+      if (
+        !onLoadMore ||
+        loadingRef.current ||
+        !hasMore ||
+        (refreshEnabled && pullRefresh.refresherTriggered)
+      ) {
+        return;
+      }
 
       const IstimeOut = new Promise<never>((_, reject) =>
         setTimeout(() => reject(new Error('加载超时')), timeout)
@@ -56,7 +71,14 @@ const VirtualList: React.FC<VirtualListProps> = memo(
         loadingRef.current = false;
         setIsLoading(false);
       }
-    }, [onLoadMore, hasMore, timeout, onTimeout]);
+    }, [
+      onLoadMore,
+      hasMore,
+      timeout,
+      onTimeout,
+      refreshEnabled,
+      pullRefresh.refresherTriggered,
+    ]);
 
     const renderFooter = () => {
       const footerStyle = {
@@ -85,7 +107,7 @@ const VirtualList: React.FC<VirtualListProps> = memo(
         );
       }
 
-      if (!hasMore) {
+      if (!hasMore && itemData.length > 0) {
         return (
           <View style={footerStyle}>
             {typeof FooterChildren === 'string' ? (
@@ -110,6 +132,21 @@ const VirtualList: React.FC<VirtualListProps> = memo(
       return <View style={{ height: `${bottomPadding}rpx`, width: '100%' }} />;
     };
 
+    const renderEmpty = () => (
+      <View
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '40vh',
+          color: '#999',
+          fontSize: '28rpx',
+        }}
+      >
+        {EmptyChildren}
+      </View>
+    );
+
     if (initialLoading && itemData.length === 0) {
       return (
         <View
@@ -127,7 +164,9 @@ const VirtualList: React.FC<VirtualListProps> = memo(
       );
     }
 
-    if (!initialLoading && itemData.length === 0) {
+    const useScrollContainer = itemData.length > 0 || refreshEnabled;
+
+    if (!useScrollContainer) {
       return (
         <View
           style={{
@@ -161,19 +200,24 @@ const VirtualList: React.FC<VirtualListProps> = memo(
         lowerThreshold={200}
         style={{ height, width }}
         onScrollToLower={handleScrollToLower}
+        refresherEnabled={refreshEnabled}
+        refresherTriggered={refreshEnabled ? pullRefresh.refresherTriggered : false}
+        onRefresherRefresh={refreshEnabled ? pullRefresh.onRefresherRefresh : undefined}
         onScroll={(event) => {
           scrollTop.current = event.detail.scrollTop;
         }}
       >
-        {itemData.map((item, index) => (
-          <Item
-            id={item.id}
-            key={getItemKey(item, index)}
-            data={itemData}
-            index={index}
-          />
-        ))}
-        {renderFooter()}
+        {itemData.length === 0
+          ? renderEmpty()
+          : itemData.map((item, index) => (
+              <Item
+                id={item.id}
+                key={getItemKey(item, index)}
+                data={itemData}
+                index={index}
+              />
+            ))}
+        {itemData.length > 0 ? renderFooter() : null}
         <View style={{ height: '11.5vh' }} />
       </ScrollView>
     );

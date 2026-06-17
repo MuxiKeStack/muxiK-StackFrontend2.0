@@ -64,50 +64,24 @@ $content-line-height: 30;
     padding: $space_xl 36rpx 0;
 
     .review_header_row {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
       margin-bottom: $space_md;
 
-      .class_title {
-        max-width: 450rpx;
-        font-family:
-          Segoe UI,
-          Segoe UI;
-        font-weight: bold;
-        font-size: $font_size_base;
-        color: $color_text_primary;
-        font-style: normal;
-        text-transform: none;
-        margin-right: $space_md;
-      }
+      .visibility_btn {
+        padding: 4rpx 12rpx;
+        border-radius: $radius_lg;
+        font-size: $font_size_caption;
 
-      .header_right_area {
-        position: absolute;
-        right: 24rpx;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: $space_xxs;
+        &.public {
+          background-color: $color_text_light;
+        }
 
-        .visibility_btn {
-          padding: 4rpx 12rpx;
-          border-radius: $radius_lg;
-          font-size: $font_size_caption;
+        &.private {
+          background-color: $color_brand_muted;
+        }
 
-          &.public {
-            background-color: $color_text_light;
-          }
-
-          &.private {
-            background-color: $color_brand_muted;
-          }
-
-          .btn_text {
-            color: $color_bg_page;
-            line-height: 1;
-          }
+        .btn_text {
+          color: $color_bg_page;
+          line-height: 1;
         }
       }
     }

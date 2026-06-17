@@ -2,34 +2,52 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Image, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 
 import './index.scss';
 
-import { useResearchStore } from '@/pages/research/model';
+import {
+  emptySession,
+  SEARCH_LOCATION,
+  useResearchStore,
+} from '@/pages/research/model';
 
 import { deleteIcon } from '@/common/assets/img/icons';
-import { SearchInput, SearchLabel } from '@/common/components';
+import { SearchInput, SearchLabel, VirtualList } from '@/common/components';
 import CourseLabel from '@/common/components/CourseLabel';
+import { hideLoadingThenToast } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
 
 import type { SearchHistoryItem, SearchResultCourse } from './types';
 
+const COURSE_ITEM_SIZE = 369;
+
+const SearchCourseItem = memo(
+  ({ data, index }: { data: SearchResultCourse[]; index: number }) => {
+    const course = data[index];
+    return <CourseLabel course={course} />;
+  }
+);
+
 interface ConditionalRenderProps {
   showResults: boolean;
-  classes: SearchResultCourse[];
+  session: ReturnType<typeof emptySession>;
   hrs: SearchHistoryItem[];
 
   handleSearch: (searchText: string) => void;
   handleDelete: () => void;
+  onLoadMore: () => void | Promise<void>;
+  onRefresh: () => void | Promise<void>;
 }
 
 const ConditionalRender: React.FC<ConditionalRenderProps> = ({
   showResults,
-  classes,
+  session,
   hrs,
   handleSearch,
   handleDelete,
+  onLoadMore,
+  onRefresh,
 }) => {
   if (!showResults) {
     return (
@@ -60,27 +78,30 @@ const ConditionalRender: React.FC<ConditionalRenderProps> = ({
     );
   }
 
-  if (classes.length === 0) {
-    return (
-      <View className="search_empty_container">
-        <Text className="search_empty_text">没有找到相关课程</Text>
-        <Text className="search_empty_hint">换个关键词试试吧</Text>
-      </View>
-    );
-  }
-
   return (
     <View className="course_list_container">
-      {classes.map((each) => (
-        <CourseLabel key={each.id} course={each} />
-      ))}
+      <VirtualList
+        height="100%"
+        width="100%"
+        item={SearchCourseItem}
+        itemCount={session.results.length}
+        itemData={session.results}
+        itemSize={COURSE_ITEM_SIZE}
+        hasMore={session.hasMore}
+        bottomPadding={20}
+        onLoadMore={onLoadMore}
+        onRefresh={onRefresh}
+        getItemKey={(item) => item.id}
+        initialLoading={session.loading}
+        EmptyChildren="没有找到相关课程"
+      />
     </View>
   );
 };
 
 const Page: React.FC = () => {
   const history = useResearchStore((s) => s.history);
-  const searchResults = useResearchStore((s) => s.searchResults);
+  const session = useResearchStore((s) => s.sessions[SEARCH_LOCATION.HOME] ?? emptySession());
   const keyword = useResearchStore((s) => s.keyword);
   const showResults = useResearchStore((s) => s.showResults);
   const loadHistory = useResearchStore((s) => s.loadHistory);
@@ -88,6 +109,8 @@ const Page: React.FC = () => {
   const setKeyword = useResearchStore((s) => s.setKeyword);
   const collapseResults = useResearchStore((s) => s.collapseResults);
   const searchHome = useResearchStore((s) => s.searchHome);
+  const loadMore = useResearchStore((s) => s.loadMore);
+  const refreshSearch = useResearchStore((s) => s.refreshSearch);
 
   useLoad(() => {
     setKeyword('');
@@ -128,19 +151,38 @@ const Page: React.FC = () => {
     Taro.showLoading({ title: '搜索中' });
     try {
       await searchHome(searchText);
+      Taro.hideLoading();
     } catch (error) {
       console.error('搜索失败:', error);
-      Taro.showToast({
+      hideLoadingThenToast({
         title: '搜索失败',
         icon: 'error',
       });
-    } finally {
-      Taro.hideLoading();
     }
   };
 
+  const handleLoadMore = useCallback(async () => {
+    try {
+      await loadMore({ search_location: SEARCH_LOCATION.HOME });
+    } catch (error) {
+      console.error('加载更多失败:', error);
+      Taro.showToast({ title: '加载更多失败', icon: 'none' });
+    }
+  }, [loadMore]);
+
+  const handleRefresh = useCallback(async () => {
+    try {
+      await refreshSearch({ search_location: SEARCH_LOCATION.HOME });
+    } catch (error) {
+      console.error('刷新搜索失败:', error);
+      Taro.showToast({ title: '刷新失败', icon: 'none' });
+    }
+  }, [refreshSearch]);
+
   return (
-    <View className="search_page_container">
+    <View
+      className={`search_page_container ${showResults ? 'search_page_container--results' : ''}`}
+    >
       <NavigationBar title="搜索查询" isBackToPage />
       <View className="search_input_wrapper">
         <SearchInput
@@ -159,10 +201,12 @@ const Page: React.FC = () => {
 
       <ConditionalRender
         showResults={showResults}
-        classes={showResults ? searchResults : []}
+        session={session}
         hrs={history}
         handleSearch={handleSearch}
         handleDelete={handleDelete}
+        onLoadMore={handleLoadMore}
+        onRefresh={handleRefresh}
       />
     </View>
   );

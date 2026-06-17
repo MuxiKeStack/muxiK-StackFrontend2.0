@@ -1,6 +1,6 @@
 import { Progress, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
+import Taro, { useDidShow } from '@tarojs/taro';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
 import './index.scss';
@@ -30,45 +30,50 @@ const Header: React.FC = memo(() => {
   const translateTitle = useMemo(() => (title: string) => TITLE_MAP[title] || title, []);
   const navigatedRef = useRef(false);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const store = useUserStore.getState();
-        const [profile, points] = await Promise.all([
-          store.ensureProfile(),
-          store.ensurePoints(),
-        ]);
+  const fetchUserData = useCallback(async () => {
+    try {
+      const store = useUserStore.getState();
+      const [profile, points] = await Promise.all([
+        store.ensureProfile(),
+        store.ensurePoints(),
+      ]);
 
-        if (!profile && !points) {
-          setUser({
-            level: 1,
-            points: 0,
-            nextLevel: 0,
-            avatarUrl: '',
-            nickName: '未登录',
-            selectedTitle: 'None',
-            newUser: false,
-          });
-          return;
-        }
-
-        setUser((prev) => ({
-          level: points?.level ?? prev.level,
-          points: points?.points ?? prev.points,
-          nextLevel: points?.next_level_points ?? prev.nextLevel,
-          avatarUrl: profile?.avatar ?? prev.avatarUrl,
-          nickName: profile?.nickname ?? prev.nickName,
-          selectedTitle: profile?.using_title
-            ? translateTitle(profile.using_title)
-            : 'None',
-          newUser: profile?.new ?? prev.newUser,
-        }));
-      } catch (e) {
-        console.error('获取用户信息失败:', e);
+      if (!profile && !points) {
+        setUser({
+          level: 1,
+          points: 0,
+          nextLevel: 0,
+          avatarUrl: '',
+          nickName: '未登录',
+          selectedTitle: 'None',
+          newUser: false,
+        });
+        return;
       }
-    };
-    void fetchUserData();
+
+      setUser((prev) => ({
+        level: points?.level ?? prev.level,
+        points: points?.points ?? prev.points,
+        nextLevel: points?.next_level_points ?? prev.nextLevel,
+        avatarUrl: profile?.avatar ?? prev.avatarUrl,
+        nickName: profile?.nickname ?? prev.nickName,
+        selectedTitle: profile?.using_title
+          ? translateTitle(profile.using_title)
+          : 'None',
+        newUser: profile?.new ?? prev.newUser,
+      }));
+    } catch (e) {
+      console.error('获取用户信息失败:', e);
+    }
   }, [translateTitle]);
+
+  useEffect(() => {
+    void fetchUserData();
+  }, [fetchUserData]);
+
+  useDidShow(() => {
+    void fetchUserData();
+  });
 
   useEffect(() => {
     if (user.newUser && !navigatedRef.current) {

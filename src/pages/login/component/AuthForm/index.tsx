@@ -7,6 +7,7 @@ import './index.scss';
 import { loginFormal, loginVisitor, saveUserInfo } from '@/pages/login/session';
 
 import { Icon } from '@/common/assets/img/login';
+import { hideLoadingThenToast } from '@/common/utils';
 
 import { Popper } from '../index';
 
@@ -69,17 +70,17 @@ const AuthForm: React.FC = memo(() => {
           loginVisitor();
         }
 
+        Taro.hideLoading();
         Taro.switchTab({ url: '/pages/main/index' });
       } catch (error) {
         console.error(`${type}登录失败:`, error);
         const message = error instanceof Error ? error.message : '登录失败';
-        Taro.showToast({
+        hideLoadingThenToast({
           icon: 'error',
           title: type === 'formal' ? message : '游客登录失败',
         });
       } finally {
         setIsLoading(false);
-        Taro.hideLoading();
       }
     },
     [userData, handleGetUserProfile]

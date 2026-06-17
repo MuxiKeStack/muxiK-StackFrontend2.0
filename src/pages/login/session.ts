@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro';
 
+import { readResponseHeader } from '@/common/auth/session';
 import { LONG_TOKEN, SHORT_TOKEN, VISITOR } from '@/common/constants/auth';
 import { STUDENT_ID, USER_INFO } from '@/common/constants/user';
 import { signGradeSharing } from '@/common/request/api/grade';
@@ -7,11 +8,6 @@ import { userLogin, userLogout } from '@/common/request/api/user';
 import { BusinessError } from '@/common/request/errors/BusinessError';
 import { resetSession } from '@/common/utils/resetSession';
 import { useUserStore } from '@/store/user';
-
-type LoginResponseHeaders = {
-  'X-Jwt-Token'?: string;
-  'X-Refresh-Token'?: string;
-};
 
 export async function loginFormal(studentId: string, password: string): Promise<void> {
   resetSession('login');
@@ -22,9 +18,9 @@ export async function loginFormal(studentId: string, password: string): Promise<
     throw new Error(res.data.msg || '登录失败');
   }
 
-  const headers = res.header as LoginResponseHeaders;
-  const shortToken = headers['X-Jwt-Token'];
-  const longToken = headers['X-Refresh-Token'];
+  const headers = res.header as Record<string, unknown>;
+  const shortToken = readResponseHeader(headers, 'x-jwt-token');
+  const longToken = readResponseHeader(headers, 'x-refresh-token');
 
   if (!shortToken || !longToken) {
     throw new Error('登录失败：未获取到有效的 token');

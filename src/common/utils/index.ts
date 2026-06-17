@@ -10,3 +10,4 @@ export { getFileInfo } from './getFileInfo';
 export type { FileInfo } from './getFileInfo';
 export { default as uniqueKey } from './keyGen';
 export { createTaroJSONStorage, taroStorageAdapter } from './storage';
+export { hideLoadingThenToast } from './toast';

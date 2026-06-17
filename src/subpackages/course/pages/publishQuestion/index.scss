@@ -1,6 +1,16 @@
-.publish_question_page {
-  min-height: 100vh;
+.publish_question_shell {
+  @include flex_column;
+
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
   background-color: $color_bg_page;
+}
+
+.publish_question_scroll {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
 }
 
 .publish_question_card {
@@ -29,7 +39,7 @@
   padding: $space_lg;
   border-radius: $radius_md;
   border: 1rpx solid $color_divider;
-  min-height: 40vh;
+  height: 280rpx;
 }
 
 .publish_question_word_count {
@@ -74,7 +84,7 @@
 }
 
 .publish_question_submit_btn {
-  margin: 60rpx auto;
+  margin: 60rpx auto 48rpx;
   width: 50%;
   padding: $space_sm 40rpx;
   font-size: $font_size_base;

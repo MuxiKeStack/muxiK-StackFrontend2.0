@@ -8,6 +8,8 @@
     font-weight: bold;
     color: $color_text_heading;
     text-align: center;
+    max-width: 90vw;
+    word-break: break-word;
   }
 
   .classInfo_page_collect_icon_wrapper {

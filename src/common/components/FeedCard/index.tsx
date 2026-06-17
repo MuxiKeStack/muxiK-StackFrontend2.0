@@ -7,7 +7,7 @@ import './index.scss';
 import { useCourseStore } from '@/store/course';
 import { useEvaluationStore } from '@/store/evaluations';
 
-import { ActionItem, UserIdentity } from '@/common/components';
+import { ActionItem, CourseTitleBlock, UserIdentity } from '@/common/components';
 import { COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
 import type { CommentInfo } from '@/common/types/commentTypes';
 import { CourseDetailsType, PublisherDetailsType } from '@/common/types/courseType';
@@ -120,26 +120,27 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
 
   return (
     <>
-      <View className="review_header_row">
-        <View className="class_title" onClick={handleClickToClass}>
-          {courseInfo?.name
-            ? `${courseInfo?.name} (${courseInfo?.teacher}) `
-            : '加载中 ...'}
-        </View>
-        <View className="header_right_area">
-          {isEditable && (
-            <View
-              className={`visibility_btn ${initialVisibility}`}
-              onClick={toggleVisibility}
-            >
-              <Text className="btn_text">
-                {initialVisibility === 'public' ? '设为私密' : '设为公开'}
-              </Text>
-            </View>
-          )}
-          {!hideStar && <ShowStar score={star_rating as any} />}
-        </View>
-      </View>
+      <CourseTitleBlock
+        className="review_header_row"
+        name={courseInfo?.name || '加载中 ...'}
+        teacher={courseInfo?.name ? courseInfo.teacher : undefined}
+        onMainClick={handleClickToClass}
+        trailing={
+          <>
+            {isEditable && (
+              <View
+                className={`visibility_btn ${initialVisibility}`}
+                onClick={toggleVisibility}
+              >
+                <Text className="btn_text">
+                  {initialVisibility === 'public' ? '设为私密' : '设为公开'}
+                </Text>
+              </View>
+            )}
+            {!hideStar && <ShowStar score={star_rating as number} />}
+          </>
+        }
+      />
       <View className="reviewer_info">
         <UserIdentity
           avatar={publisherInfo?.avatar || ''}

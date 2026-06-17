@@ -74,4 +74,14 @@
     width: 100%;
     @include flex_column_center;
   }
+
+  &--results {
+    overflow: hidden;
+
+    .course_list_container {
+      flex: 1;
+      min-height: 0;
+      margin-top: 0;
+    }
+  }
 }

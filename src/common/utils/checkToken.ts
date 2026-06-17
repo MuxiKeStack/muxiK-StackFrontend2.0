@@ -1,18 +1,25 @@
 import Taro from '@tarojs/taro';
 
-import { SHORT_TOKEN, VISITOR } from '@/common/constants/auth';
+import { hasStoredSession, isColdStartOnLoginPage } from '@/common/auth/session';
+
+const LOGIN_URL = '/pages/login/index';
+const MAIN_TAB_URL = '/pages/main/index';
 
 const checkToken = () => {
-  const token: string = Taro.getStorageSync(SHORT_TOKEN);
-  const isVisitor = Taro.getStorageSync(VISITOR);
   const accountInfo = Taro.getAccountInfoSync();
+
   void Taro.setStorage({
     key: 'accountInfo',
     data: accountInfo,
   });
-  // 有 token 或游客模式时不改路由，保留分享/扫码进入的子页面
-  if (!token?.trim() && !isVisitor) {
-    void Taro.redirectTo({ url: '/pages/login/index' });
+
+  if (!hasStoredSession()) {
+    void Taro.redirectTo({ url: LOGIN_URL });
+    return;
+  }
+
+  if (isColdStartOnLoginPage()) {
+    void Taro.switchTab({ url: MAIN_TAB_URL });
   }
 };
 

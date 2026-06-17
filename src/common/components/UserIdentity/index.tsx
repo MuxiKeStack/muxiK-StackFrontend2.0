@@ -3,7 +3,7 @@ import React from 'react';
 
 import './index.scss';
 
-import { Avatar } from '@/common/components';
+import { Avatar, EllipsisText } from '@/common/components';
 
 interface UserIdentityProps {
   avatar: string;
@@ -32,10 +32,10 @@ const UserIdentity: React.FC<UserIdentityProps> = ({
       className={avatarClassName}
     />
     <View className="ui_user_meta">
-      <Text className="ui_user_name">
+      <EllipsisText className="ui_user_name">
         {username || '匿名用户'}
-        {title && title !== 'None' && <Text className="ui_user_title"> ({title})</Text>}
-      </Text>
+        {title && title !== 'None' ? ` (${title})` : ''}
+      </EllipsisText>
       <Text className="ui_user_level">Lv{level}</Text>
     </View>
   </View>

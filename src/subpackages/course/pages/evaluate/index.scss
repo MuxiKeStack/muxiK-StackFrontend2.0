@@ -1,3 +1,19 @@
+.evaluate_page_shell {
+  @include flex_column;
+
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.evaluate_page_scroll {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  margin-top: 180rpx;
+  padding: 0 0 48rpx;
+}
+
 .evaluate_page_unauthorized_container {
   @include flex_column;
 
@@ -35,117 +51,132 @@
     }
   }
 }
-.evaluate_page_container {
-  margin-top: 25%;
-  height: 85vh;
-  padding: 0 0 24rpx 0;
-  .evaluate_page_form {
-    padding-top: 30rpx;
-    .evaluate_page_section {
+.evaluate_page_form {
+  padding-top: 30rpx;
+
+  .evaluate_page_section {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30rpx;
+    margin-left: 46rpx;
+
+    .evaluate_page_label {
+      padding-right: 10rpx;
+      font-size: $font_size_base;
+      font-family:
+        Segoe UI-Bold,
+        Segoe UI;
+      color: $color_text_heading;
+      letter-spacing: 2rpx;
+      font-weight: 600;
+    }
+
+    .evaluate_page_ways_container {
+      width: 500rpx;
+      margin-top: -4rpx;
       display: flex;
-      flex-direction: row;
-      margin-top: 30rpx;
-      margin-left: 46rpx;
-      .evaluate_page_label {
-        padding-right: 10rpx;
+      flex-wrap: wrap;
+      gap: $space_md;
+
+      .evaluate_page_radio {
         font-size: $font_size_base;
-        font-family:
-          Segoe UI-Bold,
-          Segoe UI;
-        color: $color_text_heading;
-        letter-spacing: 2rpx;
-        font-weight: 600;
-      }
-      .evaluate_page_ways_container {
-        width: 500rpx;
-        margin-top: -4rpx;
-        display: flex;
-        flex-wrap: wrap;
-        gap: $space_md;
-        .evaluate_page_radio {
-          font-size: $font_size_base;
-          margin-right: $space_md;
-          .wx-radio-input {
-            height: 14rpx;
-            width: 14rpx;
-            border: 6rpx solid $color_brand_golden;
-          }
-          .wx-radio-input.wx-radio-input-checked::before {
-            border-radius: $radius_round;
-            width: 18rpx;
-            height: 18rpx;
-            line-height: 18rpx;
-            text-align: center;
-            font-size: 0rpx;
-            background-color: $color_brand_golden;
-            transform: translate(-50%, -50%);
-          }
-        }
-      }
-      .evaluate_page_features_container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 26rpx;
-        width: 500rpx;
-      }
-    }
-    .evaluate_textarea_container {
-      position: relative;
-      .evaluate_page_textarea {
-        width: 650rpx;
-        height: 30vh;
-        background-color: transparent;
-        border: 1px solid $color_text_light;
-        border-radius: 44rpx;
-        margin: $space_lg auto;
-        padding: $space_lg 24rpx;
-        font-size: $font_size_title;
-      }
-      .evaluate_page_word_limit {
-        font-size: $font_size_caption;
-        color: $color_text_light;
-        position: absolute;
-        right: 8%;
-        bottom: 5%;
-      }
-    }
-    .evaluate_page_anonymous_section {
-      @include flex_align_center;
-      margin: 30rpx 46rpx;
-      .evaluate_page_anonymous_radio {
-        @include flex_align_center;
-        font-size: $font_size_base;
+        margin-right: $space_md;
+
         .wx-radio-input {
-          height: 24rpx;
-          width: 24rpx;
+          height: 14rpx;
+          width: 14rpx;
           border: 6rpx solid $color_brand_golden;
         }
+
         .wx-radio-input.wx-radio-input-checked::before {
           border-radius: $radius_round;
-          width: 30rpx;
-          height: 30rpx;
-          line-height: 24rpx;
+          width: 18rpx;
+          height: 18rpx;
+          line-height: 18rpx;
           text-align: center;
           font-size: 0rpx;
           background-color: $color_brand_golden;
           transform: translate(-50%, -50%);
         }
       }
-      .evaluate_page_anonymous_text {
-        font-size: $font_size_subheading;
-        color: $color_text_light;
+    }
+
+    .evaluate_page_features_container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 26rpx;
+      width: 500rpx;
+    }
+  }
+
+  .evaluate_textarea_container {
+    position: relative;
+
+    .evaluate_page_textarea {
+      width: 650rpx;
+      height: 280rpx;
+      background-color: transparent;
+      border: 1px solid $color_text_light;
+      border-radius: 44rpx;
+      margin: $space_lg auto;
+      padding: $space_lg 24rpx;
+      font-size: $font_size_title;
+    }
+
+    .evaluate_page_word_limit {
+      font-size: $font_size_caption;
+      color: $color_text_light;
+      position: absolute;
+      right: 8%;
+      bottom: 5%;
+    }
+  }
+
+  .evaluate_page_anonymous_section {
+    @include flex_align_center;
+
+    margin: 30rpx 46rpx;
+
+    .evaluate_page_anonymous_radio {
+      @include flex_align_center;
+
+      font-size: $font_size_base;
+
+      .wx-radio-input {
+        height: 24rpx;
+        width: 24rpx;
+        border: 6rpx solid $color_brand_golden;
+      }
+
+      .wx-radio-input.wx-radio-input-checked::before {
+        border-radius: $radius_round;
+        width: 30rpx;
+        height: 30rpx;
+        line-height: 24rpx;
+        text-align: center;
+        font-size: 0rpx;
+        background-color: $color_brand_golden;
+        transform: translate(-50%, -50%);
       }
     }
-    .evaluate_page_submit_button {
-      @include flex_center;
-      margin: 64rpx auto;
-      padding: $space_sm 48rpx;
-      width: 60%;
-      font-size: $font_size_hero;
-      color: white;
-      background-color: $color_brand;
-      border-radius: $radius_xl;
-      border: 0rpx;
+
+    .evaluate_page_anonymous_text {
+      font-size: $font_size_subheading;
+      color: $color_text_light;
     }
+  }
+
+  .evaluate_page_submit_button {
+    @include flex_center;
+
+    margin: 64rpx auto;
+    padding: $space_sm 48rpx;
+    width: 60%;
+    font-size: $font_size_hero;
+    color: white;
+    text-align: center;
+    background-color: $color_brand;
+    border-radius: $radius_xl;
+    box-sizing: border-box;
   }
 }

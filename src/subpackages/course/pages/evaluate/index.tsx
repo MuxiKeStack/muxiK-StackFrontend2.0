@@ -2,20 +2,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import {
-  Button,
-  Form,
-  Radio,
-  ScrollView,
-  Text,
-  Textarea,
-  View,
-} from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { useEffect, useState } from 'react';
+import { Radio, ScrollView, Text, Textarea, View } from '@tarojs/components';
+import Taro, { useDidShow } from '@tarojs/taro';
+import { useCallback, useEffect, useState } from 'react';
 
 import './index.scss';
 
+import type { PublishEvaluationBody } from '@/subpackages/course/pages/evaluate/publish';
 import { publishEvaluationAndBroadcast } from '@/subpackages/course/pages/evaluate/publish';
 
 import { GateScreen, StarRating } from '@/common/components';
@@ -23,7 +16,37 @@ import FeatureLabel from '@/common/components/FeatureLabel';
 import { ASSESSMENT_MAP, COURSE_FEATURE_MAP } from '@/common/constants/courseLabels';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
+import { BusinessError } from '@/common/request/errors/BusinessError';
+import { hideLoadingThenToast } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
+
+function readCourseIdFromRoute(): number {
+  const pages = Taro.getCurrentPages();
+  const current = pages[pages.length - 1] as
+    | { options?: Record<string, string> }
+    | undefined;
+  const id = Number(current?.options?.id);
+  return id > 0 ? id : 0;
+}
+
+function readCourseNameFromRoute(): string | null {
+  const pages = Taro.getCurrentPages();
+  const current = pages[pages.length - 1] as
+    | { options?: Record<string, string> }
+    | undefined;
+  const name = current?.options?.name;
+  return name ? decodeURIComponent(name) : null;
+}
+
+function publishErrorMessage(error: unknown): string {
+  if (error instanceof BusinessError) {
+    return error.message || `发布失败(${error.code})`;
+  }
+  if (error instanceof Error && error.message.trim()) {
+    return error.message.length > 24 ? `${error.message.slice(0, 24)}…` : error.message;
+  }
+  return '发布失败，请稍后重试';
+}
 
 const Page: React.FC = () => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
@@ -53,29 +76,37 @@ const Page: React.FC = () => {
 
   const [textLength, setLength] = useState(0);
   const [comment, setComment] = useState('');
-
-  const countContent = (e: any) => {
-    const { value } = e.detail;
-    setComment(value);
-    const length = value.length;
-    setLength(length);
-  };
+  const [selectedStarIndex, setSelectedStarIndex] = useState<number>(-1);
 
   const [courseId, setId] = useState<number | undefined>(undefined);
   const [courseName, setName] = useState<string | null>('只能评价自己学过的课程哦');
   const gate = useGateGuard();
   const { guard } = useAuthGuard();
 
-  useEffect(() => {
-    const instance = Taro.getCurrentInstance();
-    const params = instance?.router?.params || {};
-
-    setId(params.id ? Number(params.id) : undefined);
-    setName(params.name ? decodeURIComponent(params.name) : '只能评价自己学过的课程哦');
+  const syncCourseFromRoute = useCallback(() => {
+    const id = readCourseIdFromRoute();
+    const name = readCourseNameFromRoute();
+    if (id > 0) setId(id);
+    if (name) setName(name);
   }, []);
+
+  useEffect(() => {
+    syncCourseFromRoute();
+  }, [syncCourseFromRoute]);
+
+  useDidShow(() => {
+    syncCourseFromRoute();
+  });
 
   const postEvaluation = () => {
     if (!guard()) return;
+    if (!courseId || courseId <= 0) {
+      void Taro.showToast({
+        title: '课程信息缺失，请返回重试',
+        icon: 'none',
+      });
+      return;
+    }
     if (selectedStarIndex === -1) {
       void Taro.showToast({
         title: '请为课程选择星级',
@@ -83,21 +114,22 @@ const Page: React.FC = () => {
       });
       return;
     }
-    if (!comment) {
+    const content = comment.trim();
+    if (!content) {
       void Taro.showToast({
         title: '内容不能为空',
         icon: 'none',
       });
       return;
     }
-    const evaluationobj = {
+    const evaluationobj: PublishEvaluationBody = {
       star_rating: selectedStarIndex,
-      content: comment,
+      content,
       course_id: courseId,
       assessments: selectedValues,
       features: selectedFeatureValues,
       id: 0,
-      status: 'Public' as 'Public' | 'Private',
+      status: 'Public',
       is_anonymous: isAnonymous,
     };
 
@@ -106,6 +138,7 @@ const Page: React.FC = () => {
     });
     publishEvaluationAndBroadcast(evaluationobj)
       .then(() => {
+        void Taro.hideLoading();
         void Taro.navigateBack().then(() => {
           void Taro.showToast({
             title: '课评发布成功',
@@ -114,99 +147,104 @@ const Page: React.FC = () => {
         });
       })
       .catch((error) => {
-        console.error('发布课评请求失败:', error);
-      })
-      .finally(() => {
-        void Taro.hideLoading();
+        hideLoadingThenToast({
+          title: publishErrorMessage(error),
+          icon: 'none',
+        });
       });
   };
-  const [selectedStarIndex, setSelectedStarIndex] = useState<number>(-1);
 
   const onStarClick = (index) => {
     setSelectedStarIndex(index + 1);
   };
 
+  const countContent = (e: any) => {
+    const { value } = e.detail;
+    setComment(value);
+    setLength(value.length);
+  };
+
   if (gate === 'loading') return null;
   if (gate === 'block') return <GateScreen title="评课" />;
   return (
-    <ScrollView
-      className="evaluate_page_container"
-      scrollY
-      enhanced
-      showScrollbar={false}
-    >
-      <Form className="evaluate_page_form">
-        <NavigationBar title="评课" isBackToPage />
-        <View className="evaluate_page_section">
-          <Text className="evaluate_page_label">课程名字 :</Text>
-          <Text>{courseName}</Text>
-        </View>
-        <View className="evaluate_page_section">
-          <Text className="evaluate_page_label">评价星级 :</Text>
-          <StarRating onStarClick={onStarClick} />
-        </View>
-        <View className="evaluate_page_section">
-          <Text className="evaluate_page_label">考核方式 :</Text>
-          <View className="evaluate_page_ways_container">
-            {Object.entries(ASSESSMENT_MAP).map(([value, text]) => (
-              <Radio
-                key={value}
-                className="evaluate_page_radio"
-                checked={selectedValues.includes(value)}
-                value={value}
-                color="transparent"
-                onClick={() => handleRadioChange(value)}
-              >
-                {text}
-              </Radio>
-            ))}
+    <View className="evaluate_page_shell">
+      <NavigationBar title="评课" isBackToPage />
+      <ScrollView className="evaluate_page_scroll" scrollY showScrollbar={false}>
+        <View className="evaluate_page_form">
+          <View className="evaluate_page_section">
+            <Text className="evaluate_page_label">课程名字 :</Text>
+            <Text>{courseName}</Text>
           </View>
-        </View>
-        <View className="evaluate_page_section">
-          <Text className="evaluate_page_label">课程特点 :</Text>
-          <View className="evaluate_page_features_container">
-            {Object.entries(COURSE_FEATURE_MAP).map(([value, content]) => {
-              return (
-                <FeatureLabel
+          <View className="evaluate_page_section">
+            <Text className="evaluate_page_label">评价星级 :</Text>
+            <StarRating onStarClick={onStarClick} />
+          </View>
+          <View className="evaluate_page_section">
+            <Text className="evaluate_page_label">考核方式 :</Text>
+            <View className="evaluate_page_ways_container">
+              {Object.entries(ASSESSMENT_MAP).map(([value, text]) => (
+                <Radio
                   key={value}
-                  id={value}
-                  content={content}
-                  style={{
-                    width: '150rpx',
-                    textAlign: 'center',
-                  }}
-                  checked={selectedFeatureValues.includes(value)}
-                  handleChecked={() => handleFeaturesChecked(value)}
-                />
-              );
-            })}
+                  className="evaluate_page_radio"
+                  checked={selectedValues.includes(value)}
+                  value={value}
+                  color="transparent"
+                  onClick={() => handleRadioChange(value)}
+                >
+                  {text}
+                </Radio>
+              ))}
+            </View>
+          </View>
+          <View className="evaluate_page_section">
+            <Text className="evaluate_page_label">课程特点 :</Text>
+            <View className="evaluate_page_features_container">
+              {Object.entries(COURSE_FEATURE_MAP).map(([value, content]) => {
+                return (
+                  <FeatureLabel
+                    key={value}
+                    id={value}
+                    content={content}
+                    style={{
+                      width: '150rpx',
+                      textAlign: 'center',
+                    }}
+                    checked={selectedFeatureValues.includes(value)}
+                    handleChecked={() => handleFeaturesChecked(value)}
+                  />
+                );
+              })}
+            </View>
+          </View>
+          <View className="evaluate_textarea_container">
+            <Textarea
+              maxlength={450}
+              onInput={countContent}
+              adjustPosition
+              cursorSpacing={80}
+              showConfirmBar={false}
+              placeholderStyle="font-size: 25rpx;"
+              placeholder="输入课程评价"
+              className="evaluate_page_textarea"
+            ></Textarea>
+            <Text className="evaluate_page_word_limit">字数限制{textLength}/450</Text>
+          </View>
+          <View className="evaluate_page_anonymous_section">
+            <Radio
+              value="anonymous"
+              className="evaluate_page_anonymous_radio"
+              checked={isAnonymous}
+              onClick={() => setIsAnonymous(!isAnonymous)}
+              color="transparent"
+            ></Radio>
+            <Text className="evaluate_page_anonymous_text">匿名</Text>
+          </View>
+          <View className="evaluate_page_submit_button" onClick={postEvaluation}>
+            发布
           </View>
         </View>
-        <View className="evaluate_textarea_container">
-          <Textarea
-            maxlength={450}
-            onInput={countContent}
-            placeholderStyle="font-size: 25rpx;"
-            placeholder="输入课程评价"
-            className="evaluate_page_textarea"
-          ></Textarea>
-          <Text className="evaluate_page_word_limit">字数限制{textLength}/450</Text>
-        </View>
-        <View className="evaluate_page_anonymous_section">
-          <Radio
-            value="anonymous"
-            className="evaluate_page_anonymous_radio"
-            checked={isAnonymous}
-            onClick={() => setIsAnonymous(!isAnonymous)}
-            color="transparent"
-          ></Radio>
-          <Text className="evaluate_page_anonymous_text">匿名</Text>
-        </View>
-        <Button className="evaluate_page_submit_button" onClick={postEvaluation}>
-          发布
-        </Button>
-      </Form>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

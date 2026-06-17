@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Picker, Text, View } from '@tarojs/components';
-import Taro, { useLoad } from '@tarojs/taro';
-import { useEffect, useState } from 'react';
+import { Picker, ScrollView, Text, View } from '@tarojs/components';
+import Taro, { useDidShow, useLoad } from '@tarojs/taro';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
@@ -11,13 +11,14 @@ import { useMyClassStore } from '@/store';
 
 import { Loading } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
-import { useGateGuard } from '@/common/hooks/useGateGuard';
 import {
   getSemesterNumber,
   SEMESTER_ALL,
   SEMESTER_NAME_TO_NUM,
   SEMESTER_NAMES,
 } from '@/common/constants/semester';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
+import { usePullToRefresh } from '@/common/hooks/usePullToRefresh';
 import { MyCourseProps as CourseProps } from '@/common/types/myCourseType';
 import { NavigationBar } from '@/modules/navigation';
 
@@ -33,10 +34,13 @@ const Page: React.FC = () => {
     selectedYear: year,
     setSelectedYearAndSemester,
     load,
+    coursesCache,
   } = useMyClassStore();
 
   const [myclasses, setMyclasses] = useState<CourseProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const myclassesRef = useRef(myclasses);
+  myclassesRef.current = myclasses;
 
   const generateYearOptions = (): string[] => {
     const studentId = Taro.getStorageSync<string>('student_id') || '';
@@ -75,43 +79,68 @@ const Page: React.FC = () => {
     setSelectedYearAndSemester(year || '', selectedSem);
   };
 
-  async function fetchClasses() {
-    setIsLoading(true);
+  const fetchClasses = useCallback(
+    async (force = false) => {
+      if (!year || !sem) return;
 
-    if (!year || !sem) {
-      setIsLoading(false);
-      return;
-    }
+      const cacheKey = `${year}-${sem}`;
+      const cached = useMyClassStore.getState().coursesCache[cacheKey];
+      const shouldShowCenterLoading =
+        myclassesRef.current.length === 0 && !(cached?.length ?? 0);
 
-    try {
-      const yearValue = year.split('-')[0];
-      const semValue = String(
-        SEMESTER_NAME_TO_NUM[sem as keyof typeof SEMESTER_NAME_TO_NUM] || '0'
-      );
-      const classes = await load(year, sem, { yearValue, termValue: semValue });
-      setMyclasses(classes);
-    } catch (error) {
-      console.error('用户课程信息获取错误:', error);
-      setMyclasses([]);
-      void Taro.showToast({ icon: 'error', title: '加载失败' });
-    } finally {
-      setIsLoading(false);
-    }
-  }
+      if (shouldShowCenterLoading) {
+        setIsLoading(true);
+      }
 
-  const fetchCourses = () => {
-    void fetchClasses().catch(() => {
-      Taro.hideLoading();
-      void Taro.showToast({ icon: 'error', title: '加载失败' });
-    });
-  };
+      try {
+        const yearValue = year.split('-')[0];
+        const semValue = String(
+          SEMESTER_NAME_TO_NUM[sem as keyof typeof SEMESTER_NAME_TO_NUM] || '0'
+        );
+        const classes = await load(
+          year,
+          sem,
+          { yearValue, termValue: semValue },
+          { force }
+        );
+        setMyclasses(classes);
+      } catch (error) {
+        console.error('用户课程信息获取错误:', error);
+        if (shouldShowCenterLoading) {
+          setMyclasses([]);
+        }
+        void Taro.showToast({ icon: 'error', title: '加载失败' });
+      } finally {
+        if (shouldShowCenterLoading) {
+          setIsLoading(false);
+        }
+      }
+    },
+    [year, sem, load]
+  );
+
+  const handleRefresh = useCallback(async () => {
+    await fetchClasses(true);
+  }, [fetchClasses]);
+
+  const pullRefresh = usePullToRefresh(handleRefresh);
 
   useEffect(() => {
-    fetchCourses();
-  }, [year, sem]);
+    if (!year || !sem) return;
+
+    const cacheKey = `${year}-${sem}`;
+    const cached = useMyClassStore.getState().coursesCache[cacheKey];
+    setMyclasses(cached ?? []);
+    void fetchClasses();
+  }, [year, sem, fetchClasses]);
+
+  useDidShow(() => {
+    if (!year || !sem) return;
+    const cached = coursesCache[`${year}-${sem}`];
+    if (cached?.length) setMyclasses(cached);
+  });
 
   useLoad(() => {
-    setIsLoading(true);
     const yearOptions = generateYearOptions();
     setYearSelector(yearOptions);
 
@@ -149,6 +178,8 @@ const Page: React.FC = () => {
       url: `/pages/classInfo/index?course_id=${each.id}`,
     });
   };
+
+  const showCenterLoading = isLoading && myclasses.length === 0;
 
   return (
     <View className="myclass_page_container">
@@ -188,59 +219,65 @@ const Page: React.FC = () => {
         </Picker>
       </View>
 
-      <View className="myclass_list_container">
-        {isLoading ? (
-          <View
-            style={{
-              height: '60vh',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Loading
-              type="circular"
-              size={60}
-              textStyle={{ fontSize: '20rpx' }}
-              isCenter={false}
-            />
-          </View>
-        ) : myclasses && myclasses.length > 0 ? (
-          myclasses.map((each, index) => (
-            <View
-              key={each.id ?? index}
-              className="myclass_item"
-              onClick={() => handleClassClick(each)}
-            >
-              <View className="myclass_item_left">
-                <View className="myclass_item_circle"></View>
-                <View
-                  className="myclass_item_info"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNavToCourseInfo(each);
-                  }}
-                >
-                  <Text className="myclass_item_name" overflow="ellipsis">
-                    {each.name}
-                  </Text>
-                  <Text className="myclass_item_teacher">{'(' + each.teacher + ')'}</Text>
-                </View>
-              </View>
-              {gatePass ? (
-                <View className="myclass_item_right">
-                  <Text className="myclass_item_status">
-                    {each.evaluated ? '已评课' : '未评课'}
-                  </Text>
-                  <Text className="myclass_item_icon"> {each.evaluated ? '✔' : '➜'}</Text>
-                </View>
-              ) : null}
+      <ScrollView
+        className="myclass_list_scroll"
+        scrollY
+        refresherEnabled={pullRefresh.refresherEnabled}
+        refresherTriggered={pullRefresh.refresherTriggered}
+        onRefresherRefresh={pullRefresh.onRefresherRefresh}
+      >
+        <View className="myclass_list_container">
+          {showCenterLoading ? (
+            <View className="myclass_loading_container">
+              <Loading
+                type="circular"
+                size={60}
+                textStyle={{ fontSize: '20rpx' }}
+                isCenter={false}
+              />
             </View>
-          ))
-        ) : (
-          <View className="myclass_empty">暂无课程</View>
-        )}
-      </View>
+          ) : myclasses && myclasses.length > 0 ? (
+            myclasses.map((each, index) => (
+              <View
+                key={each.id ?? index}
+                className="myclass_item"
+                onClick={() => handleClassClick(each)}
+              >
+                <View className="myclass_item_left">
+                  <View className="myclass_item_circle"></View>
+                  <View
+                    className="myclass_item_info"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNavToCourseInfo(each);
+                    }}
+                  >
+                    <Text className="myclass_item_name" overflow="ellipsis">
+                      {each.name}
+                    </Text>
+                    <Text className="myclass_item_teacher">
+                      {'(' + each.teacher + ')'}
+                    </Text>
+                  </View>
+                </View>
+                {gatePass ? (
+                  <View className="myclass_item_right">
+                    <Text className="myclass_item_status">
+                      {each.evaluated ? '已评课' : '未评课'}
+                    </Text>
+                    <Text className="myclass_item_icon">
+                      {' '}
+                      {each.evaluated ? '✔' : '➜'}
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
+            ))
+          ) : (
+            <View className="myclass_empty">暂无课程</View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
