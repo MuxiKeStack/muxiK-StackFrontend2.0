@@ -7,6 +7,7 @@ import {
 } from '@/common/request/api/research';
 import type { DataSource } from '@/common/types/loadType';
 import { loadData } from '@/common/utils/loadData';
+import { registerSessionReset } from '@/common/utils/resetSession';
 import { createTaroJSONStorage } from '@/common/utils/storage';
 import type { SearchHistoryItem, SearchResultCourse } from '@/pages/research/types';
 
@@ -39,6 +40,7 @@ interface ResearchStore {
   loadMore: (options?: { search_location?: SearchLocation }) => Promise<SearchResultCourse[]>;
   refreshSearch: (options?: { search_location?: SearchLocation }) => Promise<SearchResultCourse[]>;
   resetSession: (search_location: SearchLocation) => void;
+  clearUserData: () => void;
   searchHome: (keyword: string) => Promise<SearchResultCourse[]>;
 }
 
@@ -85,6 +87,16 @@ export const useResearchStore = create<ResearchStore>()(
 
       resetSession(search_location) {
         set(patchSession(search_location, emptySession()));
+      },
+
+      clearUserData() {
+        set({
+          history: [],
+          historySource: null,
+          sessions: {},
+          keyword: '',
+          showResults: false,
+        });
       },
 
       async loadHistory() {
@@ -240,3 +252,5 @@ export const useResearchStore = create<ResearchStore>()(
     }
   )
 );
+
+registerSessionReset(() => useResearchStore.getState().clearUserData());

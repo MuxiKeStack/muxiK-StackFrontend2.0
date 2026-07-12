@@ -128,9 +128,9 @@ function partitionFeedsIntoMessages(
   });
 
   return {
-    commentMessage: commentList,
-    supportMessage: supportList,
-    officialMessage: officialList,
+    commentMessage: commentList.reverse(),
+    supportMessage: supportList.reverse(),
+    officialMessage: officialList.reverse(),
   };
 }
 

@@ -11,6 +11,7 @@ import {
   uploadFileToFeishuBitable,
 } from '@/common/request/api/feedback';
 import { createTaroJSONStorage } from '@/common/utils/storage';
+import { registerSessionReset } from '@/common/utils/resetSession';
 import type { DataSource } from '@/common/types/loadType';
 import { loadData } from '@/common/utils/loadData';
 import type { FeedbackItem, SheetItem } from '@/subpackages/feedback/type';
@@ -39,6 +40,7 @@ interface FeedbackStore {
   submitFeedback: (payload: Parameters<typeof createFeedbackRecord>[0]) => Promise<void>;
   uploadImage: (imagePath: string, fileName: string) => Promise<string | null>;
   loadFeedbackImages: (fileTokens: string[]) => Promise<string[]>;
+  reset: () => void;
 }
 
 export const useFeedbackStore = create<FeedbackStore>()(
@@ -148,6 +150,17 @@ export const useFeedbackStore = create<FeedbackStore>()(
           return fileTokens.map(() => '');
         }
       },
+
+      reset() {
+        set({
+          faqList: [],
+          faqSource: null,
+          historyList: [],
+          historySource: null,
+          historyPageToken: '',
+          historyHasMore: false,
+        });
+      },
     }),
     {
       name: FAQ_CACHE_KEY,
@@ -161,3 +174,5 @@ export const useFeedbackStore = create<FeedbackStore>()(
     }
   )
 );
+
+registerSessionReset(() => useFeedbackStore.getState().reset());

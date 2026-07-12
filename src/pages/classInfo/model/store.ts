@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import type { CommentInfo, Course } from '@/common/types/commentTypes';
 import type { GradeChart, WebQuestionVo } from '@/common/types/userTypes';
+import { registerSessionReset } from '@/common/utils/resetSession';
 import { useEvaluationStore } from '@/store/evaluations';
 
 export type QuestionUpsertPayload = Partial<WebQuestionVo>;
@@ -26,6 +27,7 @@ interface ClassInfoView {
   }) => void;
   prependEvaluation: (courseId: number, evaluation: CommentInfo) => void;
   upsertQuestion: (courseId: number, question: QuestionUpsertPayload) => void;
+  reset: () => void;
 }
 
 export const useClassInfoView = create<ClassInfoView>()((set) => ({
@@ -76,4 +78,17 @@ export const useClassInfoView = create<ClassInfoView>()((set) => ({
       return { questionlist: [question as WebQuestionVo, ...list] };
     });
   },
+
+  reset() {
+    set({
+      course: null,
+      grade: undefined,
+      collect: undefined,
+      commentIds: [],
+      questionlist: [],
+      loading: false,
+    });
+  },
 }));
+
+registerSessionReset(() => useClassInfoView.getState().reset());

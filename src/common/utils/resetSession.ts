@@ -1,8 +1,9 @@
 import Taro from '@tarojs/taro';
 
 import { LONG_TOKEN, SHORT_TOKEN, VISITOR } from '@/common/constants/auth';
-import { STUDENT_ID } from '@/common/constants/user';
+import { STUDENT_ID, USER_INFO } from '@/common/constants/user';
 import { invalidateGateGuardCache } from '@/common/hooks/useGateGuard';
+import { bus } from '@/common/utils/eventBus';
 
 export type SessionResetReason = 'logout' | 'visitor' | 'auth-expired' | 'login';
 
@@ -20,13 +21,17 @@ function runSessionResetHandlers(): void {
   }
 }
 
-const PERSIST_KEYS = [
+const USER_PERSIST_KEYS = [
   'muxi-user-store',
   'notification-store',
   'user_myClass_storage',
   'user_collections_storage',
   'evaluation_history_cache',
+  'research-store',
+  'feedback-faq-cache',
 ] as const;
+
+const USER_STORAGE_KEYS = [USER_INFO, 'UserSheetToken', 'FAQToken'] as const;
 
 /** 登出 / 游客 / 401 / 正式登录前：统一清空用户域缓存与内存态 */
 export function resetSession(reason: SessionResetReason): void {
@@ -47,7 +52,15 @@ export function resetSession(reason: SessionResetReason): void {
     }
   }
 
-  for (const key of PERSIST_KEYS) {
+  for (const key of USER_PERSIST_KEYS) {
+    try {
+      Taro.removeStorageSync(key);
+    } catch {
+      //
+    }
+  }
+
+  for (const key of USER_STORAGE_KEYS) {
     try {
       Taro.removeStorageSync(key);
     } catch {
@@ -56,5 +69,6 @@ export function resetSession(reason: SessionResetReason): void {
   }
 
   runSessionResetHandlers();
+  bus.clear();
   invalidateGateGuardCache();
 }

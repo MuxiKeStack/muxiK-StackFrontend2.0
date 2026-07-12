@@ -29,7 +29,9 @@ const NotificationFeed: React.FC = memo(() => {
   ];
 
   const currentMessage = useMemo(() => {
-    return [...data.commentMessage, ...data.supportMessage, ...data.officialMessage];
+    return [...data.commentMessage, ...data.supportMessage, ...data.officialMessage].sort(
+      (a, b) => (b.ctime ?? 0) - (a.ctime ?? 0)
+    );
   }, [data]);
 
   useEffect(() => {

@@ -8,4 +8,5 @@ export interface PublisherStore {
   ensurePublishers: (publisherIds: number[]) => Promise<void>;
   /** 从课评列表写入发布者仓 + 课程详情仓 */
   ingestFromEvaluations: (list: CommentInfo[]) => void;
+  clear: () => void;
 }

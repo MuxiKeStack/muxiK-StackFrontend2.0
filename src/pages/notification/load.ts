@@ -74,8 +74,6 @@ export async function loadNotifications(): Promise<NotificationData> {
           direction: 'After',
           limit: 15,
         });
-        console.log(feeds);
-
         if (!Array.isArray(feeds)) return emptyNotificationData;
         const comments = Object.values(useEvaluationStore.getState().byId);
         return buildMessages(feeds, comments);

@@ -62,6 +62,8 @@ export interface CourseDetailSlice {
   fetchCourseDetail: (courseId: number) => Promise<CourseDetailsType>;
   /** 获取Course信息 */
   getCourseDetail: (courseId: number) => Promise<CourseDetailsType | null>;
+  /** 清空课程详情缓存 */
+  clear: () => void;
 }
 
 export type CourseInfoStore = CourseDetailSlice;

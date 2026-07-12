@@ -49,4 +49,5 @@ export interface QuestionDetailStore {
   }) => number;
   confirmPendingAnswer: (tempId: number, questionId: number) => QuestionDetail | null;
   removePendingAnswer: (tempId: number, questionId: number) => void;
+  reset: () => void;
 }

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 import type { CommentInfo, CommentType, User } from '@/common/types/commentTypes';
+import { registerSessionReset } from '@/common/utils/resetSession';
 import { useEvaluationStore } from '@/store/evaluations';
 
 import type { DataSource } from '@/common/types/loadType';
@@ -195,3 +196,5 @@ export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set, get) =
     });
   },
 }));
+
+registerSessionReset(() => useEvaluateDetailStore.getState().reset());

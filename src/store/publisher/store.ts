@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import { getUserProfile } from '@/common/request/api/user';
 import type { PublisherDetailsType } from '@/common/types/courseType';
+import { registerSessionReset } from '@/common/utils/resetSession';
 import { useCourseStore } from '@/store/course';
 
 import {
@@ -100,4 +101,11 @@ export const usePublisherStore = create<PublisherStore>()((set, get) => ({
       useCourseStore.getState().cacheCourseDetails(courseMap);
     }
   },
+
+  clear() {
+    pendingRequests.clear();
+    set({ publishers: {} });
+  },
 }));
+
+registerSessionReset(() => usePublisherStore.getState().clear());

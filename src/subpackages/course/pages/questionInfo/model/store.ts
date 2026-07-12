@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+import { registerSessionReset } from '@/common/utils/resetSession';
+
 import { fetchAnswers, fetchQuestion, submitAnswer } from './api';
 import type { QuestionDetailStore } from './types';
 import {
@@ -103,4 +105,13 @@ export const useQuestionDetailStore = create<QuestionDetailStore>()((set, get) =
       };
     });
   },
+
+  reset() {
+    for (const key of Object.keys(answersLoadGen)) {
+      delete answersLoadGen[Number(key)];
+    }
+    set({ activeQuestionId: null, byId: {}, source: null });
+  },
 }));
+
+registerSessionReset(() => useQuestionDetailStore.getState().reset());

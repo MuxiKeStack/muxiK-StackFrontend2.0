@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import { getCourseDetail as getCourseDetailApi } from '@/common/request/api/courses';
 import type { CourseDetailSlice, CourseDetailsType } from '@/common/types/courseType';
+import { registerSessionReset } from '@/common/utils/resetSession';
 
 const MAX_COURSE_DETAILS = 100;
 
@@ -57,4 +58,11 @@ export const useCourseStore = create<CourseDetailSlice>()((set, get) => ({
     const local = get().courseDetail[courseId];
     return local ? Promise.resolve(local) : get().fetchCourseDetail(courseId);
   },
+
+  clear() {
+    pendingRequests.clear();
+    set({ courseDetail: {} });
+  },
 }));
+
+registerSessionReset(() => useCourseStore.getState().clear());
