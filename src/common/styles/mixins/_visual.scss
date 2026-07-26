@@ -1,0 +1,7 @@
+@mixin shadow_card {
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+@mixin shadow_float {
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.12);
+}

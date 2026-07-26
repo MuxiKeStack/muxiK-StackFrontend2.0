@@ -1,0 +1,56 @@
+.notification_fallback_container {
+  @include flex_column;
+
+  margin-top: 160rpx;
+}
+
+.fallback_list_container {
+  @include flex_column;
+
+  gap: $space_xl;
+  padding: $space_xl;
+}
+
+.fallback_item {
+  border-radius: $radius_md;
+  background-color: white;
+  padding: $space_xl;
+  box-shadow: 0px 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.fallback_item_title {
+  font-size: $font_size_heading;
+  font-weight: bold;
+  margin-bottom: $space_sm;
+  display: block;
+}
+
+.fallback_item_content {
+  font-size: $font_size_body;
+  color: rgb(75, 85, 99);
+  margin-bottom: $space_sm;
+  display: block;
+}
+
+.fallback_item_time {
+  font-size: $font_size_caption;
+  color: rgb(156, 163, 175);
+  display: block;
+}
+
+.notification_main_container {
+  @include flex_column_align_center;
+
+  box-sizing: border-box;
+  margin-top: $space_xxl;
+  height: 100vh;
+  width: 100%;
+  gap: $space_xl;
+  overflow: hidden;
+}
+
+.notification_main_list {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+}

@@ -1,0 +1,71 @@
+.label {
+  flex: 1;
+  height: 60rpx;
+  border-radius: $radius_lg;
+  font-family: SourceHanSans;
+  font-weight: bold;
+  font-size: $font_size_body;
+  line-height: 60rpx;
+  text-align: center;
+  font-style: normal;
+  text-transform: none;
+  background: $color_bg_cream;
+  color: $color_text_primary;
+}
+.search {
+  @include flex_center;
+
+  flex: 1;
+  height: 60rpx;
+  border-radius: $radius_lg;
+  font-size: $font_size_body;
+  background: $color_bg_page;
+  color: $color_text_secondary;
+  gap: $space_xxs;
+}
+.active {
+  background-color: $color_brand;
+  box-shadow: 0px 8rpx 20rpx 0px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+.classLine {
+  box-sizing: border-box;
+  padding: 0 32rpx;
+  margin-top: 36rpx;
+  display: flex;
+  margin-bottom: 36rpx;
+  justify-content: center;
+  width: 100%;
+  gap: 28rpx;
+}
+.module-tab-item {
+  @include flex_column_center;
+
+  flex: 1;
+  padding: $space_md 10rpx;
+  gap: $space_xs;
+
+  &.Active {
+    opacity: 0.8;
+  }
+}
+.module-tab-text {
+  text-align: center;
+  font-size: $font_size_base;
+  line-height: 1;
+
+  &:not(.Active) {
+    color: $color_text_secondary;
+    font-weight: 400;
+  }
+  &.Active {
+    color: $color_text_primary;
+    font-weight: 600;
+  }
+}
+.module-indicator {
+  width: 20%;
+  height: 4rpx;
+  background-color: $color_brand;
+  border-radius: 2rpx;
+}

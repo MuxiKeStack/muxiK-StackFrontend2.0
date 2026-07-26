@@ -1,0 +1,219 @@
+.feedback_detail_container {
+  height: 100vh;
+  background-color: #f8f9fb;
+  padding: $space_md;
+  box-sizing: border-box;
+
+  .feedback_detail_progress_container {
+    margin-top: 180rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 120rpx;
+    margin-bottom: 30rpx;
+    padding: $space_md 40rpx;
+
+    .feedback_detail_progress_step {
+      @include flex_column_align_center;
+
+      position: relative;
+      min-width: 140rpx;
+
+      .feedback_detail_circle {
+        width: 90rpx;
+        height: 90rpx;
+        border-radius: 46rpx;
+        background-color: #d6d6d6;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+
+        .feedback_detail_circle_text {
+          color: $color_bg_page;
+          font-size: $font_size_base;
+          font-weight: bold;
+        }
+      }
+
+      .feedback_detail_step_label {
+        font-size: $font_size_caption;
+        color: $color_text_hint;
+        margin-top: 10rpx;
+        text-align: center;
+
+      }
+
+      .feedback_detail_connector_container {
+        @include flex_align_center;
+
+        position: absolute;
+        top: 44rpx;
+        left: calc(50% + 72rpx);
+        flex-direction: row;
+        column-gap: $space_xs;
+
+        .feedback_detail_connector_bar {
+          width: 16rpx;
+          height: 12rpx;
+          border-radius: 4rpx;
+          background-color: #e5e7eb;
+        }
+      }
+    }
+  }
+
+  .feedback_detail_content {
+    padding-bottom: 30rpx;
+
+    .feedback_detail_card {
+      background-color: $color_bg_page;
+      border-radius: 20rpx;
+      padding: $space_xxl;
+      margin: 0 30rpx 30rpx;
+      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+
+      .feedback_detail_info_row {
+        @include flex_between;
+
+        flex-direction: row;
+        margin-bottom: 36rpx;
+
+        .feedback_detail_info_label {
+          font-size: $font_size_body;
+          color: #444;
+        }
+
+        .feedback_detail_type_tags {
+          display: flex;
+          flex-direction: row;
+          gap: 10rpx;
+
+          .feedback_detail_tag {
+            padding: 10rpx 20rpx;
+            border-radius: 999rpx;
+            font-size: $font_size_caption;
+            background-color: $color_bg_cream;
+            color: $color_brand_hover;
+
+            .feedback_detail_tag_text {
+              font-size: $font_size_caption;
+            }
+          }
+        }
+
+        .feedback_detail_status_bg {
+          @include flex_center;
+
+          padding: $space_xxs 24rpx;
+          border-radius: $radius_lg;
+          background-color: #f0f1f5;
+
+          &.feedback_detail_pending {
+            background-color: #f0f1f5;
+          }
+          &.feedback_detail_processing {
+            background-color: #fff3cd;
+          }
+          &.feedback_detail_resolved {
+            background-color: #e6f7ef;
+          }
+
+          .feedback_detail_status_text {
+            font-size: $font_size_subtitle;
+            color: $color_text_hint;
+
+            &.feedback_detail_pending {
+              color: $color_text_medium;
+            }
+            &.feedback_detail_processing {
+              color: $color_brand_hover;
+            }
+            &.feedback_detail_resolved {
+              color: #10b981;
+            }
+          }
+        }
+
+        .feedback_detail_time_text {
+          font-size: $font_size_caption;
+          color: $color_text_medium;
+        }
+      }
+
+      .feedback_detail_section {
+        @include flex_column;
+
+        margin-bottom: 48rpx;
+
+        .feedback_detail_section_title {
+          font-size: $font_size_title;
+          font-weight: 500;
+          color: black;
+          margin-bottom: 10rpx;
+        }
+
+        .feedback_detail_section_text {
+          font-size: $font_size_body;
+          color: $color_text_cool_gray;
+          line-height: 36rpx;
+        }
+
+        .feedback_detail_section_expand_text {
+          font-size: $font_size_body;
+          color: $color_brand_muted;
+          margin-top: 4rpx;
+          display: block;
+        }
+
+        .feedback_detail_reply_container {
+          margin-top: $space_xxs;
+
+          .feedback_detail_reply_text {
+            font-size: $font_size_body;
+            color: #7f838a;
+            line-height: 32rpx;
+          }
+        }
+
+        .feedback_detail_image_scroll {
+          flex-direction: row;
+
+          .feedback_detail_image_item {
+            width: 160rpx;
+            height: 160rpx;
+            border-radius: $radius_sm;
+            margin-right: $space_md;
+            background-color: #eee;
+          }
+        }
+
+        .feedback_detail_loading_text {
+          font-size: $font_size_body;
+          color: $color_text_cool_gray;
+        }
+      }
+    }
+  }
+
+  .feedback_detail_image_preview_overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+    .feedback_detail_image_preview {
+      width: 90%;
+      height: 90%;
+      border-radius: 10rpx;
+    }
+  }
+
+  .feedback_detail_error_text {
+    text-align: center;
+    color: #ef4444;
+    font-size: $font_size_title;
+    margin-top: $space_xxl;
+  }
+}

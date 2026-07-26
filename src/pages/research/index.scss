@@ -1,0 +1,87 @@
+.search_page_container {
+  margin-top: 24%;
+  height: 90vh;
+  width: 100%;
+  @include flex_column_align_center;
+  overflow: auto;
+
+  .search_input_wrapper {
+    box-sizing: border-box;
+    margin-top: 10rpx;
+    width: 100%;
+    padding: $space_xl;
+    gap: $space_xxs;
+  }
+
+  .history_section {
+    position: relative;
+    @include flex_column_align_center;
+
+    .history_header {
+      margin-top: 2vh;
+      width: 90vw;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .history_title {
+        font-size: $font_size_heading;
+        font-weight: 500;
+        color: $color_text_dark;
+      }
+
+      .clear_history_button {
+        height: 48.92rpx;
+        width: 48.92rpx;
+        top: 234rpx;
+        left: 621.38rpx;
+        border-radius: 100%;
+        @include flex_center;
+        .delete_icon {
+          width: 30rpx;
+          height: 30rpx;
+        }
+      }
+    }
+
+    .history_result_container {
+      width: 90vw;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  .search_empty_container {
+    margin-top: 30vh;
+    @include flex_column_align_center;
+
+    .search_empty_text {
+      font-size: $font_size_title;
+      color: $color_text_dark;
+      font-weight: 500;
+    }
+
+    .search_empty_hint {
+      margin-top: $space_sm;
+      font-size: $font_size_subtitle;
+      color: $color_text_secondary;
+    }
+  }
+
+  .course_list_container {
+    margin-top: 26rpx;
+    width: 100%;
+    @include flex_column_center;
+  }
+
+  &--results {
+    overflow: hidden;
+
+    .course_list_container {
+      flex: 1;
+      min-height: 0;
+      margin-top: 0;
+    }
+  }
+}

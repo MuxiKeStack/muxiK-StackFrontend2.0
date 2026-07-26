@@ -1,0 +1,38 @@
+.classInfo_page_comments_section {
+  @include flex_column;
+  justify-content: center;
+  gap: $space_lg;
+
+  .classInfo_page_comments_title {
+    padding-top: $space_md;
+    text-align: center;
+    font-size: 38rpx;
+    color: $color_text_primary;
+
+    @include line-decoration;
+  }
+
+  .classInfo_page_comments_scroll {
+    height: 100%;
+
+    .classInfo_page_comments_list {
+      @include flex_column;
+      gap: 36rpx;
+      margin-bottom: 5%;
+    }
+  }
+
+  .classInfo_page_empty_comments {
+    display: flex;
+    height: 10vh;
+    align-items: flex-start;
+    justify-content: center;
+
+    .classInfo_page_empty_text {
+      font-size: $font_size_caption;
+      color: $color_text_secondary;
+      font-style: italic;
+      padding: $space_md 0;
+    }
+  }
+}

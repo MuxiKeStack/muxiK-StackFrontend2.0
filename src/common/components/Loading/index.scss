@@ -1,0 +1,26 @@
+.loading_wrapper {
+  @include flex_center;
+}
+.loading_container {
+  @include flex_column_center;
+}
+.loading_center {
+  height: 100%;
+}
+.loading_inline {
+  padding: $space_md 0;
+}
+.loading_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+.loading_text {
+  margin-top: 20rpx;
+  font-size: 32rpx;
+  color: $color_text_medium;
+}

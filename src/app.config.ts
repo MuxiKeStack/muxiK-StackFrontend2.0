@@ -4,29 +4,44 @@ export default defineAppConfig({
   pages: [
     'pages/login/index',
     'pages/main/index',
-    'pages/publishQuestion/index',
     'pages/classInfo/index',
-    'pages/evaluateInfo/index',
     'pages/profile/index',
-    'pages/myCollection/index',
-    'pages/notification/index',
-    'pages/feedback/index',
-    'pages/evaluate/index',
-    'pages/questionInfo/index',
     'pages/myclass/index',
+    'pages/notification/main/index',
+    'pages/notification/list/index',
     'pages/research/index',
-    'pages/index/index',
-    'pages/editUser/index',
     'pages/guide/index',
-    'pages/shareGrades/index',
-    'pages/questionList/index',
   ],
+
   subpackages: [
     {
       root: 'subpackages/profile',
-      pages: ['pages/history/index'],
+      pages: [
+        'pages/myCollection/index',
+        'pages/evaluationHistory/index',
+        'pages/editUser/index',
+      ],
+    },
+    {
+      root: 'subpackages/feedback',
+      pages: [
+        'pages/main/index',
+        'pages/writefeedback/index',
+        'pages/history/index',
+        'pages/detail/index',
+      ],
+    },
+    {
+      root: 'subpackages/course',
+      pages: [
+        'pages/evaluate/index',
+        'pages/evaluateInfo/index',
+        'pages/questionInfo/index',
+        'pages/publishQuestion/index',
+      ],
     },
   ],
+
   usingComponents: Object.assign(useGlobalIconFont()),
   tabBar: {
     custom: true,
@@ -39,7 +54,7 @@ export default defineAppConfig({
         pagePath: 'pages/guide/index',
         text: 'Guide',
       },
-      { pagePath: 'pages/notification/index', text: 'Massage' },
+      { pagePath: 'pages/notification/main/index', text: 'Massage' },
       { pagePath: 'pages/profile/index', text: 'Profile' },
     ],
   },

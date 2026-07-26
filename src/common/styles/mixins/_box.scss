@@ -1,0 +1,5 @@
+// 撑满 + 边框盒模型
+@mixin full_width_border_box {
+  width: 100%;
+  box-sizing: border-box;
+}

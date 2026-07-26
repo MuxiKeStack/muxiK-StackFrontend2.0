@@ -1,0 +1,29 @@
+.questionInfo_page_container {
+  @include flex_column_align_center;
+
+  height: 100vh;
+
+  .questionInfo_page_comment_wrapper {
+    margin: $space_lg 0 32rpx;
+    width: 100%;
+  }
+
+  .questionInfo_page_divider {
+    width: 90%;
+    height: 2rpx;
+    background-color: $color_border_light;
+  }
+
+  .questionInfo_page_comments_title {
+    margin-left: $space_sm;
+    width: 90vw;
+    font-size: $font_size_heading;
+    color: $color_text_primary;
+  }
+
+  .questionInfo_page_comments_list {
+    @include full_width_border_box;
+
+    height: 52vh;
+  }
+}

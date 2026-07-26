@@ -1,0 +1,70 @@
+.evaluateInfo_page_unauthorized_container {
+  @include flex_column;
+
+  .evaluateInfo_page_background_image {
+    width: 100%;
+  }
+
+  .evaluateInfo_page_unauthorized_content {
+    @include flex_column_align_center;
+
+    position: absolute;
+    top: 0;
+    margin-top: 15vh;
+    width: 100%;
+    gap: 32rpx;
+
+    .evaluateInfo_page_unauthorized_icon_wrapper {
+      height: 320rpx;
+      width: 320rpx;
+      overflow: hidden;
+      border-radius: 64rpx;
+      box-shadow:
+        0 40rpx 52rpx -8rpx rgba(0, 0, 0, 0.1),
+        0 20rpx 20rpx -8rpx rgba(0, 0, 0, 0.04);
+
+      .evaluateInfo_page_unauthorized_icon {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    .evaluateInfo_page_unauthorized_text {
+      font-size: 72rpx;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: $color_brand_golden;
+    }
+  }
+}
+
+.evaluateInfo_page_container {
+  @include flex_column_align_center;
+
+  margin-top: 25%;
+  height: calc(100vh - 25%);
+
+  .evaluateInfo_page_comment_wrapper {
+    margin: $space_lg 0 32rpx;
+    width: 100%;
+  }
+
+  .evaluateInfo_page_divider {
+    width: 90%;
+    height: 2rpx;
+    background-color: $color_border_light;
+  }
+
+  .evaluateInfo_page_comments_title {
+    margin-left: $space_sm;
+    width: 90vw;
+    font-size: $font_size_heading;
+    color: $color_text_primary;
+  }
+
+  .evaluateInfo_page_comments_list {
+    @include full_width_border_box;
+
+    height: 52vh;
+  }
+}

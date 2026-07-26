@@ -1,0 +1,86 @@
+.message_support_container {
+  position: relative;
+  box-sizing: border-box;
+  width: calc(100% - 48rpx);
+  background-color: $color_bg_page;
+  margin: $space_lg 24rpx;
+  border-radius: $radius_lg;
+  padding: $space_xl;
+  box-shadow:
+    0 -4rpx 6rpx rgba(0, 0, 0, 0.05),
+    0 4rpx 6rpx rgba(0, 0, 0, 0.05);
+
+  .header {
+    @include flex_between;
+
+    position: absolute;
+    right: 3%;
+    margin-bottom: $space_xl;
+
+    .header_time {
+      font-size: $font_size_subtitle;
+      color: $color_text_secondary;
+    }
+  }
+
+  .body {
+    @include flex_align_start;
+
+    .notif_avatar {
+      border: 6rpx solid #ffd700;
+      border-radius: $radius_round;
+      flex-shrink: 0;
+    }
+
+    .content_wrapper {
+      flex: 1;
+      min-width: 0;
+      padding-left: $space_lg;
+
+      .word_cotainer {
+        @include flex_column;
+
+        .user_info {
+          margin-bottom: 6rpx;
+
+          .user_name {
+            font-size: $font_size_title;
+            font-weight: 600;
+            color: $color_text_dark;
+          }
+        }
+
+        .action_wrapper {
+          margin-bottom: 6rpx;
+
+          .action_text {
+            font-size: $font_size_subtitle;
+            color: $color_text_dark;
+          }
+        }
+
+        .content {
+          position: relative;
+          padding-left: $space_md;
+
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10rpx;
+            bottom: 10rpx;
+            width: 10rpx;
+            background-color: #ffefb7;
+            border-radius: 10rpx;
+          }
+
+          .content_text {
+            font-size: $font_size_caption;
+            color: $color_text_secondary;
+            line-height: 1.5;
+          }
+        }
+      }
+    }
+  }
+}

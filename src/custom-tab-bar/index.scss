@@ -1,31 +1,60 @@
 @import '~taro-ui/dist/style/components/icon.scss';
-
 .guild_line {
+  @include flex_align_center;
+
   width: 100vw;
-  height: 11.5vh;
+  height: 7vh;
   position: fixed;
   bottom: 0;
-  background-color: #f9f9f2;
-  box-shadow: 0 -1vh 1vh rgba(0, 0, 0, 0.1);
-  display: flex;
+  background-color: $color_bg_page;
+  box-shadow: 0 -8rpx 12rpx rgba(0, 0, 0, 0.1);
   justify-content: space-evenly;
-  align-items: center;
-}
+  padding: $space_xs 0;
 
-.add_button {
-  width: 8vh;
-  height: 8vh;
-  background-color: #f18900;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
+  .tab-item-wrapper {
+    @include flex_column_center;
 
-.add_sign {
-  color: white;
-  font-size: 8vh;
-  position: relative;
-  bottom: 0.5vh;
+    width: 6vh;
+    height: 6vh;
+
+    .tab-text {
+      font-size: 1.5vh;
+      color: $color_text_deep;
+      font-weight: 400;
+      transition: color 0.3s ease;
+
+      &.active {
+        color: $color_brand_accent;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .add_button {
+    @include flex_center;
+
+    width: 6vh;
+    height: 6vh;
+    background-color: $color_brand_accent;
+    border-radius: $radius_round;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 3vh;
+      height: 0.6vh;
+      background-color: white;
+      border-radius: 0.2vh;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0.6vh;
+      height: 3vh;
+      background-color: white;
+      border-radius: 0.2vh;
+    }
+  }
 }

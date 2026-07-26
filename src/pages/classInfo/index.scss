@@ -1,0 +1,67 @@
+.classInfo_page_unauthorized_container {
+  display: flex;
+  flex-direction: column;
+
+  .classInfo_page_background_image {
+    width: 100%;
+  }
+
+  .classInfo_page_unauthorized_content {
+    position: absolute;
+    top: 0;
+    margin-top: 15vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+
+    .classInfo_page_unauthorized_icon_wrapper {
+      height: 160px;
+      width: 160px;
+      overflow: hidden;
+      border-radius: 32px;
+      box-shadow:
+        0 20px 26px -4px rgba(0, 0, 0, 0.1),
+        0 10px 10px -4px rgba(0, 0, 0, 0.04);
+
+      .classInfo_page_unauthorized_icon {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    .classInfo_page_unauthorized_text {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: $color_brand_golden;
+    }
+  }
+}
+
+.classInfo_page_container {
+  margin-top: 24%;
+
+  .classInfo_page_grade_title {
+    @include line-decoration;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: $space_md;
+    margin-bottom: $space_xxs;
+    text-align: center;
+    font-size: 38rpx;
+    color: $color_text_primary;
+  }
+
+  .classInfo_page_chart_container {
+    width: 90%;
+    margin: $space_lg auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

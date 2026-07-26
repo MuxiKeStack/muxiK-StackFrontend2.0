@@ -1,0 +1,41 @@
+.list_page_container {
+  @include flex_column;
+
+  margin-top: 25%;
+  height: 100vh;
+
+  .comment_type_bar {
+    @include flex_align_center;
+
+    justify-content: space-around;
+    padding: $space_md 30rpx;
+    margin-bottom: $space_sm;
+
+    .comment_type_item {
+      @include flex_center;
+
+      padding: $space_xs 64rpx;
+      border-radius: $radius_xl;
+      transition: all 0.2s ease;
+      box-shadow:
+        0 -4rpx 6rpx rgba(0, 0, 0, 0.05),
+        0 4rpx 6rpx rgba(0, 0, 0, 0.05);
+
+      .comment_type_text {
+        font-size: $font_size_base;
+        letter-spacing: 6rpx;
+        color: $color_text_light;
+      }
+
+      &.active {
+        background-color: $color_brand_muted;
+
+        .comment_type_text {
+          font-size: $font_size_base;
+          letter-spacing: 6rpx;
+          color: $color_bg_page;
+        }
+      }
+    }
+  }
+}

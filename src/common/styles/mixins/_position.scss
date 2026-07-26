@@ -1,0 +1,13 @@
+// 绝对定位居中
+@mixin absolute_center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// 绝对定位撑满父容器
+@mixin absolute_fill {
+  position: absolute;
+  inset: 0;
+}

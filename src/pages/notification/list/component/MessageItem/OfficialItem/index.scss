@@ -1,0 +1,88 @@
+.message_official_container {
+  @include flex_column;
+  @include full_width_border_box;
+
+  padding: $space_lg;
+
+  .IMtime_container {
+    @include flex_center;
+
+    width: 100%;
+    margin-bottom: $space_md;
+
+    .IMtime {
+      font-size: $font_size_caption;
+      color: $color_text_secondary;
+      padding: $space_xxs 24rpx;
+    }
+  }
+
+  .info_container {
+    @include flex_column;
+
+    width: 100%;
+    background: $color_bg_page;
+    border-radius: 30rpx;
+    box-shadow:
+      0 12rpx 8rpx rgba(249, 185, 79, 0.2),
+      0 12rpx 8rpx rgba(0, 0, 0, 0.1);
+
+    .image_container {
+      width: 100%;
+      height: 250rpx;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2rpx;
+        background-color: #f0f0f0;
+      }
+
+      .image {
+        width: 100%;
+        height: 100%;
+        border-top-left-radius: 30rpx;
+        border-top-right-radius: 30rpx;
+        overflow: hidden;
+      }
+    }
+
+    .text_container {
+      @include flex_column;
+
+      padding: $space_lg;
+
+      .title_container {
+        margin-bottom: $space_sm;
+
+        .title {
+          font-size: $font_size_title;
+          font-weight: 600;
+          color: $color_text_dark;
+          line-height: 1.4;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+      }
+
+      .content_container {
+        .content {
+          font-size: $font_size_body;
+          color: $color_text_medium;
+          line-height: 1.5;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+        }
+      }
+    }
+  }
+}

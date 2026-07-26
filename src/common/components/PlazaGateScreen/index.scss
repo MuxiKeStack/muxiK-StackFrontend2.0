@@ -1,0 +1,118 @@
+.plaza_gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  margin-top: 80rpx;
+  background-color: $color_bg_page;
+}
+
+.plaza_gate_tabs {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 36rpx;
+  margin-bottom: 24rpx;
+  padding: 0 32rpx;
+  gap: 28rpx;
+}
+
+.plaza_gate_tab {
+  flex: 1;
+  height: 60rpx;
+  border-radius: $radius_lg;
+  font-size: $font_size_body;
+  font-weight: bold;
+  line-height: 60rpx;
+  text-align: center;
+  background: $color_bg_cream;
+  color: $color_text_primary;
+}
+
+.plaza_gate_tab_active {
+  background-color: $color_brand;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+  color: $color_bg_page;
+}
+
+.plaza_gate_search {
+  @include flex_center;
+
+  flex: 1;
+  height: 60rpx;
+  border-radius: $radius_lg;
+  font-size: $font_size_body;
+  background: $color_bg_page;
+  color: $color_text_secondary;
+}
+
+.plaza_gate_scroll {
+  width: 100%;
+  height: 70vh;
+  padding: 0 32rpx 160rpx;
+  box-sizing: border-box;
+}
+
+.plaza_gate_intro {
+  margin-bottom: 28rpx;
+}
+
+.plaza_gate_intro_title {
+  display: block;
+  font-size: $font_size_heading;
+  font-weight: 700;
+  color: $color_text_heading;
+  margin-bottom: 12rpx;
+}
+
+.plaza_gate_intro_desc {
+  display: block;
+  font-size: $font_size_caption;
+  color: $color_text_secondary;
+  line-height: 1.6;
+}
+
+.plaza_gate_card {
+  position: relative;
+  margin-bottom: 24rpx;
+  padding: 32rpx;
+  border-radius: $radius_lg;
+  background: $color_bg_cream;
+  box-shadow: 0 8rpx 24rpx rgba(237, 163, 53, 0.12);
+}
+
+.plaza_gate_card_title {
+  display: block;
+  font-size: $font_size_heading;
+  font-weight: 700;
+  color: $color_text_primary;
+  margin-bottom: 16rpx;
+}
+
+.plaza_gate_card_body {
+  display: block;
+  font-size: $font_size_body;
+  color: $color_text_medium;
+  line-height: 1.7;
+}
+
+.plaza_gate_card_tag {
+  position: absolute;
+  top: 28rpx;
+  right: 28rpx;
+  padding: 4rpx 16rpx;
+  border-radius: $radius_round;
+  font-size: $font_size_caption;
+  color: $color_brand_hover;
+  background: rgba(237, 163, 53, 0.15);
+}
+
+.plaza_gate_footer {
+  @include flex_center;
+
+  padding: 48rpx 0 32rpx;
+  font-size: $font_size_caption;
+  color: $color_text_light;
+}

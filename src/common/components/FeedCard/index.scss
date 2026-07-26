@@ -1,0 +1,194 @@
+// 统一度量衡了，原本想抄b站的，R.I.P
+$level-styles: (
+  0: (
+    background: linear-gradient(135deg, #a9a9a9, #8a8a8a),
+    color: $color_bg_page,
+    shadow: 0 4rpx 8rpx rgba(109, 109, 109, 0.3),
+  ),
+  1: (
+    background: linear-gradient(135deg, #bfbfbf, #d0d0d0),
+    color: $color_bg_page,
+    shadow: 0 4rpx 8rpx rgba(179, 179, 179, 0.3),
+  ),
+  2: (
+    background: linear-gradient(135deg, #7cc47c, #a8d5a8),
+    color: $color_bg_page,
+    shadow: 0 4rpx 8rpx rgba(124, 196, 124, 0.3),
+  ),
+  3: (
+    background: linear-gradient(135deg, #fedb5f, #ffe066),
+    color: $color_bg_page,
+    shadow: 0 4rpx 8rpx rgba(254, 219, 95, 0.3),
+  ),
+  4: (
+    background: linear-gradient(135deg, #ff9f3d, #ffb347),
+    color: $color_bg_page,
+    shadow: 0 4rpx 8rpx rgba(255, 159, 61, 0.3),
+  ),
+  5: (
+    background: linear-gradient(135deg, #ff7722, #ff8c42),
+    color: $color_bg_page,
+    shadow: 0 4rpx 8rpx rgba(255, 119, 34, 0.3),
+  ),
+  6: (
+    background: linear-gradient(135deg, #ff6a2b, #ff6b6b),
+    color: $color_bg_page,
+    shadow: 0 4rpx 8rpx rgba(255, 82, 82, 0.3),
+  ),
+);
+
+$content-line-height: 30;
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: $font_size_base;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $color_brand_accent;
+}
+
+.feed_card_container {
+  .review_content_wrapper {
+    @include flex_column;
+
+    position: relative;
+    margin-left: 26rpx;
+    margin-right: 26rpx;
+    background: $color_bg_page;
+    border-radius: 44rpx 44rpx 44rpx 44rpx;
+    opacity: 1;
+    box-shadow:
+      0 -4rpx 6rpx rgba(0, 0, 0, 0.05),
+      0 4rpx 6rpx rgba(0, 0, 0, 0.05);
+    padding: $space_xl 36rpx 0;
+
+    .review_header_row {
+      margin-bottom: $space_md;
+
+      .visibility_btn {
+        padding: 4rpx 12rpx;
+        border-radius: $radius_lg;
+        font-size: $font_size_caption;
+
+        &.public {
+          background-color: $color_text_light;
+        }
+
+        &.private {
+          background-color: $color_brand_muted;
+        }
+
+        .btn_text {
+          color: $color_bg_page;
+          line-height: 1;
+        }
+      }
+    }
+
+    .reviewer_info {
+      position: relative;
+
+      .cr_avatar {
+        border: $color_brand_accent solid 1rpx;
+        border-radius: $radius_round;
+      }
+
+      .hot_badge {
+        width: 38rpx;
+        height: 38rpx;
+        position: absolute;
+        top: 50rpx;
+        right: 0rpx;
+      }
+    }
+
+    .review_text {
+      font-size: $font_size_body;
+      font-family:
+        Segoe UI-Regular,
+        Segoe UI;
+      font-weight: 400;
+      line-height: calc(#{$content-line-height + 6}rpx);
+      color: $color_text_heading;
+      margin: $space_xs 0;
+      overflow: hidden;
+
+      &.text_clamped {
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+      }
+
+      &.text_expanded {
+        height: auto !important;
+      }
+    }
+
+    .feature_tags_container {
+      margin: $space_xs 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: $space_xs;
+      width: 100%;
+    }
+
+    .review_footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin: $space_xs 0 24rpx;
+
+      .footer_time {
+        white-space: nowrap;
+        font-size: $font_size_sm;
+        color: $color_text_secondary;
+      }
+
+      .footer_actions {
+        @include flex_align_center;
+
+        flex-direction: row;
+        gap: $space_xxl;
+
+        .action_item {
+          @include flex_align_center;
+
+          flex-direction: row;
+          gap: 10rpx;
+          font-size: $font_size_subtitle;
+          color: $color_text_medium;
+
+          .action_icon {
+            position: relative;
+            width: 50rpx;
+            height: 50rpx;
+            background-color: $color_bg_page;
+            box-shadow: 0px 8rpx 20rpx 0px rgba(0, 0, 0, 0.05);
+            opacity: 1;
+            border-radius: $radius_round;
+            display: inline-block;
+            text-align: center;
+            line-height: 40rpx;
+
+            > Iconfont {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+            }
+          }
+
+          .action_count {
+            font-size: $font_size_body;
+            color: $color_text_primary;
+            line-height: 50rpx;
+          }
+        }
+      }
+    }
+  }
+}

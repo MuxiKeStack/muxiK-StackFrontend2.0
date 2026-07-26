@@ -1,5 +1,13 @@
+export { resolveAvatarFrame } from './avatarDecoration';
+export type { AvatarFrame } from './avatarDecoration';
+export { calculateAdler32 } from './checkSum';
 export { default as checkToken } from './checkToken';
-export { get, post } from './fetch';
-export { default as formatIsoDate } from './formatIsoDate';
-export { default as getUserInfo } from './getUserInfo';
+export { copyToClipboard } from './clipboard';
+export { displayNickname, toggleCommentLike } from './comment';
+export { bus } from './eventBus';
+export { formatDate, formatIMTime } from './formatDate';
+export { getFileInfo } from './getFileInfo';
+export type { FileInfo } from './getFileInfo';
 export { default as uniqueKey } from './keyGen';
+export { createTaroJSONStorage, taroStorageAdapter } from './storage';
+export { hideLoadingThenToast } from './toast';

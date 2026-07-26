@@ -1,6 +1,8 @@
 export { default as TopBackground } from './background.png';
 export { default as BookIcon } from './book_icon.png';
 export { default as ClockIcon } from './clock_icon.png';
+export { default as ExitIcon } from './exit_icon.png';
+export { default as FeedbackIcon } from './feedback_icon.png';
 export { default as MailIcon } from './mail_icon.png';
 export { default as MessageIcon } from './message_icon.png';
 export { default as StarIcon } from './star_icon.png';

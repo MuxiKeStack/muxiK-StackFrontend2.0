@@ -10,16 +10,18 @@ type SelectType = '学年' | '学期';
 interface SelectProps {
   type: SelectType;
   value: string;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   style?: CSSProperties;
+
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface SelectorProps {
   selection: { year: string; term: string };
   isOpen: boolean;
+  children: React.ReactNode;
+
   setSelection: React.Dispatch<React.SetStateAction<{ year: string; term: string }>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  children: React.ReactNode;
 }
 
 const Times = () => {
@@ -65,7 +67,7 @@ const Selector: React.FC<SelectorProps> = memo(
   ({ selection, isOpen, setSelection, setIsOpen, children }) => (
     <>
       <View className="mt-4 flex w-full items-center justify-center pt-2">
-        {['学年', '学期'].map((item: SelectType) => (
+        {(['学年', '学期'] as SelectType[]).map((item) => (
           <Select
             style={{ width: '50%' }}
             key={uniqueKey.nextKey()}

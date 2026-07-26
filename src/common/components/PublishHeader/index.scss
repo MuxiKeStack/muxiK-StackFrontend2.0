@@ -1,27 +1,23 @@
-.avatar {
-  width: 90.58rpx;
-  height: 90.58rpx;
+.ph_avatar {
+  border: #d2d5d8 solid 4rpx;
   border-radius: 100%;
-  margin-right: 10px;
-  border: #d2d5d8 solid 5rpx;
-  margin-right: 27rpx;
+  margin-right: 28rpx;
 }
 
 .nickname {
   font-weight: bold;
-  font-size: 22rpx;
-  color: #565552;
+  font-size: $font_size_sm;
+  color: $color_text_heading;
 }
 
 .currentDate {
   font-weight: 400;
   font-size: 14rpx;
   color: #9f9f9c;
-  margin-top: 20rpx;
+  margin-top: $space_md;
 }
 
 .publish-header {
-  display: flex;
-  align-items: center;
+  @include flex_align_center;
   flex: 1;
 }

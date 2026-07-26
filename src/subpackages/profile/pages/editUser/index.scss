@@ -1,0 +1,149 @@
+.personal_edit_page {
+  width: 100%;
+  margin-top: 24%;
+
+  .divide_line {
+    width: 94%;
+    margin: 0 auto;
+    border-bottom: 4rpx solid $color_brand_golden;
+  }
+
+  .avatar_container {
+    @include flex_between;
+
+    margin: 0 40rpx;
+    width: calc(100% - 80rpx);
+    height: 10vh;
+
+    .avatar_text {
+      font-size: 4.5vw;
+      width: 20vw;
+      height: 43.48rpx;
+      align-content: center;
+      color: $color_text_heading;
+    }
+
+    .eu_avatar {
+      border: $color_brand_golden solid 2rpx;
+      border-radius: $radius_round;
+    }
+  }
+
+  .nickname_container {
+    @include flex_between;
+
+    margin: 0 40rpx;
+    width: calc(100% - 80rpx);
+    height: 10vh;
+
+    .nickname_text {
+      font-size: 4.5vw;
+      width: 20vw;
+      height: 43.48rpx;
+      align-content: center;
+      color: $color_text_heading;
+    }
+
+    .nickname {
+      height: 43.48rpx;
+      width: 50vw;
+      font-size: 4.5vw;
+      display: flex;
+      gap: 12rpx;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 24rpx;
+
+      .editor_nickname_hit {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20rpx;
+        margin-right: 8rpx;
+      }
+
+      .editor_nickname {
+        width: 48rpx;
+        height: 48rpx;
+      }
+    }
+
+    .nickname_edit_wrapper {
+      display: flex;
+      align-items: center;
+      gap: $space_xs;
+      width: 50vw;
+
+      .nickname_input {
+        flex: 1;
+        text-align: right;
+      }
+
+      .nickname_count {
+        font-size: $font_size_caption;
+        color: $color_text_secondary;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  .title_section {
+    @include flex_align_center;
+
+    margin: 0 40rpx;
+    width: calc(100% - 80rpx);
+    height: 10vh;
+
+    .title_text {
+      font-size: 4.5vw;
+      width: 20vw;
+      height: 43.48rpx;
+      align-content: center;
+      color: $color_text_heading;
+    }
+
+    .title_buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: $space_md;
+    }
+  }
+
+  .button_container {
+    @include flex_center;
+
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    bottom: 5%;
+    width: 100%;
+    gap: $space_xxl;
+
+    .action_button {
+      width: 220rpx;
+      height: 72rpx;
+      line-height: 72rpx;
+      border-radius: 36rpx;
+      font-size: $font_size_heading;
+      border: none;
+
+      &_cancel {
+        background: #c2c2c2;
+        color: $color_bg_page;
+      }
+
+      &_save {
+        background: $color_brand_muted;
+        color: $color_bg_page;
+      }
+    }
+  }
+
+  .logout_button {
+    margin-top: 10vw;
+    width: 40vw;
+    height: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

@@ -1,0 +1,16 @@
+.ellipsis_text {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  @include text_ellipsis;
+
+  &.clamp_2 {
+    white-space: normal;
+    @include line_clamp(2);
+  }
+
+  &.clamp_3 {
+    white-space: normal;
+    @include line_clamp(3);
+  }
+}

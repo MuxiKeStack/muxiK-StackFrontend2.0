@@ -1,0 +1,56 @@
+.action_item {
+  @include flex_align_center;
+
+  flex-direction: row;
+  gap: 10rpx;
+  font-size: $font_size_subtitle;
+  color: $color_text_medium;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &.active {
+    .action_icon {
+      color: $color_brand_accent;
+    }
+  }
+
+  .action_icon {
+    position: relative;
+    width: 50rpx;
+    height: 50rpx;
+    background-color: $color_bg_page;
+    box-shadow: 0px 8rpx 20rpx 0px rgba(0, 0, 0, 0.05);
+    border-radius: $radius_round;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: $color_text_medium;
+
+    > IconFont {
+      font-size: $font_size_body;
+    }
+
+    .iconfont {
+      @include flex_center;
+
+      font-family: 'iconfont' !important;
+      font-size: $font_size_base;
+      font-style: normal;
+      color: $color_brand_accent;
+      line-height: 50rpx;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .action_count {
+    font-size: $font_size_body;
+    color: $color_text_primary;
+    line-height: 50rpx;
+    min-width: 20rpx;
+  }
+}

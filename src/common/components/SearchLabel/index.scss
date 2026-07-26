@@ -1,0 +1,25 @@
+.searchLabel {
+  display: inline-flex;
+  align-items: center;
+  background-color: $color_bg_page;
+  border: 1rpx solid $color_border_light;
+  border-radius: $radius_xl;
+  padding: 0 30rpx;
+  height: 40rpx;
+  margin-right: $space_md;
+  margin-top: $space_lg;
+  padding: $space_xs 36rpx;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0rpx 2rpx 4rpx rgba(0, 0, 0, 0.05);
+
+  .labeltext {
+    font-size: $font_size_subtitle;
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    font-weight: 500;
+    color: $color_text_primary;
+    line-height: 40rpx;
+    white-space: nowrap;
+    text-align: center;
+  }
+}

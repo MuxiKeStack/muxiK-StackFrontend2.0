@@ -1,18 +1,13 @@
 import { Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
 import { memo } from 'react';
 import { AtIcon } from 'taro-ui';
 
+import { copyToClipboard } from '@/common/utils';
+
 const Contact: React.FC = memo(() => {
   const handleCopy = () => {
-    void Taro.setClipboardData({
-      data: 'https://jwc.ccnu.edu.cn/info/1048/9828.htm',
-      success: () => {
-        void Taro.showToast({
-          title: '已复制链接，请在浏览器中打开',
-          icon: 'success',
-        });
-      },
+    copyToClipboard('https://jwc.ccnu.edu.cn/info/1048/9828.htm', {
+      successText: '已复制链接，请在浏览器中打开',
     });
   };
   return (
