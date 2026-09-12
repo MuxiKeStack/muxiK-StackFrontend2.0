@@ -15,7 +15,7 @@ export interface CreateFeedbackRecordRequest {
 }
 
 const createFeedbackRecord = async (body: CreateFeedbackRecordRequest) => {
-  return await request.post('/api/v2/sheet/records', body, {
+  return await request.post('/api/v1/sheet/records', body, {
     tokenConfig: UserSheetTokenConfig,
     baseUrl: BASE_URL,
   });
