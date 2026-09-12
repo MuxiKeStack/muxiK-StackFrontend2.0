@@ -21,7 +21,7 @@ import FAQItem from './components/normalFAQ';
 
 const FeedbackPage = () => {
   const gate = useGateGuard();
-  const number = 576225292;
+  const number = 764752182;
   const studentId = Taro.getStorageSync<string>('student_id');
 
   const navigate = useCallback((url: string) => void Taro.navigateTo({ url }), []);
