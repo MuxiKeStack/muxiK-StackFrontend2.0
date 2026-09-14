@@ -4,7 +4,7 @@ import { memo, useCallback, useState } from 'react';
 
 import './index.scss';
 
-import { loginFormal, loginVisitor, saveUserInfo } from '@/pages/login/session';
+import { loginFormal, loginVisitor } from '@/pages/login/session';
 
 import { Icon } from '@/common/assets/img/login';
 import { hideLoadingThenToast } from '@/common/utils';
@@ -15,7 +15,6 @@ type UserData = {
   studentId: string;
   password: string;
   isAgreeTerms: boolean;
-  userInfo: Taro.getUserProfile.SuccessCallbackResult['userInfo'] | null;
 };
 
 const AuthForm: React.FC = memo(() => {
@@ -25,25 +24,7 @@ const AuthForm: React.FC = memo(() => {
     studentId: '',
     password: '',
     isAgreeTerms: false,
-    userInfo: null,
   });
-
-  const handleGetUserProfile = useCallback(() => {
-    return new Promise((resolve, reject) => {
-      Taro.getUserProfile({
-        desc: '用于完善用户资料',
-        success: (res) => {
-          setUserData((prev) => ({ ...prev, userInfo: res.userInfo }));
-          saveUserInfo(res.userInfo);
-          resolve(res.userInfo);
-        },
-        fail: (err) => {
-          console.error('获取用户信息失败:', err);
-          reject(new Error('获取用户信息失败'));
-        },
-      });
-    });
-  }, []);
 
   const handleLogin = useCallback(
     async (type: 'formal' | 'visitor') => {
@@ -62,9 +43,6 @@ const AuthForm: React.FC = memo(() => {
 
       try {
         if (type === 'formal') {
-          if (!userData.userInfo) {
-            await handleGetUserProfile();
-          }
           await loginFormal(userData.studentId, userData.password);
         } else {
           loginVisitor();
@@ -83,7 +61,7 @@ const AuthForm: React.FC = memo(() => {
         setIsLoading(false);
       }
     },
-    [userData, handleGetUserProfile]
+    [userData]
   );
 
   const handleClosePopper = useCallback(() => {
