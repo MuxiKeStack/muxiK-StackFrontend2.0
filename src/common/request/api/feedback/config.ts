@@ -8,13 +8,24 @@ import getFeishuToken from './getFeishuToken';
 
 const ISDEV = process.env.NODE_ENV === 'development';
 
-// export const BASE_URL = FEEDBACK_BASE_URL;
-export const BASE_URL = ISDEV ? FEEDBACK_DEV_BASE_URL : FEEDBACK_BASE_URL;
+function resolveIsProd(): boolean {
+  try {
+    const envVersion = Taro.getAccountInfoSync()?.miniProgram?.envVersion;
+    if (envVersion) return envVersion === 'release';
+  } catch {
+    // 非小程序环境或 API 不可用，忽略
+  }
+  return !ISDEV;
+}
+
+export const IS_PROD = resolveIsProd();
+
+export const BASE_URL = IS_PROD ? FEEDBACK_BASE_URL : FEEDBACK_DEV_BASE_URL;
 
 export const FIXED_CONFIG = {
   parentType: 'bitable_image',
   // parentNode: 'LC8aboXkCaAJaksSACOc9OS5nHf',
-  parentNode: ISDEV ? 'N4TcbHEPgaCvAIsrUspciX13nq8' : 'LC8aboXkCaAJaksSACOc9OS5nHf',
+  parentNode: IS_PROD ? 'LC8aboXkCaAJaksSACOc9OS5nHf' : 'N4TcbHEPgaCvAIsrUspciX13nq8',
 };
 
 interface GetAndSetTokenProps<T> {
