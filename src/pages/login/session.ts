@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro';
 
 import { readResponseHeader } from '@/common/auth/session';
 import { LONG_TOKEN, SHORT_TOKEN, VISITOR } from '@/common/constants/auth';
-import { STUDENT_ID, USER_INFO } from '@/common/constants/user';
+import { STUDENT_ID } from '@/common/constants/user';
 import { signGradeSharing } from '@/common/request/api/grade';
 import { userLogin, userLogout } from '@/common/request/api/user';
 import { BusinessError } from '@/common/request/errors/BusinessError';
@@ -47,12 +47,6 @@ export async function loginFormal(studentId: string, password: string): Promise<
 export function loginVisitor(): void {
   resetSession('visitor');
   Taro.setStorageSync(VISITOR, true);
-}
-
-export function saveUserInfo(
-  userInfo: Taro.getUserProfile.SuccessCallbackResult['userInfo']
-): void {
-  Taro.setStorageSync(USER_INFO, userInfo);
 }
 
 export async function logout(): Promise<void> {
