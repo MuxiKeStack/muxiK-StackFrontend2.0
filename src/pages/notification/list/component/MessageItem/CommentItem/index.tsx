@@ -6,6 +6,7 @@ import './index.scss';
 import { Avatar, CourseTitleBlock, EllipsisText } from '@/common/components';
 import { formatDate } from '@/common/utils';
 import { CommentMessageProps } from '@/pages/notification/type';
+
 import { openNotificationTarget } from '../../../../load';
 
 export const CommentMessageItem: React.FC<CommentMessageProps> = ({

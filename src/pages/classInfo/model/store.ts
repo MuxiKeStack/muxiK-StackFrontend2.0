@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 
+import { useEvaluationStore } from '@/store/evaluations';
+
 import type { CommentInfo, Course } from '@/common/types/commentTypes';
 import type { GradeChart, WebQuestionVo } from '@/common/types/userTypes';
 import { registerSessionReset } from '@/common/utils/resetSession';
-import { useEvaluationStore } from '@/store/evaluations';
 
 export type QuestionUpsertPayload = Partial<WebQuestionVo>;
 

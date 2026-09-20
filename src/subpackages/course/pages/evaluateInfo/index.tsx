@@ -4,13 +4,14 @@ import { memo, useCallback, useRef, useState } from 'react';
 
 import './index.scss';
 
+import { useEvaluationStore } from '@/store/evaluations';
+import { useUserStore } from '@/store/user';
+
 import { BottomInput, FeedCard, GateScreen, ReviewDiscussion } from '@/common/components';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import type { DiscussionComment } from '@/common/types/commentTypes';
 import { NavigationBar } from '@/modules/navigation';
-import { useEvaluationStore } from '@/store/evaluations';
-import { useUserStore } from '@/store/user';
 
 import {
   loadEvaluationComments,

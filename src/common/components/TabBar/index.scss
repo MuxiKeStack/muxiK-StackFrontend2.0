@@ -17,6 +17,11 @@
   border-radius: $radius_xl;
   background-color: $color_bg_cream;
   box-shadow: 0 12rpx 20rpx -4rpx rgba(0, 0, 0, 0.2);
+
+  .tab_bar_icon_img {
+    width: 60rpx;
+    height: 60rpx;
+  }
 }
 .tab_bar_text {
   font-size: $font_size_heading;

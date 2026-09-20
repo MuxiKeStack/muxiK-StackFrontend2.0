@@ -1,6 +1,5 @@
 import type { EvaluationStatus } from '@/common/request/api/evaluations';
 import type { CommentInfo } from '@/common/types/commentTypes';
-
 import type { DataSource } from '@/common/types/loadType';
 
 export interface EvaluationHistoryCache {
@@ -39,7 +38,10 @@ export interface EvaluationHistoryStore {
   invalidateCache: (status: EvaluationStatus) => void;
   refresh: (status: EvaluationStatus) => Promise<CommentInfo[]>;
   clearCache: () => void;
-  patchEvaluationLike: (evaluationId: number, willLike: boolean) => CommentInfo | undefined;
+  patchEvaluationLike: (
+    evaluationId: number,
+    willLike: boolean
+  ) => CommentInfo | undefined;
 }
 
 export const PAGE_SIZE = 10;

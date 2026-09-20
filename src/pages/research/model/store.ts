@@ -1,10 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import {
-  deleteSearchHistory,
-  getSearchHistory,
-} from '@/common/request/api/research';
+import { deleteSearchHistory, getSearchHistory } from '@/common/request/api/research';
 import type { DataSource } from '@/common/types/loadType';
 import { loadData } from '@/common/utils/loadData';
 import { registerSessionReset } from '@/common/utils/resetSession';
@@ -37,8 +34,12 @@ interface ResearchStore {
     keyword: string,
     options?: { search_location?: SearchLocation }
   ) => Promise<SearchResultCourse[]>;
-  loadMore: (options?: { search_location?: SearchLocation }) => Promise<SearchResultCourse[]>;
-  refreshSearch: (options?: { search_location?: SearchLocation }) => Promise<SearchResultCourse[]>;
+  loadMore: (options?: {
+    search_location?: SearchLocation;
+  }) => Promise<SearchResultCourse[]>;
+  refreshSearch: (options?: {
+    search_location?: SearchLocation;
+  }) => Promise<SearchResultCourse[]>;
   resetSession: (search_location: SearchLocation) => void;
   clearUserData: () => void;
   searchHome: (keyword: string) => Promise<SearchResultCourse[]>;
@@ -136,28 +137,32 @@ export const useResearchStore = create<ResearchStore>()(
         }
 
         const requestGen = (get().sessions[location]?.requestGen ?? 0) + 1;
-        set(patchSession(location, {
-          keyword: trimmed,
-          results: [],
-          cursor: null,
-          hasMore: true,
-          loading: true,
-          loadingMore: false,
-          refreshing: false,
-          requestGen,
-        }));
+        set(
+          patchSession(location, {
+            keyword: trimmed,
+            results: [],
+            cursor: null,
+            hasMore: true,
+            loading: true,
+            loadingMore: false,
+            refreshing: false,
+            requestGen,
+          })
+        );
 
         try {
           const page = await fetchSearchPage(trimmed, location);
           if (get().sessions[location]?.requestGen !== requestGen) return [];
 
           const hasMore = hasMoreFromPage(page.courses, page.nextAfter);
-          set(patchSession(location, {
-            results: page.courses,
-            cursor: page.nextAfter,
-            hasMore,
-            loading: false,
-          }));
+          set(
+            patchSession(location, {
+              results: page.courses,
+              cursor: page.nextAfter,
+              hasMore,
+              loading: false,
+            })
+          );
           return page.courses;
         } catch (e) {
           if (get().sessions[location]?.requestGen === requestGen) {
@@ -191,12 +196,14 @@ export const useResearchStore = create<ResearchStore>()(
 
           const merged = mergeResults(results, page.courses);
           const hasMore = hasMoreFromPage(page.courses, page.nextAfter);
-          set(patchSession(location, {
-            results: merged,
-            cursor: page.nextAfter,
-            hasMore,
-            loadingMore: false,
-          }));
+          set(
+            patchSession(location, {
+              results: merged,
+              cursor: page.nextAfter,
+              hasMore,
+              loadingMore: false,
+            })
+          );
           return merged;
         } catch (e) {
           set(patchSession(location, { loadingMore: false }));
@@ -219,12 +226,14 @@ export const useResearchStore = create<ResearchStore>()(
           }
 
           const hasMore = hasMoreFromPage(page.courses, page.nextAfter);
-          set(patchSession(location, {
-            results: page.courses,
-            cursor: page.nextAfter,
-            hasMore,
-            refreshing: false,
-          }));
+          set(
+            patchSession(location, {
+              results: page.courses,
+              cursor: page.nextAfter,
+              hasMore,
+              refreshing: false,
+            })
+          );
           return page.courses;
         } catch (e) {
           set(patchSession(location, { refreshing: false }));

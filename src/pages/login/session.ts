@@ -1,5 +1,7 @@
 import Taro from '@tarojs/taro';
 
+import { useUserStore } from '@/store/user';
+
 import { readResponseHeader } from '@/common/auth/session';
 import { LONG_TOKEN, SHORT_TOKEN, VISITOR } from '@/common/constants/auth';
 import { STUDENT_ID } from '@/common/constants/user';
@@ -7,7 +9,6 @@ import { signGradeSharing } from '@/common/request/api/grade';
 import { userLogin, userLogout } from '@/common/request/api/user';
 import { BusinessError } from '@/common/request/errors/BusinessError';
 import { resetSession } from '@/common/utils/resetSession';
-import { useUserStore } from '@/store/user';
 
 export async function loginFormal(studentId: string, password: string): Promise<void> {
   resetSession('login');

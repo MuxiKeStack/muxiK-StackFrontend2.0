@@ -1,9 +1,10 @@
 import Taro from '@tarojs/taro';
 import { useCallback, useEffect, useState } from 'react';
 
+import { useEvaluationStore } from '@/store/evaluations';
+
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import type { CommentInfo } from '@/common/types/commentTypes';
-import { useEvaluationStore } from '@/store/evaluations';
 
 export interface UseLikeActionOptions {
   evaluationId: number;

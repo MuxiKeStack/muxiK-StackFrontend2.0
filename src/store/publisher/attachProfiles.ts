@@ -38,10 +38,7 @@ export function attachUserProfiles(
     if (!c.reply_to_user?.nickname?.trim() && c.reply_to_uid > 0) {
       const replyToUser = userFromUid(publishers, c.reply_to_uid);
       if (replyToUser) next = { ...next, reply_to_user: replyToUser };
-    } else if (
-      c.reply_to_user?.nickname != null &&
-      !c.reply_to_user.nickname.trim()
-    ) {
+    } else if (c.reply_to_user?.nickname != null && !c.reply_to_user.nickname.trim()) {
       next = {
         ...next,
         reply_to_user: { ...c.reply_to_user, nickname: '匿名用户' },

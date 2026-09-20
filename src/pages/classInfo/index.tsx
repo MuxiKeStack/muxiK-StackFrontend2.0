@@ -5,13 +5,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import './index.scss';
 
-import {
-  loadClassInfo,
-  subscribeClassInfoEvents,
-  toggleClassCollect,
-  useClassInfo,
-} from '@/pages/classInfo/model';
-
 import { Drawer, GateScreen, LineChart } from '@/common/components';
 import { ROUTES } from '@/common/constants/routes';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
@@ -20,6 +13,12 @@ import type { CommentInfo } from '@/common/types/commentTypes';
 import type { WebQuestionVo } from '@/common/types/userTypes';
 import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
 import { NavigationBar } from '@/modules/navigation';
+import {
+  loadClassInfo,
+  subscribeClassInfoEvents,
+  toggleClassCollect,
+  useClassInfo,
+} from '@/pages/classInfo/model';
 
 import CommentsSection from './component/CommentsSection';
 import CourseHeaderSection from './component/CourseHeaderSection';

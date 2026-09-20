@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 
+import { useCourseStore } from '@/store/course';
+
 import { getUserProfile } from '@/common/request/api/user';
 import type { PublisherDetailsType } from '@/common/types/courseType';
 import { registerSessionReset } from '@/common/utils/resetSession';
-import { useCourseStore } from '@/store/course';
 
 import {
   extractCourseDetailsFromEvaluations,

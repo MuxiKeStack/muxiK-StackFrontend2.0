@@ -5,6 +5,7 @@ import './index.scss';
 
 import { Avatar, EllipsisText } from '@/common/components';
 import { MessageItemProps } from '@/pages/notification/type';
+
 import { openNotificationTarget } from '../../../load';
 
 const MessageItem: React.FC<MessageItemProps> = memo(

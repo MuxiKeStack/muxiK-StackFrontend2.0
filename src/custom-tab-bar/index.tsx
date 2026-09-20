@@ -1,30 +1,43 @@
-import { Text, View } from '@tarojs/components';
+import { Image, Text, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import React, { memo, useRef } from 'react';
-import { AtIcon } from 'taro-ui';
 
 import './index.scss';
 
 import { ActiveButtonType, useActiveButtonStore } from '@/store/app';
 
+import {
+  ManualIcon,
+  ManualIconActive,
+  NoticeIcon,
+  NoticeIconActive,
+  ProfileIcon,
+  ProfileIconActive,
+  SquareIcon,
+  SquareIconActive,
+} from '@/common/assets/img/tabBar';
+
 const TAB_LIST: Array<{
   pagePath: string;
   name: string;
-  icon?: string;
-  content?: string;
+  icon: string;
+  iconActive: string;
+  content: string;
   matchPath?: string;
 }> = [
   {
     pagePath: '/pages/main/index',
     name: 'Home',
-    icon: 'streaming',
+    icon: SquareIcon,
+    iconActive: SquareIconActive,
     content: '广场',
     matchPath: 'pages/main/index',
   },
   {
     pagePath: '/pages/guide/index',
     name: 'Guide',
-    icon: 'download-cloud',
+    icon: ManualIcon,
+    iconActive: ManualIconActive,
     content: '手册',
     matchPath: 'pages/guide/index',
   },
@@ -32,14 +45,16 @@ const TAB_LIST: Array<{
   {
     pagePath: '/pages/notification/main/index',
     name: 'Message',
-    icon: 'message',
+    icon: NoticeIcon,
+    iconActive: NoticeIconActive,
     content: '消息',
     matchPath: 'pages/notification/main/index',
   },
   {
     pagePath: '/pages/profile/index',
     name: 'Profile',
-    icon: 'user',
+    icon: ProfileIcon,
+    iconActive: ProfileIconActive,
     content: '我的',
     matchPath: 'pages/profile/index',
   },
@@ -93,10 +108,9 @@ const TabBar: React.FC = memo(() => {
                 handleTabClick(item);
               }}
             >
-              <AtIcon
-                value={item.icon as string}
-                size="30"
-                color={activeButton === item.name ? '#f18900' : '#999999'}
+              <Image
+                className="tab-icon"
+                src={activeButton === item.name ? item.iconActive : item.icon}
               />
               <Text className={`tab-text ${activeButton === item.name ? 'active' : ''}`}>
                 {item.content}

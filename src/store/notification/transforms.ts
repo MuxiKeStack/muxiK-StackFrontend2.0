@@ -1,8 +1,7 @@
 import { getEvaluationDetail } from '@/common/request/api/evaluations';
+import type { CommentInfo } from '@/common/types/commentTypes';
 import { formatDate } from '@/common/utils';
 import type { MessageItemProps } from '@/pages/notification/type';
-
-import type { CommentInfo } from '@/common/types/commentTypes';
 
 type CourseDetail = { course_name?: string; teacher_name?: string };
 type CourseDetailIndex = Map<string, CourseDetail>;

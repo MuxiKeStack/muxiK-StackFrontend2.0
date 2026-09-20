@@ -3,11 +3,10 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import './index.scss';
 
-import { loadNotifications } from '@/pages/notification/load';
-
 import { VirtualList } from '@/common/components';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
+import { loadNotifications } from '@/pages/notification/load';
 
 import { MessageItemProps } from '../type';
 import { renderMessageItem } from './component/MessageItem';

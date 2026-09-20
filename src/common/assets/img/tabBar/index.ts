@@ -1,4 +1,9 @@
+export { default as CommentIcon } from './comment_icon.svg';
 export { default as ManualIcon } from './manual_icon.svg';
-export { default as noticeIcon } from './notice_icon.svg';
+export { default as ManualIconActive } from './manual_icon_active.svg';
+export { default as NoticeIcon } from './notice_icon.svg';
+export { default as NoticeIconActive } from './notice_icon_active.svg';
 export { default as ProfileIcon } from './profile_icon.svg';
+export { default as ProfileIconActive } from './profile_icon_active.svg';
 export { default as SquareIcon } from './square_icon.svg';
+export { default as SquareIconActive } from './square_icon_active.svg';

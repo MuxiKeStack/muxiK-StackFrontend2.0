@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import type { CommentInfo } from '@/common/types/commentTypes';
-import { COURSE_TYPE, type classType } from '@/common/types/courseType';
 import { useEvaluationStore } from '@/store/evaluations';
+
+import type { CommentInfo } from '@/common/types/commentTypes';
+import { type classType, COURSE_TYPE } from '@/common/types/courseType';
 
 import { useFeedStore } from './store';
 

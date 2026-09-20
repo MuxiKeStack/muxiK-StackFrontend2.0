@@ -4,13 +4,14 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import './index.scss';
 
+import { usePublisherStore } from '@/store/publisher';
+import { useUserStore } from '@/store/user';
+
 import { BottomInput, FeedCard, GateScreen, ReviewDiscussion } from '@/common/components';
 import type { BottomInputRef } from '@/common/components/BottomInput';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { getAnswerDetail } from '@/common/request/api/answers';
-import { usePublisherStore } from '@/store/publisher';
-import { useUserStore } from '@/store/user';
 
 import {
   loadMoreQuestionAnswers,

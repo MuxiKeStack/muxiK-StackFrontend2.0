@@ -1,14 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Text, View } from '@tarojs/components';
 import { memo, useEffect, useState } from 'react';
 import { AtIcon } from 'taro-ui';
 
-import { useGuideStore } from '@/pages/guide/model';
-
 import { copyToClipboard } from '@/common/utils';
+import { useGuideStore } from '@/pages/guide/model';
 
 interface SourceProps {
   year: string;

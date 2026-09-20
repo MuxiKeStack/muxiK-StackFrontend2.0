@@ -1,11 +1,5 @@
 import Taro from '@tarojs/taro';
 
-import { ROUTES } from '@/common/constants/routes';
-import { getFeeds } from '@/common/request/api/feed';
-import { navigateToEvaluationDetailById } from '@/common/utils/evaluation';
-import { hasAuthenticatedSession } from '@/common/utils/hasAuthenticatedSession';
-import { isVisitorMode } from '@/common/utils/isVisitor';
-import { loadData } from '@/common/utils/loadData';
 import { useEvaluationStore } from '@/store/evaluations';
 import { useNotificationStore } from '@/store/notification';
 import {
@@ -13,6 +7,13 @@ import {
   emptyNotificationData,
   type NotificationData,
 } from '@/store/notification/transforms';
+
+import { ROUTES } from '@/common/constants/routes';
+import { getFeeds } from '@/common/request/api/feed';
+import { navigateToEvaluationDetailById } from '@/common/utils/evaluation';
+import { hasAuthenticatedSession } from '@/common/utils/hasAuthenticatedSession';
+import { isVisitorMode } from '@/common/utils/isVisitor';
+import { loadData } from '@/common/utils/loadData';
 
 import type { MessageItemProps } from './type';
 

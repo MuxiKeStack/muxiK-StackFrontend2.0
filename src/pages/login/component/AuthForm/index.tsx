@@ -4,10 +4,9 @@ import { memo, useCallback, useState } from 'react';
 
 import './index.scss';
 
-import { loginFormal, loginVisitor } from '@/pages/login/session';
-
 import { Icon } from '@/common/assets/img/login';
 import { hideLoadingThenToast } from '@/common/utils';
+import { loginFormal, loginVisitor } from '@/pages/login/session';
 
 import { Popper } from '../index';
 

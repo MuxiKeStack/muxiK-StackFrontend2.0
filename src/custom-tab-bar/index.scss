@@ -1,4 +1,3 @@
-@import '~taro-ui/dist/style/components/icon.scss';
 .guild_line {
   @include flex_align_center;
 
@@ -16,6 +15,11 @@
 
     width: 6vh;
     height: 6vh;
+
+    .tab-icon {
+      width: 3.5vh;
+      height: 3.5vh;
+    }
 
     .tab-text {
       font-size: 1.5vh;

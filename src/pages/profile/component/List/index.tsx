@@ -1,14 +1,8 @@
 import Taro from '@tarojs/taro';
-
 import React, { memo, useCallback, useMemo, useState } from 'react';
-
 import { AtList, AtListItem } from 'taro-ui';
 
 import './index.scss';
-
-import { logout } from '@/pages/login/session';
-
-import { resetSession } from '@/common/utils/resetSession';
 
 import {
   BookIcon,
@@ -17,12 +11,11 @@ import {
   FeedbackIcon,
   StarIcon,
 } from '@/common/assets/img/profile';
-
 import { Modal } from '@/common/components/Modal';
-
 import { ROUTES } from '@/common/constants/routes';
-
 import { uniqueKey } from '@/common/utils';
+import { resetSession } from '@/common/utils/resetSession';
+import { logout } from '@/pages/login/session';
 
 interface MenuItem {
   title: string;

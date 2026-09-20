@@ -1,6 +1,5 @@
 import { publishQuestion } from '@/common/request/api/questions';
 import { bus } from '@/common/utils';
-
 import type { QuestionDetail } from '@/subpackages/course/pages/questionInfo/model/types';
 
 export type PublishQuestionBody = Parameters<typeof publishQuestion>[0];

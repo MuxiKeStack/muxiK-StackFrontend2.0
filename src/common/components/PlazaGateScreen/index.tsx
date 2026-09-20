@@ -1,8 +1,8 @@
 import { ScrollView, Text, View } from '@tarojs/components';
 
-import { NavigationBar } from '@/modules/navigation';
-
 import './index.scss';
+
+import { NavigationBar } from '@/modules/navigation';
 
 const TABS = ['全部', '专业', '个性', '通核'] as const;
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-console */
 
 import Taro from '@tarojs/taro';
@@ -44,7 +43,6 @@ export const fetchToQiniu = async (filepath) => {
           token: access_token,
         },
         success: (res) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           resolve(`https://${domain_name}/${JSON.parse(res.data)?.key}`);
         },
         fail: (err) => {

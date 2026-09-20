@@ -1,8 +1,9 @@
 import Taro from '@tarojs/taro';
 
+import { useEvaluationStore } from '@/store/evaluations';
+
 import { ROUTES } from '@/common/constants/routes';
 import type { CommentInfo } from '@/common/types/commentTypes';
-import { useEvaluationStore } from '@/store/evaluations';
 
 /** URL 驱动打开课评详情：实体仓 upsert → 带 bizId 跳转 */
 export function navigateToEvaluationDetail(item: CommentInfo): void {
