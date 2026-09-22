@@ -1,8 +1,8 @@
 import { ScrollView, Text, View } from '@tarojs/components';
 
-import { NavigationBar } from '@/modules/navigation';
-
 import './index.scss';
+
+import { NavigationBar } from '@/modules/navigation';
 
 const OFFICIAL_MESSAGES = [
   {

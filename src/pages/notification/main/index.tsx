@@ -4,7 +4,6 @@ import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import './index.scss';
 
-import { loadNotifications } from '@/pages/notification/load';
 import { useNotificationStore } from '@/store/notification';
 
 import { NotificationGateScreen, TabBar, VirtualList } from '@/common/components';
@@ -12,9 +11,12 @@ import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { TabItemProps } from '@/common/types/tabBarType';
 import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
+import { loadNotifications } from '@/pages/notification/load';
 
 import { MessageItemProps } from '../type';
 import { renderMessageItem } from './component/MessageItem';
+
+import { CommentIcon } from '@/common/assets/img/tabBar';
 
 const NotificationFeed: React.FC = memo(() => {
   const data = useNotificationStore((s) => s.data);
@@ -23,7 +25,7 @@ const NotificationFeed: React.FC = memo(() => {
   const navigate = useCallback((url: string) => void Taro.navigateTo({ url }), []);
 
   const TABS: TabItemProps[] = [
-    { name: '评论', icon: 'tiwen', key: 'comment' },
+    { name: '评论', icon: '', iconSrc: CommentIcon, key: 'comment' },
     { name: '点赞', icon: 'like', key: 'support' },
     { name: '官方', icon: 'guanfangbanben', key: 'official' },
   ];

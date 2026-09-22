@@ -13,6 +13,7 @@ import './index.scss';
 import { CommentCard } from '@/common/components';
 import ReplySection from '@/common/components/ReplySection';
 import type { DiscussionComment } from '@/common/types/commentTypes';
+
 import VirtualList from '../VirtualList';
 
 interface ReviewDiscussionProps {

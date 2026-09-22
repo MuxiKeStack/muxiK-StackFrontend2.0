@@ -3,13 +3,12 @@ import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { formatSubmitTime, useFeedbackStore } from '@/subpackages/feedback/model';
-
-import { STATUS_LABELS } from '@/common/constants/feedback';
-import { bus } from '@/common/utils';
 import { GateScreen } from '@/common/components';
+import { STATUS_LABELS } from '@/common/constants/feedback';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
+import { bus } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
+import { formatSubmitTime, useFeedbackStore } from '@/subpackages/feedback/model';
 import type { FeedbackDetailItem } from '@/subpackages/feedback/type';
 
 const getStatusStep = (status: string) => {

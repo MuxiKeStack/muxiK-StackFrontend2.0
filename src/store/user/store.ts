@@ -5,7 +5,6 @@ import { persist } from 'zustand/middleware';
 import { LONG_TOKEN } from '@/common/constants/auth';
 import { getUserIntegral } from '@/common/request/api/integral';
 import { editProfile, getProfile } from '@/common/request/api/user';
-
 import { registerSessionReset } from '@/common/utils/resetSession';
 
 import { taroUserStorage } from './storage';

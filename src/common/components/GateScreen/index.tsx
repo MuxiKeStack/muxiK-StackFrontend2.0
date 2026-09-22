@@ -1,9 +1,9 @@
 import { Image, Text, View } from '@tarojs/components';
 
+import './index.scss';
+
 import { Icon, TopBackground } from '@/common/assets/img/login';
 import { NavigationBar } from '@/modules/navigation';
-
-import './index.scss';
 
 interface GateScreenProps {
   className?: string;

@@ -7,11 +7,10 @@ import './index.scss';
 
 import { FeedCard, FloatButton, PlazaGateScreen } from '@/common/components';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
+import type { CommentInfo } from '@/common/types/commentTypes';
+import { type classType, COURSE_TYPE } from '@/common/types/courseType';
 import { navigateToEvaluationDetail } from '@/common/utils/evaluation';
 import { NavigationBar } from '@/modules/navigation';
-
-import type { CommentInfo } from '@/common/types/commentTypes';
-import { COURSE_TYPE, type classType } from '@/common/types/courseType';
 import {
   loadMoreCourseFeed,
   refreshCourseFeed,

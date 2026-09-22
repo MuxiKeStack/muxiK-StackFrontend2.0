@@ -1,22 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Image, Text, View } from '@tarojs/components';
 import Taro, { useLoad } from '@tarojs/taro';
 import React, { memo, useCallback } from 'react';
 
 import './index.scss';
 
-import {
-  emptySession,
-  SEARCH_LOCATION,
-  useResearchStore,
-} from '@/pages/research/model';
-
 import { deleteIcon } from '@/common/assets/img/icons';
 import { SearchInput, SearchLabel, VirtualList } from '@/common/components';
 import CourseLabel from '@/common/components/CourseLabel';
 import { hideLoadingThenToast } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
+import { emptySession, SEARCH_LOCATION, useResearchStore } from '@/pages/research/model';
 
 import type { SearchHistoryItem, SearchResultCourse } from './types';
 
@@ -101,7 +94,9 @@ const ConditionalRender: React.FC<ConditionalRenderProps> = ({
 
 const Page: React.FC = () => {
   const history = useResearchStore((s) => s.history);
-  const session = useResearchStore((s) => s.sessions[SEARCH_LOCATION.HOME] ?? emptySession());
+  const session = useResearchStore(
+    (s) => s.sessions[SEARCH_LOCATION.HOME] ?? emptySession()
+  );
   const keyword = useResearchStore((s) => s.keyword);
   const showResults = useResearchStore((s) => s.showResults);
   const loadHistory = useResearchStore((s) => s.loadHistory);

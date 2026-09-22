@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { createTaroJSONStorage } from '@/common/utils/storage';
-import { registerSessionReset } from '@/common/utils/resetSession';
 import type { DataSource } from '@/common/types/loadType';
+import { registerSessionReset } from '@/common/utils/resetSession';
+import { createTaroJSONStorage } from '@/common/utils/storage';
 
 import { emptyNotificationData, type NotificationData } from './transforms';
 

@@ -1,17 +1,16 @@
 import { create } from 'zustand';
 
-import type { CommentInfo, CommentType, User } from '@/common/types/commentTypes';
-import { registerSessionReset } from '@/common/utils/resetSession';
 import { useEvaluationStore } from '@/store/evaluations';
 
+import type { CommentInfo, CommentType, User } from '@/common/types/commentTypes';
 import type { DataSource } from '@/common/types/loadType';
+import { registerSessionReset } from '@/common/utils/resetSession';
 
 import {
   fetchEvaluationDetail,
   submitCommentReply,
   TOP_LEVEL_COMMENT_PAGE_SIZE,
 } from './api';
-import { getEvaluationDetailSessionGen } from './sessionGen';
 import {
   applyPendingComment,
   createPendingComment,
@@ -21,6 +20,7 @@ import {
   removePendingComment,
 } from './commentTree';
 import { getEvaluationEntry, patchEvaluationEntry } from './entry';
+import { getEvaluationDetailSessionGen } from './sessionGen';
 import type { EvaluationDetailEntry } from './types';
 
 const commentsLoadGen: Record<number, number> = {};
@@ -112,8 +112,7 @@ export const useEvaluateDetailStore = create<EvaluateDetailStore>()((set, get) =
     const gen = commentsLoadGen[bizId];
     if (isRefresh) get().resetComments(bizId);
 
-    let nextHasMore =
-      comments.length === TOP_LEVEL_COMMENT_PAGE_SIZE ? hasMore : false;
+    let nextHasMore = comments.length === TOP_LEVEL_COMMENT_PAGE_SIZE ? hasMore : false;
 
     let result = comments;
     set((state) => {

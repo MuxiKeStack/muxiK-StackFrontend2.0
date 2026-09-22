@@ -5,6 +5,7 @@ import './index.scss';
 
 import { Avatar, EllipsisText } from '@/common/components';
 import { SupportMessageProps } from '@/pages/notification/type';
+
 import { openNotificationTarget } from '../../../../load';
 
 export const SupportMessageItem: React.FC<SupportMessageProps> = ({

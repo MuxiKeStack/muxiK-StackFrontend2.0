@@ -4,17 +4,16 @@ import { useCallback, useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { sourceLabel } from '@/common/utils/loadData';
-import { useFeedbackStore } from '@/subpackages/feedback/model';
-
 import { FeedbackIcon } from '@/common/assets/img/profile';
 import searchIcon from '@/common/assets/img/search.png';
 import { FloatButton, GateScreen, SearchInput } from '@/common/components';
-import { useGateGuard } from '@/common/hooks/useGateGuard';
 import Loading from '@/common/components/Loading';
 import { ROUTES } from '@/common/constants/routes';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { copyToClipboard } from '@/common/utils';
+import { sourceLabel } from '@/common/utils/loadData';
 import { NavigationBar } from '@/modules/navigation';
+import { useFeedbackStore } from '@/subpackages/feedback/model';
 import type { SheetItem } from '@/subpackages/feedback/type';
 
 import FAQItem from './components/normalFAQ';

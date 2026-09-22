@@ -1,6 +1,7 @@
+import { useEvaluationStore } from '@/store/evaluations';
+
 import { BusinessError } from '@/common/request/errors/BusinessError';
 import type { CommentInfo, DiscussionComment, User } from '@/common/types/commentTypes';
-import { useEvaluationStore } from '@/store/evaluations';
 
 import { useEvaluateDetailStore } from './store';
 

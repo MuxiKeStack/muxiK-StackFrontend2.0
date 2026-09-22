@@ -2,8 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { getMatchLabels } from '@/common/request/api/statics';
-import { createTaroJSONStorage } from '@/common/utils/storage';
 import { loadData } from '@/common/utils/loadData';
+import { createTaroJSONStorage } from '@/common/utils/storage';
 
 import type { GuideLabelItem, GuideStore } from './types';
 

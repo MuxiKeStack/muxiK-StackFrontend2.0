@@ -1,15 +1,22 @@
-import { Button, Image, Radio, ScrollView, Text, Textarea, View } from '@tarojs/components';
+import {
+  Button,
+  Image,
+  Radio,
+  ScrollView,
+  Text,
+  Textarea,
+  View,
+} from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { publishQuestionAndBroadcast } from '@/subpackages/course/pages/publishQuestion/publish';
-
 import askicon from '@/common/assets/img/publishQuestion/ask.png';
 import { CourseInfo, GateScreen, PublishHeader } from '@/common/components';
 import { useAuthGuard } from '@/common/hooks/useAuthGuard';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
+import { publishQuestionAndBroadcast } from '@/subpackages/course/pages/publishQuestion/publish';
 
 const Page: React.FC = () => {
   const [courseId, setCourseId] = useState<string | null>(null);

@@ -3,8 +3,9 @@ import { create } from 'zustand';
 import { endorseEvaluation as endorseEvaluationApi } from '@/common/request/api/evaluations';
 import type { CommentInfo } from '@/common/types/commentTypes';
 import { toggleCommentLike } from '@/common/utils/comment';
-import { useEvaluationHistoryStore } from '../evaluationHistory/store';
 import { registerSessionReset } from '@/common/utils/resetSession';
+
+import { useEvaluationHistoryStore } from '../evaluationHistory/store';
 
 const MAX_ENTITIES = 500;
 

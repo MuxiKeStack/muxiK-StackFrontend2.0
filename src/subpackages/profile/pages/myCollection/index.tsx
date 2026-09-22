@@ -4,13 +4,13 @@ import React, { memo, useCallback, useEffect, useState } from 'react';
 
 import './index.scss';
 
-import { emptySession, SEARCH_LOCATION, useResearchStore } from '@/pages/research/model';
 import { useMyCollectionsStore } from '@/store';
 
 import { SearchInput, VirtualList } from '@/common/components';
 import CourseLabel from '@/common/components/CourseLabel';
 import { CollectionProps } from '@/common/types/collectionsType';
 import { NavigationBar } from '@/modules/navigation';
+import { emptySession, SEARCH_LOCATION, useResearchStore } from '@/pages/research/model';
 
 const COURSE_ITEM_SIZE = 369;
 

@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import type { CommentInfo } from '@/common/types/commentTypes';
 import { useEvaluationStore } from '@/store/evaluations';
+
+import type { CommentInfo } from '@/common/types/commentTypes';
 
 import { useClassInfoView } from './store';
 

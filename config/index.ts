@@ -75,12 +75,11 @@ const config = {
       enable: true,
       exclude: [
         path.resolve(__dirname, '../src/*.tsx'),
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+
         (module) => module.resource?.indexOf('moduleName') >= 0,
       ],
     },
     webpackChain(chain) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       chain.merge({
         plugin: {
           install: {
@@ -148,9 +147,9 @@ const config = {
 
 module.exports = function (merge) {
   if (process.env.NODE_ENV === 'development') {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     return merge({}, config, require('./dev'));
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   return merge({}, config, require('./prod'));
 };

@@ -1,15 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { Radio, ScrollView, Text, Textarea, View } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import { useCallback, useEffect, useState } from 'react';
 
 import './index.scss';
-
-import type { PublishEvaluationBody } from '@/subpackages/course/pages/evaluate/publish';
-import { publishEvaluationAndBroadcast } from '@/subpackages/course/pages/evaluate/publish';
 
 import { GateScreen, StarRating } from '@/common/components';
 import FeatureLabel from '@/common/components/FeatureLabel';
@@ -19,6 +12,8 @@ import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { BusinessError } from '@/common/request/errors/BusinessError';
 import { hideLoadingThenToast } from '@/common/utils';
 import { NavigationBar } from '@/modules/navigation';
+import type { PublishEvaluationBody } from '@/subpackages/course/pages/evaluate/publish';
+import { publishEvaluationAndBroadcast } from '@/subpackages/course/pages/evaluate/publish';
 
 function readCourseIdFromRoute(): number {
   const pages = Taro.getCurrentPages();

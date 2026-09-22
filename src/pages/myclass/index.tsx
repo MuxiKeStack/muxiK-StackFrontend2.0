@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { Picker, ScrollView, Text, View } from '@tarojs/components';
 import Taro, { useDidShow, useLoad } from '@tarojs/taro';
 import { useCallback, useEffect, useRef, useState } from 'react';

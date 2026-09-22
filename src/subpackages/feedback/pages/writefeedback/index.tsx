@@ -12,16 +12,15 @@ import { useCallback, useMemo, useState } from 'react';
 
 import './index.scss';
 
-import { useFeedbackStore } from '@/subpackages/feedback/model';
-
+import { GateScreen } from '@/common/components';
 import {
   FEEDBACK_TABLE_IDENTIFY,
   ISSUE_TYPE_MAP,
   MODULE_MAP,
 } from '@/common/constants/feedback';
-import { GateScreen } from '@/common/components';
 import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { NavigationBar } from '@/modules/navigation';
+import { useFeedbackStore } from '@/subpackages/feedback/model';
 
 type ImageItem = {
   uri: string;

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { COURSE_TYPE, type classType } from '@/common/types/courseType';
+import { type classType, COURSE_TYPE } from '@/common/types/courseType';
 import { registerSessionReset } from '@/common/utils/resetSession';
 
 const MAX_IDS_PER_TYPE = 200;

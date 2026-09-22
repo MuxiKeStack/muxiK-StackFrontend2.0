@@ -1,8 +1,8 @@
 import Taro from '@tarojs/taro';
 
 import { isVisitorMode } from '@/common/utils/isVisitor';
-
 import { resetSession } from '@/common/utils/resetSession';
+
 import { AuthError } from '../errors/AuthError';
 import type { ErrorHandler } from '../errors/ErrorPipeline';
 

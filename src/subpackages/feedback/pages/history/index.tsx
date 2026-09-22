@@ -4,14 +4,13 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import './index.scss';
 
-import { sourceLabel } from '@/common/utils/loadData';
-import { formatSubmitTime, useFeedbackStore } from '@/subpackages/feedback/model';
-
 import { GateScreen, VirtualList } from '@/common/components';
-import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { ROUTES } from '@/common/constants/routes';
+import { useGateGuard } from '@/common/hooks/useGateGuard';
 import { bus } from '@/common/utils';
+import { sourceLabel } from '@/common/utils/loadData';
 import { NavigationBar } from '@/modules/navigation';
+import { formatSubmitTime, useFeedbackStore } from '@/subpackages/feedback/model';
 import type { FeedbackItem } from '@/subpackages/feedback/type';
 
 function spliceText(text: string, maxLength = 45) {

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable no-console */
-
 import { Button, Image, Input, Text, View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useEffect, useRef, useState } from 'react';

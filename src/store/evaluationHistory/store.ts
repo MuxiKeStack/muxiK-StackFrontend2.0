@@ -2,9 +2,9 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { CommentInfo } from '@/common/types/commentTypes';
-import { createTaroJSONStorage } from '@/common/utils/storage';
 import { loadData } from '@/common/utils/loadData';
 import { registerSessionReset } from '@/common/utils/resetSession';
+import { createTaroJSONStorage } from '@/common/utils/storage';
 
 import {
   applyAppendLoadResult,
@@ -46,7 +46,7 @@ export const useEvaluationHistoryStore = create<EvaluationHistoryStore>()(
         const cached = cache[activeStatus];
         const curLastId = append ? (cached?.lastId ?? 0) : 0;
 
-        set({ loading: append ? false : !(cached?.list?.length) });
+        set({ loading: append ? false : !cached?.list?.length });
         try {
           return await get().load(activeStatus, curLastId, append);
         } finally {
